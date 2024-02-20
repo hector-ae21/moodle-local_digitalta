@@ -1,0 +1,145 @@
+@startuml IE-ER-v1
+
+' Type	Symbol
+' Zero or One	|o--
+' Exactly One	||--
+' Zero or Many	}o--
+' One or Many	}|--
+
+
+entity experience{
+   * id int
+   id_user int    
+   --
+   title string 
+   description string
+   date date
+   lang string
+   visible boolean
+   img string
+}
+
+entity exp_tags{
+   * id int
+   id_experience int
+   id_tag int
+}
+
+entity tags{
+   * id int
+   name string
+}
+
+entity users{
+   Moodle user table
+}
+
+
+entity likes {
+   * id int
+   id_experience int
+   id_user int
+}
+
+entity comments {
+   * id int
+   id_experience int
+   id_user int
+   --
+   comment string
+   date date
+}
+
+entity unlikes {
+   * id int
+   id_experience int
+   id_user int
+}
+
+entity self_reflection_questions{
+   * id int
+   question string
+}
+
+entity self_reflection_answers{
+   * id int
+   id_experience int
+   id_question int
+   answer string
+}
+
+entity mentor_help{
+    * id int
+    id_experience int
+    id_user int
+    --
+    conclution string
+    date date
+}
+
+entity mentoring_request{
+    * id int
+    id_experience int
+    id_mentor int
+    status : boolean
+    --
+    date date
+}
+
+
+entity ourcases {
+    * id int
+    id_experience int
+    --
+    date date
+}
+
+entity ourcases_section_text {
+    * id int
+    id_ourcases int
+    --
+    title string
+    text string
+}
+
+entity ourcases_section_img {
+    * id int
+    id_ourcases int
+    --
+    img string
+}
+
+entity ourcases_section_resources {
+    * id int
+    id_ourcases int
+    --
+    title string
+    link string
+}
+
+
+
+experience ||--o{ exp_tags
+exp_tags }o--|| tags
+experience ||--o{ likes
+experience ||--o{ comments
+experience ||--o{ unlikes
+experience ||--o{ self_reflection_answers
+experience ||--o{ mentor_help
+experience ||--o{ mentoring_request
+experience ||--o{ ourcases
+ourcases ||--o{ ourcases_section_text
+ourcases ||--o{ ourcases_section_img
+ourcases ||--o{ ourcases_section_resources
+self_reflection_questions ||--o{ self_reflection_answers
+users ||--o{ experience
+users ||--o{ likes
+users ||--o{ comments
+users ||--o{ unlikes
+users ||--o{ mentor_help
+users ||--o{ mentoring_request
+users ||--o{ ourcases
+users ||--o{ self_reflection_answers
+
+
+@enduml

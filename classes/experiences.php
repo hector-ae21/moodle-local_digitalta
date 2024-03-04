@@ -8,6 +8,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_dta;
+
+use stdClass;
+
 class Experience
 {
     private static $table = 'digital_experiences';
@@ -39,13 +43,18 @@ class Experience
 
     /**
      * Get an experience by this id
-     *
+     * 
+     * @param bool $includePrivates 
      * @return stdClass|null
      */
-    public function getExperience()
+    public static function getAllExperiences($includePrivates = false)
     {
-        $sql = "SELECT * FROM {digital_experiences} WHERE id = ?";
-        return $this->db->get_record_sql($sql, array($this->id));
+        global $DB;
+        $sql = "SELECT * FROM {digital_experiences}";
+        if (!$includePrivates) {
+            $sql .= " WHERE visible = 1";
+        }
+        return $DB->get_records_sql($sql);
     }
 
     /**
@@ -71,10 +80,8 @@ class Experience
         $record->date = $date;
         $record->lang = $lang;
         $record->visible = $visible;
-
-        $id = $DB->insert_record(self::$table, $record);
         
-        if($id === 0) {
+        if(!$id = $DB->insert_record(self::$table, $record)) {
             throw new Exception('Error adding experience'); 
         }
 

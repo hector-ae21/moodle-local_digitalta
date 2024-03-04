@@ -6,6 +6,7 @@
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace local_dta;
 
  class reflection_question {
 

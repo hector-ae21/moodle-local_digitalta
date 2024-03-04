@@ -1,70 +1,69 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <XMLDB PATH="local/dta/db" VERSION="2024022000" COMMENT="XMLDB file for local_dta" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
 
-  <TABLES>
-  
-    <TABLE NAME="tags" COMMENT="Table for storing digital tags">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" AUTO_INCREMENT="true" COMMENT="Primary key"/>
-        <FIELD NAME="tag" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT=""/>
-        <KEYS>
-          <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        </KEYS>
-      </FIELDS>
-    </TABLE>
+ <TABLES>
 
-    <TABLE NAME="experiences" COMMENT="Table for storing digital experiences">
+    <TABLE NAME="digital_experiences" COMMENT="Table for storing digital experiences">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" AUTO_INCREMENT="true" COMMENT="Primary key"/>
-        <FIELD NAME="title" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT=""/>
+        <FIELD NAME="id" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="title" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="NULL"/>
         <FIELD NAME="description" TYPE="text" NOTNULL="true" COMMENT="Experience description"/>
         <FIELD NAME="date" TYPE="datetime" NOTNULL="true" COMMENT="Experience date"/>
-        <FIELD NAME="lang" TYPE="char" LENGTH="5" NOTNULL="true" DEFAULT="" COMMENT="Language"/>
+        <FIELD NAME="lang" TYPE="char" LENGTH="5" NOTNULL="true" DEFAULT="en" COMMENT="Language"/>
         <FIELD NAME="visible" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" COMMENT="Visibility (0 or 1)"/>
-        <KEYS>
-          <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        </KEYS>
       </FIELDS>      
-    </TABLE>
-
-    <TABLE NAME="experience_tag" COMMENT="Table for mapping experiences to tags">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" AUTO_INCREMENT="true" COMMENT="Primary key"/>
-        <FIELD NAME="experience_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="Foreign key to experience"/>
-        <FIELD NAME="tag_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="Foreign key to tag"/>
         <KEYS>
           <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-          <KEY NAME="experience_id" TYPE="foreign" FIELDS="experience_id" REFTABLE="experience" REFFIELDS="id"/>
-          <KEY NAME="tag_id" TYPE="foreign" FIELDS="tag_id" REFTABLE="digital_tags" REFFIELDS="id"/>
         </KEYS>
-      </FIELDS>
-    </TABLE>
-    
-    <TABLE NAME="experience_likes" COMMENT="Table for storing likes on experiences">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" AUTO_INCREMENT="true" COMMENT="Primary key"/>
-        <FIELD NAME="experience_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the experience"/>
-        <FIELD NAME="user_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the user"/>
-        <FIELD NAME="reaction_type" TYPE="char" LENGTH="10" NOTNULL="true" COMMENT="Type of reaction (like or unlike)"/>
-        <KEYS>
-          <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-          <KEY NAME="experience_id" TYPE="foreign" FIELDS="experience_id" REFTABLE="digital_experiences" REFFIELDS="id"/>
-        </KEYS>
-      </FIELDS>
     </TABLE>
 
-    <TABLE NAME="experience_comments" COMMENT="Table for storing comments on experiences">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" AUTO_INCREMENT="true" COMMENT="Primary key"/>
-        <FIELD NAME="experience_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the experience"/>
-        <FIELD NAME="user_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the user"/>
-        <FIELD NAME="comment" TYPE="text" NOTNULL="true" COMMENT="The comment text"/>
+    <TABLE NAME="digital_tags" COMMENT="Table for storing digital tags">
+        <FIELDS>
+          <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" AUTO_INCREMENT="true" LENGTH="11"  COMMENT="Primary key"/>
+          <FIELD NAME="tag" TYPE="char" LENGTH="255" NOTNULL="true"/>
+        </FIELDS>
         <KEYS>
-          <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-          <KEY NAME="experience_id" TYPE="foreign" FIELDS="experience_id" REFTABLE="digital_experiences" REFFIELDS="id"/>
+            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         </KEYS>
-      </FIELDS>
     </TABLE>
 
-  </TABLES>
+    <TABLE NAME="digital_experience_tag" COMMENT="Table for mapping experiences to tags">
+        <FIELDS>
+            <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" AUTO_INCREMENT="true" LENGTH="11"  COMMENT="Primary key"/>
+            <FIELD NAME="experience_id" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true" COMMENT="Foreign key to experience"/>
+            <FIELD NAME="tag_id" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true" COMMENT="Foreign key to tag"/>
+        </FIELDS>
+        <KEYS>
+            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            <KEY NAME="experience_id" TYPE="foreign" FIELDS="experience_id" REFTABLE="experience" REFFIELDS="id"/>
+            <KEY NAME="tag_id" TYPE="foreign" FIELDS="tag_id" REFTABLE="digital_tags" REFFIELDS="id"/>
+        </KEYS>
+    </TABLE>
+
+    <TABLE NAME="digital_experience_likes" COMMENT="Table for storing likes on experiences">
+        <FIELDS>
+            <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" AUTO_INCREMENT="true" LENGTH="11"  COMMENT="Primary key"/>
+            <FIELD NAME="experience_id" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the experience"/>
+            <FIELD NAME="user_id" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the user"/>
+            <FIELD NAME="reaction_type" TYPE="char" LENGTH="10" NOTNULL="true" COMMENT="Type of reaction (like or unlike)"/>
+        </FIELDS>
+        <KEYS>
+            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            <KEY NAME="experience_id" TYPE="foreign" FIELDS="experience_id" REFTABLE="digital_experiences" REFFIELDS="id"/>
+        </KEYS>
+    </TABLE>
+
+    <TABLE NAME="digital_experience_comments" COMMENT="Table for storing comments on experiences">
+        <FIELDS>
+            <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" AUTO_INCREMENT="true" LENGTH="11" COMMENT="Primary key"/>
+            <FIELD NAME="experience_id" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the experience"/>
+            <FIELD NAME="user_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the user"/>
+            <FIELD NAME="comment" TYPE="text" NOTNULL="true" COMMENT="The comment text"/>
+        </FIELDS>
+        <KEYS>
+            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            <KEY NAME="experience_id" TYPE="foreign" FIELDS="experience_id" REFTABLE="digital_experiences" REFFIELDS="id"/>
+        </KEYS>
+    </TABLE>
+</TABLES>
 </XMLDB>

@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * myexperience page
+ *
+ * @package   local_dta
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+
+require_once(__DIR__ . '/../../config.php');
+require_once(__DIR__ . './classes/form/experiences_form.php');
+require_once(__DIR__ . './classes/experiences.php');
+
+use local_dta\Experience;
+
+require_login();
+
+global $CFG, $PAGE, $OUTPUT;
+
+$strings = get_strings(['form_experience_header'], "local_dta");
+
+// Setea el título de la página
+$PAGE->set_url(new moodle_url('/local/dta/myexperience.php'));
+$PAGE->set_context( context_system::instance()) ;
+$PAGE->set_title($strings->form_experience_header);
+$PAGE->set_heading($strings->form_experience_header);
+
+// Crea un nuevo formulario de experiencias
+$form = new local_experiences_form();
+
+// Procesa el formulario si se ha enviado
+if ($form->is_cancelled() || $form->is_submitted()) {
+    if ($data = $form->get_data()) {
+
+        if (!$experience = Experience::addExperience($data->experience_title, $data->experience_description, date("Y-m-d H:i:s"), $data->experience_lang, $data->experience_is_public)) {
+            print_error('erroraddexperience', 'local_dta');
+        } else {
+            redirect(new moodle_url('/my/courses.php'));
+        }
+    } else {
+        // Si hay errores en la validación, muestra el formulario nuevamente con los errores
+        echo $OUTPUT->header();
+        $form->display();
+        echo $OUTPUT->footer();
+        return;
+    }
+}
+
+// Muestra el formulario
+echo $OUTPUT->header();
+$form->display();
+echo $OUTPUT->footer();

@@ -35,7 +35,7 @@ if ($form->is_cancelled()) {
 } elseif ($form->is_submitted()) {
     if ($data = $form->get_data()) {
 
-        if (!$experience = Experience::addExperience($data->experience_title, $data->experience_description, date("Y-m-d H:i:s"), $data->experience_lang, $data->experience_is_public , $USER->id )) {
+        if (!$experience = Experience::addExperience($data->experience_title, $data->experience_description, date("Y-m-d H:i:s"), $data->experience_lang,$USER->id, $data->experience_is_public)) {
             print_error('erroraddexperience', 'local_dta');
         } else {
             redirect(new moodle_url('/local/dta/pages/community.php'));

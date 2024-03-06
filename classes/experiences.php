@@ -71,7 +71,7 @@ class Experience
      * @param bool $visible
      * @return Experience|bool
      */
-    public static function addExperience($title, $description, $date, $lang, $visible = 1, $user)
+    public static function addExperience($title, $description, $date, $lang, $user, $visible = 1)
     {
         global $DB;
         if (empty($title) || empty($description) || empty($date) || empty($lang)) {

@@ -15,6 +15,7 @@ use stdClass;
 class OurCases 
 {
     private static $table = 'digital_ourcases';
+    private static $table_section_text = 'digital_oc_sec_tex';
     private $db;
     private $id;
     private $experience;
@@ -46,8 +47,7 @@ class OurCases
     public static function getCases()
     {
         global $DB;
-        $sql = "SELECT * FROM {our_cases}";
-        return $DB->get_records_sql($sql);
+        return $DB->get_records(self::$table);
     }
 
     /**
@@ -60,6 +60,18 @@ class OurCases
     {
         global $DB;
         return $DB->get_record(self::$table, ['id' => $id]);
+    }
+
+    /**
+     * Get a specific case by experience
+     *
+     * @param int $id ID of the case
+     * @return object Returns a record object
+     */
+    public static function getCaseByExperience($experience)
+    {
+        global $DB;
+        return $DB->get_record(self::$table, ['experience' => $experience]);
     }
 
 
@@ -95,9 +107,7 @@ class OurCases
         }
 
         $record->id = $id;
-
-        return $DB->insert_record(self::$table, $record);
-        
+                
         return new OurCases($record);
 
     }   
@@ -140,7 +150,19 @@ class OurCases
     public static function deleteCase($id)
     {
         global $DB;
-        $sql = "DELETE FROM {our_cases} WHERE id = ?";
-        return $DB->execute_sql($sql, array($id));
+        return $DB->delete_records(self::$table, ['id' => $id]);
     }
+
+    /**
+     * Get the text of a section
+     *
+     * @param int $id ID of the section
+     * @return object Returns a record object
+     */
+    public static function getSectionText($id)
+    {
+        global $DB;
+        return $DB->get_record(self::$table_section_text, ['id' => $id]);
+    }
+    
 }

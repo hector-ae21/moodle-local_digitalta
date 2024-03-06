@@ -26,7 +26,7 @@ if(!Experience::checkExperience($id)) {
     throw new moodle_exception('invalidexperience', 'local_dta');
 }
 
-if(!$ourcase = OurCases::getCase($id)) {
+if(!$ourcase = OurCases::getCaseByExperience($id)) {
     $ourcase = OurCases::addCase($id , date("Y-m-d H:i:s") , $USER->id); 
 }
 
@@ -39,7 +39,6 @@ $PAGE->set_title($strings->community_title);
 
 echo $OUTPUT->header();
 
-print_r($experience);
 
 $templateContext = [
     'experience' => $experience,

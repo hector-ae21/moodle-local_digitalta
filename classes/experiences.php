@@ -16,11 +16,18 @@ class Experience
 {
     private static $table = 'digital_experiences';
     private $db;
-    private $id;
+    public $id;
     private $title;
     private $description;
     private $date;
     private $lang;
+
+    /** @var string The picture draft id of the experience */
+    public $picture;
+
+    /** @var string The picture url of the experience */
+    public $pictureurl;
+
     private $visible;
 
 

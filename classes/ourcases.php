@@ -14,15 +14,27 @@ use stdClass;
 
 class OurCases 
 {
-
     private static $table = 'digital_ourcases';
+    private $db;
+    private $id;
+    private $experience;
+    private $date;
+    private $status;
 
 
     /**
      * OurCases constructor
      */
-    public function __construct()
+    public function __construct($ourcase = null)
     {
+        global $DB;
+        $this->db = $DB;
+        if ($ourcase && is_object($ourcase)) {
+            $this->id = $ourcase->id;
+            $this->experience = $ourcase->experience;
+            $this->date = $ourcase->date;
+            $this->status = $ourcase->status;
+        }
 
     }
 
@@ -83,6 +95,9 @@ class OurCases
         $record->id = $id;
 
         return $DB->insert_record('our_cases', $record);
+        
+        return new OurCases($record);
+
     }   
 
     /**

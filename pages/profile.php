@@ -39,10 +39,11 @@ $templatecontext = [
         "name" => $USER->firstname . " " . $USER->lastname,
         "email" => $USER->email,
         "image" => $picture->get_url($PAGE)->__toString(),
-        "edit_url" => $CFG->wwwroot . "/user/editadvanced.php?id=" . $USER->id ,
-        "delete_url" => $CFG->wwwroot . "/local/dta/pages/experience/delete.php?id=",
-        "add_url" => $CFG->wwwroot . "/local/dta/pages/experience/add.php",
-    ]
+    ],
+    "ourcases_url" => $CFG->wwwroot . "/local/dta/pages/ourcases.php?id=",
+    "delete_url" => $CFG->wwwroot . "/local/dta/pages/experience/delete.php?id=",
+    "edit_url" => $CFG->wwwroot . "/user/editadvanced.php?id=" . $USER->id ,
+    "add_url" => $CFG->wwwroot . "/local/dta/pages/experience/add.php",
 ];
 
 

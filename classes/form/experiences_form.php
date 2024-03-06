@@ -11,35 +11,37 @@
 // moodleform is defined in formslib.php
 require_once("$CFG->libdir/formslib.php");
 
-class local_experiences_form extends moodleform {
+class local_experiences_form extends moodleform
+{
     // Add elements to form.
-    public function definition() {
+    public function definition()
+    {
         $mform = $this->_form; // Don't forget the underscore!
 
-        $strings = get_strings( ['form_experience_description' , 'form_experience_lang' , 'form_experience_is_visible' , 'form_experience_title' ] , "local_dta");
+        $strings = get_strings(['form_experience_description', 'form_experience_lang', 'form_experience_is_visible', 'form_experience_title'], "local_dta");
 
-        /* TITLE */ 
-        $mform->addElement('text', 'experience_title',  $strings->form_experience_title );
+        /* TITLE */
+        $mform->addElement('text', 'experience_title',  $strings->form_experience_title);
         $mform->setType('experience_title', PARAM_TEXT);
 
-        /* DESCRIPTION */ 
-        $mform->addElement('textarea', 'experience_description', $strings->form_experience_description  );
+        /* DESCRIPTION */
+        $mform->addElement('textarea', 'experience_description', $strings->form_experience_description);
         $mform->setType('experience_description', PARAM_TEXT);
 
         /* LANG */
-        $mform->addElement('select', 'experience_lang', $strings->form_experience_lang , array('es' => 'Español', 'en' => 'English'));
+        $mform->addElement('select', 'experience_lang', $strings->form_experience_lang, array('es' => 'Español', 'en' => 'English'));
         $mform->setType('experience_lang', PARAM_TEXT);
 
         /* IS_VISIBLE */
-        $mform->addElement('select', 'experience_is_public', $strings->form_experience_is_visible  , array('1' => 'Yes', '0' => 'No'));
+        $mform->addElement('select', 'experience_is_public', $strings->form_experience_is_visible, array('1' => 'Yes', '0' => 'No'));
         $mform->setType('experience_is_public', PARAM_INT);
 
         /* SUBMIT */
         $this->add_action_buttons();
-
     }
 
-    function validation($data , $files) {
+    function validation($data, $files)
+    {
         $errors = [];
 
         // Validación del título: Requerido y longitud máxima de 100 caracteres

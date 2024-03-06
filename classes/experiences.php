@@ -159,4 +159,16 @@ class Experience
         global $DB;
         return $DB->record_exists(self::$table, ['id' => $id]);
     }
+
+    /**
+     * Get an experience by this id
+     * 
+     * @param int $id
+     * @return stdClass|null
+     */
+    public static function getExperience($id)
+    {
+        global $DB;
+        return $DB->get_record(self::$table, ['id' => $id]);
+    }
 }

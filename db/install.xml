@@ -69,5 +69,38 @@
             <KEY NAME="user" TYPE="foreign" FIELDS="user" REFTABLE="user" REFFIELDS="id"/>
         </KEYS>
     </TABLE>
+
+    
+    <TABLE NAME="digital_ourcases" COMMENT="Table for storing ourcases">
+        <FIELDS>
+            <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" AUTO_INCREMENT="true" LENGTH="11" COMMENT="Primary key"/>
+            <FIELD NAME="experience" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the experience"/>
+            <FIELD NAME="user" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the user"/>
+            <FIELD NAME="date" TYPE="datetime" NOTNULL="true" COMMENT="Experience date"/>
+            <FIELD NAME="status" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" COMMENT="status 0 until finished 1)"/>
+        </FIELDS>
+        <KEYS>
+            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            <KEY NAME="experience" TYPE="foreign" FIELDS="experience" REFTABLE="digital_experiences" REFFIELDS="id"/>
+            <KEY NAME="user" TYPE="foreign" FIELDS="user" REFTABLE="user" REFFIELDS="id"/>
+        </KEYS>
+    </TABLE>
+
+
+    <TABLE NAME="digital_oc_sec_text" COMMENT="Table for storing text section">
+        <FIELDS>
+            <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" AUTO_INCREMENT="true" LENGTH="11" COMMENT="Primary key"/>
+            <FIELD NAME="ourcase" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the ourcases"/>
+            <FIELD NAME="title" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="NULL"/>
+            <FIELD NAME="description" TYPE="text" NOTNULL="true" COMMENT="Experience description"/>
+        </FIELDS>
+        <KEYS>
+            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            <KEY NAME="ourcase" TYPE="foreign" FIELDS="ourcase" REFTABLE="digital_ourcases" REFFIELDS="id"/>
+        </KEYS>
+    </TABLE>
+
+
+
 </TABLES>
 </XMLDB>

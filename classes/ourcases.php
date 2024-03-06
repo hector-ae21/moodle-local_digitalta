@@ -10,8 +10,13 @@
 
 namespace local_dta;
 
+use stdClass;
+
 class OurCases 
 {
+
+    private static $table = 'digital_ourcases';
+
 
     /**
      * OurCases constructor
@@ -51,25 +56,31 @@ class OurCases
      *
      * @param int $experienceid ID of the experience
      * @param string $date Date of the case
-     * @param string $lang Language of the case
-     * @param bool $visible Visibility of the case
+     * @param bool $status Status of the case
      * @return bool|int Returns ID of the inserted record if successful, false otherwise
      */
-    public static function addCase($experienceid, $date, $lang, $visible)
+    public static function addCase($experienceid, $date, $status = 0)
     {
         global $DB;
-        if (empty($experienceid) || empty($date) || empty($lang)) {
+        if (empty($experienceid) || empty($date) ) {
             return false;
         }
 
         // verify if the experience exists
-
+        if(!Experience::getExperience($experienceid)){
+            return false;
+        }
 
         $record = new stdClass();
         $record->experience = $experienceid;
         $record->date = $date;
-        $record->lang = $lang;
-        $record->visible = $visible;
+        $record->status = $status;
+
+        if(!$id = $DB->insert_record(self::$table,  $record)){
+            throw new Exception('Error adding experience');
+        }
+
+        $record->id = $id;
 
         return $DB->insert_record('our_cases', $record);
     }   

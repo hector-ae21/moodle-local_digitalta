@@ -59,10 +59,11 @@ class OurCases
     public static function getCase($id)
     {
         global $DB;
-        $sql = "SELECT * FROM {our_cases} WHERE id = ?";
-        return $DB->get_record_sql($sql, array($id));
+        return $DB->get_record(self::$table, ['id' => $id]);
     }
 
+
+    
     /**
      * Add a case
      *
@@ -71,10 +72,10 @@ class OurCases
      * @param bool $status Status of the case
      * @return bool|int Returns ID of the inserted record if successful, false otherwise
      */
-    public static function addCase($experienceid, $date, $status = 0)
+    public static function addCase($experienceid, $date, $user , $status = 0)
     {
         global $DB;
-        if (empty($experienceid) || empty($date) ) {
+        if (empty($experienceid) || empty($date) || empty($user)) {
             return false;
         }
 
@@ -85,6 +86,7 @@ class OurCases
 
         $record = new stdClass();
         $record->experience = $experienceid;
+        $record->user = $user;
         $record->date = $date;
         $record->status = $status;
 
@@ -94,7 +96,7 @@ class OurCases
 
         $record->id = $id;
 
-        return $DB->insert_record('our_cases', $record);
+        return $DB->insert_record(self::$table, $record);
         
         return new OurCases($record);
 
@@ -126,7 +128,7 @@ class OurCases
         $record->lang = $lang;
         $record->visible = $visible;
 
-        return $DB->update_record('our_cases', $record);
+        return $DB->update_record(self::$table, $record);
     }
 
     /**

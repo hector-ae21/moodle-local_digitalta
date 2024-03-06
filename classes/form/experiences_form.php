@@ -14,6 +14,14 @@ require_once("$CFG->dirroot/local/dta/lib.php");
 
 class local_experiences_form extends moodleform
 {
+    private $title;
+    
+    // Constructor que recibe el título
+    public function __construct($title = '') {
+        $this->title = $title;
+        parent::__construct(); // No olvides llamar al constructor padre adecuadamente
+    }
+
     // Add elements to form.
     public function definition()
     {
@@ -24,6 +32,7 @@ class local_experiences_form extends moodleform
         /* TITLE */
         $mform->addElement('text', 'experience_title',  $strings->form_experience_title);
         $mform->setType('experience_title', PARAM_TEXT);
+        $mform->setDefault('experience_title', $this->title);
         $mform->addRule('experience_title', null, 'required', null, 'client');
 
         /* DESCRIPTION */

@@ -40,7 +40,7 @@ $templatecontext = [
         "email" => $USER->email,
         "image" => $picture->get_url($PAGE)->__toString(),
     ],
-    "ourcases_url" => $CFG->wwwroot . "/local/dta/pages/ourcases.php?id=",
+    "ourcases_url" => $CFG->wwwroot . "/local/dta/pages/ourcases/add.php?id=",
     "delete_url" => $CFG->wwwroot . "/local/dta/pages/experience/delete.php?id=",
     "edit_url" => $CFG->wwwroot . "/user/editadvanced.php?id=" . $USER->id ,
     "add_url" => $CFG->wwwroot . "/local/dta/pages/experience/add.php",

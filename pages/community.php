@@ -23,7 +23,6 @@ $strings = get_strings(['community_header', 'community_title'], "local_dta");
 $PAGE->set_url(new moodle_url('/local/dta/community.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->community_title);
-$PAGE->set_heading($strings->community_header);
 
 echo $OUTPUT->header();
 

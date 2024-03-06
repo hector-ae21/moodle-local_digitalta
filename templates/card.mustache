@@ -19,11 +19,11 @@
     }
 }}
 <div class="card mb-5 rounded-3">
-  <div>
+  <div class="experience-card-img-container">
     <img
       src="https://bootdey.com/image/480x180/191970/ffffff"
       alt="Image"
-      class="img-fluid rounded-top"
+      class="img-fluid rounded-top experience-card-img"
     />
   </div>
   {{#experiences.show_image_profile}}
@@ -58,6 +58,7 @@
     <a href="{{profile.delete_url}}{{id}}" class="btn btn-primary m-1 d-md-block">
       Create Case
     </a>
+    
   </div>
   {{/experiences.show_controls_admin}}
 

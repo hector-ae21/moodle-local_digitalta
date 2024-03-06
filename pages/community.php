@@ -35,7 +35,14 @@ foreach ($experiences as $experience) {
     $experience->image = $picture->get_url($PAGE)->__toString();
 }
 
+$user = get_complete_user_data("id", $USER->id);
+$picture = new user_picture($user);
+$picture->size = 101;
+$user->image = $picture->get_url($PAGE)->__toString();
+
 $templateContext = [
+    "user" => $user,
+    "add_experience_url" => $CFG->wwwroot . "/local/dta/pages/experience/add.php",
     "experiences" => [
         "data" => $experiences,
         "show_image_profile" => true,

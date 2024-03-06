@@ -9,3 +9,17 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
+
+require_once(__DIR__ . './../../config.php');
+
+/**
+ * check permissions to delete or edit an experience owner or admin
+ * 
+ */
+function local_dta_check_permissions($experience, $user)
+{
+    if ($user->id == $experience->user || is_siteadmin($USER)) {
+        return true;
+    }
+    return false;
+}

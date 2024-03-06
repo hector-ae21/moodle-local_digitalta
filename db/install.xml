@@ -6,6 +6,7 @@
     <TABLE NAME="digital_experiences" COMMENT="Table for storing digital experiences">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="user" TYPE="int" LENGTH="11" NOTNULL="true"/>
         <FIELD NAME="title" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="NULL"/>
         <FIELD NAME="description" TYPE="text" NOTNULL="true" COMMENT="Experience description"/>
         <FIELD NAME="date" TYPE="datetime" NOTNULL="true" COMMENT="Experience date"/>
@@ -14,6 +15,7 @@
       </FIELDS>      
         <KEYS>
           <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+          <KEY NAME="user" TYPE="foreign" FIELDS="user" REFTABLE="user" REFFIELDS="id"/>
         </KEYS>
     </TABLE>
 
@@ -44,12 +46,13 @@
         <FIELDS>
             <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" AUTO_INCREMENT="true" LENGTH="11"  COMMENT="Primary key"/>
             <FIELD NAME="experience_id" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the experience"/>
-            <FIELD NAME="user_id" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the user"/>
+            <FIELD NAME="user" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the user"/>
             <FIELD NAME="reaction_type" TYPE="char" LENGTH="10" NOTNULL="true" COMMENT="Type of reaction (like or unlike)"/>
         </FIELDS>
         <KEYS>
             <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             <KEY NAME="experience_id" TYPE="foreign" FIELDS="experience_id" REFTABLE="digital_experiences" REFFIELDS="id"/>
+            <KEY NAME="user" TYPE="foreign" FIELDS="user" REFTABLE="user" REFFIELDS="id"/>
         </KEYS>
     </TABLE>
 
@@ -57,12 +60,13 @@
         <FIELDS>
             <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" AUTO_INCREMENT="true" LENGTH="11" COMMENT="Primary key"/>
             <FIELD NAME="experience_id" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the experience"/>
-            <FIELD NAME="user_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the user"/>
+            <FIELD NAME="user" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the user"/>
             <FIELD NAME="comment" TYPE="text" NOTNULL="true" COMMENT="The comment text"/>
         </FIELDS>
         <KEYS>
             <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             <KEY NAME="experience_id" TYPE="foreign" FIELDS="experience_id" REFTABLE="digital_experiences" REFFIELDS="id"/>
+            <KEY NAME="user" TYPE="foreign" FIELDS="user" REFTABLE="user" REFFIELDS="id"/>
         </KEYS>
     </TABLE>
 </TABLES>

@@ -47,14 +47,11 @@ class Experience
      * @param bool $includePrivates 
      * @return stdClass|null
      */
-    public static function getAllExperiences($includePrivates = false)
+    public static function getAllExperiences($includePrivates = true)
     {
         global $DB;
-        $sql = "SELECT * FROM {digital_experiences}";
-        if (!$includePrivates) {
-            $sql .= " WHERE visible = 1";
-        }
-        return $DB->get_records_sql($sql);
+        $experiences = array_values($DB->get_records(self::$table, $includePrivates ? null : ['visible' => 1]));
+        return $experiences;
     }
 
     /**
@@ -67,7 +64,7 @@ class Experience
      * @param bool $visible
      * @return Experience|bool
      */
-    public static function addExperience($title, $description, $date, $lang, $visible)
+    public static function addExperience($title, $description, $date, $lang, $visible = 1, $user)
     {
         global $DB;
         if (empty($title) || empty($description) || empty($date) || empty($lang)) {
@@ -80,13 +77,14 @@ class Experience
         $record->date = $date;
         $record->lang = $lang;
         $record->visible = $visible;
-        
-        if(!$id = $DB->insert_record(self::$table, $record)) {
-            throw new Exception('Error adding experience'); 
+        $record->user = $user;
+
+        if (!$id = $DB->insert_record(self::$table, $record)) {
+            throw new Exception('Error adding experience');
         }
 
         $record->id = $id;
-        
+
         return new Experience($record);
     }
 
@@ -117,5 +115,48 @@ class Experience
         $record->visible = $experience->visible;
 
         return $DB->update_record(self::$table, $record);
+    }
+
+    /**
+     * Get my experiences
+     */
+
+    public static function getMyExperiences($user)
+    {
+        global $DB;
+        $experiences = array_values($DB->get_records(self::$table, ['user' => $user]));
+        return $experiences;
+    }
+
+
+    /**
+     * Delete an experience
+     *
+     * @param int $id
+     * @return bool
+     */
+    public static function deleteExperience($id)
+    {
+        global $DB, $USER;
+        if (!self::checkExperience($id)) {
+            throw new Exception('Error experience not found');
+        }
+        // Check permissions
+        if (!local_dta_check_permissions($id, $USER)) {
+            throw new Exception('Error permissions');
+        }
+        return $DB->delete_records(self::$table, ['id' => $id]);
+    }
+
+    /**
+     * check if experience exists
+     * 
+     * @param int $id
+     * @return bool
+     */
+    public static function checkExperience($id)
+    {
+        global $DB;
+        return $DB->record_exists(self::$table, ['id' => $id]);
     }
 }

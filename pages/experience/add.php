@@ -9,15 +9,15 @@
  */
 
 
-require_once(__DIR__ . '/../../config.php');
-require_once(__DIR__ . './classes/form/experiences_form.php');
-require_once(__DIR__ . './classes/experiences.php');
+require_once(__DIR__ . '/../../../../config.php');
+require_once(__DIR__ . './../../classes/form/experiences_form.php');
+require_once(__DIR__ . './../../classes/experiences.php');
 
 use local_dta\Experience;
 
 require_login();
 
-global $CFG, $PAGE, $OUTPUT;
+global $CFG, $PAGE, $OUTPUT , $USER;
 
 $strings = get_strings(['form_experience_header'], "local_dta");
 
@@ -30,14 +30,15 @@ $PAGE->set_heading($strings->form_experience_header);
 // Crea un nuevo formulario de experiencias
 $form = new local_experiences_form();
 
-// Procesa el formulario si se ha enviado
-if ($form->is_cancelled() || $form->is_submitted()) {
+if ($form->is_cancelled()) {
+    redirect(new moodle_url('/local/dta/pages/community.php'));
+} elseif ($form->is_submitted()) {
     if ($data = $form->get_data()) {
 
-        if (!$experience = Experience::addExperience($data->experience_title, $data->experience_description, date("Y-m-d H:i:s"), $data->experience_lang, $data->experience_is_public)) {
+        if (!$experience = Experience::addExperience($data->experience_title, $data->experience_description, date("Y-m-d H:i:s"), $data->experience_lang, $data->experience_is_public , $USER->id )) {
             print_error('erroraddexperience', 'local_dta');
         } else {
-            redirect(new moodle_url('/my/courses.php'));
+            redirect(new moodle_url('/local/dta/pages/community.php'));
         }
     } else {
         // Si hay errores en la validación, muestra el formulario nuevamente con los errores
@@ -47,6 +48,7 @@ if ($form->is_cancelled() || $form->is_submitted()) {
         return;
     }
 }
+
 
 // Muestra el formulario
 echo $OUTPUT->header();

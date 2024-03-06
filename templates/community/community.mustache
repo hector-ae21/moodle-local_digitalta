@@ -1,13 +1,33 @@
-<style>
-    .card {
-      margin-bottom: 20px;
-    }
-</style>
+{{!
+    @template course_course/coursecard
 
+    This template renders the a card for the course cards.
+
+    Example context (json):
+  {
+  "experiences": {
+    "data": [
+      {
+        "id": "3",
+        "user": "2",
+        "title": "aaa",
+        "description": "aaaa",
+        "date": "2024-03-05 10:49:08",
+        "lang": "es",
+        "visible": "1"
+      }
+    ],
+    "show_image_profile": true
+  }
+}
+}}
+{{> local_dta/styles }}
 <div class="container">
-  <div class="row">
-  {{#experiences}}
-    {{> local_dta/community/card }}
-  {{/experiences}}
+  <div class="py-6">
+    <div class="row">
+      {{#experiences.data}}
+      <div class="col-lg-4 col-4">{{> local_dta/card }}</div>
+      {{/experiences.data}}
+    </div>
   </div>
 </div>

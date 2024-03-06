@@ -90,6 +90,7 @@ entity mentoring_request{
 entity ourcases {
     * id int
     id_experience int
+    id_user int
     --
     date date
 }

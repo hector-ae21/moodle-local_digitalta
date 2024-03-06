@@ -25,7 +25,7 @@ $strings = get_strings(['form_experience_delete_header', 'form_experience_delete
 $id = required_param('id', PARAM_INT);
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
 
-$experience = $DB->get_record('digital_experiences', array('id' => $id), '*', MUST_EXIST);
+$experience = Experience::getExperience($id);
 
 // Setea el título de la página
 $PAGE->set_url(new moodle_url('/local/dta/pages/community.php'));

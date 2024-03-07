@@ -35,7 +35,7 @@ $user_picture->size = 101;
 // Seting the page url and context
 $PAGE->set_url(new moodle_url('/local/dta/experience/view.php'));
 $PAGE->set_context(context_system::instance());
-$PAGE->requires->js_call_amd('local_dta/interactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/reactions', 'init');
 
 echo $OUTPUT->header();
 

@@ -2,31 +2,43 @@
   <div class="row">
     <!-- Sidebar -->
     <div class="col-md-3 sidebar">
-      <h2>{{experience.title}}</h2>
+      <h4>Experiencia:</h4>
+      <hr />
+      <h5>{{experience.title}}</h5>
       <p>{{experience.description}}</p>
     </div>
-    <!-- Content -->
     <div class="col-md-9">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card mb-3">
-            <div class="card-body">
-              <h5 class="card-title">Sección 1</h5>
-              <p class="card-text">Contenido de la sección 1.</p>
+    {{#section_header}}
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <label class="form-label">Title</label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    name="title"
+                    id="ourcase-title"
+                    value="{{section_header.title}}"
+                  />
+                  <label class="form-label">Description</label>
+                  <textarea
+                    class="form-control"
+                    name="description"
+                    name="ourcase-description"
+                    rows="3"
+                  >
+                    {{section_header.description}}
+                  </textarea>
+                  <div class="mt-3">
+                    <button type="button" class="btn btn-primary">Editar</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card mb-3">
-            <div class="card-body">
-              <h5 class="card-title">Sección 1</h5>
-              <p class="card-text">Contenido de la sección 1.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    {{/section_header}}
+
       <div class="row">
         <div class="col-md-12">
           <div class="card">

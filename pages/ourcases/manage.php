@@ -20,14 +20,18 @@ global $CFG, $PAGE, $OUTPUT , $USER;
 
 $id = required_param('id', PARAM_INT);
 
-$experience = Experience::getExperience($id);
-
-if(!Experience::checkExperience($id)) {
-    throw new moodle_exception('invalidexperience', 'local_dta');
+if(!$experience = Experience::getExperience($id)) {
+    throw new moodle_exception('invalidaourcases', 'local_dta');
 }
 
-if(!$ourcase = OurCases::getCaseByExperience($id)) {
-    $ourcase = OurCases::addCase($id , date("Y-m-d H:i:s") , $USER->id); 
+if(!$ourcase = OurCases::get_case_by_experience($id)) {
+    $ourcase = OurCases::add_case($id , date("Y-m-d H:i:s") , $USER->id); 
+}
+
+$sections = OurCases::get_sections_text($ourcase->id);
+
+if(!$section_header = OurCases::get_section_header($ourcase->id)) {
+    throw new moodle_exception('invalidourcasessection', 'local_dta');
 }
 
 $strings = get_strings(['community_header', 'community_title'], "local_dta");
@@ -39,10 +43,13 @@ $PAGE->set_title($strings->community_title);
 
 echo $OUTPUT->header();
 
-
 $templateContext = [
     'experience' => $experience,
+    'section_header' => $section_header ,
+    'sections' => $sections,
 ];
+
+$PAGE->requires->js_call_amd('local_dta/ourcases', 'init');
 
 echo $OUTPUT->render_from_template('local_dta/ourcases/ourcases', $templateContext);
 

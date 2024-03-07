@@ -43,7 +43,6 @@ $user->image = $picture->get_url($PAGE)->__toString();
 $templateContext = [
     "user" => $user,
     "add_experience_url" => $CFG->wwwroot . "/local/dta/pages/experience/add.php",
-    "ourcases_url" => $CFG->wwwroot . "/local/dta/pages/ourcases/add.php?id=",
     "experiences" => [
         "data" => $experiences,
         "show_image_profile" => true,

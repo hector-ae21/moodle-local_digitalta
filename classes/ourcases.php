@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * OurCases class
@@ -12,16 +12,16 @@ namespace local_dta;
 
 use stdClass;
 
-class OurCases 
+class OurCases
 {
     private static $table = 'digital_ourcases';
-    private static $table_section_text = 'digital_oc_sec_tex';
+    private static $table_section_text = 'digital_oc_sec_text';
     private $db;
     private $id;
     private $experience;
+    private $user;
     private $date;
     private $status;
-
 
     /**
      * OurCases constructor
@@ -33,30 +33,28 @@ class OurCases
         if ($ourcase && is_object($ourcase)) {
             $this->id = $ourcase->id;
             $this->experience = $ourcase->experience;
+            $this->user = $ourcase->user;
             $this->date = $ourcase->date;
             $this->status = $ourcase->status;
         }
-
     }
-
     /**
      * Get all cases
      *
      * @return array Returns an array of records
      */
-    public static function getCases()
+    public static function get_cases()
     {
         global $DB;
         return $DB->get_records(self::$table);
     }
-
     /**
      * Get a specific case
      *
      * @param int $id ID of the case
      * @return object Returns a record object
      */
-    public static function getCase($id)
+    public static function get_case($id)
     {
         global $DB;
         return $DB->get_record(self::$table, ['id' => $id]);
@@ -68,14 +66,11 @@ class OurCases
      * @param int $id ID of the case
      * @return object Returns a record object
      */
-    public static function getCaseByExperience($experience)
+    public static function get_case_by_experience($experience)
     {
         global $DB;
         return $DB->get_record(self::$table, ['experience' => $experience]);
     }
-
-
-    
     /**
      * Add a case
      *
@@ -84,7 +79,7 @@ class OurCases
      * @param bool $status Status of the case
      * @return bool|int Returns ID of the inserted record if successful, false otherwise
      */
-    public static function addCase($experienceid, $date, $user , $status = 0)
+    public static function add_case($experienceid, $date, $user, $status = 0)
     {
         global $DB;
         if (empty($experienceid) || empty($date) || empty($user)) {
@@ -92,7 +87,7 @@ class OurCases
         }
 
         // verify if the experience exists
-        if(!Experience::getExperience($experienceid)){
+        if (!$experience = Experience::getExperience($experienceid)) {
             return false;
         }
 
@@ -102,15 +97,26 @@ class OurCases
         $record->date = $date;
         $record->status = $status;
 
-        if(!$id = $DB->insert_record(self::$table,  $record)){
-            throw new Exception('Error adding experience');
+        if (!$id = $DB->insert_record(self::$table,  $record)) {
+            throw new Exception('Error adding ourcase to the database.');
         }
 
         $record->id = $id;
-                
-        return new OurCases($record);
 
-    }   
+        // adding default section text
+        $reord_section = new stdClass();
+        $reord_section->ourcase = $id;
+        $reord_section->title = $experience->title;
+        $reord_section->description = $experience->description;
+        $reord_section->sequence = 0;
+
+        if (!$DB->insert_record(self::$table_section_text,  $reord_section)) {
+            throw new Exception('Error adding ourcase section text to the database.');
+        }
+
+
+        return new OurCases($record);
+    }
 
     /**
      * Update a case
@@ -123,10 +129,10 @@ class OurCases
      * @param bool $visible Visibility of the case
      * @return bool Returns true if successful, false otherwise
      */
-    public static function updateCase($experienceid, $date, $lang, $visible)
+    public static function update_case($experienceid, $date, $lang, $visible)
     {
         global $DB;
-        if (empty($experienceid) ||empty($date) || empty($lang) || empty($visible) ) {
+        if (empty($experienceid) || empty($date) || empty($lang) || empty($visible)) {
             return false;
         }
 
@@ -147,22 +153,70 @@ class OurCases
      * @param int $id ID of the case
      * @return bool Returns true if successful, false otherwise
      */
-    public static function deleteCase($id)
+    public static function delete_case($id)
     {
         global $DB;
         return $DB->delete_records(self::$table, ['id' => $id]);
     }
 
+
     /**
-     * Get the text of a section
+     * Get the text of a section by section id order by sequence ignoring sequence 0
      *
-     * @param int $id ID of the section
-     * @return object Returns a record object
+     * @param int $ourcase ID of the section
+     * @param bool $get_header Indicates whether to get the header section
+     * @return array Returns an array of record objects
      */
-    public static function getSectionText($id)
+    public static function get_sections_text($ourcase, $get_header = false)
     {
         global $DB;
-        return $DB->get_record(self::$table_section_text, ['id' => $id]);
+
+        $sql = "SELECT * FROM {" . self::$table_section_text . "} WHERE ourcase = ? ";
+        if (!$get_header) {
+            $sql .= "AND sequence <> 0";
+        }
+        $sql .= " ORDER BY sequence";
+
+        $params = [$ourcase];
+        return $DB->get_records_sql($sql, $params);
     }
-    
+
+
+    /**
+     * Get the text of a section by section id order by sequence ignoring sequence 0
+     *
+     * @param int $ourcase ID of the section
+     * @return object Returns a record object
+     */
+    public static function get_section_header($ourcase)
+    {
+        global $DB;
+        return $DB->get_record(self::$table_section_text, ['ourcase' => $ourcase, 'sequence' => 0]);
+    }
+
+
+    /**
+     * Get all kind of sections
+     *
+     * @param int $id ID of the case
+     * @return object Returns a record object
+     */
+    public static function get_sections($id)
+    {
+        global $DB;
+        return $DB->get_records(self::$table_section_text, ['ourcase' => $id]);
+    }
+
+    /**
+     * Get a specific section
+     *
+     * @param int $id ID of the section
+     * @param int $sequence Sequence of the section
+     * @return object Returns a record object
+     */
+    public static function get_section_by_sequence($id, $sequence)
+    {
+        global $DB;
+        return $DB->get_record(self::$table_section_text, ['ourcase' => $id, 'sequence' => $sequence]);
+    }
 }

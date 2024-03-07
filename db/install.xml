@@ -93,13 +93,13 @@
             <FIELD NAME="ourcase" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true" COMMENT="ID of the ourcases"/>
             <FIELD NAME="title" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="NULL"/>
             <FIELD NAME="description" TYPE="text" NOTNULL="true" COMMENT="Experience description"/>
+            <FIELD NAME="sequence" TYPE="int" LENGTH="11" NOTNULL="true" COMMENT="Sequence of the section"/>
         </FIELDS>
         <KEYS>
             <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             <KEY NAME="ourcase" TYPE="foreign" FIELDS="ourcase" REFTABLE="digital_ourcases" REFFIELDS="id"/>
         </KEYS>
     </TABLE>
-
 
 
 </TABLES>

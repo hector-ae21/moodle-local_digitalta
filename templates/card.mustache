@@ -42,24 +42,4 @@
     <h4 class="mb-1">{{title}}</h4>
     <p>{{description}}</p>
   </div>
-  {{#experiences.show_controls}}
-  <div class="card-footer d-flex justify-content-end">
-    <a href="{{edit_experience_url}}{{id}}" class="btn btn-sm btn-light">
-      <i class="fa fa-pencil"></i>
-    </a>
-    <a href="{{delete_url}}{{id}}" class="btn btn-sm btn-light">
-      <i class="fa fa-trash"></i>
-    </a>
-  </div>
-  {{/experiences.show_controls}}
-  {{#experiences.show_controls_admin}}
-  {{! Our cases  }}
-  <div class="card-footer d-flex justify-content-end">
-    <a href="{{ourcases_url}}{{id}}" class="btn btn-primary m-1 d-md-block">
-      Create Case
-    </a>
-    
-  </div>
-  {{/experiences.show_controls_admin}}
-
 </div>

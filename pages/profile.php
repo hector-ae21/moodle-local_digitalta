@@ -42,7 +42,8 @@ $templatecontext = [
     ],
     "ourcases_url" => $CFG->wwwroot . "/local/dta/pages/ourcases/add.php?id=",
     "delete_url" => $CFG->wwwroot . "/local/dta/pages/experience/delete.php?id=",
-    "edit_url" => $CFG->wwwroot . "/user/editadvanced.php?id=" . $USER->id ,
+    "edit_profile_url" => $CFG->wwwroot . "/user/editadvanced.php?id=" . $USER->id ,
+    "edit_experience_url" => $CFG->wwwroot . "/local/dta/pages/experience/edit.php?id=",
     "add_url" => $CFG->wwwroot . "/local/dta/pages/experience/add.php",
 ];
 

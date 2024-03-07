@@ -16,7 +16,6 @@ class Experience
 {
     private static $table = 'digital_experiences';
     private $db;
-    private $id;
     private $title;
     private $description;
     private $date;
@@ -32,27 +31,27 @@ class Experience
 
 
     /**
-     * Class constructor.
+     * Constructor.
+     * 
+     * @param $data array The data to populate the experience with.
      */
     public function __construct($experience = null)
     {
-        global $DB;
-        $this->db = $DB;
-        if ($experience && is_object($experience)) {
-            $this->id = $experience->id;
-            $this->title = $experience->title;
-            $this->description = $experience->description;
-            $this->date = $experience->date;
-            $this->lang = $experience->lang;
-            $this->visible = $experience->visible;
+        foreach ($experience as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this->{$key} = ($key === 'description' && is_array($value))
+                    ? $value['text']
+                    : $value;
+            }
         }
+
     }
 
     /**
      * Get an experience by this id
      * 
      * @param bool $includePrivates 
-     * @return stdClass|null
+     * @return array|null
      */
     public static function getAllExperiences($includePrivates = true)
     {

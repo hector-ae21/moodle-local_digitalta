@@ -44,7 +44,7 @@
   </div>
   {{#experiences.show_controls}}
   <div class="card-footer d-flex justify-content-end">
-    <a class="btn btn-sm btn-light">
+    <a href="{{edit_experience_url}}{{id}}" class="btn btn-sm btn-light">
       <i class="fa fa-pencil"></i>
     </a>
     <a href="{{delete_url}}{{id}}" class="btn btn-sm btn-light">
@@ -61,6 +61,5 @@
     
   </div>
   {{/experiences.show_controls_admin}}
-
 
 </div>

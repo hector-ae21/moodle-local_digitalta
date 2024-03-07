@@ -18,6 +18,8 @@ require_once(__DIR__ . './../../config.php');
  */
 function local_dta_check_permissions($experience, $user)
 {
+    global $USER;
+    
     if ($user->id == $experience->user || is_siteadmin($USER)) {
         return true;
     }

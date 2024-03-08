@@ -15,19 +15,26 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * External functions and service definitions.
+ * Experience class
  *
- * @package    local_dta
- * @copyright  2024 ADSDR-FUNIBER Scepter Team
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   local_dta
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$functions = array(
-    'local_dta_toggle_like_dislike' => array(
-        'classname'   => 'local_dta/external',
-        'methodname'  => 'toggle_like_dislike',
-        'description' => 'Toggle like or dislike for an experience.',
-        'type'        => 'write',
-        'ajax'        => true,
-    ),
-);
+namespace local_dta\privacy;
+
+defined('MOODLE_INTERNAL') || die();
+
+class provider implements \core_privacy\local\metadata\null_provider {
+    
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason() : string {
+        return 'privacy:metadata';
+    }
+}

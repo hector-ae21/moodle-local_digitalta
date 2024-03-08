@@ -58,9 +58,9 @@
   </div>
   <!-- cards -->
   <div class="py-6">
-    <div class="row">
+    <div class="masonry">
       {{#experiences.data}}
-        <div class="col-lg-4 col-4">{{> local_dta/card }}</div>
+        <div class="card-container">{{> local_dta/card }}</div>
       {{/experiences.data}}
     </div>
   </div>

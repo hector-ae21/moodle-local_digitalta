@@ -36,7 +36,7 @@ if(!$section_header = OurCases::get_section_header($ourcase->id)) {
 
 $strings = get_strings(['community_header', 'community_title'], "local_dta");
 
-// Setea el título de la página
+
 $PAGE->set_url(new moodle_url('/local/dta/ourcases/add.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->community_title);
@@ -47,6 +47,7 @@ $templateContext = [
     'experience' => $experience,
     'section_header' => $section_header ,
     'sections' => $sections,
+    'ourcase' => $ourcase
 ];
 
 $PAGE->requires->js_call_amd('local_dta/ourcases', 'init');

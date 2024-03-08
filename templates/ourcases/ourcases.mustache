@@ -1,4 +1,5 @@
 <div class="container-fluid">
+<input type="hidden" id="ourcases-id" value="{{ourcase.id}}">
   <div class="row">
     <!-- Sidebar -->
     <div class="col-md-3 sidebar">
@@ -8,47 +9,13 @@
       <p>{{experience.description}}</p>
     </div>
     <div class="col-md-9">
-    {{#section_header}}
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card mb-3">
-                <div class="card-body">
-                  <label class="form-label">Title</label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    name="title"
-                    id="ourcase-title"
-                    value="{{section_header.title}}"
-                  />
-                  <label class="form-label">Description</label>
-                  <textarea
-                    class="form-control"
-                    name="description"
-                    name="ourcase-description"
-                    rows="3"
-                  >
-                    {{section_header.description}}
-                  </textarea>
-                  <div class="mt-3">
-                    <button type="button" class="btn btn-primary">Editar</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-    {{/section_header}}
-
       <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-body text-center">
-              <a href="#" class="btn btn-outline-primary">
-                <i class="fa fa-plus"></i>
-              </a>
-            </div>
-          </div>
+        <div class="col-md-12" id="sections">
+          {{#section_header}} {{> local_dta/ourcases/section_header }}
+          {{/section_header}} {{#sections}} {{> local_dta/ourcases/section_text
+          }} {{/sections}}
         </div>
+        <div class="col-md-12">{{>local_dta/ourcases/section_add }}</div>
       </div>
     </div>
   </div>

@@ -24,10 +24,17 @@
 
 $functions = array(
     'local_dta_toggle_like_dislike' => array(
-        'classname'   => 'local_dta/external',
+        'classname'   => 'local_dta/external/local_dta_external_toggle_like_dislike',
         'methodname'  => 'toggle_like_dislike',
         'description' => 'Toggle like or dislike for an experience.',
         'type'        => 'write',
+        'ajax'        => true,
+    ),
+    'local_dta_ourcases_section_text_upsert' => array(
+        'classname'   => 'local_dta/external/local_dta_external_ourcases_section_text_upsert',
+        'methodname'  => 'ourcases_section_text_upsert',
+        'description' => 'Upsert the text of a section of the Our Cases page.',
+        'type'        => 'write,read',
         'ajax'        => true,
     ),
 );

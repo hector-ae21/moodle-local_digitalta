@@ -43,3 +43,7 @@ $string['profile_title'] = 'Profile';
 $string['profile_add_new_experience'] = 'Add new experience';
 
 
+// ourcases main
+$string['ourcases_header_title'] = 'Case title';
+$string['ourcases_header_description'] = 'Case description';
+$string['ourcases_header_action_button'] = 'Editar encabezado';

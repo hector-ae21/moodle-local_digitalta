@@ -3,7 +3,7 @@
   <div class="row">
     <!-- Sidebar -->
     <div class="col-md-3 sidebar">
-      <h4>Experiencia:</h4>
+      <h4>{{#str}}experience, local_dta{{/str}}</h4>
       <hr />
       <h5>{{experience.title}}</h5>
       <p>{{experience.description}}</p>
@@ -11,11 +11,10 @@
     <div class="col-md-9">
       <div class="row">
         <div class="col-md-12" id="sections">
-          {{#section_header}} {{> local_dta/ourcases/section_header }}
-          {{/section_header}} {{#sections}} {{> local_dta/ourcases/section_text
-          }} {{/sections}}
+          {{#sectionheader}} {{> local_dta/ourcases/section-header }} {{/sectionheader}} 
+          {{#sections}} {{> local_dta/ourcases/section_text}} {{/sections}}
         </div>
-        <div class="col-md-12">{{>local_dta/ourcases/section_add }}</div>
+        <div class="col-md-12">{{>local_dta/ourcases/section-add }}</div>
       </div>
     </div>
   </div>

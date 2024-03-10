@@ -9,7 +9,7 @@ import sectionTextUpsert from 'local_dta/ourcases_repository';
  * @return {void}
  */
 function addTextSection() {
-    Templates.render('local_dta/ourcases/section_text', {id: 0, title: null}).then((html) => {
+    Templates.render('local_dta/ourcases/section-text', {id: 0, title: null}).then((html) => {
         return $('#sections').append(html);
     }).fail(Notification.exception);
 }

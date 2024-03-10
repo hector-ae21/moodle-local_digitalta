@@ -19,9 +19,13 @@ require_login();
 
 global $CFG, $PAGE, $OUTPUT , $USER;
 
+// Seting the page url and context
+$id = required_param('id', PARAM_INT);
+$PAGE->set_url(new moodle_url('/local/dta/pages/myexperience/view.php', ['id' => $id]));
+$PAGE->set_context(context_system::instance());
+$PAGE->requires->js_call_amd('local_dta/reactions', 'init');
 
 // Get the experience
-$id = required_param('id', PARAM_INT);
 if(!$experience = Experience::getExperience($id)) {
     throw new moodle_exception('invalidexperience', 'local_dta');
 }
@@ -32,10 +36,6 @@ $user_picture = new user_picture($user);
 $user_picture->size = 101;
 
 
-// Seting the page url and context
-$PAGE->set_url(new moodle_url('/local/dta/experience/view.php'));
-$PAGE->set_context(context_system::instance());
-$PAGE->requires->js_call_amd('local_dta/reactions', 'init');
 
 echo $OUTPUT->header();
 
@@ -47,20 +47,21 @@ $templateContext = [
         'date' => $experience->date,
         'lang' => $experience->lang,
         'visible' => $experience->visible,
+        'deleteurl' => $CFG->wwwroot . "/local/dta/pages/myexperience/delete.php?id=",
+        'editurl' => $CFG->wwwroot . "/local/dta/pages/myexperience/edit.php?id=",
         'comments' => []
     ],
     'user' => [
         'id' => $user->id,
         'name' => $user->firstname . " " . $user->lastname,
         'email' => $user->email,
-        'picture_url' => $user_picture->get_url($PAGE)->__toString(),
+        'imageurl' => $user_picture->get_url($PAGE)->__toString(),
+        'profileurl' => $CFG->wwwroot . '/user/profile.php?id=' . $user->id,
     ],
-    'is_admin' => is_siteadmin($USER),
-    'userprofile_url' => $CFG->wwwroot . "/user/profile.php?id=" . $user->id,
-    'delete_url' => $CFG->wwwroot . "/local/dta/pages/experience/delete.php?id=",
-    'edit_url' => $CFG->wwwroot . "/local/dta/pages/experience/edit.php?id=",
+    'isadmin' => is_siteadmin($USER),
+    'createcaseurl' => $CFG->wwwroot . "/local/dta/pages/ourcases/manage.php?id=",
 ];
 
-echo $OUTPUT->render_from_template('local_dta/experience/experience', $templateContext);
+echo $OUTPUT->render_from_template('local_dta/myexperience/view', $templateContext);
 
 echo $OUTPUT->footer();

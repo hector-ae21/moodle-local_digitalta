@@ -12,9 +12,6 @@
 // PLUGIN CORE STRINGS
 $string['pluginname'] = 'Digital Teaching Assistant';
 
-// FORM STRINGS
-
-
 // Experience form
 $string['form_experience_header'] = 'Add new experience'; 
 $string['form_experience_title'] = 'Title'; 
@@ -32,18 +29,30 @@ $string['form_experience_delete_confirm'] = 'Are you sure you want to delete thi
 $string['form_experience_delete_yes'] = 'Experience deleted successfully'; 
 $string['form_experience_delete_no'] = 'No';
 
+
 // Community
 $string['community_header'] = 'Community'; 
-$string['community_title'] = 'Community'; 
+$string['community_title'] = 'Learning Community';
+$string['community_post_button'] = 'Post';
+$string['community_post_placeholder'] = 'Tell us your experience';
 
 
-// profile 
-$string['profile_header'] = 'Profile';
-$string['profile_title'] = 'Profile';
-$string['profile_add_new_experience'] = 'Add new experience';
+// My Experience 
+$string['myexperience_header'] = 'My Experience';
+$string['myexperience_title'] = 'My Experience';
+$string['myexperience_add_new_experience'] = 'Add new experience';
+$string['myexperience_add_comment'] = 'Add a new comment...';
+$string['myexperience_picture_alt'] = 'Experience picture';
 
 
 // ourcases main
 $string['ourcases_header_title'] = 'Case title';
 $string['ourcases_header_description'] = 'Case description';
 $string['ourcases_header_action_button'] = 'Editar encabezado';
+
+// General
+$string['avatar_alt'] = 'User avatar';
+$string['experience'] = 'Experience';
+$string['edit'] = 'Edit';
+$string['delete'] = 'Delete';
+$string['create_case'] = 'Create case';

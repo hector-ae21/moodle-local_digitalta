@@ -53,8 +53,8 @@ define(['jquery', 'core/templates', 'core/notification'], function($, Templates,
      * @return {void}
      */
     function updateCommentsList() {
-        Templates.render('local_dta/experience/comment', {comments: commentList}).then(function(html) {
-            $('#commentsList').html(html);
+        Templates.render('local_dta/myexperience/comment', {comments: commentList}).then(function(html) {
+            return $('#commentsList').html(html);
         }).fail(Notification.exception);
     }
 

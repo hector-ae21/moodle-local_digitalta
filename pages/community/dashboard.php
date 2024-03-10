@@ -8,10 +8,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once(__DIR__ . '/../../../../config.php');
-require_login();
-
-
 require_once(__DIR__ . './../../classes/experiences.php');
+
+require_login();
 
 use local_dta\Experience;
 
@@ -28,29 +27,23 @@ echo $OUTPUT->header();
 
 $experiences = Experience::getAllExperiences(false);
 
-foreach ($experiences as $experience) {
-    $user = get_complete_user_data("id", $experience->user);
-    $picture = new user_picture($user);
-    $picture->size = 101;
-    $experience->image = $picture->get_url($PAGE)->__toString();
-}
-
 $user = get_complete_user_data("id", $USER->id);
 $picture = new user_picture($user);
 $picture->size = 101;
-$user->image = $picture->get_url($PAGE)->__toString();
+$user->imageurl = $picture->get_url($PAGE)->__toString();
 
 $templateContext = [
     "user" => $user,
-    "add_experience_url" => $CFG->wwwroot . "/local/dta/pages/myexperience/add.php",
     "experiences" => [
         "data" => $experiences,
-        "show_image_profile" => true,
-        "show_controls" => false,
-        "show_controls_admin" => is_siteadmin($USER),
+        "showimageprofile" => true,
+        "showcontrols" => false,
+        "showcontrolsadmin" => is_siteadmin($USER),
+        "addurl" => $CFG->wwwroot . "/local/dta/pages/myexperience/add.php",
+        "viewurl" => $CFG->wwwroot . '/local/dta/pages/myexperience/view.php?id='
     ]
 ];
 
-echo $OUTPUT->render_from_template('local_dta/community/community', $templateContext);
+echo $OUTPUT->render_from_template('local_dta/community/dashboard', $templateContext);
 
 echo $OUTPUT->footer();

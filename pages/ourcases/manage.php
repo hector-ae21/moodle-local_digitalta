@@ -45,13 +45,13 @@ echo $OUTPUT->header();
 
 $templateContext = [
     'experience' => $experience,
-    'section_header' => $section_header ,
+    'sectionheader' => $section_header ,
     'sections' => $sections,
     'ourcase' => $ourcase
 ];
 
 $PAGE->requires->js_call_amd('local_dta/ourcases', 'init');
 
-echo $OUTPUT->render_from_template('local_dta/ourcases/ourcases', $templateContext);
+echo $OUTPUT->render_from_template('local_dta/ourcases/manage', $templateContext);
 
 echo $OUTPUT->footer();

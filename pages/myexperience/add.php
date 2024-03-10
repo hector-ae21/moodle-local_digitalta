@@ -28,7 +28,9 @@ $PAGE->set_title($strings->form_experience_header);
 $PAGE->set_heading($strings->form_experience_header);
 
 // Crea un nuevo formulario de experiencias
-$form = new local_experiences_form($_POST['experience_title']);
+$form = (isset($_POST['experiencetitle']))
+    ? new local_experiences_form($_POST['experiencetitle'])
+    : $form = new local_experiences_form();
 
 if ($form->is_cancelled()) {
     redirect(new moodle_url('/local/dta/pages/community.php'));

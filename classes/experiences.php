@@ -10,6 +10,8 @@
 
 namespace local_dta;
 
+require_once(__DIR__ . '/../../../config.php');
+
 use stdClass;
 
 class Experience
@@ -44,7 +46,34 @@ class Experience
                     : $value;
             }
         }
+    }
 
+    /**
+     * Get an experience by this id
+     * 
+     * @param int $id
+     * @return stdClass|null
+     */
+    public static function getExperience($id)
+    {
+        global $DB;
+        $experience = $DB->get_record(self::$table, ['id' => $id]);
+        if ($experience) {
+            $experience = self::getExtraFields([$experience])[0];
+        }
+        return $experience;
+    }
+
+    /**
+     * Get my experiences
+     */
+
+    public static function getMyExperiences($user)
+    {
+        global $DB;
+        $experiences = array_values($DB->get_records(self::$table, ['user' => $user]));
+        $experiences = self::getExtraFields($experiences);
+        return $experiences;
     }
 
     /**
@@ -57,6 +86,26 @@ class Experience
     {
         global $DB;
         $experiences = array_values($DB->get_records(self::$table, $includePrivates ? null : ['visible' => 1]));
+        $experiences = self::getExtraFields($experiences);
+        return $experiences;
+    }
+
+    /**
+     * Get extra fields for experiences
+     * Add user image to the experience
+     * 
+     * @param array $experiences
+     * @return array
+     */
+    private static function getExtraFields($experiences)
+    {
+        global $PAGE;
+        foreach ($experiences as $experience) {
+            $user = get_complete_user_data("id", $experience->user);
+            $picture = new \user_picture($user);
+            $picture->size = 101;
+            $experience->userimage = $picture->get_url($PAGE)->__toString();
+        }
         return $experiences;
     }
 
@@ -123,17 +172,6 @@ class Experience
         return $DB->update_record(self::$table, $record);
     }
 
-    /**
-     * Get my experiences
-     */
-
-    public static function getMyExperiences($user)
-    {
-        global $DB;
-        $experiences = array_values($DB->get_records(self::$table, ['user' => $user]));
-        return $experiences;
-    }
-
 
     /**
      * Delete an experience
@@ -164,17 +202,5 @@ class Experience
     {
         global $DB;
         return $DB->record_exists(self::$table, ['id' => $id]);
-    }
-
-    /**
-     * Get an experience by this id
-     * 
-     * @param int $id
-     * @return stdClass|null
-     */
-    public static function getExperience($id)
-    {
-        global $DB;
-        return $DB->get_record(self::$table, ['id' => $id]);
     }
 }

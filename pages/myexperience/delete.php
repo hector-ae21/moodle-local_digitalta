@@ -27,7 +27,6 @@ $delete = optional_param('delete', '', PARAM_ALPHANUM);
 
 $experience = Experience::getExperience($id);
 
-// Setea el título de la página
 $PAGE->set_url(new moodle_url('/local/dta/pages/myexperience/delete.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->form_experience_delete_header);

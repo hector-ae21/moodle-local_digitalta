@@ -19,7 +19,6 @@ global $CFG, $PAGE, $OUTPUT , $USER;
 
 $strings = get_strings(['myexperience_header' , 'myexperience_title'], "local_dta");
 
-// Setea el título de la página
 $PAGE->set_url(new moodle_url('/local/dta/pages/myexperience/dashboard.php'));
 $PAGE->set_context(context_system::instance()) ;
 $PAGE->set_title($strings->myexperience_title);

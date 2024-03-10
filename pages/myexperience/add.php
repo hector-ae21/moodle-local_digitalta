@@ -1,7 +1,7 @@
 <?php
 
 /**
- * myexperience page
+ * myexperience add form
  *
  * @package   local_dta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
@@ -21,13 +21,11 @@ global $CFG, $PAGE, $OUTPUT, $USER;
 
 $strings = get_strings(['form_experience_header'], "local_dta");
 
-// Setea el título de la página
 $PAGE->set_url(new moodle_url('/local/dta/myexperience/add.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->form_experience_header);
 $PAGE->set_heading($strings->form_experience_header);
 
-// Crea un nuevo formulario de experiencias
 $form = (isset($_POST['experiencetitle']))
     ? new local_experiences_form($_POST['experiencetitle'])
     : $form = new local_experiences_form();
@@ -45,7 +43,6 @@ if ($form->is_cancelled()) {
     }
 }
 
-// Muestra el formulario
 echo $OUTPUT->header();
 $form->display();
 echo $OUTPUT->footer();

@@ -7,11 +7,11 @@
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once(__DIR__ . '/../../../config.php');
+require_once(__DIR__ . '/../../../../config.php');
 require_login();
 
 
-require_once(__DIR__ . './../classes/experiences.php');
+require_once(__DIR__ . './../../classes/experiences.php');
 
 use local_dta\Experience;
 
@@ -20,7 +20,7 @@ global $CFG, $PAGE, $OUTPUT;
 $strings = get_strings(['community_header', 'community_title'], "local_dta");
 
 // Setea el título de la página
-$PAGE->set_url(new moodle_url('/local/dta/community.php'));
+$PAGE->set_url(new moodle_url('/local/dta/pages/community/dashboard.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->community_title);
 
@@ -42,7 +42,7 @@ $user->image = $picture->get_url($PAGE)->__toString();
 
 $templateContext = [
     "user" => $user,
-    "add_experience_url" => $CFG->wwwroot . "/local/dta/pages/experience/add.php",
+    "add_experience_url" => $CFG->wwwroot . "/local/dta/pages/myexperience/add.php",
     "experiences" => [
         "data" => $experiences,
         "show_image_profile" => true,

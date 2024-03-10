@@ -46,7 +46,6 @@ $templateContext = [
         'description' => $experience->description,
         'date' => $experience->date,
         'lang' => $experience->lang,
-        'picture_url' => $experience->pictureurl,
         'visible' => $experience->visible,
         'comments' => []
     ],

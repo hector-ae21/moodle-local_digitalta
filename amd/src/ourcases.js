@@ -9,8 +9,8 @@ import {sectionTextUpsert} from 'local_dta/repositories/ourcasesRepository';
  * @return {void}
  */
 function addTextSection() {
-    Templates.render('local_dta/ourcases/section-text', {id: 0, title: null}).then((html) => {
-        return $('#sections').append(html);
+    Templates.render('local_dta/ourcases/section-text-view', {id: 0, title: null}).then((html) => {
+        return $('#sections-body').append(html);
     }).fail(Notification.exception);
 }
 
@@ -20,11 +20,24 @@ function addTextSection() {
  * @param {object} args - The arguments for the function.
  */
 function upsertTextSection(args) {
-    sectionTextUpsert(args).then((response) => {
-        if (response.warnings.length) {
-           return Notification.alert(response.warnings[0].message);
-        }
-        return Notification.success('Section saved');
+    sectionTextUpsert(args).then(() => {
+        return changeSectionHeaderToEdit();
+    }).fail(Notification.exception);
+}
+
+/**
+ * Change the section to edit mode.
+ * @param {boolean} toView - Whether to change to view mode.
+ * @return {void}
+ * */
+function changeSectionHeaderToEdit(toView = false) {
+    const sectionid = $('#section-header-id').val();
+    const title = $('#section-header-title').val();
+    const description = $('#section-header-description').val();
+    const template = toView ? 'local_dta/ourcases/section-header-edit' : 'local_dta/ourcases/section-header-view';
+    Templates.render(template,
+     {sectionheader: {id: sectionid, title, description}}).then((html) => {
+        return $('#sections-header').html(html);
     }).fail(Notification.exception);
 }
 
@@ -56,7 +69,16 @@ function setEventListeners() {
     $(document).on('click', '#header-edit-button', () => {
         upsertHeaderSection();
     });
+    // Change the header section to edit mode
+    $(document).on('click', '#header-to-edit-button', () => {
+        changeSectionHeaderToEdit(true);
+    });
+    // Change the header section to view mode withour editing
+    $(document).on('click', '#header-edit-close-button', () => {
+        changeSectionHeaderToEdit();
+    });
 }
+
 
 /**
  * Initialize the module.

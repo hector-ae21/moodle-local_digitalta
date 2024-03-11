@@ -1,8 +1,8 @@
 import $ from "jquery";
 import Notification from "core/notification";
-import {toogleLikeAndDislike} from "local_dta/repositories/reactionsRepository";
-import {SELECTORS} from "./selectors";
-import {saveComment} from "../repositories/reactionsRepository";
+import Template from "core/templates";
+import { toogleLikeAndDislike, saveComment, getComments } from "local_dta/repositories/reactionsRepository";
+import { SELECTORS } from "./selectors";
 
 /**
  * Toggle the like and dislike buttons.
@@ -11,13 +11,13 @@ import {saveComment} from "../repositories/reactionsRepository";
  */
 function toggle(experienceid, reaction = null) {
   const reactionSelectors = {
-    "1": SELECTORS.BUTTONS.likes,
-    "0": SELECTORS.BUTTONS.dislikes,
+    1: SELECTORS.BUTTONS.likes,
+    0: SELECTORS.BUTTONS.dislikes,
   };
   const isActive = $(reactionSelectors[reaction] + SELECTORS.DATA.id(experienceid)).hasClass("active");
   const action = isActive ? null : reaction;
 
-  toogleLikeAndDislike({experienceid, action})
+  toogleLikeAndDislike({ experienceid, action })
     .then((response) => {
       return updateReactionsUI(experienceid, response.likes, response.dislikes, action);
     })
@@ -34,8 +34,8 @@ function toggle(experienceid, reaction = null) {
  */
 function updateReactionsUI(experienceid, likes, dislikes, reaction) {
   const reactionSelectors = {
-    "1": SELECTORS.BUTTONS.likes,
-    "0": SELECTORS.BUTTONS.dislikes,
+    1: SELECTORS.BUTTONS.likes,
+    0: SELECTORS.BUTTONS.dislikes,
   };
 
   $(SELECTORS.BUTTONS.likes + SELECTORS.DATA.id(experienceid)).removeClass("active");
@@ -50,36 +50,24 @@ function updateReactionsUI(experienceid, likes, dislikes, reaction) {
 }
 
 /**
- * Toggle the comments section.
- * @return {void}
- */
-function toggleComments() {
-  $("#commentsCollapse").collapse("toggle");
-}
-
-/**
  * Send the comment to the server.
  * @return {void}
  */
 function sendComment() {
-    const comment = $(SELECTORS.COMMENT_INPUT).val().trim();
-    const experienceid = $(SELECTORS.COMMENT_INPUT).data('id');
+  const comment = $(SELECTORS.COMMENT_INPUT).val().trim();
+  const experienceid = $(SELECTORS.ACTIONS.sendComment).data("id");
 
-    if (comment) {
-        saveComment({experienceid, comment})
-        .then((response) => {
-            //Add the comment to the list
-            const comment = response.comment;
-            const html = `<li class="list-group-item">${comment.comment}</li>`;
-            $(SELECTORS.COMMENTS_LIST).append(html);
-            //Update the comment count
-            const count = $(SELECTORS.COUNTS.comment).text();
-            $(SELECTORS.COUNTS.comment).text(parseInt(count) + 1);
-            return;
-        })
-        .fail(Notification.exception);
-        $(SELECTORS.COMMENT_INPUT).val('');
-    }
+  if (comment) {
+    saveComment({ experienceid, comment })
+      .then((response) => {
+        if (response.result) {
+          return updateCommentsUI();
+        }
+        return Notification.exception(response);
+      })
+      .fail(Notification.exception);
+    $(SELECTORS.COMMENT_INPUT).val("");
+  }
 }
 
 /**
@@ -87,24 +75,41 @@ function sendComment() {
  * @return {void}
  */
 function updateCommentsUI() {
-    
-
+  const experienceid = $(SELECTORS.ACTIONS.sendComment).data("id");
+  if (!experienceid) {
+    return;
+  }
+  getComments({ experienceid })
+    .then((response) => {
+      const comments = response.comments.map((comment) => ({
+        comment: comment.comment,
+        userfullname: comment.user.fullname,
+      }));
+      Template.render("local_dta/comments", { comments }).then((html) => {
+        $(SELECTORS.COMMENTS_LIST).html(html);
+      });
+      $(SELECTORS.ACTIONS.viewComment + SELECTORS.DATA.id(experienceid) + " span").text(response.comments.length);
+      return;
+    })
+    .fail(Notification.exception);
 }
+
 /**
  * Set the events for the module.
  * @return {void}
  */
 function setEvents() {
-  $(document).on("click", SELECTORS.ACTIONS.addLike, function() {
+  $(document).on("click", SELECTORS.ACTIONS.addLike, function () {
     toggle($(this).data("id"), 1);
   });
-  $(document).on("click", SELECTORS.ACTIONS.addDislike, function() {
+  $(document).on("click", SELECTORS.ACTIONS.addDislike, function () {
     toggle($(this).data("id"), 0);
   });
-  $(document).on("click", SELECTORS.ACTIONS.toggleComments, toggleComments);
   $(document).on("click", SELECTORS.ACTIONS.sendComment, sendComment);
+  $(document).on("click", SELECTORS.ACTIONS.viewComment, updateCommentsUI);
 }
 
 export const init = () => {
   setEvents();
+  updateCommentsUI();
 };

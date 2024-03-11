@@ -60,6 +60,11 @@ class local_experiences_form extends moodleform
         $mform->addElement('select', 'visible', $strings->form_experience_visibility, array('1' => $strings->form_experience_visibility_public, '0' => $strings->form_experience_visibility_private));
         $mform->setType('visible', PARAM_INT);
 
+        /* HIDDEN */
+        $mform->addElement('hidden', 'id');
+        $mform->setType('id', PARAM_INT);
+
+
         /* SUBMIT */
         $this->add_action_buttons(false);
     }

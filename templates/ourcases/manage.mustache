@@ -10,8 +10,10 @@
     </div>
     <div class="col-md-9">
       <div class="row">
-        <div class="col-md-12" id="sections">
-          {{#sectionheader}} {{> local_dta/ourcases/section-header }} {{/sectionheader}} 
+        <div class="col-md-12" id="sections-header">
+          {{#sectionheader}} {{> local_dta/ourcases/section-header-view }} {{/sectionheader}} 
+        </div>
+        <div class="col-md-12" id="sections-body">
           {{#sections}} {{> local_dta/ourcases/section_text}} {{/sections}}
         </div>
         <div class="col-md-12">{{>local_dta/ourcases/section-add }}</div>

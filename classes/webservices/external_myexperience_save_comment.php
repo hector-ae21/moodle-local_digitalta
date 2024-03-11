@@ -23,7 +23,7 @@ class external_myexperience_save_comment extends external_api
         );
     }
 
-    public static function myexperience_save_comment_dislike($experienceid, $comment)
+    public static function myexperience_save_comment($experienceid, $comment)
     {
         global $USER, $DB;
 

@@ -41,6 +41,15 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_dta_myexperience_get_comments' => [
+        'classname'   => 'external_myexperience_get_comments',
+        'methodname'  => 'myexperience_get_comments',
+        'classpath'   => 'local/dta/classes/webservices/external_myexperience_get_comments.php',
+        'description' => 'Get comments for an experience',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     'local_dta_ourcases_section_text_upsert' => [
         'classname'   => 'external_ourcases_section_text_upsert',
         'methodname'  => 'ourcases_section_text_upsert',

@@ -8,9 +8,11 @@ export const SELECTORS = {
         addLike: '[data-action="like"]',
         addDislike: '[data-action="dislike"]',
         sendComment: '[data-action="send-comment"]',
+        viewComment: '[data-action="view-comment"]',
+        toggleComments: '[data-target="#commentsCollapse"]',
     },
-    COMMENTS_LIST: 'ul #commentsList',
-    COMMENT_INPUT: 'input #commentInput',
+    COMMENTS_LIST: '#commentsList',
+    COMMENT_INPUT: '#commentInput',
     BUTTONS: {
         likes: '#like-button',
         dislikes: '#dislike-button',
@@ -22,7 +24,7 @@ export const SELECTORS = {
         comment: '#comment-button span',
     },
     DATA: {
-        id: function (id) {
+        id: function(id) {
             return `[data-id="${id}"]`;
         },
     },

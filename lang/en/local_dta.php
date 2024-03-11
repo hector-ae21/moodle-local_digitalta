@@ -50,6 +50,10 @@ $string['ourcases_header_title'] = 'Case title';
 $string['ourcases_header_description'] = 'Case description';
 $string['ourcases_header_action_button'] = 'Editar encabezado';
 
+// Home
+$string['home_header'] = 'Home';
+$string['home_title'] = 'Home';
+
 // General
 $string['avatar_alt'] = 'User avatar';
 $string['experience'] = 'Experience';

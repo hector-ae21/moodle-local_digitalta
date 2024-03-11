@@ -32,9 +32,10 @@ class external_ourcases_section_text_upsert extends external_api
     {
         global $DB;
 
-        if ($DB->get_record('digital_ourcases', array('id' => $ourcaseid))) {
+        if (!$DB->get_record('digital_ourcases', array('id' => $ourcaseid))) {
             return array('result' => false, 'error' => 'Our case not found');
         }
+        
 
         if ($sectionid) {
             if (!$section = $DB->get_record('digital_oc_sec_text', array('id' => $sectionid))) {
@@ -50,9 +51,8 @@ class external_ourcases_section_text_upsert extends external_api
         }
 
         $section->title = $title;
-        $section->text = $text;
+        $section->description = $text;
         $section->sequence = $sequence;
-
         $DB->update_record('digital_oc_sec_text', $section);
 
         return array('result' => true, 'sectionid' => $sectionid , 'title' => $title, 'text' => $text, 'sequence' => $sequence);
@@ -61,13 +61,14 @@ class external_ourcases_section_text_upsert extends external_api
     public static function ourcases_section_text_upsert_returns()
     {
         return new external_single_structure(
-            array(
+            [
                 'result' => new external_value(PARAM_BOOL, 'Result'),
-                'sectionid' => new external_value(PARAM_INT, 'Section ID'),
-                'title' => new external_value(PARAM_RAW, 'Title'),
-                'text' => new external_value(PARAM_RAW, 'Text'),
-                'sequence' => new external_value(PARAM_INT, 'Sequence')
-            )
+                'sectionid' => new external_value(PARAM_INT, 'Section ID' , VALUE_OPTIONAL),
+                'title' => new external_value(PARAM_RAW, 'Title' , VALUE_OPTIONAL),
+                'text' => new external_value(PARAM_RAW, 'Text' , VALUE_OPTIONAL),
+                'sequence' => new external_value(PARAM_INT, 'Sequence' , VALUE_OPTIONAL),
+                'error' => new external_value(PARAM_RAW, 'Error' , VALUE_OPTIONAL),
+            ]
         );
     }
 }

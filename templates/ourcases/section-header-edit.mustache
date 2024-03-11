@@ -1,26 +1,22 @@
 <div class="row">
   <div class="col-md-12">
     <div class="card mb-3">
+      <div class="card-header d-flex justify-content-end py-2">
+        <button type="button" class="btn btn-outline-danger btn-sm mr-2" id="header-edit-close-button">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn-outline-primary btn-sm" id="header-edit-button">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </button>
+      </div>
       <div class="card-body">
         <label class="form-label">{{#str}} ourcases_header_title, local_dta {{/str}}</label>
         <input type="hidden" name="id" id="section-header-id" value="{{sectionheader.id}}">
-        <input
-          class="form-control"
-          type="text"
-          name="title"
-          id="section-header-title"
-          value="{{sectionheader.title}}"
-        />
+        <input class="form-control" type="text" name="title" id="section-header-title"
+          value="{{sectionheader.title}}" />
         <label class="form-label">{{#str}} ourcases_header_description, local_dta {{/str}}</label>
-        <textarea
-          class="form-control"
-          name="description"
-          id="section-header-description"
-          rows="3"
-        >{{sectionheader.description}}</textarea>
-        <div class="mt-3">
-          <button type="button" class="btn btn-outline-secondary" id="header-edit-button" >{{#str}} ourcases_header_action_button, local_dta {{/str}}</button>
-        </div>
+        <textarea class="form-control" name="description" id="section-header-description"
+          rows="3">{{sectionheader.description}}</textarea>
       </div>
     </div>
   </div>

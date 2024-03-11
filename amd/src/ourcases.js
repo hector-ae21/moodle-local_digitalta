@@ -9,7 +9,7 @@ import {sectionTextUpsert} from 'local_dta/repositories/ourcasesRepository';
  * @return {void}
  */
 function addTextSection() {
-    Templates.render('local_dta/ourcases/section-text', {id: 0, title: null}).then((html) => {
+    Templates.render('local_dta/ourcases/section-text-view', {id: 0, title: null}).then((html) => {
         return $('#sections-body').append(html);
     }).fail(Notification.exception);
 }
@@ -73,7 +73,12 @@ function setEventListeners() {
     $(document).on('click', '#header-to-edit-button', () => {
         changeSectionHeaderToEdit(true);
     });
+    // Change the header section to view mode withour editing
+    $(document).on('click', '#header-edit-close-button', () => {
+        changeSectionHeaderToEdit();
+    });
 }
+
 
 /**
  * Initialize the module.

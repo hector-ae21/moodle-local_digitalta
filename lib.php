@@ -26,9 +26,6 @@ function local_dta_check_permissions($experience, $user)
     return false;
 }
 
-
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Serve the files from the myplugin file areas.
  *

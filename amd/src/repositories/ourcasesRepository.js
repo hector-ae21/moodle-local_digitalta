@@ -18,8 +18,6 @@ export const sectionTextUpsert = args => {
         methodname: 'local_dta_ourcases_section_text_upsert',
         args: args
     };
-    // Call the webservice.
-    //eslint-disable-next-line no-console
-    console.log(Ajax.call([request])[0]);
+
     return Ajax.call([request])[0];
 };

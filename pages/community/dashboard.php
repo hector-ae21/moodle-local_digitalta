@@ -22,6 +22,7 @@ $strings = get_strings(['community_header', 'community_title'], "local_dta");
 $PAGE->set_url(new moodle_url('/local/dta/pages/community/dashboard.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->community_title);
+$PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
 
 echo $OUTPUT->header();
 

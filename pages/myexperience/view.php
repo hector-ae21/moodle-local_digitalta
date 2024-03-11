@@ -23,7 +23,7 @@ global $CFG, $PAGE, $OUTPUT , $USER;
 $id = required_param('id', PARAM_INT);
 $PAGE->set_url(new moodle_url('/local/dta/pages/myexperience/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
-$PAGE->requires->js_call_amd('local_dta/reactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
 
 // Get the experience
 if(!$experience = Experience::get_experience($id)) {
@@ -40,16 +40,10 @@ echo $OUTPUT->header();
 
 $templateContext = [
     'experience' => [
-        'id' => $experience->id,
-        'title' => $experience->title,
-        'description' => $experience->description,
-        'date' => $experience->date,
-        'lang' => $experience->lang,
-        'visible' => $experience->visible,
+        'data' => $experience,
         'pictureurl' => Experience::get_picture_url($experience),
         'deleteurl' => $CFG->wwwroot . "/local/dta/pages/myexperience/delete.php?id=",
-        'editurl' => $CFG->wwwroot . "/local/dta/pages/myexperience/manage.php?id=",
-        'comments' => []
+        'editurl' => $CFG->wwwroot . "/local/dta/pages/myexperience/manage.php?id="
     ],
     'user' => [
         'id' => $user->id,
@@ -58,6 +52,7 @@ $templateContext = [
         'imageurl' => $user_picture->get_url($PAGE)->__toString(),
         'profileurl' => $CFG->wwwroot . '/user/profile.php?id=' . $user->id,
     ],
+    'isview' => true,
     'isadmin' => is_siteadmin($USER),
     'createcaseurl' => $CFG->wwwroot . "/local/dta/pages/ourcases/manage.php?id=",
 ];

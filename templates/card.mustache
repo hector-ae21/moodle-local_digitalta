@@ -8,35 +8,25 @@
       />
     </div>
   {{/pictureurl}}
-  {{#experiences.showimageprofile}}
-  <!-- avatar -->
-  <div class="avatar avatar-xl mt-n7 ms-4">
-  <a href="{{user.profileurl}}" class="shadow-none">
-    <img src="{{user.imageurl}}" alt="User Image" class="rounded-circle border-4 border-white-color-40"/>
-  </a>
-  </div>
-  {{/experiences.showimageprofile}}
-  <!-- card body -->
+  {{#showimageprofile}}
+    <!-- avatar -->
+    {{#user}}
+      <div class="avatar avatar-xl mt-n7 ms-4">
+      <a href="{{profileurl}}" class="shadow-none">
+        <img src="{{imageurl}}" alt="User Image" class="rounded-circle border-4 border-white-color-40"/>
+      </a>
+      </div>
+    {{/user}}
+  {{/showimageprofile}}
   <div class="card-body">
-    <!-- Title and Description -->
     <h4 class="mb-1 card-title">
     <a href="{{experiences.viewurl}}{{id}}" class="text-decoration-none">{{title}}</a>
     </h4>
     <a href="{{experiences.viewurl}}{{id}}" class="text-decoration-none">
-    <p class="card-text">{{{description}}}</p>
+    <p class="card-text text-muted">{{{description}}}</p>
     </a>
-
-    <!-- Likes, Dislikes, and Comments Count -->
-    <div class="d-flex justify-content-start">
-      <button class="btn btn-outline-primary btn-sm mr-2">
-        <i class="fa fa-thumbs-up"></i> {{likes}}
-      </button>
-      <button class="btn btn-outline-danger btn-sm mr-2">
-        <i class="fa fa-thumbs-down"></i>
-      </button>
-      <button class="btn btn-outline-secondary btn-sm">
-        <i class="fa fa-comment"></i> {{comments_count}}
-      </button>
-    </div>
+      {{#reactions}}
+        {{> local_dta/reactions-buttons}}
+      {{/reactions}}
   </div>
 </div>

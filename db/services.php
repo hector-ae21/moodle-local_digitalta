@@ -22,19 +22,32 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$functions = array(
-    'local_dta_toggle_like_dislike' => array(
-        'classname'   => 'local_dta/external/local_dta_external_toggle_like_dislike',
-        'methodname'  => 'toggle_like_dislike',
+$functions = [
+    'local_dta_reactions_toggle_like_dislike' => [
+        'classname'   => 'external_reactions_toggle_like_dislike',
+        'methodname'  => 'reactions_toggle_like_dislike',
+        'classpath'   => 'local/dta/classes/webservices/external_reactions_toggle_like_dislike.php',
         'description' => 'Toggle like or dislike for an experience',
-        'type'        => 'write,read',
+        'type'        => 'write',
+        'requirelogin' => true,
         'ajax'        => true,
-    ),
-    'local_dta_ourcases_section_text_upsert' => array(
-        'classname'   => 'local_dta/external/local_dta_external_ourcases_section_text_upsert',
+    ],
+    'local_dta_myexperience_save_comment' => [
+        'classname'   => 'external_myexperience_save_comment',
+        'methodname'  => 'myexperience_save_comment',
+        'classpath'   => 'local/dta/classes/webservices/external_myexperience_save_comment.php',
+        'description' => 'Save a comment for an experience',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_ourcases_section_text_upsert' => [
+        'classname'   => 'external_ourcases_section_text_upsert',
         'methodname'  => 'ourcases_section_text_upsert',
+        'classpath'   => 'local/dta/classes/webservices/external_ourcases_section_text_upsert.php',
         'description' => 'Upsert the text of a section of the Our Cases page.',
-        'type'        => 'write,read',
+        'type'        => 'write',
+        'requirelogin' => false,
         'ajax'        => true,
-    ),
-);
+    ],
+];

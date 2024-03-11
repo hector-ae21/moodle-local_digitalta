@@ -11,8 +11,10 @@
 namespace local_dta;
 
 require_once(__DIR__ . '/../../../config.php');
+require_once(__DIR__ . '/reactions.php');
 
 use stdClass;
+use local_dta\Reaction;
 
 class Experience
 {
@@ -105,7 +107,6 @@ class Experience
 
     /**
      * Get extra fields for experiences
-     * Add user image to the experience
      * 
      * @param array $experiences
      * @return array
@@ -125,6 +126,7 @@ class Experience
                 'profileurl' => new \moodle_url('/user/profile.php', ['id' => $user->id])
             ];
             $experience->pictureurl = self::get_picture_url($experience);
+            $experience->reactions = Reaction::get_reactions_for_render_experience($experience->id);
         }
         return $experiences;
     }

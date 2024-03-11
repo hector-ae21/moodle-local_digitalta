@@ -2,55 +2,61 @@
     <div class="card mb-4">
        
         <div class="card-header d-flex justify-content-between align-items-center">
-            <div class="user-info d-flex align-items-center">
-                <a href="{{user.profileurl}}" class="perfil-link d-flex align-items-center text-muted text-decoration-none">
-                    <img src="{{user.imageurl}}" class="rounded-circle mr-2" alt="{{#str}}avatar_alt, local_dta{{/str}}" style="width: 50px; height: 50px;">
-                    <div class="text-dark">
-                        <strong>{{user.name}}</strong><br>
-                        <small>{{user.email}}</small>
-                    </div>
-                </a>
-            </div>
-            
+            {{#user}}
+                <div class="user-info d-flex align-items-center">
+                    <a href="{{profileurl}}" class="perfil-link d-flex align-items-center text-muted text-decoration-none">
+                        <img src="{{imageurl}}" class="rounded-circle mr-2" alt="{{#str}}avatar_alt, local_dta{{/str}}" style="width: 50px; height: 50px;">
+                        <div class="text-dark">
+                            <strong>{{name}}</strong><br>
+                            <small>{{email}}</small>
+                        </div>
+                    </a>
+                </div>
+            {{/user}}
+            {{#experience}}
             <div class="d-flex">
-                <a href="{{experience.editurl}}{{experience.id}}" class="mr-3 shadow-none" title="{{#str}}edit, local_dta{{/str}}">
+                <a href="{{editurl}}{{data.id}}" class="mr-3 shadow-none" title="{{#str}}edit, local_dta{{/str}}">
                     <i class="fa fa-pencil fa-lg text-primary"></i>
                 </a>
-                <a href="{{experience.deleteurl}}{{experience.id}}" class="mr-3 shadow-none" title="{{#str}}delete, local_dta{{/str}}">
+                <a href="{{deleteurl}}{{data.id}}" class="mr-3 shadow-none" title="{{#str}}delete, local_dta{{/str}}">
                     <i class="fa fa-trash fa-lg text-danger"></i>
                 </a>
                 {{#isadmin}}
-                <a href="{{createcaseurl}}{{experience.id}}" class="shadow-none" title="{{#str}}create_case, local_dta{{/str}}">
+                <a href="{{createcaseurl}}{{data.id}}" class="shadow-none" title="{{#str}}create_case, local_dta{{/str}}">
                     <i class="fa fa-plus-circle fa-lg text-info"></i>
                 </a>
                 {{/isadmin}}
             </div>
+            {{/experience}}
         </div>
+        {{#experience}}
+            {{#pictureurl}}
+                <img src="{{.}}" class="img-fluid card-img-top border-bottom" alt="{{#str}}myexperience_picture_alt, local_dta{{/str}}"> 
+            {{/pictureurl}}
 
-        {{#experience.pictureurl}}
-        <img src="{{.}}" class="img-fluid card-img-top border-bottom" alt="{{#str}}myexperience_picture_alt, local_dta{{/str}}"> 
-        {{/experience.pictureurl}}
-
-        <div class="card-body">
-            <h4 class="card-title text-primary">{{experience.title}}</h4>
-            <p class="card-text">{{{experience.description}}}</p>
-            <div class="d-flex justify-content-start">
-                <button class="btn btn-outline-primary btn-sm mr-2" onclick="addLike();"><i class="fa fa-thumbs-up"></i> <span id="likeCount">256</span></button>
-                <button class="btn btn-outline-danger btn-sm mr-2" onclick="addDislike();"><i class="fa fa-thumbs-down"></i></button>
-                <button class="btn btn-outline-secondary btn-sm" data-toggle="collapse" data-target="#commentsCollapse" aria-expanded="false" aria-controls="commentsCollapse"><i class="fa fa-comment"></i></button>
-            </div>
-        </div>
-
-        <div class="collapse" id="commentsCollapse">
-            <div class="card-body">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="{{#str}}myexperience_add_comment, local_dta{{/str}}" aria-label="{{#str}}myexperience_add_comment, local_dta{{/str}}" id="commentText">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button" onclick="sendComment();"><i class="fa fa-paper-plane"></i></button>
-                    </div>
+            {{#data}}
+                <div class="card-body">
+                    <h4 class="card-title text-primary">{{title}}</h4>
+                    <p class="card-text">{{{description}}}</p>
+                    {{#reactions}}
+                        {{> local_dta/reactions-buttons}}
+                    {{/reactions}}
                 </div>
-            </div>
-            <ul class="list-group list-group-flush" id="commentsList"></ul>
-        </div>
+            
+        
+
+                <div class="collapse" id="commentsCollapse">
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="{{#str}}myexperience_add_comment, local_dta{{/str}}" aria-label="{{#str}}myexperience_add_comment, local_dta{{/str}}" id="commentInput">
+                            <div class="input-group-append">
+                                <button data-action="send-comment" data-id={{id}} class="btn btn-primary" type="button"><i class="fa fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush" id="commentsList"></ul>
+                </div>
+            {{/data}}
+        {{/experience}}
     </div>
 </div>

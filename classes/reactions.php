@@ -9,149 +9,97 @@
  */
 namespace local_dta;
 
-global $DB;
 class Reaction
 {
-    private static $table_likes = 'experience_likes';
-    private static $table_comments = 'experience_comments';
-    private static $db;
+    private static $table_likes = 'digital_experience_likes';
+    private static $table_comments = 'digital_experience_comments';
 
     public function __construct()
     {
-        global $DB; // Hacer $DB accesible dentro de la clase
-        self::$db = $DB; // Asignar $DB a la propiedad estática $db
+    }
+
+    public static function get_reactions_for_render_experience($experienceid)
+    {
+        global $USER;
+        $likes = self::get_likes_for_experience($experienceid);
+        $unlikes = self::get_unlikes_for_experience($experienceid);
+        $comments = self::get_comments_for_experience($experienceid);
+
+        return [
+            'likes' => [
+                'count' => count($likes),
+                'isactive' => self::user_reacted_experience($experienceid, $likes),
+                'data' => $likes
+            ],
+            'dislikes' => [
+                'count' => count($unlikes),
+                'data' => $unlikes,
+                'isactive' => self::user_reacted_experience($experienceid, $unlikes)
+            ],
+            'comments' => [
+                'count' => count($comments),
+                'data' => $comments
+            ]
+        ];
     }
 
     /**
-     * Add a 'like' reaction to an experience
-     *
-     * @param int $experienceId ID of the experience
-     * @param int $userId ID of the user
-     * @return bool|int Returns ID of the inserted record if successful, false otherwise
+     * Check if the current user has reacted to a specific experience
+     * 
+     * @param int $experienceid ID of the experience
+     * @param array $reactionData The reaction data
+     * @return bool Returns true if the user has reacted to the experience
      */
-    public static function addLike($experienceId, $userId)
-    {
-        $record = new stdClass();
-        $record->experience_id = $experienceId;
-        $record->user_id = $userId;
-        $record->reaction_type = 'like';
+    public static function user_reacted_experience($experienceid, $reactionsData)
+{
+    global $USER;
 
-        return self::$db->insert_record(self::$table_likes, $record);
+    foreach ($reactionsData as $reaction) {
+        if ($reaction->userid == $USER->id) {
+            return true;
+        }
     }
 
-    /**
-     * Add an 'unlike' reaction to an experience
-     *
-     * @param int $experienceId ID of the experience
-     * @param int $userId ID of the user
-     * @return bool|int Returns ID of the inserted record if successful, false otherwise
-     */
-    public static function addUnlike($experienceId, $userId)
-    {
-        $record = new stdClass();
-        $record->experience_id = $experienceId;
-        $record->user_id = $userId;
-        $record->reaction_type = 'unlike';
+    return false;
+}
 
-        return  self::$db->insert_record(self::$table_likes, $record);
-    }
-
-    /**
-     * Add a comment to an experience
-     *
-     * @param int $experienceId ID of the experience
-     * @param int $userId ID of the user
-     * @param string $comment The comment text
-     * @return bool|int Returns ID of the inserted record if successful, false otherwise
-     */
-    public static function addComment($experienceId, $userId, $comment)
-    {
-        $record = new stdClass();
-        $record->experience_id = $experienceId;
-        $record->user_id = $userId;
-        $record->comment = $comment;
-
-        return self::$db->insert_record(self::$table_comments, $record);
-    }
 
     /**
      * Get all 'like' reactions for a specific experience
      *
-     * @param int $experienceId ID of the experience
+     * @param int $experienceid ID of the experience
      * @return array Returns an array of records
      */
-    public static function getLikesForExperience($experienceId)
+    public static function get_likes_for_experience($experienceid)
     {
-        $sql = "SELECT * FROM {" . self::$table_likes . "} WHERE experience_id = ? AND reaction_type = 'like'";
-        return self::$db->get_records_sql($sql, array($experienceId));
+        global $DB;
+        $sql = "SELECT * FROM {" . self::$table_likes . "} WHERE experienceid = ? AND reactiontype = '1'";
+        return $DB->get_records_sql($sql, array($experienceid));
     }
 
     /**
      * Get all 'unlike' reactions for a specific experience
      *
-     * @param int $experienceId ID of the experience
+     * @param int $experienceid ID of the experience
      * @return array Returns an array of records
      */
-    public static function getUnlikesForExperience($experienceId)
+    public static function get_unlikes_for_experience($experienceid)
     {
-        $sql = "SELECT * FROM {" . self::$table_likes . "} WHERE experience_id = ? AND reaction_type = 'unlike'";
-        return self::$db->get_records_sql($sql, array($experienceId));
+        global $DB;
+        $sql = "SELECT * FROM {" . self::$table_likes . "} WHERE experienceid = ? AND reactiontype = '0'";
+        return $DB->get_records_sql($sql, array($experienceid));
     }
 
     /**
      * Get all comments for a specific experience
      *
-     * @param int $experienceId ID of the experience
+     * @param int $experienceid ID of the experience
      * @return array Returns an array of records
      */
-    public static function getCommentsForExperience($experienceId)
+    public static function get_comments_for_experience($experienceid)
     {
-        $sql = "SELECT * FROM {" . self::$table_comments . "} WHERE experience_id = ?";
-        return self::$db->get_records_sql($sql, array($experienceId));
-    }
-
-    /**
-     * Remove a 'like' reaction from an experience
-     *
-     * @param int $experienceId ID of the experience
-     * @param int $userId ID of the user
-     * @return bool Returns true if successful, false otherwise
-     */
-    public static function removeLike($experienceId, $userId)
-    {
-        $conditions = array(
-            'experience_id' => $experienceId,
-            'user_id' => $userId,
-            'reaction_type' => 'like'
-        );
-        return self::$db->delete_records(self::$table_likes, $conditions);
-    }
-
-    /**
-     * Remove an 'unlike' reaction from an experience
-     *
-     * @param int $experienceId ID of the experience
-     * @param int $userId ID of the user
-     * @return bool Returns true if successful, false otherwise
-     */
-    public static function removeUnlike($experienceId, $userId)
-    {
-        $conditions = array(
-            'experience_id' => $experienceId,
-            'user_id' => $userId,
-            'reaction_type' => 'unlike'
-        );
-        return self::$db->delete_records(self::$table_likes, $conditions);
-    }
-
-    /**
-     * Remove a comment from an experience
-     *
-     * @param int $commentId ID of the comment to remove
-     * @return bool Returns true if successful, false otherwise
-     */
-    public static function removeComment($commentId)
-    {
-        return self::$db->delete_records(self::$table_comments, array('id' => $commentId));
+        global $DB;
+        $sql = "SELECT * FROM {" . self::$table_comments . "} WHERE experienceid = ?";
+        return $DB->get_records_sql($sql, array($experienceid));
     }
 }

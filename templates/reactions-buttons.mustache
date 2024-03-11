@@ -1,0 +1,23 @@
+<div class="d-flex justify-content-start">
+    {{#likes}}
+        <button id="like-button" data-action="like" data-id="{{id}}" class="btn btn-outline-primary btn-sm mr-2
+        {{#isactive}} active {{/isactive}}">
+        <i class="fa fa-thumbs-up"></i> 
+        <span>{{#count}}{{.}}{{/count}}</span>
+        </button>
+    {{/likes}}
+
+    {{#dislikes}}
+        <button id="dislike-button" data-action="dislike" data-id="{{id}}" class="btn btn-outline-danger btn-sm mr-2
+        {{#isactive}} active {{/isactive}}">
+        <i class="fa fa-thumbs-down"></i>
+        </button>
+    {{/dislikes}}
+
+    {{#comments}}
+        <button id="comment-button" data-action="comment" data-id="{{id}}" class="btn btn-outline-secondary btn-sm" {{#isview}}data-toggle="collapse" data-target="#commentsCollapse" aria-expanded="false" aria-controls="commentsCollapse" {{/isview}}>
+        <i class="fa fa-comment"></i>
+        <span>{{#count}}{{.}}{{/count}}</span>
+        </button>
+    {{/comments}}
+</div>

@@ -8,13 +8,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta\external;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once("$CFG->libdir/externallib.php");
 
-class local_dta_external_ourcases_section_text_upsert extends external_api
+class external_ourcases_section_text_upsert extends external_api
 {
 
     public static function ourcases_section_text_upsert_parameters()

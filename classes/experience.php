@@ -165,12 +165,12 @@ class Experience
 
 
     /**
-     * Add a new experience to the database and return the new experience
+     * Add an experience
      *
      * @param object $experience
      * @return object
      */
-    public static function add_experience($experience)
+    public static function store($experience)
     {
         global $DB;
         if (empty($experience->title) || empty($experience->description) || empty($experience->date) || empty($experience->lang)) {
@@ -186,43 +186,15 @@ class Experience
         $record->visible = $experience->visible;
         $record->status = $experience->status ?? 0;
 
-        if (!$id = $DB->insert_record('digital_experiences', $record)) {
-            throw new Exception('Error adding experience');
-        }
 
-        $record->id = $id;
+        if($experience->id) {
+            $record->id = $experience->id;
+            $DB->update_record(self::$table, $record);
+        } else {
+            $experience->id = $DB->insert_record(self::$table, $record);
+        }
 
         return new Experience($record);
-    }
-
-    /**
-     * Update an existing experience
-     *
-     * @param object $experience
-     * @return bool
-     */
-    public static function update_experience($experience)
-    {
-        if (empty($experience->id)) {
-            throw new Exception('Error id not found');
-        }
-
-        if (empty($experience->title) || empty($experience->description) || empty($experience->date) || empty($experience->lang) || !isset($experience->visible)) {
-            throw new Exception('Error experience properties not found or incomplete');
-        }
-
-        global $DB;
-
-        $record = new stdClass();
-        $record->id = $experience->id;
-        $record->title = $experience->title;
-        $record->description = $experience->description;
-        $record->date = $experience->date;
-        $record->lang = $experience->lang;
-        $record->visible = $experience->visible;
-        $record->status = $experience->status;
-
-        return $DB->update_record(self::$table, $record);
     }
 
 

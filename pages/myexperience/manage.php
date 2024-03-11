@@ -49,7 +49,7 @@ if ($form->is_cancelled()) {
     // Add the experience
     $data->userid = $USER->id;
     $data->date = date("Y-m-d H:i:s");
-    $experience = Experience::add_experience($data);
+    $experience = Experience::store($data);
 
     // Process the picture
     file_save_draft_area_files(

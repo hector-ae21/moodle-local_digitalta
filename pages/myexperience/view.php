@@ -11,7 +11,7 @@
 use local_dta\Experience;
 
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/experiences.php');
+require_once(__DIR__ . './../../classes/experience.php');
 require_once(__DIR__ . './../../classes/ourcases.php');
 
 
@@ -26,15 +26,14 @@ $PAGE->set_context(context_system::instance());
 $PAGE->requires->js_call_amd('local_dta/reactions', 'init');
 
 // Get the experience
-if(!$experience = Experience::getExperience($id)) {
+if(!$experience = Experience::get_experience($id)) {
     throw new moodle_exception('invalidexperience', 'local_dta');
 }
 
 // Get the user and the user picture
-$user = get_complete_user_data("id", $experience->user);
+$user = get_complete_user_data("id", $experience->userid);
 $user_picture = new user_picture($user);
 $user_picture->size = 101;
-
 
 
 echo $OUTPUT->header();
@@ -47,8 +46,9 @@ $templateContext = [
         'date' => $experience->date,
         'lang' => $experience->lang,
         'visible' => $experience->visible,
+        'pictureurl' => Experience::get_picture_url($experience),
         'deleteurl' => $CFG->wwwroot . "/local/dta/pages/myexperience/delete.php?id=",
-        'editurl' => $CFG->wwwroot . "/local/dta/pages/myexperience/edit.php?id=",
+        'editurl' => $CFG->wwwroot . "/local/dta/pages/myexperience/manage.php?id=",
         'comments' => []
     ],
     'user' => [

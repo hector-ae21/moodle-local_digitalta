@@ -1,24 +1,30 @@
 <div class="card mb-5 rounded-3">
-  <div class="experience-card-img-container">
-    <img
-      src="https://bootdey.com/image/480x180/191970/ffffff"
-      alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
-      class="img-fluid rounded-top experience-card-img"
-    />
-  </div>
+  {{#pictureurl}}
+    <div class="experience-card-img-container card-img-top border-bottom">
+      <img
+        src="{{pictureurl}}"
+        alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
+        class="img-fluid experience-card-img"
+      />
+    </div>
+  {{/pictureurl}}
   {{#experiences.showimageprofile}}
   <!-- avatar -->
   <div class="avatar avatar-xl mt-n7 ms-4">
-    <img src="{{userimage}}" alt="User Image" class="rounded-circle border-4 border-white-color-40"/>
+  <a href="{{user.profileurl}}" class="shadow-none">
+    <img src="{{user.imageurl}}" alt="User Image" class="rounded-circle border-4 border-white-color-40"/>
+  </a>
   </div>
   {{/experiences.showimageprofile}}
   <!-- card body -->
   <div class="card-body">
     <!-- Title and Description -->
-    <h4 class="mb-1">
+    <h4 class="mb-1 card-title">
     <a href="{{experiences.viewurl}}{{id}}" class="text-decoration-none">{{title}}</a>
     </h4>
-    <p>{{description}}</p>
+    <a href="{{experiences.viewurl}}{{id}}" class="text-decoration-none">
+    <p class="card-text">{{{description}}}</p>
+    </a>
 
     <!-- Likes, Dislikes, and Comments Count -->
     <div class="d-flex justify-content-start">

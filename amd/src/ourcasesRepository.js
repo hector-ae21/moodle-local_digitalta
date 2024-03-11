@@ -9,7 +9,7 @@ import Ajax from 'core/ajax';
  * - title: The title of the section.
  * - text: The content of the section.
  * - sequence : The sequence of the section.
- *
+ * @method sectionTextUpsert
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.
  */
@@ -18,6 +18,8 @@ export const sectionTextUpsert = args => {
         methodname: 'local_dta_ourcases_section_text_upsert',
         args: args
     };
-
+    // Call the webservice.
+    //eslint-disable-next-line no-console
+    console.log(Ajax.call([request])[0]);
     return Ajax.call([request])[0];
 };

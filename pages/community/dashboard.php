@@ -8,7 +8,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/experiences.php');
+require_once(__DIR__ . './../../classes/experience.php');
 
 require_login();
 
@@ -25,7 +25,7 @@ $PAGE->set_title($strings->community_title);
 
 echo $OUTPUT->header();
 
-$experiences = Experience::getAllExperiences(false);
+$experiences = Experience::get_all_experiences(false);
 
 $user = get_complete_user_data("id", $USER->id);
 $picture = new user_picture($user);
@@ -39,7 +39,7 @@ $templateContext = [
         "showimageprofile" => true,
         "showcontrols" => false,
         "showcontrolsadmin" => is_siteadmin($USER),
-        "addurl" => $CFG->wwwroot . "/local/dta/pages/myexperience/add.php",
+        "addurl" => $CFG->wwwroot . "/local/dta/pages/myexperience/manage.php",
         "viewurl" => $CFG->wwwroot . '/local/dta/pages/myexperience/view.php?id='
     ]
 ];

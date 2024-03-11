@@ -11,7 +11,7 @@
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../lib.php');
-require_once(__DIR__ . './../../classes/experiences.php');
+require_once(__DIR__ . './../../classes/experience.php');
 
 use local_dta\Experience;
 
@@ -25,13 +25,12 @@ $strings = get_strings(['form_experience_delete_header', 'form_experience_delete
 $id = required_param('id', PARAM_INT);
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
 
-$experience = Experience::getExperience($id);
-
-$PAGE->set_url(new moodle_url('/local/dta/pages/myexperience/delete.php'));
+$PAGE->set_url(new moodle_url('/local/dta/pages/myexperience/delete.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->form_experience_delete_header);
 
-echo $OUTPUT->header();
+$experience = Experience::get_experience($id);
+
 
 // Check permissions
 if (local_dta_check_permissions($experience, $USER) == false) {
@@ -40,10 +39,10 @@ if (local_dta_check_permissions($experience, $USER) == false) {
 
 // Check if the delete hash is correct
 if ($delete === md5($experience->date)) {
-    if (!Experience::deleteExperience($experience->id)) {
+    if (!Experience::delete_experience($experience)) {
         print_error('errordeleteexperience', 'local_dta');
     }
-    redirect(new moodle_url('/local/dta/pages/myexperience/dashboard.php'), get_string('form_experience_delete_yes', 'local_dta'), null, \core\output\notification::NOTIFY_SUCCESS);
+    redirect(new moodle_url('/local/dta/pages/myexperience/dashboard.php'), get_string('form_experience_delete_yes', 'local_dta'));
     exit;
 }
 
@@ -57,6 +56,6 @@ $continuebutton = new single_button(
     ['data-action' => 'delete']
 );
 
+echo $OUTPUT->header();
 echo $OUTPUT->confirm("{$strings->form_experience_delete_confirm} <br><br> {$experience->title}", $continuebutton, $backurl);
-
 echo $OUTPUT->footer();

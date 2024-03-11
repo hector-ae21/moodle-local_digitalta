@@ -41,7 +41,7 @@ class ExperienceTag
      */
     public static function removeTagFromExperience($experienceId, $tagId, $db)
     {
-        $conditions = array('experience_id' => $experienceId, 'tag_id' => $tagId);
+        $conditions = array('experienceid' => $experienceId, 'tagid' => $tagId);
         return $db->delete_records(self::$table, $conditions);
     }
 
@@ -55,8 +55,8 @@ class ExperienceTag
     {
         $sql = "SELECT t.*
                 FROM {digital_tags} t
-                JOIN {experience_tag} et ON t.id = et.tag_id
-                WHERE et.experience_id = ?";
+                JOIN {experience_tag} et ON t.id = et.tagid
+                WHERE et.experienceid = ?";
         return $db->get_records_sql($sql, array($experienceId));
     }
 }

@@ -26,8 +26,8 @@ $functions = array(
     'local_dta_toggle_like_dislike' => array(
         'classname'   => 'local_dta/external/local_dta_external_toggle_like_dislike',
         'methodname'  => 'toggle_like_dislike',
-        'description' => 'Toggle like or dislike for an experience.',
-        'type'        => 'write',
+        'description' => 'Toggle like or dislike for an experience',
+        'type'        => 'write,read',
         'ajax'        => true,
     ),
     'local_dta_ourcases_section_text_upsert' => array(

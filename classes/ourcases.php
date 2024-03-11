@@ -17,9 +17,9 @@ class OurCases
     private static $table = 'digital_ourcases';
     private static $table_section_text = 'digital_oc_sec_text';
     private $db;
-    private $id;
-    private $experience;
-    private $user;
+    public $id;
+    private $experienceid;
+    private $userid;
     private $date;
     private $status;
 
@@ -32,8 +32,8 @@ class OurCases
         $this->db = $DB;
         if ($ourcase && is_object($ourcase)) {
             $this->id = $ourcase->id;
-            $this->experience = $ourcase->experience;
-            $this->user = $ourcase->user;
+            $this->experienceid = $ourcase->experienceid;
+            $this->userid = $ourcase->userid;
             $this->date = $ourcase->date;
             $this->status = $ourcase->status;
         }
@@ -69,7 +69,7 @@ class OurCases
     public static function get_case_by_experience($experience)
     {
         global $DB;
-        return $DB->get_record(self::$table, ['experience' => $experience]);
+        return $DB->get_record(self::$table, ['experienceid' => $experience]);
     }
     /**
      * Add a case
@@ -79,21 +79,21 @@ class OurCases
      * @param bool $status Status of the case
      * @return bool|int Returns ID of the inserted record if successful, false otherwise
      */
-    public static function add_case($experienceid, $date, $user, $status = 0)
+    public static function add_case($experienceid, $date, $userid, $status = 0)
     {
         global $DB;
-        if (empty($experienceid) || empty($date) || empty($user)) {
+        if (empty($experienceid) || empty($date) || empty($userid)) {
             return false;
         }
 
         // verify if the experience exists
-        if (!$experience = Experience::getExperience($experienceid)) {
+        if (!$experience = Experience::get_experience($experienceid)) {
             return false;
         }
 
         $record = new stdClass();
-        $record->experience = $experienceid;
-        $record->user = $user;
+        $record->experienceid = $experienceid;
+        $record->userid = $userid;
         $record->date = $date;
         $record->status = $status;
 
@@ -104,13 +104,13 @@ class OurCases
         $record->id = $id;
 
         // adding default section text
-        $reord_section = new stdClass();
-        $reord_section->ourcase = $id;
-        $reord_section->title = $experience->title;
-        $reord_section->description = $experience->description;
-        $reord_section->sequence = 0;
+        $record_section = new stdClass();
+        $record_section->ourcaseid = $id;
+        $record_section->title = $experience->title;
+        $record_section->description = $experience->description;
+        $record_section->sequence = 0;
 
-        if (!$DB->insert_record(self::$table_section_text,  $reord_section)) {
+        if (!$DB->insert_record(self::$table_section_text,  $record_section)) {
             throw new Exception('Error adding ourcase section text to the database.');
         }
 
@@ -171,7 +171,7 @@ class OurCases
     {
         global $DB;
 
-        $sql = "SELECT * FROM {" . self::$table_section_text . "} WHERE ourcase = ? ";
+        $sql = "SELECT * FROM {" . self::$table_section_text . "} WHERE ourcaseid = ? ";
         if (!$get_header) {
             $sql .= "AND sequence <> 0";
         }
@@ -191,7 +191,7 @@ class OurCases
     public static function get_section_header($ourcase)
     {
         global $DB;
-        return $DB->get_record(self::$table_section_text, ['ourcase' => $ourcase, 'sequence' => 0]);
+        return $DB->get_record(self::$table_section_text, ['ourcaseid' => $ourcase, 'sequence' => 0]);
     }
 
 

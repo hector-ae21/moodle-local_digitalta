@@ -9,7 +9,7 @@
  */
 
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/experiences.php');
+require_once(__DIR__ . './../../classes/experience.php');
 
 require_login();
 
@@ -31,11 +31,11 @@ $picture->size = 101;
 
 $templatecontext = [
     "experiences" => [
-        "data" => Experience::getMyExperiences($USER->id),
+        "data" => Experience::get_my_experiences($USER->id),
         "showimageprofile" => false,
         "showcontrols" => true,
         "showcontrolsadmin" => is_siteadmin($USER),
-        "addurl" => $CFG->wwwroot . "/local/dta/pages/myexperience/add.php",
+        "addurl" => $CFG->wwwroot . "/local/dta/pages/myexperience/manage.php",
         "viewurl" => $CFG->wwwroot . "/local/dta/pages/myexperience/view.php?id=",
     ], 
     "user"=> [

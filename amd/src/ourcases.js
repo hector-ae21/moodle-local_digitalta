@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Templates from 'core/templates';
 import Notification from 'core/notification';
-import sectionTextUpsert from 'local_dta/ourcases_repository';
+import {sectionTextUpsert} from 'local_dta/ourcasesRepository';
 
 
 /**

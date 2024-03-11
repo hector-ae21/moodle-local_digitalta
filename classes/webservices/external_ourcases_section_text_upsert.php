@@ -44,18 +44,18 @@ class local_dta_external_ourcases_section_text_upsert extends external_api
             }
         } else {
             $section = new \stdClass();
-            $section->ourcase = $ourcaseid;
+            $section->ourcaseid = $ourcaseid;
             $section->title = $title;
             $section->description = $text;
-            $section->sequence = $DB->get_field('digital_oc_sec_text', 'MAX(sequence)', array('ourcase' => $ourcaseid)) + 1;
-            $sectionid = $DB->insert_record('digital_oc_sec_text', $section);
+            $section->sequence = $DB->get_field('digital_oc_sec_text', 'MAX(sequence)', array('ourcaseid' => $ourcaseid)) + 1;
+            $section->id = $DB->insert_record('digital_oc_sec_text', $section);
         }
 
         $section->title = $title;
         $section->text = $text;
         $section->sequence = $sequence;
 
-        $DB->update_record('local_dta_ourcases_sections', $section);
+        $DB->update_record('digital_oc_sec_text', $section);
 
         return array('result' => true, 'sectionid' => $sectionid , 'title' => $title, 'text' => $text, 'sequence' => $sequence);
     }

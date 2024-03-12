@@ -59,7 +59,7 @@ class external_ourcases_section_text_upsert extends external_api
 
         $DB->update_record('digital_oc_sec_text', $section);
 
-        return array('result' => true, 'sectionid' => $sectionid , 'title' => $title, 'text' => $text, 'sequence' => $sequence);
+        return array('result' => true, 'sectionid' => $section->id , 'title' => $title, 'text' => $text, 'sequence' => $sequence);
     }
 
     public static function ourcases_section_text_upsert_returns()

@@ -9,10 +9,12 @@
  */
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
+require_once(__DIR__ . './../../classes/utils/string_utils.php');
 
 require_login();
 
 use local_dta\Experience;
+use local_dta\utils\StringUtils;
 
 global $CFG, $PAGE, $OUTPUT;
 
@@ -27,6 +29,10 @@ $PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
 echo $OUTPUT->header();
 
 $experiences = Experience::get_all_experiences(false);
+$experiences = array_map(function ($experience) {
+    $experience->description = StringUtils::truncateHtmlText($experience->description);
+    return $experience;
+}, $experiences);
 
 $user = get_complete_user_data("id", $USER->id);
 $picture = new user_picture($user);

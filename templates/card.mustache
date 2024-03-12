@@ -1,4 +1,4 @@
-<div class="card mb-5 rounded-3">
+<div class="mb-5">
   {{#pictureurl}}
     <div class="experience-card-img-container card-img-top border-bottom">
       <img
@@ -18,12 +18,12 @@
       </div>
     {{/user}}
   {{/showimageprofile}}
-  <div class="card-body">
-    <h4 class="mb-1 card-title">
-    <a href="{{experiences.viewurl}}{{id}}" class="text-decoration-none">{{title}}</a>
+  <div class="experience-card-body">
+    <h4 class="mb-1 experience-card-title">
+    <a href="{{experiences.viewurl}}{{id}}">{{title}}</a>
     </h4>
-    <a href="{{experiences.viewurl}}{{id}}" class="text-decoration-none">
-    <p class="card-text text-muted">{{{description}}}</p>
+    <a href="{{experiences.viewurl}}{{id}}">
+    <p class="">{{{description}}}</p>
     </a>
       {{#reactions}}
         {{> local_dta/reactions-buttons}}

@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Templates from 'core/templates';
 import Notification from 'core/notification';
-import {sectionTextUpsert , sectionTextDelete} from 'local_dta/repositories/ourcasesRepository';
+import {sectionTextUpsert, sectionTextDelete} from 'local_dta/repositories/ourcasesRepository';
 import ModalFactory from 'core/modal_factory';
 import {get_string} from 'core/str';
 
@@ -18,16 +18,6 @@ function addTextSection() {
         exist: true
     }).then((html) => {
         return $('#sections-body').append(html);
-    }).fail(Notification.exception);
-}
-
-/**
- * Upsert a text section.
- * @param {object} args - The arguments for the function.
- */
-function upsertText(args) {
-    sectionTextUpsert(args).then((data) => {
-        return data;
     }).fail(Notification.exception);
 }
 
@@ -65,6 +55,22 @@ function changeSectionToEdit(toView = false, id) {
 
 
 /**
+ * Change the section to edit mode.
+ * @param {number} id - The id of the section to change.
+ * @param {number} toId - The id of the section to change to.
+ * @return {void}
+ */
+function changeSectionToNewId(id, toId) {
+    const description = $(`#content_${id}`).val();
+    Templates.render("local_dta/ourcases/section-text-view",
+        {id: toId, description, exist: true}).then((html) => {
+           return $(`#section_${id}`).replaceWith(html);
+    }).fail(Notification.exception);
+}
+
+
+
+/**
  * Set event listeners for the module.
  * @return {void}
  *
@@ -75,7 +81,7 @@ function upsertHeaderSection() {
     const title = $('#section-header-title').val();
     const text = $('#section-header-description').val();
     const sequence = 0;
-    upsertText({ourcaseid, sectionid, title, text, sequence});
+    sectionTextUpsert({ourcaseid, sectionid, title, text, sequence});
     changeSectionHeaderToEdit();
 }
 
@@ -91,10 +97,21 @@ function upsertSection(id) {
     const title = null;
     const text = $(`#content_${id}`).val();
     const sequence = -1;
-    upsertText({ourcaseid, sectionid, title, text, sequence});
-    changeSectionToEdit(false, id);
-    $(`#not_exist_${id}`).val(false);
+
+    return sectionTextUpsert({ourcaseid, sectionid, title, text, sequence})
+        .then((data) => {
+            if (data && data.result) {
+                changeSectionToNewId(id, data.sectionid);
+                return data;
+            } else {
+                throw new Error('No se pudo realizar la actualización de la sección.');
+            }
+        })
+        .fail(() => {
+            throw new Error('Hubo un error al realizar la solicitud: ');
+        });
 }
+
 
 /**
  * Remove a section from the page.
@@ -121,6 +138,7 @@ async function showDeleteSectionModal(sectionid) {
         title: get_string("ourcases_section_text_delete_modal_title", "local_dta"),
         body: Templates.render('local_dta/ourcases/section-text-modal', {modalDeleteId: sectionid}),
     });
+    $("#modal_delete_id").val();
     sectionTextModal.show();
 }
 
@@ -128,7 +146,7 @@ async function showDeleteSectionModal(sectionid) {
  * Delete text section
  * @return {void}
  */
-async function deleteSection() {
+function deleteSection() {
     const sectionid = $("#modal_delete_id").val();
     const ourcaseid = $('#ourcases-id').val();
 

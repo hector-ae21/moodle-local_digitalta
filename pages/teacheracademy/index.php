@@ -16,12 +16,12 @@ use local_dta\Experience;
 
 global $CFG, $PAGE, $OUTPUT;
 
-$strings = get_strings(['home_header', 'home_title'], "local_dta");
+$strings = get_strings(['teacheracademy_header', 'teacheracademy_title'], "local_dta");
 
 // Setea el título de la página
-$PAGE->set_url(new moodle_url('/local/dta/pages/home/dashboard.php'));
+$PAGE->set_url(new moodle_url('/local/dta/pages/teacheracademy/index.php'));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->home_title);
+$PAGE->set_title($strings->teacheracademy_title);
 $PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
 
 echo $OUTPUT->header();
@@ -45,6 +45,6 @@ $templateContext = [
     ]
 ];
 
-echo $OUTPUT->render_from_template('local_dta/home/dashboard', $templateContext);
+echo $OUTPUT->render_from_template('local_dta/teacheracademy/dashboard', $templateContext);
 
 echo $OUTPUT->footer();

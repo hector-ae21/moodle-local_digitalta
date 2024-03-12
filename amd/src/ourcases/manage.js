@@ -1,10 +1,11 @@
 import $ from 'jquery';
 import Templates from 'core/templates';
 import Notification from 'core/notification';
-import {sectionTextUpsert} from 'local_dta/repositories/ourcasesRepository';
+import {sectionTextUpsert , sectionTextDelete} from 'local_dta/repositories/ourcasesRepository';
 import ModalFactory from 'core/modal_factory';
-import {getString} from 'core/str';
+import {get_string} from 'core/str';
 
+let sectionTextModal;
 
 /**
  * Add a new text section to the page.
@@ -116,11 +117,29 @@ function removeSection(sectionid) {
  * @return {void}
  */
 async function showDeleteSectionModal(sectionid) {
-    const modal = await ModalFactory.create({
-        title: getString("ourcases_section_text_delete_modal_title", "local_dta"),
-        body: Templates.render('local_dta/ourcases/section-text-modal', {id: sectionid}),
+    sectionTextModal = await ModalFactory.create({
+        title: get_string("ourcases_section_text_delete_modal_title", "local_dta"),
+        body: Templates.render('local_dta/ourcases/section-text-modal', {modalDeleteId: sectionid}),
     });
-    modal.show();
+    sectionTextModal.show();
+}
+
+/**
+ * Delete text section
+ * @return {void}
+ */
+async function deleteSection() {
+    const sectionid = $("#modal_delete_id").val();
+    const ourcaseid = $('#ourcases-id').val();
+
+    sectionTextDelete({ourcaseid, sectionid}).then((data) => {
+        if (data.result) {
+            sectionTextModal.hide();
+            sectionTextModal = null;
+            $(`#section_${sectionid}`).remove();
+        }
+        return;
+    }).fail(Notification.exception);
 }
 
 /**
@@ -156,10 +175,15 @@ function setEventListeners() {
     $(document).on('click', '.section-to-edit-button', function() {
         changeSectionToEdit(true, $(this).data('id'));
     });
-    // Delete a section
+    // Showt section delete modal
     $(document).on('click', '.section-delete-button', function() {
         showDeleteSectionModal($(this).data('id'));
     });
+    // Delete section
+    $(document).on('click', '#confirmDelete', function() {
+        deleteSection();
+    });
+
 }
 
 

@@ -20,11 +20,11 @@ global $CFG, $PAGE, $OUTPUT , $USER;
 
 $id = required_param('id', PARAM_INT);
 
-$strings = get_strings(['community_header', 'community_title'], "local_dta");
+$strings = get_strings(['experiencesheader', 'experiencestitle'], "local_dta");
 
 $PAGE->set_url(new moodle_url('/local/dta/pages/ourcases/manage.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->community_title);
+$PAGE->set_title($strings->experiencestitle);
 
 
 if(!$experience = Experience::get_experience($id)) {

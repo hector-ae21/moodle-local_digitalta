@@ -28,7 +28,7 @@ class external_ourcases_section_text_upsert extends external_api
         );
     }
 
-    public static function ourcases_section_text_upsert($ourcaseid, $sectionid = 0, $title = "", $text = "", $sequence = 0)
+    public static function ourcases_section_text_upsert($ourcaseid, $sectionid = 0, $title = "section_body", $text = "", $sequence = 0)
     {
         global $DB;
 
@@ -52,7 +52,11 @@ class external_ourcases_section_text_upsert extends external_api
 
         $section->title = $title;
         $section->description = $text;
-        $section->sequence = $sequence;
+        // if -1 will asign the next sequence in db 
+        if($sequence ==! -1){
+            $section->sequence = $sequence;
+        }
+
         $DB->update_record('digital_oc_sec_text', $section);
 
         return array('result' => true, 'sectionid' => $sectionid , 'title' => $title, 'text' => $text, 'sequence' => $sequence);

@@ -16,44 +16,69 @@ use local_dta\OurCases;
 
 require_login();
 
-global $CFG, $PAGE, $OUTPUT , $USER;
+global $CFG, $PAGE, $OUTPUT, $USER;
 
-$id = required_param('id', PARAM_INT);
+$id = optional_param('id', 0, PARAM_INT);
 
-$strings = get_strings(['experiencesheader', 'experiencestitle'], "local_dta");
+$strings = get_strings(['experiences_header', 'experiences_title'], "local_dta");
 
 $PAGE->set_url(new moodle_url('/local/dta/pages/ourcases/manage.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->experiencestitle);
-
-
-if(!$experience = Experience::get_experience($id)) {
-    throw new moodle_exception('invalidaourcases', 'local_dta');
-}
-
-if(!$ourcase = OurCases::get_case_by_experience($id)) {
-    $ourcase = OurCases::add_case($id , date("Y-m-d H:i:s") , $USER->id); 
-}
-
-$sections = array_values(OurCases::get_sections_text($ourcase->id));
-
-if(!$section_header = OurCases::get_section_header($ourcase->id)) {
-    throw new moodle_exception('invalidourcasessection', 'local_dta');
-}
-
+$PAGE->set_title($strings->experiences_title);
 
 echo $OUTPUT->header();
 
-$templateContext = [
-    'experience' => $experience,
-    'sectionheader' => $section_header ,
-    'sections' => $sections,
-    'ourcase' => $ourcase
-];
+if ($id) {
+
+    if(!$experience = Experience::get_experience($id)) {
+        throw new moodle_exception('invalidaourcases', 'local_dta');
+    }
+    
+
+    if (!$ourcase = OurCases::get_case_by_experience($id)) {
+        $ourcase = OurCases::add_case($id, date("Y-m-d H:i:s"), $USER->id);
+    }
+
+    $sections = array_values(OurCases::get_sections_text($ourcase->id));
+
+    if (!$section_header = OurCases::get_section_header($ourcase->id)) {
+        throw new moodle_exception('invalidourcasessection', 'local_dta');
+    }
+
+    $templateContext = [
+        'experience' => $experience,
+        'sectionheader' => $section_header,
+        'sections' => $sections,
+        'ourcase' => $ourcase,
+    ];
 
 
-$PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init');
+    $PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init');
 
-echo $OUTPUT->render_from_template('local_dta/ourcases/manage', $templateContext);
+    echo $OUTPUT->render_from_template('local_dta/ourcases/manage', $templateContext);
+}else{
+
+
+    $ourcase = OurCases::add_empty_case(date("Y-m-d H:i:s"), $USER->id);
+
+    
+    if (!$section_header = OurCases::get_section_header($ourcase->id)) {
+        throw new moodle_exception('invalidourcasessection', 'local_dta');
+    }
+
+    $sections = array_values(OurCases::get_sections_text($ourcase->id));
+    
+    $templateContext = [
+        'sectionheader' => $section_header,
+        'sections' => $sections,
+        'ourcase' => $ourcase,
+    ];
+
+
+    $PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init');
+
+    echo $OUTPUT->render_from_template('local_dta/ourcases/manage-not-found', $templateContext);
+
+}
 
 echo $OUTPUT->footer();

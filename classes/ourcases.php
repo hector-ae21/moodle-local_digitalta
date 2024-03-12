@@ -118,6 +118,52 @@ class OurCases
         return new OurCases($record);
     }
 
+
+    /**
+     * Add a case
+     *
+     * @param string $date Date of the case
+     * @param bool $status Status of the case
+     * @return bool|int Returns ID of the inserted record if successful, false otherwise
+     */
+    public static function add_empty_case($date, $userid, $status = 0)
+    {
+        global $DB;
+        if (empty($date) || empty($userid)) {
+            return false;
+        }
+
+        if($existing = $DB->get_record(self::$table, ['userid' => $userid, 'status' => $status , 'experienceid' => 0])){
+            return $existing;
+        }
+
+        
+        $record = new stdClass();
+        $record->experienceid = 0;
+        $record->userid = $userid;
+        $record->date = $date;
+        $record->status = $status;
+
+        if (!$id = $DB->insert_record(self::$table,  $record)) {
+            throw new Exception('Error adding ourcase to the database.');
+        }
+
+        $record->id = $id;
+
+        // adding default section text
+        $record_section = new stdClass();
+        $record_section->ourcaseid = $id;
+        $record_section->title = "";
+        $record_section->description = "";
+        $record_section->sequence = 0;
+
+        if (!$DB->insert_record(self::$table_section_text,  $record_section)) {
+            throw new Exception('Error adding ourcase section text to the database.');
+        }
+
+        return new OurCases($record);
+    }
+
     /**
      * Update a case
      *

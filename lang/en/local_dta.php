@@ -31,10 +31,10 @@ $string['form_experience_delete_no'] = 'No';
 
 
 // Experiences
-$string['experiencesheader'] = 'Experiences'; 
-$string['experiencestitle'] = 'Experiences';
-$string['experiencespost_button'] = 'Post';
-$string['experiencespost_placeholder'] = 'Tell us your experience';
+$string['experiences_header'] = 'Experiences'; 
+$string['experiences_title'] = 'Experiences';
+$string['experiences_post_button'] = 'Post';
+$string['experiences_post_placeholder'] = 'Tell us your experience';
 
 
 // My Experience 
@@ -51,6 +51,12 @@ $string['ourcases_header_description'] = 'Case description';
 $string['ourcases_header_action_button'] = 'Edit case';
 $string['ourcases_section_text_delete_modal_title'] = 'Delete selected section';
 $string['ourcases_section_text_delete_modal_body'] = 'Are you sure you want to delete this section?';
+
+
+// Ourcases repository
+$string['ourcases_repository_placeholder'] = 'Write your own case...';
+$string['ourcases_repository_title'] = 'Study Cases';
+
 
 // Teacher Academy
 $string['teacheracademy_header'] = 'Teacher Academy';

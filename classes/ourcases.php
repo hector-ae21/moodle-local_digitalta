@@ -71,6 +71,18 @@ class OurCases
         global $DB;
         return $DB->get_record(self::$table, ['experienceid' => $experience]);
     }
+
+    /**
+     * Get all cases by experience
+     *
+     * @param int $id ID of the case
+     * @return object Returns a record object
+     */
+    public static function get_cases_by_experience($experience)
+    {
+        global $DB;
+        return $DB->get_records(self::$table, ['experienceid' => $experience]);
+    }
     /**
      * Add a case
      *

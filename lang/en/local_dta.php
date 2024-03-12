@@ -59,6 +59,7 @@ $string['home_title'] = 'Home';
 // General
 $string['avatar_alt'] = 'User avatar';
 $string['experience'] = 'Experience';
+$string['view'] = "View";
 $string['edit'] = 'Edit';
 $string['delete'] = 'Delete';
 $string['create_case'] = 'Create case';

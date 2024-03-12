@@ -9,6 +9,7 @@
  */
 
 use local_dta\Experience;
+use local_dta\OurCases;
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
@@ -34,6 +35,12 @@ if(!$experience = Experience::get_experience($id)) {
 $user = get_complete_user_data("id", $experience->userid);
 $user_picture = new user_picture($user);
 $user_picture->size = 101;
+$experienceCases = OurCases::get_cases_by_experience($id);
+$experienceCasesInfo = [];
+foreach ($experienceCases as $case) {
+    $case = OurCases::get_section_header($case->id);
+    array_push($experienceCasesInfo, $case);
+}
 
 
 echo $OUTPUT->header();
@@ -43,7 +50,8 @@ $templateContext = [
         'data' => $experience,
         'pictureurl' => Experience::get_picture_url($experience),
         'deleteurl' => $CFG->wwwroot . "/local/dta/pages/myexperience/delete.php?id=",
-        'editurl' => $CFG->wwwroot . "/local/dta/pages/myexperience/manage.php?id="
+        'editurl' => $CFG->wwwroot . "/local/dta/pages/myexperience/manage.php?id=",
+        'cases' => $experienceCasesInfo,
     ],
     'user' => [
         'id' => $user->id,

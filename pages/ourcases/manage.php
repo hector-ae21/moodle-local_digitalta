@@ -35,13 +35,11 @@ if(!$ourcase = OurCases::get_case_by_experience($id)) {
     $ourcase = OurCases::add_case($id , date("Y-m-d H:i:s") , $USER->id); 
 }
 
-$sections = OurCases::get_sections_text($ourcase->id);
+$sections = array_values(OurCases::get_sections_text($ourcase->id));
 
 if(!$section_header = OurCases::get_section_header($ourcase->id)) {
     throw new moodle_exception('invalidourcasessection', 'local_dta');
 }
-
-
 
 
 echo $OUTPUT->header();
@@ -53,7 +51,8 @@ $templateContext = [
     'ourcase' => $ourcase
 ];
 
-$PAGE->requires->js_call_amd('local_dta/ourcases', 'init');
+
+$PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init');
 
 echo $OUTPUT->render_from_template('local_dta/ourcases/manage', $templateContext);
 

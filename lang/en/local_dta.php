@@ -48,7 +48,9 @@ $string['myexperience_picture_alt'] = 'Experience picture';
 // ourcases main
 $string['ourcases_header_title'] = 'Case title';
 $string['ourcases_header_description'] = 'Case description';
-$string['ourcases_header_action_button'] = 'Editar encabezado';
+$string['ourcases_header_action_button'] = 'Edit case';
+$string['ourcases_section_text_delete_modal_title'] = 'Delete selected section';
+$string['ourcases_section_text_delete_modal_body'] = 'Are you sure you want to delete this section?';
 
 // Home
 $string['home_header'] = 'Home';
@@ -60,3 +62,4 @@ $string['experience'] = 'Experience';
 $string['edit'] = 'Edit';
 $string['delete'] = 'Delete';
 $string['create_case'] = 'Create case';
+$string['cancel'] = 'Cancel';

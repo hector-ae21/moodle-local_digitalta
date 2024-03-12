@@ -1,0 +1,23 @@
+<div alt="{{name}}" class="theme d-flex flex-row align-items-center mr-5" style="width: auto !important;">
+    <div class="theme-img mr-2">
+        <i class="fa fa-tag" aria-hidden="true"></i>
+    </div>
+    <p class="mb-0">{{name}}</p>
+</div>
+
+<script>
+
+function getDarkColor() {
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += Math.floor(Math.random() * 10);
+    }
+    return color;
+}
+
+function setRandomBackground() {
+  document.getElementsByClassName('theme').forEach((tag) => {tag.style.color = getDarkColor();});
+}
+
+setRandomBackground();
+</script>

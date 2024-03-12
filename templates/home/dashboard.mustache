@@ -2,73 +2,36 @@
   <div class="wrapper">
     <h1>{{#str}}home_title, local_dta{{/str}}</h1>
   </div>
-  <div class="home w-100 h-100 d-flex flex-column">
+  <div class="home w-100 d-flex flex-column">
     <!-- Summary -->
-    <div class="w-100 h-60 mb-3">
-      <div class="row h-100">
-        <div class="col-7">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ultricies facilisis libero et lacinia. Curabitur placerat, ipsum a egestas maximus, libero augue ultrices sapien, a ultrices quam erat in eros. Proin viverra augue vitae velit elementum, at dictum diam finibus. Fusce vehicula vel nisl et sagittis. Nulla interdum interdum leo efficitur aliquam. Morbi nec sapien sit amet libero dictum venenatis sit amet placerat lacus. Nullam laoreet, neque nec vestibulum elementum, nibh quam sollicitudin arcu, tincidunt volutpat velit odio nec leo. Ut ac dui est. Nulla facilisi. Vivamus varius massa rhoncus sodales auctor. Duis ut nunc et tellus porttitor molestie. Morbi sollicitudin malesuada luctus. Donec non orci id nibh vestibulum varius non sit amet elit.
+    <div class="w-100 h-auto mb-3">
+      <div class="d-flex h-auto">
+        <div class="summary-text col-md-7 col-12 pl-0 pr-md-5 pr-0 text-justify">
+          If working as a teacher is part of your day-to-day life, or if you are studying to become one, this is the place for you. The main aim of the project is to improve pre-service and in-service schoolteachers’ practical training in EU countries,reducing professional attrition. The consortium is composed of teacher education providers in initial and continuous training from Belgium, Czech Republic, Ireland, Poland, and Spain.
         </div>
-        <div class="col-5 ml-10 mw-20 h-auto" style="background-color: #D7AF70">
+        <div class="summary-video col-md-5 px-0 d-none d-md-flex justify-content-end embed-responsive embed-responsive-16by9">
+          <iframe class="w-100 embed-responsive-item"
+            src="https://www.youtube.com/embed/iLM2HLHGPQs?si=H9t_5CMghOYguCIp" title="DigitalTA Presentation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+          </iframe>
         </div>
       </div>
     </div>
     <!-- Themes -->
-    <div class="w-100 mh-25  mb-3" style="background-color: #9ABCA7">
-      <h2>Themes</h2>
-      <div class="themes d-flex flex-col justify-content-start">
-        <div class="theme d-flex flex-row align-items-center mr-5" style="width: auto !important;">
-          <div class="theme-img bg-dark mr-2" style="width: 40px; height: 40px; border-radius: 50px"></div>
-          <p class="mb-0">Theme 0</p>
-        </div>
-        <div class="theme d-flex flex-row align-items-center mr-5" style="width: fit-content !important;">
-          <div class="theme-img bg-dark mr-2" style="width: 40px; height: 40px; border-radius: 50px"></div>
-          <p class="mb-0">Theme 1</p>
-        </div>
-        <div class="theme d-flex flex-row align-items-center mr-5" style="width: auto !important;">
-          <div class="theme-img bg-dark mr-2" style="width: 40px; height: 40px; border-radius: 50px"></div>
-          <p class="mb-0">Theme 2</p>
-        </div>
-      </div>
-    </div>
+    
+      {{> local_dta/home/themes-list}}
+    
     <!-- Recent Experiences & Study Cases -->
-    <div class="w-100 mb-3 d-flex flex-row" style="background-color: #E8F1F2">
+    <div class="w-100 mb-3 d-flex flex-row text-primary">
       <!-- Recent Experiences -->
       {{> local_dta/home/recent-card-list }}
       <!-- Study Cases -->
-      <div class="col-4">
-        <h2>Study Cases</h2>
-        <div class="study-cases"><!-- grid -->
-          <div class="study-case d-flex"> 
-            <div class="study-case-img bg-success mr-4 embed-responsive" style="max-height: 80px;"></div>
-            <div>
-              <h4>Study Case 0</h4>
-              <p>In eget euismod nisl. Interdum et malesuada fames ac ante ipsum primis in faucibus</p>
-            </div>
-          </div>
-          <div class="study-case d-flex"> 
-            <div class="study-case-img bg-success mr-4 embed-responsive" style="max-height: 80px;"></div>
-            <div>
-              <h4>Study Case 1</h4>
-              <p>In eget euismod nisl. Interdum et malesuada fames ac ante ipsum primis in faucibus</p>
-            </div>
-          </div>
-          <div class="study-case d-flex"> 
-            <div class="study-case-img bg-success mr-4 embed-responsive" style="max-height: 80px;"></div>
-            <div>
-              <h4>Study Case 2</h4>
-              <p>In eget euismod nisl. Interdum et malesuada fames ac ante ipsum primis in faucibus</p>
-            </div>
-          </div>
-          <div class="study-case d-flex"> 
-            <div class="study-case-img bg-success mr-4 embed-responsive" style="max-height: 80px;"></div>
-            <div>
-              <h4>Study Case 3</h4>
-              <p>In eget euismod nisl. Interdum et malesuada fames ac ante ipsum primis in faucibus</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      {{> local_dta/home/study-cases-list }}
     </div>
   </div>
 </div>
+
+<style>
+h2 {
+  margin-bottom: 1.5rem;
+}
+</style>

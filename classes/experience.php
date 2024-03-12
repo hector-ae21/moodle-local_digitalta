@@ -80,17 +80,14 @@ class Experience
     }
 
     /**
-     * Get my experiences
+     * Get experiences by user
+     * 
      */
-
-    public static function get_my_experiences($userid)
+    public static function get_experiences_by_user($userid)
     {
         global $DB;
         $experiences = array_values($DB->get_records(self::$table, ['userid' => $userid]));
         $experiences = self::get_extra_fields($experiences);
-        foreach ($experiences as $experience) {
-            $experience->description = self::trimHtml($experience->description, 300);
-        }
         return $experiences;
     }
 
@@ -105,9 +102,6 @@ class Experience
         global $DB;
         $experiences = array_values($DB->get_records(self::$table, $includePrivates ? null : ['visible' => 1]));
         $experiences = self::get_extra_fields($experiences);
-        foreach ($experiences as $experience) {
-            $experience->description = self::trimHtml($experience->description, 300);
-        }
         return $experiences;
     }
 
@@ -241,36 +235,5 @@ class Experience
     public function get_url()
     {
         return new \moodle_url('/local/dta/pages/myexperience/view.php', ['id' => $this->id]);
-    }
-
-    private static function trimHtml($html, $maxLength) {
-        $dom = new \DOMDocument();
-        @$dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $xpath = new \DOMXPath($dom);
-    
-        $length = 0;
-        $nodesToKeep = [];
-    
-        foreach ($xpath->query('//text()') as $textNode) {
-            if ($length + strlen($textNode->nodeValue) > $maxLength) {
-                // Calculate remaining length
-                $remainingLength = $maxLength - $length;
-                $textNode->nodeValue = substr($textNode->nodeValue, 0, $remainingLength);
-                $nodesToKeep[] = $textNode->parentNode;
-                $textNode->parentNode->appendChild(new \DOMText('...'));
-                break;
-            } else {
-                $length += strlen($textNode->nodeValue);
-                $nodesToKeep[] = $textNode->parentNode;
-            }
-        }
-    
-        foreach ($xpath->query('//*') as $node) {
-            if (!in_array($node, $nodesToKeep, true) && $node->parentNode) {
-                $node->parentNode->removeChild($node);
-            }
-        }
-    
-        return $dom->saveHTML();
     }
 }

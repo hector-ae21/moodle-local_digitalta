@@ -15,17 +15,9 @@
     {{/dislikes}}
 
     {{#comments}}
-    {{#isview}}
-        <button id="comment-button" data-action="comment" data-id="{{id}}" class="btn btn-outline-secondary btn-sm" data-toggle="collapse" data-target="#commentsCollapse" aria-expanded="false" aria-controls="commentsCollapse">
+        <button id="comment-button" data-action="view-comment" data-id="{{id}}" class="btn btn-outline-secondary btn-sm" data-toggle="collapse" data-target="#commentsCollapse" aria-expanded="false" aria-controls="commentsCollapse">
         <i class="fa fa-comment"></i>
         <span>{{#count}}{{.}}{{/count}}</span>
         </button>
-    {{/isview}}
-    {{^isview}}
-        <button id="comment-button" data-action="view-comment" data-id="{{id}}" class="btn btn-outline-secondary btn-sm">
-        <i class="fa fa-comment"></i>
-        <span>{{#count}}{{.}}{{/count}}</span>
-        </button>
-    {{/isview}}
     {{/comments}}
 </div>

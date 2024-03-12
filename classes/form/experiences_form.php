@@ -29,12 +29,10 @@ class local_experiences_form extends moodleform
         /* TITLE */
         $mform->addElement('text', 'title',  $strings->form_experience_title);
         $mform->setType('title', PARAM_TEXT);
-        $mform->addRule('title', null, 'required', null, 'client');
 
         /* DESCRIPTION */
         $mform->addElement('editor', 'description', $strings->form_experience_description);
         $mform->setType('description', PARAM_RAW);
-        $mform->addRule('description', null, 'required', null, 'client');
 
         /* LANG */
         $stringmanager = get_string_manager();

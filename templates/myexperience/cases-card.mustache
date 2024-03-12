@@ -1,0 +1,17 @@
+<div class="card experience-card-module">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h2>Our Cases</h2>
+        {{#experience}} 
+        <div class="d-flex">
+            {{#isadmin}}
+            <a href="{{createcaseurl}}{{data.id}}" class="shadow-none" title="{{#str}}create_case, local_dta{{/str}}">
+                <i class="fa fa-plus-circle fa-lg text-info"></i>
+            </a>
+            {{/isadmin}}
+        </div>
+        {{/experience}}
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Coming soon</h4>
+    </div>
+</div>

@@ -10,10 +10,12 @@
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
+require_once(__DIR__ . './../../classes/utils/string_utils.php');
 
 require_login();
 
 use local_dta\Experience;
+use local_dta\utils\StringUtils;
 
 global $CFG, $PAGE, $OUTPUT , $USER;
 
@@ -28,10 +30,16 @@ echo $OUTPUT->header();
 
 $picture = new user_picture($USER);
 $picture->size = 101;
+$experiences = Experience::get_experiences_by_user($USER->id);
+$experiences = array_map(function ($experience) {
+    $experience->description = StringUtils::truncateHtmlText($experience->description);
+    return $experience;
+}, $experiences);
+
 
 $templatecontext = [
     "experiences" => [
-        "data" => Experience::get_my_experiences($USER->id),
+        "data" => $experiences,
         "showimageprofile" => false,
         "showcontrols" => true,
         "showcontrolsadmin" => is_siteadmin($USER),

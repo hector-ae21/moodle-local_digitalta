@@ -9,7 +9,6 @@
     </div>
   {{/pictureurl}}
   {{#showimageprofile}}
-    <!-- avatar -->
     {{#user}}
       <div class="avatar avatar-xl mt-n7 ms-4">
       <a href="{{profileurl}}" class="shadow-none">
@@ -23,7 +22,7 @@
     <a href="{{experiences.viewurl}}{{id}}">{{title}}</a>
     </h4>
     <a href="{{experiences.viewurl}}{{id}}">
-    <p class="">{{{description}}}</p>
+    <div class="experience-description mb-3">{{{description}}}</div>
     </a>
       {{#reactions}}
         {{> local_dta/reactions-buttons}}

@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <div class="wrapper">
+    <h1>{{#str}}teacheracademy_title, local_dta{{/str}}</h1>
+  </div>
+  <div class="home w-100 d-flex flex-column">
+    <!-- Themes -->
+    <div class="shadow-sm p-3 mb-5 bg-body rounded">
+    {{> local_dta/teacheracademy/themes-list}}
+    </div>
+    <div class="w-100 h-auto mb-3 shadow-sm p-3 mb-5 bg-body rounded">
+      <div class="d-flex h-auto">
+        <div class="summary-text col-md-4 pl-0 pr-md-5 pr-0">
+          {{> local_dta/teacheracademy/news-list}}
+        </div>
+        <div class="col-md-8 px-0 d-none d-md-flex">
+          {{> local_dta/teacheracademy/summary-carousel}}
+        </div>
+      </div>
+    </div>
+    
+    
+    <!-- Recent Experiences & Study Cases -->
+    <div class="w-100 mb-3 d-flex flex-row text-primary shadow-sm p-3 mb-5 bg-body rounded">
+      <!-- Recent Experiences -->
+      {{> local_dta/teacheracademy/recent-card-list }}
+      <!-- Study Cases -->
+      {{> local_dta/teacheracademy/study-cases-list }}
+    </div>
+  </div>
+</div>
+
+<style>
+h2 {
+  margin-bottom: 1.5rem;
+}
+</style>

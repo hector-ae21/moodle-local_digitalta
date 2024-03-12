@@ -9,10 +9,14 @@
  */
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
+require_once(__DIR__ . './../../classes/tags.php');
+require_once(__DIR__ . './../../classes/ourcases.php');
 
 require_login();
 
 use local_dta\Experience;
+use local_dta\Tags;
+use local_dta\OurCases;
 
 global $CFG, $PAGE, $OUTPUT;
 
@@ -27,6 +31,8 @@ $PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
 echo $OUTPUT->header();
 
 $experiences = Experience::get_all_experiences(false);
+$tags = Tags::getAllTags();
+$cases = OurCases::get_cases();
 
 $user = get_complete_user_data("id", $USER->id);
 $picture = new user_picture($user);
@@ -42,9 +48,15 @@ $templateContext = [
         "showcontrolsadmin" => is_siteadmin($USER),
         "addurl" => $CFG->wwwroot . "/local/dta/pages/myexperience/manage.php",
         "viewurl" => $CFG->wwwroot . '/local/dta/pages/myexperience/view.php?id='
+    ],
+    "tags" => $tags,
+    "ourcases" => [
+        "title" => "Our cases",
+        "description" => "Discover the experiences of our community",
+        "url" => $CFG->wwwroot . "/local/dta/pages/experience/list.php"
     ]
 ];
 
-echo $OUTPUT->render_from_template('local_dta/home/dashboard', $templateContext);
+echo $OUTPUT->render_from_template('local_dta/teacheracademy/dashboard', $templateContext);
 
 echo $OUTPUT->footer();

@@ -30,11 +30,11 @@ $string['form_experience_delete_yes'] = 'Experience deleted successfully';
 $string['form_experience_delete_no'] = 'No';
 
 
-// Community
-$string['community_header'] = 'Community'; 
-$string['community_title'] = 'Learning Community';
-$string['community_post_button'] = 'Post';
-$string['community_post_placeholder'] = 'Tell us your experience';
+// Experiences
+$string['experiences_header'] = 'Experiences'; 
+$string['experiences_title'] = 'Experiences';
+$string['experiences_post_button'] = 'Post';
+$string['experiences_post_placeholder'] = 'Tell us your experience';
 
 
 // My Experience 
@@ -45,16 +45,22 @@ $string['myexperience_add_comment'] = 'Add a new comment...';
 $string['myexperience_picture_alt'] = 'Experience picture';
 
 
-// ourcases main
+// Ourcases main
 $string['ourcases_header_title'] = 'Case title';
 $string['ourcases_header_description'] = 'Case description';
 $string['ourcases_header_action_button'] = 'Edit case';
 $string['ourcases_section_text_delete_modal_title'] = 'Delete selected section';
 $string['ourcases_section_text_delete_modal_body'] = 'Are you sure you want to delete this section?';
 
-// Home
-$string['home_header'] = 'Home';
-$string['home_title'] = 'Home';
+
+// Ourcases repository
+$string['ourcases_repository_placeholder'] = 'Write your own case...';
+$string['ourcases_repository_title'] = 'Study Cases';
+
+
+// Teacher Academy
+$string['teacheracademy_header'] = 'Teacher Academy';
+$string['teacheracademy_title'] = 'Teacher Academy';
 
 // General
 $string['avatar_alt'] = 'User avatar';

@@ -59,4 +59,13 @@ $functions = [
         'requirelogin' => false,
         'ajax'        => true,
     ],
+    'local_dta_ourcases_section_text_delete' => [
+        'classname'   => 'external_ourcases_section_text_delete',
+        'methodname'  => 'ourcases_section_text_delete',
+        'classpath'   => 'local/dta/classes/webservices/external_ourcases_section_text_delete.php',
+        'description' => 'Delete the text of a section of the Our Cases page.',
+        'type'        => 'write',
+        'requirelogin' => false,
+        'ajax'        => true,
+    ],
 ];

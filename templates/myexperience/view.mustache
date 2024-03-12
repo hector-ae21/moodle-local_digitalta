@@ -1,102 +1,30 @@
-<div class="container-fluid mt-3 w-75">
-    <div class="card mb-4">
-       
-        <div class="card-header d-flex justify-content-between align-items-center">
-            {{#user}}
-                <div class="user-info d-flex align-items-center">
-                    <a href="{{profileurl}}" class="perfil-link d-flex align-items-center text-muted text-decoration-none">
-                        <img src="{{imageurl}}" class="rounded-circle mr-2" alt="{{#str}}avatar_alt, local_dta{{/str}}" style="width: 50px; height: 50px;">
-                        <div class="text-dark">
-                            <strong>{{name}}</strong><br>
-                            <small>{{email}}</small>
-                        </div>
-                    </a>
-                </div>
-            {{/user}}
-            {{#experience}}
-            <div class="d-flex">
-                <a href="{{editurl}}{{data.id}}" class="mr-3 shadow-none" title="{{#str}}edit, local_dta{{/str}}">
-                    <i class="fa fa-pencil fa-lg text-primary"></i>
-                </a>
-                <a href="{{deleteurl}}{{data.id}}" class="mr-3 shadow-none" title="{{#str}}delete, local_dta{{/str}}">
-                    <i class="fa fa-trash fa-lg text-danger"></i>
-                </a>
-                {{#isadmin}}
-                <a href="{{createcaseurl}}{{data.id}}" class="shadow-none" title="{{#str}}create_case, local_dta{{/str}}">
-                    <i class="fa fa-plus-circle fa-lg text-info"></i>
-                </a>
-                {{/isadmin}}
-            </div>
-            {{/experience}}
-        </div>
-        {{#experience}}
-            {{#pictureurl}}
-                <img src="{{.}}" class="img-fluid card-img-top border-bottom" alt="{{#str}}myexperience_picture_alt, local_dta{{/str}}"> 
-            {{/pictureurl}}
-
-            {{#data}}
-                <div class="card-body">
-                    <h4 class="card-title text-primary">{{title}}</h4>
-                    <p class="card-text">{{{description}}}</p>
-                    {{#reactions}}
-                        {{> local_dta/reactions-buttons}}
-                    {{/reactions}}
-                </div>
-            
-        
-
-                <div class="collapse" id="commentsCollapse">
-                    <div class="card-body">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="{{#str}}myexperience_add_comment, local_dta{{/str}}" aria-label="{{#str}}myexperience_add_comment, local_dta{{/str}}" id="commentInput">
-                            <div class="input-group-append">
-                                <button data-action="send-comment" data-id={{id}} class="btn btn-primary" type="button"><i class="fa fa-paper-plane"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <ul class="list-group list-group-flush rounded-bottom" id="commentsList"></ul>
-                </div>
-            {{/data}}
-        {{/experience}}
-    </div>
+<div class="container-fluid mt-3">
     <div class="row">
-        <div class="col-12 col-lg-6 mb-4">
-             <div class="card">
-                <div class="card-header">
-                    <h2>Reflection Manager</h2>
+        <div class="col-12 col-xl-3 mb-4 experience-first-col">
+            <div class="row">
+                <div class="col-12 mb-4">
+                    {{> local_dta/myexperience/cases-card}}
                 </div>
-                <div class="card-body">
-                    <h4 class="card-title">Coming soon</h4>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-6 mb-4">
-             <div class="card">
-                <div class="card-header">
-                    <h2>My Tutoring</h2>
-                </div>
-                <div class="card-body">
-                    <h4 class="card-title">Coming soon</h4>
+                <div class="col-12 mb-4">
+                    {{> local_dta/myexperience/reflection-card}}
                 </div>
             </div>
         </div>
-        <div class="col-12 col-lg-6 mb-4">
-             <div class="card">
-                <div class="card-header">
-                    <h2>Our Cases</h2>
-                </div>
-                <div class="card-body">
-                    <h4 class="card-title">Coming soon</h4>
-                </div>
+
+        <div class="col-12 col-xl-6 mb-4">
+            <div class="row">
+            <div class="col-12">
+                {{> local_dta/myexperience/experience-card}}
+            </div>
             </div>
         </div>
-        <div class="col-12 col-lg-6 mb-4">
-             <div class="card">
-                <div class="card-header">
-                    <h2>Resource Repository</h2>
+        <div class="col-12 col-xl-3 mb-4">
+            <div class="row">
+                <div class="col-12 mb-4">
+                    {{> local_dta/myexperience/mytutoring-card}}
                 </div>
-                <div class="card-body">
-                    <h4 class="card-title">Coming soon</h4>
+                <div class="col-12 mb-4">
+                    {{> local_dta/myexperience/resourcerepository-card}}
                 </div>
             </div>
         </div>

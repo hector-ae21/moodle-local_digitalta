@@ -1,15 +1,22 @@
-<div class="experience col-4">
-    {{#pictureurl}}
-    <div class="experience-img bg-primary w-100 overflow-hidden" style="height: 100px;">
-        <img
-            src="{{pictureurl}}"
-            alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
-            class="img-fluid experience-card-img"
-        />
+<div class="mb-5 experience-card">
+  {{#pictureurl}}
+    <div class="experience-card-img-container border-bottom">
+    <a href="{{experiences.viewurl}}{{id}}">
+      <img
+        src="{{pictureurl}}"
+        alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
+        class="img-fluid experience-card-img p-0"
+        style="object-fit: cover; max-height: 200px, width: 100%;"
+      />
+    </a>
     </div>
-    {{/pictureurl}}
-    <h4 class="shadow-sm p-3 mb-5">
-        <a href="{{experiences.viewurl}}{{id}}" class="text-decoration-none">{{title}}</a>
+  {{/pictureurl}}
+  <div class="experience-card-body">
+    <h4 class="mb-1 experience-card-title">
+    <a href="{{experiences.viewurl}}{{id}}">{{title}}</a>
     </h4>
-    <p class="text-dark">{{{description}}}</p>
+    <a href="{{experiences.viewurl}}{{id}}">
+    <div class="experience-description mb-3">{{{description}}}</div>
+    </a>
+  </div>
 </div>

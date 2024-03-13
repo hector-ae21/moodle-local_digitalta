@@ -24,7 +24,7 @@ $PAGE->set_url(new moodle_url('/local/dta/pages/cases/repository.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->experiences_title);
 $PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
-$PAGE->requires->js_call_amd('local_dta/masonry', 'init');
+$PAGE->requires->js_call_amd('local_dta/masonry', 'init' , ["url_repository" => $CFG->wwwroot . '/local/dta/pages/cases/repository.php']);
 
 echo $OUTPUT->header();
 
@@ -47,7 +47,8 @@ if (!empty($cases_metadata)) {
 
 $templateContext = [
     "user" => $user,
-    "cases" => $cases
+    "cases" => $cases,
+    "url_create_case" => $CFG->wwwroot . '/local/dta/pages/cases/manage.php'
 ];
 
 echo $OUTPUT->render_from_template('local_dta/cases/repository', $templateContext);

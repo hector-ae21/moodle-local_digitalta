@@ -176,18 +176,17 @@ function deleteSection() {
 
 /**
  * Edit a case.
+ * @param {object} urlRepository - The arguments to edit the case.
  * @return {void}
  */
-function changeStatusToComplete() {
+function changeStatusToComplete(urlRepository) {
     const ourcaseid = $('#ourcases-id').val();
     const status = 1;
     const args = {ourcaseid, status};
 
     ourcaseEdit(args).then((data) => {
         if (data.result) {
-            // TODO: Redirect to the case view
-            // eslint-disable-next-line no-console
-            console.log(data);
+            window.location.href = '/local/dta/pages/cases/repository.php';
         }
         return;
     }).fail(Notification.exception);
@@ -196,9 +195,10 @@ function changeStatusToComplete() {
 
 /**
  * Set event listeners for the module.
+ * @param {string} urlRepository - The url of the repository.
  * @return {void}
  * */
-function setEventListeners() {
+function setEventListeners(urlRepository) {
     // Add a new text section
     $(document).on('click', '#add-section', () => {
         addTextSection();
@@ -241,7 +241,7 @@ function setEventListeners() {
     });
     // Change status to complete
     $(document).on('click', '#complete-case-button', function() {
-        changeStatusToComplete();
+        changeStatusToComplete(urlRepository);
     });
 
 }
@@ -249,8 +249,9 @@ function setEventListeners() {
 
 /**
  * Initialize the module.
+ * @param {string} urlRepository - The url of the repository.
  * @return {void}
  */
-export const init = async() => {
-    setEventListeners();
+export const init = async(urlRepository) => {
+    setEventListeners(urlRepository);
 };

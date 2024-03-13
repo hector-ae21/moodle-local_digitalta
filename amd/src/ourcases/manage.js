@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import Templates from 'core/templates';
 import Notification from 'core/notification';
-import {sectionTextUpsert, sectionTextDelete} from 'local_dta/repositories/ourcasesRepository';
+import {sectionTextUpsert, sectionTextDelete, ourcaseEdit} from 'local_dta/repositories/ourcasesRepository';
 import ModalFactory from 'core/modal_factory';
 import {get_string} from 'core/str';
 
@@ -154,6 +154,8 @@ async function showSaveCase() {
     saveModal.show();
 }
 
+
+
 /**
  * Delete text section
  * @return {void}
@@ -171,6 +173,26 @@ function deleteSection() {
         return;
     }).fail(Notification.exception);
 }
+
+/**
+ * Edit a case.
+ * @return {void}
+ */
+function changeStatusToComplete() {
+    const ourcaseid = $('#ourcases-id').val();
+    const status = 1;
+    const args = {ourcaseid, status};
+
+    ourcaseEdit(args).then((data) => {
+        if (data.result) {
+            // TODO: Redirect to the case view
+            // eslint-disable-next-line no-console
+            console.log(data);
+        }
+        return;
+    }).fail(Notification.exception);
+}
+
 
 /**
  * Set event listeners for the module.
@@ -216,6 +238,10 @@ function setEventListeners() {
     // Save button
     $(document).on('click', '#save-case-button', function() {
         showSaveCase();
+    });
+    // Change status to complete
+    $(document).on('click', '#complete-case-button', function() {
+        changeStatusToComplete();
     });
 
 }

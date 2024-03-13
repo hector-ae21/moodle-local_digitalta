@@ -176,10 +176,9 @@ function deleteSection() {
 
 /**
  * Edit a case.
- * @param {object} urlRepository - The arguments to edit the case.
  * @return {void}
  */
-function changeStatusToComplete(urlRepository) {
+function changeStatusToComplete() {
     const ourcaseid = $('#ourcases-id').val();
     const status = 1;
     const args = {ourcaseid, status};
@@ -198,7 +197,7 @@ function changeStatusToComplete(urlRepository) {
  * @param {string} urlRepository - The url of the repository.
  * @return {void}
  * */
-function setEventListeners(urlRepository) {
+function setEventListeners() {
     // Add a new text section
     $(document).on('click', '#add-section', () => {
         addTextSection();
@@ -241,7 +240,7 @@ function setEventListeners(urlRepository) {
     });
     // Change status to complete
     $(document).on('click', '#complete-case-button', function() {
-        changeStatusToComplete(urlRepository);
+        changeStatusToComplete();
     });
 
 }
@@ -249,9 +248,8 @@ function setEventListeners(urlRepository) {
 
 /**
  * Initialize the module.
- * @param {string} urlRepository - The url of the repository.
  * @return {void}
  */
-export const init = async(urlRepository) => {
-    setEventListeners(urlRepository);
+export const init = async() => {
+    setEventListeners();
 };

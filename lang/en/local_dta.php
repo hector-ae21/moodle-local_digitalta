@@ -63,6 +63,8 @@ $string['ourcases_modal_save_body'] = 'Are you ready to save this case?';
 // Ourcases repository
 $string['ourcases_repository_placeholder'] = 'Write your own case...';
 $string['ourcases_repository_title'] = 'Study Cases';
+$string['ourcases_header'] = 'ourcases'; 
+$string['ourcases_title'] = 'Experiences';
 
 
 // Teacher Academy

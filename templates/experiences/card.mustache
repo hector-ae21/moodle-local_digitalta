@@ -1,55 +1,21 @@
 <div class="mb-5">
   {{#pictureurl}}
     <div class="experience-card-img-container card-img-top border-bottom">
+    <a href="{{experiences.viewurl}}{{id}}">
       <img
         src="{{pictureurl}}"
         alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
-        class="img-fluid experience-card-img"
+        class="img-fluid experience-card-img p-0"
+        style="object-fit: cover; max-height: 200px; width: 100%;"
       />
+    </a>
     </div>
   {{/pictureurl}}
   <div class="experience-card-body">
-    <h4 class="mb-1 experience-card-title">
+    <h4 class="mb-1 experience-card-title d-flex flex row">
     <a href="{{experiences.viewurl}}{{id}}">{{title}}</a>
     </h4>
-
-
-    <div class="experience-card-meta d-flex flex-column mb-3">
-      <div class="d-flex align-items-start mb-3">
-          <span class="text-muted me-2 d-flex align-items-start flex-column">
-              {{#user}}
-              <a href="{{profileurl}}" class="d-flex align-items-start flex-row">
-                  <img src="{{imageurl}}" alt="User Image" class="rounded border-4 border-white me-2" style="width: 40px; height: 40px;">
-                  <div class="d-flex flex-column">
-                      <span class="bold">
-                      {{name}}
-                      <span class="text-muted pl-3 font-weight-normal">
-                          <i class="fa fa-calendar me-1"></i>
-                          {{date}}
-                      </span>
-                      </span>
-                      <span class="text-muted">
-                          {{email}}
-                      </span>
-                  </div>
-              </a>
-              
-              {{/user}}
-          </span>
-      </div>
-      <div>
-          <span class="badge bg-primary">Tag1</span>
-          <span class="badge bg-danger">Tag2</span>
-          
-          <span class="badge bg-primary">Tag1</span>
-          <span class="badge bg-danger">Tag2</span>
-          
-          <span class="badge bg-primary">Tag1</span>
-          <span class="badge bg-danger">Tag2</span>
-      </div>
-  </div>
-
-
+    {{> local_dta/experiences/experience-metadata}}
     <a href="{{experiences.viewurl}}{{id}}">
     <div class="experience-description mb-3">{{{description}}}</div>
     </a>

@@ -34,7 +34,7 @@ $picture = new user_picture($user);
 $picture->size = 101;
 $user->imageurl = $picture->get_url($PAGE)->__toString();
 
-$cases_metadata = OurCases::get_cases();
+$cases_metadata = OurCases::get_active_cases();
 $cases = array();
 
 if (!empty($cases_metadata)) {
@@ -43,9 +43,7 @@ if (!empty($cases_metadata)) {
         $object->description = local_dta\utils\StringUtils::truncateHtmlText($object->description, 100);
         return $object;
     }, $cases_metadata));
-    $cases= array_filter ($cases, function($case) {
-        return $case->status == 1;
-    });
+
 }
 
 $templateContext = [

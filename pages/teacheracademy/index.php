@@ -33,8 +33,8 @@ $PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
 echo $OUTPUT->header();
 
 $experiences = Experience::get_all_experiences(false);
-if(count($experiences) > 6){
-    $experiences = array_slice($experiences, 0, 5);
+if(count($experiences) > 3){
+    $experiences = array_slice($experiences, 0, 3);
 }
 $experiences = array_map(function ($experience) {
     $experience->description = StringUtils::truncateHtmlText($experience->description);
@@ -56,15 +56,14 @@ $templateContext = [
         "showimageprofile" => true,
         "showcontrols" => false,
         "showcontrolsadmin" => is_siteadmin($USER),
-        "addurl" => $CFG->wwwroot . "/local/dta/pages/myexperience/manage.php",
-        "viewurl" => $CFG->wwwroot . '/local/dta/pages/myexperience/view.php?id=',
+        "addurl" => $CFG->wwwroot . "/local/dta/pages/experiences/manage.php",
+        "viewurl" => $CFG->wwwroot . '/local/dta/pages/experiences/view.php?id=',
         "allurl" => $CFG->wwwroot . "/local/dta/pages/experiences/dashboard.php",
     ],
     "tags" => $tags,
     "ourcases" => [
         "title" => "Our cases",
         "description" => "Discover the experiences of our community",
-        "url" => $CFG->wwwroot . "/local/dta/pages/experience/list.php",
         "allurl" => $CFG->wwwroot . "/local/dta/pages/cases/repository.php",
     ]
 ];

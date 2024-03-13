@@ -45,13 +45,20 @@
                 <p class="text-dark">In eget euismod nisl. Interdum et malesuada fames ac ante ipsum primis in faucibus</p>
             </div>
         </div>
-    </div>
-    <div class="d-flex justify-content-start">
-        <a href="{{ourcases.allurl}}" class="btn btn-primary">See More</a>
+        <div class="d-flex justify-content-start">
+            <a href="{{ourcases.allurl}}" class="btn btn-primary">See More</a>
+        </div>
     </div>
 </div>
 
 <style>
+.study-cases {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 1rem;
+}
+
 .study-case-img {
     width: 80px;
     max-width: 200px;

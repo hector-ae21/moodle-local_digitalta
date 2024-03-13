@@ -31,7 +31,6 @@
     });
 
     document.getElementById("tag_search_text").addEventListener("change", function(e) {
-        console.log("e target value", e.target.value);
         searchTags(e.target.value);
     });
 
@@ -40,7 +39,6 @@
         
 
         tags.forEach(tag => {
-            console.log("tag", tag);
             var p = tag.querySelector('p');
             if (p.textContent.toLowerCase().includes(name.toLowerCase())) {
                 tag.style.display = 'block';

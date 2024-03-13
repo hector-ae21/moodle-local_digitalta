@@ -43,12 +43,14 @@ if (!empty($cases_metadata)) {
         $object->description = local_dta\utils\StringUtils::truncateHtmlText($object->description, 100);
         return $object;
     }, $cases_metadata));
+    $cases= array_filter ($cases, function($case) {
+        return $case->status == 1;
+    });
 }
 
 $templateContext = [
     "user" => $user,
-    "cases" => $cases,
-    "url_create_case" => $CFG->wwwroot . '/local/dta/pages/cases/manage.php'
+    "cases" => $cases
 ];
 
 echo $OUTPUT->render_from_template('local_dta/cases/repository', $templateContext);

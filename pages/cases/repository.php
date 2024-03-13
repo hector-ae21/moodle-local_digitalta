@@ -25,6 +25,7 @@ $PAGE->set_url(new moodle_url('/local/dta/pages/cases/repository.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->experiences_title);
 $PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/masonry', 'init');
 
 echo $OUTPUT->header();
 

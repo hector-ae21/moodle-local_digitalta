@@ -143,6 +143,18 @@ async function showDeleteSectionModal(sectionid) {
 }
 
 /**
+ * Show save case modal
+ * @return {void}
+ */
+async function showSaveCase() {
+    const saveModal = await ModalFactory.create({
+        title: get_string("ourcases_modal_save_title", "local_dta"),
+        body: Templates.render('local_dta/ourcases/manage-save-modal', {}),
+    });
+    saveModal.show();
+}
+
+/**
  * Delete text section
  * @return {void}
  */
@@ -200,6 +212,10 @@ function setEventListeners() {
     // Delete section
     $(document).on('click', '#confirmDelete', function() {
         deleteSection();
+    });
+    // Save button
+    $(document).on('click', '#save-case-button', function() {
+        showSaveCase();
     });
 
 }

@@ -36,7 +36,7 @@ if ($id) {
     
 
     if (!$ourcase = OurCases::get_case_by_experience($id)) {
-        $ourcase = OurCases::add_case($id, date("Y-m-d H:i:s"), $USER->id);
+        $ourcase = OurCases::add_with_experience($id, date("Y-m-d H:i:s"), $USER->id);
     }
 
     $sections = array_values(OurCases::get_sections_text($ourcase->id));
@@ -52,15 +52,12 @@ if ($id) {
         'ourcase' => $ourcase,
     ];
 
-
     $PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init');
 
-    echo $OUTPUT->render_from_template('local_dta/ourcases/manage', $templateContext);
+    echo $OUTPUT->render_from_template('local_dta/ourcases/manage-with-experience', $templateContext);
 }else{
 
-
-    $ourcase = OurCases::add_empty_case(date("Y-m-d H:i:s"), $USER->id);
-
+    $ourcase = OurCases::add_without_experience(date("Y-m-d H:i:s"), $USER->id);
     
     if (!$section_header = OurCases::get_section_header($ourcase->id)) {
         throw new moodle_exception('invalidourcasessection', 'local_dta');
@@ -74,10 +71,9 @@ if ($id) {
         'ourcase' => $ourcase,
     ];
 
-
     $PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init');
 
-    echo $OUTPUT->render_from_template('local_dta/ourcases/manage-not-found', $templateContext);
+    echo $OUTPUT->render_from_template('local_dta/ourcases/manage-without-experience', $templateContext);
 
 }
 

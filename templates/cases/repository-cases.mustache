@@ -1,18 +1,15 @@
 <div class="col-12">
     <div class="study-cases">
-
-
-        <div class="study-case d-flex"> 
-            <div class="study-case-img w-100 overflow-hidden">
-                <img class="img-fluid embed-responsive-item"
-                    alt="Study Case 0"
-                    src="https://digitalta.eu/wp-content/uploads/2023/12/portada.png"></img>
+        {{#cases}}
+        <div class="study-case d-flex m-4 " style="border-bottom: 1px solid black;"> 
+            <div class="study-case-img w-25 overflow-hidden" style="object-fit: cover; max-height: 150px; max-width: 250px;">
+                <img class="img-fluid embed-responsive-item" alt="Study Case 0" src="https://digitalta.eu/wp-content/uploads/2022/11/logo-digitalta.svg" >
             </div>
             <div class="pl-2">
-                <h4>Study Case 0</h4>
-                <p class="text-dark">In eget euismod nisl. Interdum et malesuada fames ac ante ipsum primis in faucibus</p>
+                <h4>{{title}}</h4>
+                <p class="text-dark">{{{description}}}</p>
             </div>
         </div>
-
+        {{/cases}}
     </div>
 </div>

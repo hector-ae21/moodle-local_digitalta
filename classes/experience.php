@@ -235,6 +235,6 @@ class Experience
      */
     public function get_url()
     {
-        return new \moodle_url('/local/dta/pages/myexperience/view.php', ['id' => $this->id]);
+        return new \moodle_url('/local/dta/pages/experiences/view.php', ['id' => $this->id]);
     }
 }

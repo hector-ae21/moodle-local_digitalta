@@ -185,9 +185,7 @@ function changeStatusToComplete() {
 
     ourcaseEdit(args).then((data) => {
         if (data.result) {
-            // TODO: Redirect to the case view
-            // eslint-disable-next-line no-console
-            console.log(data);
+            window.location.href = '/local/dta/pages/cases/repository.php';
         }
         return;
     }).fail(Notification.exception);

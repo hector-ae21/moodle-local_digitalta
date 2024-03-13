@@ -48,6 +48,17 @@ class OurCases
         global $DB;
         return $DB->get_records(self::$table);
     }
+
+    /**
+     * Get active cases 
+     *
+     * @return array Returns an array of records
+     */
+    public static function get_active_cases()
+    {
+        global $DB;
+        return $DB->get_records(self::$table , ['status' => 1]);
+    }
     /**
      * Get a specific case
      *

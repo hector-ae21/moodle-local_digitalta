@@ -16,11 +16,11 @@
       <input class="input" type="text" name="experiencetitle" placeholder="{{#str}}ourcases_repository_placeholder, local_dta{{/str}}" />
     </div>
 
-      <button class="post-button">
+      <a class="post-button" href="{{url_create_case}}">
         {{#str}}experiences_post_button, local_dta{{/str}}
-      </button>
+      </a>
     </form>
   </div>
   <hr>
-    {{> local_dta/cases/repository-list-cases}}
+    {{> local_dta/cases/repository-cases}}
 </div>

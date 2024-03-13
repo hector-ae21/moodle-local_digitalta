@@ -36,10 +36,11 @@ $string['experiences_title'] = 'Experiences';
 $string['experiences_post_button'] = 'Post';
 $string['experiences_post_placeholder'] = 'Tell us your experience';
 
+// Profile
+$string['profile_header'] = 'My Experience';
+$string['profile_title'] = 'My Experience';
 
 // My Experience 
-$string['myexperience_header'] = 'My Experience';
-$string['myexperience_title'] = 'My Experience';
 $string['myexperience_add_new_experience'] = 'Add new experience';
 $string['myexperience_add_comment'] = 'Add a new comment...';
 $string['myexperience_picture_alt'] = 'Experience picture';
@@ -51,7 +52,12 @@ $string['ourcases_header_description'] = 'Case description';
 $string['ourcases_header_action_button'] = 'Edit case';
 $string['ourcases_section_text_delete_modal_title'] = 'Delete selected section';
 $string['ourcases_section_text_delete_modal_body'] = 'Are you sure you want to delete this section?';
-$string['ourcases_section_text_edit_placeholder'] = 'Add a new study case...';
+$string['ourcases_button_save'] = 'Save case';
+$string['ourcases_modal_save_title'] = 'Save case';
+$string['ourcases_modal_save_body'] = 'Are you ready to save this case?';
+
+
+
 
 
 // Ourcases repository
@@ -71,3 +77,4 @@ $string['edit'] = 'Edit';
 $string['delete'] = 'Delete';
 $string['create_case'] = 'Create case';
 $string['cancel'] = 'Cancel';
+$string['save'] = 'Save';

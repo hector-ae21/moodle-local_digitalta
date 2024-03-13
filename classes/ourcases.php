@@ -91,7 +91,7 @@ class OurCases
      * @param bool $status Status of the case
      * @return bool|int Returns ID of the inserted record if successful, false otherwise
      */
-    public static function add_case($experienceid, $date, $userid, $status = 0)
+    public static function add_with_experience($experienceid, $date, $userid, $status = 0)
     {
         global $DB;
         if (empty($experienceid) || empty($date) || empty($userid)) {
@@ -138,7 +138,7 @@ class OurCases
      * @param bool $status Status of the case
      * @return bool|int Returns ID of the inserted record if successful, false otherwise
      */
-    public static function add_empty_case($date, $userid, $status = 0)
+    public static function add_without_experience($date, $userid, $status = 0)
     {
         global $DB;
         if (empty($date) || empty($userid)) {

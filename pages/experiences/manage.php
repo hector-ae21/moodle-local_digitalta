@@ -35,7 +35,7 @@ global $CFG, $PAGE, $OUTPUT, $USER, $DB;
 $strings = get_strings(['form_experience_header'], "local_dta");
 
 $context = context_system::instance();
-$PAGE->set_url('/local/dta/pages/myexperience/manage.php', ['id' => $id]);
+$PAGE->set_url('/local/dta/pages/experiences/manage.php', ['id' => $id]);
 $PAGE->set_context($context);
 $PAGE->set_title($strings->form_experience_header);
 $PAGE->set_heading($strings->form_experience_header);
@@ -43,7 +43,7 @@ $PAGE->set_heading($strings->form_experience_header);
 $form = new local_experiences_form();
 
 if ($form->is_cancelled()) {
-    redirect(new moodle_url('/local/dta/pages/myexperience/manage.php', ['id' => $id]));
+    redirect(new moodle_url('/local/dta/pages/experiences/manage.php', ['id' => $id]));
 } elseif ($data = $form->get_data()) {
 
     // Add the experience
@@ -69,8 +69,6 @@ if ($form->is_cancelled()) {
     if ($id) {
         // Get the experience data
         $experience = Experience::get_experience($id);
-
-        local_dta_check_permissions($experience, $USER);
 
         // Get the current picture draft id
         $experience->picture = file_get_submitted_draft_itemid('picture');

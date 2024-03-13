@@ -25,7 +25,7 @@ $strings = get_strings(['form_experience_delete_header', 'form_experience_delete
 $id = required_param('id', PARAM_INT);
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
 
-$PAGE->set_url(new moodle_url('/local/dta/pages/myexperience/delete.php', ['id' => $id]));
+$PAGE->set_url(new moodle_url('/local/dta/pages/experiences/delete.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->form_experience_delete_header);
 
@@ -42,12 +42,12 @@ if ($delete === md5($experience->date)) {
     if (!Experience::delete_experience($experience)) {
         print_error('errordeleteexperience', 'local_dta');
     }
-    redirect(new moodle_url('/local/dta/pages/myexperience/dashboard.php'), get_string('form_experience_delete_yes', 'local_dta'));
+    redirect(new moodle_url('/local/dta/pages/experiences/dashboard.php'), get_string('form_experience_delete_yes', 'local_dta'));
     exit;
 }
 
-$continueurl = new moodle_url('/local/dta/pages/myexperience/delete.php', array('id' => $experience->id, 'delete' => md5($experience->date)));
-$backurl = new moodle_url('/local/dta/pages/myexperience/view.php', ['id' => $experience->id]);
+$continueurl = new moodle_url('/local/dta/pages/experiences/delete.php', array('id' => $experience->id, 'delete' => md5($experience->date)));
+$backurl = new moodle_url('/local/dta/pages/experiences/view.php', ['id' => $experience->id]);
 $continuebutton = new single_button(
     $continueurl,
     get_string('delete'),

@@ -36,10 +36,11 @@ $string['experiences_title'] = 'Experiences';
 $string['experiences_post_button'] = 'Post';
 $string['experiences_post_placeholder'] = 'Tell us your experience';
 
+// Profile
+$string['profile_header'] = 'My Experience';
+$string['profile_title'] = 'My Experience';
 
 // My Experience 
-$string['myexperience_header'] = 'My Experience';
-$string['myexperience_title'] = 'My Experience';
 $string['myexperience_add_new_experience'] = 'Add new experience';
 $string['myexperience_add_comment'] = 'Add a new comment...';
 $string['myexperience_picture_alt'] = 'Experience picture';

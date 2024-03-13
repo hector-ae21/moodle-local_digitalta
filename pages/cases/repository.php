@@ -21,10 +21,11 @@ global $CFG, $PAGE, $OUTPUT;
 $strings = get_strings(['experiences_header', 'experiences_title'], "local_dta");
 
 // Setea el título de la página
-$PAGE->set_url(new moodle_url('/local/dta/pages/community/dashboard.php'));
+$PAGE->set_url(new moodle_url('/local/dta/pages/cases/repository.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->experiences_title);
 $PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/masonry', 'init');
 
 echo $OUTPUT->header();
 
@@ -46,11 +47,11 @@ $templateContext = [
         "showimageprofile" => true,
         "showcontrols" => false,
         "showcontrolsadmin" => is_siteadmin($USER),
-        "addurl" => $CFG->wwwroot . "/local/dta/pages/myexperience/manage.php",
-        "viewurl" => $CFG->wwwroot . '/local/dta/pages/myexperience/view.php?id='
+        "addurl" => $CFG->wwwroot . "/local/dta/pages/cases/manage.php",
+        "viewurl" => $CFG->wwwroot . '/local/dta/pages/experience/view.php?id='
     ]
 ];
 
-echo $OUTPUT->render_from_template('local_dta/community/dashboard', $templateContext);
+echo $OUTPUT->render_from_template('local_dta/cases/repository', $templateContext);
 
 echo $OUTPUT->footer();

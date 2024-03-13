@@ -22,16 +22,18 @@ $id = optional_param('id', 0, PARAM_INT);
 
 $strings = get_strings(['experiences_header', 'experiences_title'], "local_dta");
 
-$PAGE->set_url(new moodle_url('/local/dta/pages/ourcases/manage.php', ['id' => $id]));
+$PAGE->set_url(new moodle_url('/local/dta/pages/cases/manage.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->experiences_title);
+$PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init');
+
 
 echo $OUTPUT->header();
 
 if ($id) {
 
     if(!$experience = Experience::get_experience($id)) {
-        throw new moodle_exception('invalidaourcases', 'local_dta');
+        throw new moodle_exception('invalidcases', 'local_dta');
     }
     
 
@@ -42,7 +44,7 @@ if ($id) {
     $sections = array_values(OurCases::get_sections_text($ourcase->id));
 
     if (!$section_header = OurCases::get_section_header($ourcase->id)) {
-        throw new moodle_exception('invalidourcasessection', 'local_dta');
+        throw new moodle_exception('invalidcasessection', 'local_dta');
     }
 
     $templateContext = [
@@ -52,10 +54,7 @@ if ($id) {
         'ourcase' => $ourcase,
     ];
 
-
-    $PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init');
-
-    echo $OUTPUT->render_from_template('local_dta/ourcases/manage', $templateContext);
+    echo $OUTPUT->render_from_template('local_dta/cases/manage', $templateContext);
 }else{
 
 
@@ -63,7 +62,7 @@ if ($id) {
 
     
     if (!$section_header = OurCases::get_section_header($ourcase->id)) {
-        throw new moodle_exception('invalidourcasessection', 'local_dta');
+        throw new moodle_exception('invalidcasessection', 'local_dta');
     }
 
     $sections = array_values(OurCases::get_sections_text($ourcase->id));
@@ -74,11 +73,7 @@ if ($id) {
         'ourcase' => $ourcase,
     ];
 
-
-    $PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init');
-
-    echo $OUTPUT->render_from_template('local_dta/ourcases/manage-not-found', $templateContext);
-
+    echo $OUTPUT->render_from_template('local_dta/cases/manage-not-found', $templateContext);
 }
 
 echo $OUTPUT->footer();

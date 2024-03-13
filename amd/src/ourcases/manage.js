@@ -12,7 +12,7 @@ let sectionTextModal;
  * @return {void}
  */
 function addTextSection() {
-    Templates.render('local_dta/ourcases/section-text-edit', {
+    Templates.render('local_dta/cases/section-text-edit', {
         id: new Date().getTime(),
         description: null,
         exist: true
@@ -30,7 +30,7 @@ function changeSectionHeaderToEdit(toView = false) {
     const id = $('#section-header-id').val();
     const title = $('#section-header-title').val();
     const description = $('#section-header-description').val();
-    const template = toView ? 'local_dta/ourcases/section-header-edit' : 'local_dta/ourcases/section-header-view';
+    const template = toView ? 'local_dta/cases/section-header-edit' : 'local_dta/cases/section-header-view';
     Templates.render(template,
      {sectionheader: {id, title, description}}).then((html) => {
         return $('#sections-header').html(html);
@@ -46,7 +46,7 @@ function changeSectionHeaderToEdit(toView = false) {
  */
 function changeSectionToEdit(toView = false, id) {
     const description = $(`#content_${id}`).val();
-    const template = toView ? 'local_dta/ourcases/section-text-edit' : 'local_dta/ourcases/section-text-view';
+    const template = toView ? 'local_dta/cases/section-text-edit' : 'local_dta/cases/section-text-view';
     Templates.render(template,
      {id, description}).then((html) => {
         return $(`#section_${id}`).replaceWith(html);
@@ -62,7 +62,7 @@ function changeSectionToEdit(toView = false, id) {
  */
 function changeSectionToNewId(id, toId) {
     const description = $(`#content_${id}`).val();
-    Templates.render("local_dta/ourcases/section-text-view",
+    Templates.render("local_dta/cases/section-text-view",
         {id: toId, description, exist: true}).then((html) => {
            return $(`#section_${id}`).replaceWith(html);
     }).fail(Notification.exception);
@@ -136,7 +136,7 @@ function removeSection(sectionid) {
 async function showDeleteSectionModal(sectionid) {
     sectionTextModal = await ModalFactory.create({
         title: get_string("ourcases_section_text_delete_modal_title", "local_dta"),
-        body: Templates.render('local_dta/ourcases/section-text-modal', {modalDeleteId: sectionid}),
+        body: Templates.render('local_dta/casessection-text-modal', {modalDeleteId: sectionid}),
     });
     $("#modal_delete_id").val();
     sectionTextModal.show();

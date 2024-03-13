@@ -1,12 +1,9 @@
 <div class="container-fluid">
-  <div class="wrapper">
-    <h1>{{#str}}myexperience_title, local_dta{{/str}}</h1>
-  </div>
   <div class="row align-items-center">
     <div class="col-xl-12 col-lg-12 col-md-12 col-12">
       <div class="card smooth-shadow-sm">
         <div class="pt-20 card-img-top bg-primary"></div>
-        <div class="d-flex align-items-center justify-content-between pt-4 pb-6 px-4">
+        <div class="d-flex align-items-center justify-content-between pb-6 px-4">
           <div class="d-flex align-items-center">
             <div
               class="avatar-xxl avatar-indicators avatar-online me-2 position-relative d-flex justify-content-end align-items-end mt-n10">
@@ -25,12 +22,14 @@
           <div class="d-flex align-items-center">
             <a href="{{user.editurl}}" class="btn btn-outline-secondary m-1 d-md-block">{{#str}} editmyprofile, core
               {{/str}}</a>
-            <a href="{{experiences.addurl}}" class="btn btn-outline-primary m-1 d-md-block">{{#str}}
-              myexperience_add_new_experience, local_dta {{/str}}</a>
+            {{#experience.showaddbutton}}
+                <a href="{{experiences.addurl}}" class="btn btn-outline-primary m-1 d-md-block">{{#str}}
+                    myexperience_add_new_experience, local_dta {{/str}}</a>
+            {{/experience.showaddbutton}}   
           </div>
         </div>
       </div>
     </div>
   </div>
-  {{> local_dta/card-list}}
+  {{> local_dta/experiences/card-list}}
 </div>

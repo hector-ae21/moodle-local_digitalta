@@ -15,7 +15,7 @@
     {{/dislikes}}
 
     {{#comments}}
-        <button id="comment-button" data-action="view-comment" data-id="{{id}}" class="btn btn-outline-secondary btn-sm" data-toggle="collapse" data-target="#commentsCollapse" aria-expanded="false" aria-controls="commentsCollapse">
+        <button id="comment-button" data-action="view-comment" data-id="{{id}}" class="btn btn-outline-secondary btn-sm" data-toggle="collapse" data-target="#commentsCollapse" aria-expanded="false" aria-controls="commentsCollapse" {{^isview}} onclick="window.open('{{experiences.viewurl}}{{id}}#comments', '_self')" {{/isview}}>
         <i class="fa fa-comment"></i>
         <span>{{#count}}{{.}}{{/count}}</span>
         </button>

@@ -118,6 +118,7 @@ class Experience
             $user = get_complete_user_data("id", $experience->userid);
             $picture = new \user_picture($user);
             $picture->size = 101;
+            $experience->date = date("d/m/Y", strtotime($experience->date));
             $experience->user = [
                 'id' => $user->id,
                 'name' => $user->firstname . " " . $user->lastname,

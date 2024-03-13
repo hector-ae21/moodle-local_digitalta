@@ -47,13 +47,15 @@ $templateContext = [
         "showcontrols" => false,
         "showcontrolsadmin" => is_siteadmin($USER),
         "addurl" => $CFG->wwwroot . "/local/dta/pages/myexperience/manage.php",
-        "viewurl" => $CFG->wwwroot . '/local/dta/pages/myexperience/view.php?id='
+        "viewurl" => $CFG->wwwroot . '/local/dta/pages/myexperience/view.php?id=',
+        "allurl" => $CFG->wwwroot . "/local/dta/pages/experiences/dashboard.php",
     ],
     "tags" => $tags,
     "ourcases" => [
         "title" => "Our cases",
         "description" => "Discover the experiences of our community",
-        "url" => $CFG->wwwroot . "/local/dta/pages/experience/list.php"
+        "url" => $CFG->wwwroot . "/local/dta/pages/experience/list.php",
+        "allurl" => $CFG->wwwroot . "/local/dta/pages/cases/repository.php",
     ]
 ];
 

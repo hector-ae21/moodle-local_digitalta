@@ -8,10 +8,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/experience.php');
 require_once(__DIR__ . './../../classes/ourcases.php');
 
-use local_dta\Experience;
 use local_dta\OurCases;
 
 require_login();
@@ -25,23 +23,36 @@ $strings = get_strings(['experiences_header', 'experiences_title'], "local_dta")
 $PAGE->set_url(new moodle_url('/local/dta/pages/cases/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->experiences_title);
-$PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init');
+
 
 echo $OUTPUT->header();
 
-if (!$ourcase = OurCases::get_case_by_experience($id)) {
+if (!$ourcase = OurCases::get_case($id)) {
     throw new moodle_exception('invalidcases', 'local_dta');
 }
 
-$sections = array_values(OurCases::get_sections_text($ourcase->id , true) );
+$sections = array_values(OurCases::get_sections_text($ourcase->id));
 
+if (!$section_header = OurCases::get_section_header($ourcase->id)) {
+    throw new moodle_exception('invalidcasessection', 'local_dta');
+}
+
+$user = get_complete_user_data("id", $ourcase->userid);
+$picture = new user_picture($user);
+$picture->size = 101;
+$user->imageurl = $picture->get_url($PAGE)->__toString();
 
 $templateContext = [
     'sections' => $sections,
+    'sectionheader' => $section_header,
     'ourcase' => $ourcase,
+    'editurl' => new moodle_url('/local/dta/pages/cases/edit.php', ['id' => $ourcase->id]),
+    'deleteurl' => new moodle_url('/local/dta/pages/cases/delete.php', ['id' => $ourcase->id]),
+    'user' => $user,
 ];
 
-echo $OUTPUT->render_from_template('local_dta/cases/manage-with-experience', $templateContext);
+
+echo $OUTPUT->render_from_template('local_dta/cases/view/view', $templateContext);
 
 
 echo $OUTPUT->footer();

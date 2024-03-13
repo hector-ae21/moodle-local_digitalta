@@ -30,35 +30,23 @@
         {{#data}}
             <div class="card-body">
                 <h4 class="card-title text-primary">{{title}}</h4>
-
                 
-                <div class="d-flex align-items-start mb-1">
+
+                <div class="d-flex align-items-start">
                     <span class="text-muted">
                         <i class="fa fa-calendar me-1"></i>
                         {{date}}
                     </span>
                 </div>
-                <div>
-                    <!-- Tags aquí -->
-                    <span class="badge bg-primary">Tag1</span>
-                    <span class="badge bg-danger">Tag2</span>
-                    
-                    <span class="badge bg-primary">Tag1</span>
-                    <span class="badge bg-danger">Tag2</span>
-                    
-                    <span class="badge bg-primary">Tag1</span>
-                    <span class="badge bg-danger">Tag2</span>
-                    <!-- Añade más etiquetas según sea necesario -->
-                </div>
-
-
 
                 <p class="card-text">{{{description}}}</p>
+            </div>
+                {{> local_dta/experiences/tags}}
+            </div>
                 {{#reactions}}
                     {{> local_dta/experiences/reactions-buttons}}
                 {{/reactions}}
             </div>
-        
     
 
             <div class="collapse" id="commentsCollapse">

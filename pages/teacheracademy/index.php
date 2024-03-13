@@ -11,12 +11,14 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
 require_once(__DIR__ . './../../classes/tags.php');
 require_once(__DIR__ . './../../classes/ourcases.php');
+require_once(__DIR__ . './../../classes/utils/string_utils.php');
 
 require_login();
 
 use local_dta\Experience;
 use local_dta\Tags;
 use local_dta\OurCases;
+use local_dta\utils\StringUtils;
 
 global $CFG, $PAGE, $OUTPUT;
 
@@ -31,6 +33,13 @@ $PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
 echo $OUTPUT->header();
 
 $experiences = Experience::get_all_experiences(false);
+if(count($experiences) > 6){
+    $experiences = array_slice($experiences, 0, 5);
+}
+$experiences = array_map(function ($experience) {
+    $experience->description = StringUtils::truncateHtmlText($experience->description);
+    return $experience;
+}, $experiences);
 $tags = Tags::getAllTags();
 $cases = OurCases::get_cases();
 
@@ -41,6 +50,7 @@ $user->imageurl = $picture->get_url($PAGE)->__toString();
 
 $templateContext = [
     "user" => $user,
+    "themepixurl" => $CFG->wwwroot . "/theme/dta/pix/",
     "experiences" => [
         "data" => $experiences,
         "showimageprofile" => true,

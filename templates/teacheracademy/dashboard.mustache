@@ -35,14 +35,3 @@ h2 {
   max-height: 136px;
 }
 </style>
-
-{{#js}}
-require(['local_dta/masonry', 'local_dta/utils'], function (masonry, utils) {
-  utils.waitForElm('.grid-masonry .item').then((elm) => {
-    masonry.init('.grid-masonry', {
-      itemSelector: '.item',
-      percentPosition: true
-    });
-  });
-});
-{{/js}}

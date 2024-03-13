@@ -1,6 +1,6 @@
 <div class="mb-5 experience-card">
   {{#pictureurl}}
-    <div class="experience-card-img-container border-bottom">
+    <div class="experience-card-img-container border-bottom d-flex justify-content-center">
     <a href="{{experiences.viewurl}}{{id}}">
       <img
         src="{{pictureurl}}"
@@ -11,6 +11,18 @@
     </a>
     </div>
   {{/pictureurl}}
+  {{^pictureurl}}
+    <div class="experience-card-img-container border-bottom d-flex justify-content-center">
+    <a href="{{experiences.viewurl}}{{id}}">
+      <img
+        src="{{themepixurl}}screenshot.png"
+        alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
+        class="img-fluid experience-card-img p-0"
+        style="object-fit: cover; max-height: 200px, width: 100%;"
+      />
+    </a>
+    </div>
+ {{/pictureurl}}
   <div class="experience-card-body">
     <h4 class="mb-1 experience-card-title">
     <a href="{{experiences.viewurl}}{{id}}">{{title}}</a>

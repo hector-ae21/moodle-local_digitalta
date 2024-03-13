@@ -1,10 +1,10 @@
 <div class="container-fluid">
   <div class="home w-100 d-flex flex-column">
     <!-- Themes -->
-    <div class="theme-container shadow-sm p-3 mb-5 bg-body rounded">
+    <div class="theme-container p-3 mb-5 bg-body rounded">
     {{> local_dta/teacheracademy/themes-list}}
     </div>
-    <div class="w-100 h-auto mb-3 shadow-sm p-3 mb-5 bg-body rounded">
+    <div class="w-100 h-auto mb-3 p-3 mb-5 bg-body rounded">
       <div class="d-flex h-auto">
         <div class="summary-text col-md-4 pl-0 pr-md-5 pr-0">
           {{> local_dta/teacheracademy/news-list}}
@@ -17,7 +17,7 @@
     
     
     <!-- Recent Experiences & Study Cases -->
-    <div class="w-100 mb-3 d-flex flex-row text-primary shadow-sm p-3 mb-5 bg-body rounded">
+    <div class="w-100 mb-3 d-flex flex-row text-primary p-3 mb-5 bg-body rounded">
       <!-- Recent Experiences -->
       {{> local_dta/teacheracademy/recent-card-list }}
       <!-- Study Cases -->
@@ -35,3 +35,14 @@ h2 {
   max-height: 136px;
 }
 </style>
+
+{{#js}}
+require(['local_dta/masonry', 'local_dta/utils'], function (masonry, utils) {
+  utils.waitForElm('.grid-masonry .item').then((elm) => {
+    masonry.init('.grid-masonry', {
+      itemSelector: '.item',
+      percentPosition: true
+    });
+  });
+});
+{{/js}}

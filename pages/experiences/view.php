@@ -63,6 +63,7 @@ $template_context = [
     'isview' => true,
     'isadmin' => is_siteadmin($USER),
     'showcontrols' => $experience->userid == $USER->id,
+    'iconsurl' => $CFG->wwwroot . '/local/dta/pages/icons/',
     'createcaseurl' => $CFG->wwwroot . "/local/dta/pages/cases/manage.php?id=",
 ];
 

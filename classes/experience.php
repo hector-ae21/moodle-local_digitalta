@@ -126,6 +126,14 @@ class Experience
                 'imageurl' => $picture->get_url($PAGE)->__toString(),
                 'profileurl' => new \moodle_url('/user/profile.php', ['id' => $user->id])
             ];
+            $tag1 = new stdClass();
+            $tag1->name = $experience->visible ? 'Public' : 'Private';
+            $tag1->color = '#b0b0b0';
+            $tag2 = new stdClass();
+            $tag2->name = $experience->lang;
+            $tag2->color = '#b0b0b0';
+            $experience->tags = array_values(array($tag1, $tag2));
+
             $experience->pictureurl = self::get_picture_url($experience);
             $experience->reactions = Reaction::get_reactions_for_render_experience($experience->id);
         }

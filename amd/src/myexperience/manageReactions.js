@@ -85,7 +85,7 @@ function updateCommentsUI() {
         comment: comment.comment,
         userfullname: comment.user.fullname,
       }));
-      Template.render("local_dta/experience/comments", { comments }).then((html) => {
+      Template.render("local_dta/experiences/comments", { comments }).then((html) => {
         $(SELECTORS.COMMENTS_LIST).html(html);
       });
       $(SELECTORS.ACTIONS.viewComment + SELECTORS.DATA.id(experienceid) + " span").text(response.comments.length);

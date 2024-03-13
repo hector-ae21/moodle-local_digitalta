@@ -3,7 +3,7 @@
     <h2 class="text-primary">Themes</h2>
     {{> local_dta/teacheracademy/themes-search }}
     </div>
-    <marquee style="border-radius: 50px;">
+    <marquee style="border-radius: 50px;" onmouseover="this.stop();" onmouseout="this.start();">
         <div class="themes d-flex flex-col justify-content-start">
             {{#tags}}
                 {{> local_dta/teacheracademy/themes-item }}

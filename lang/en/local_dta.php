@@ -51,6 +51,7 @@ $string['ourcases_header_description'] = 'Case description';
 $string['ourcases_header_action_button'] = 'Edit case';
 $string['ourcases_section_text_delete_modal_title'] = 'Delete selected section';
 $string['ourcases_section_text_delete_modal_body'] = 'Are you sure you want to delete this section?';
+$string['ourcases_section_text_edit_placeholder'] = 'Add a new study case...';
 
 
 // Ourcases repository

@@ -48,7 +48,8 @@ if (!empty($cases_metadata)) {
 
 $templateContext = [
     "user" => $user,
-    "cases" => $cases
+    "cases" => $cases,
+    "url_create_case" => $CFG->wwwroot . '/local/dta/pages/cases/manage.php'
 ];
 
 echo $OUTPUT->render_from_template('local_dta/cases/repository', $templateContext);

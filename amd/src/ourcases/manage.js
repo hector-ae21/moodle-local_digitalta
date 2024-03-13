@@ -194,7 +194,6 @@ function changeStatusToComplete() {
 
 /**
  * Set event listeners for the module.
- * @param {string} urlRepository - The url of the repository.
  * @return {void}
  * */
 function setEventListeners() {

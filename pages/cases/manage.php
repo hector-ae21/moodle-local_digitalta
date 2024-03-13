@@ -27,7 +27,6 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->experiences_title);
 $PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init');
 
-
 echo $OUTPUT->header();
 
 if ($id) {
@@ -36,7 +35,6 @@ if ($id) {
         throw new moodle_exception('invalidcases', 'local_dta');
     }
     
-
     if (!$ourcase = OurCases::get_case_by_experience($id)) {
         $ourcase = OurCases::add_with_experience($id, date("Y-m-d H:i:s"), $USER->id);
     }
@@ -54,7 +52,7 @@ if ($id) {
         'ourcase' => $ourcase,
     ];
 
-    echo $OUTPUT->render_from_template('local_dta/ourcases/manage-with-experience', $templateContext);
+    echo $OUTPUT->render_from_template('local_dta/cases/manage-with-experience', $templateContext);
 }else{
 
     $ourcase = OurCases::add_without_experience(date("Y-m-d H:i:s"), $USER->id);
@@ -71,7 +69,7 @@ if ($id) {
         'ourcase' => $ourcase,
     ];
 
-    echo $OUTPUT->render_from_template('local_dta/ourcases/manage-without-experience', $templateContext);
+    echo $OUTPUT->render_from_template('local_dta/cases/manage-without-experience', $templateContext);
 
 }
 

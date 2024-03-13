@@ -3,7 +3,6 @@
   <div class="card">
     <div class="card-body">
       <div class="row">
-<<<<<<<< HEAD:templates/cases/manage-with-experience.mustache
         <!-- Sidebar -->
         <div class="col-md-3 sidebar">
           <h4>{{#str}}experience, local_dta{{/str}}</h4>
@@ -14,23 +13,14 @@
         <div class="col-md-9">
           <div class="row">
             <div class="col-md-12" id="sections-header">
-              {{#sectionheader}} {{> local_dta/ourcases/section-header-view }} {{/sectionheader}}
+              {{#sectionheader}} {{> local_dta/cases/section-header-view }} {{/sectionheader}}
             </div>
             <div class="col-md-12" id="sections-body">
-              {{#sections}} {{> local_dta/ourcases/section-text-view}} {{/sections}}
+              {{#sections}} {{> local_dta/cases/section-text-view}} {{/sections}}
             </div>
-            <div class="col-md-12">{{>local_dta/ourcases/section-add }}</div>
+            <div class="col-md-12">{{>local_dta/cases/section-add }}</div>
           </div>
         </div>
-========
-        <div class="col-md-12" id="sections-header">
-          {{#sectionheader}} {{> local_dta/cases/section-header-view }} {{/sectionheader}} 
-        </div>
-        <div class="col-md-12" id="sections-body">
-          {{#sections}} {{> local_dta/cases/section-text-view}} {{/sections}}
-        </div>
-        <div class="col-md-12">{{>local_dta/cases/section-add }}</div>
->>>>>>>> 0d07e89e6c690ecfc45d4d7e92745ff2197774cc:templates/cases/manage.mustache
       </div>
     </div>
   </div>

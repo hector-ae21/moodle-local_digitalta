@@ -149,7 +149,7 @@ async function showDeleteSectionModal(sectionid) {
 async function showSaveCase() {
     const saveModal = await ModalFactory.create({
         title: get_string("ourcases_modal_save_title", "local_dta"),
-        body: Templates.render('local_dta/ourcases/manage-save-modal', {}),
+        body: Templates.render('local_dta/cases/manage-save-modal', {}),
     });
     saveModal.show();
 }

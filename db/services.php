@@ -68,4 +68,14 @@ $functions = [
         'requirelogin' => false,
         'ajax'        => true,
     ],
+    'local_dta_ourcases_edit' => [
+        'classname'   => 'external_ourcases_edit',
+        'methodname'  => 'ourcases_edit',
+        'classpath'   => 'local/dta/classes/webservices/external_ourcases_edit.php',
+        'description' => 'Edit an Our Case',
+        'type'        => 'write',
+        'requirelogin' => false,
+        'ajax'        => true,
+    ],
+    
 ];

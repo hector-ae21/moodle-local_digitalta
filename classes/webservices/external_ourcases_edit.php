@@ -62,8 +62,8 @@ class external_ourcases_edit extends external_api
     {
         return new external_single_structure(
             array(
-                'error' => new external_value(PARAM_TEXT, 'Error message if any'),
-                'result' => new external_value(PARAM_BOOL, 'True if success, false otherwise')
+                'error' => new external_value(PARAM_TEXT, 'Error message if any' , VALUE_OPTIONAL),
+                'result' => new external_value(PARAM_BOOL, 'True if success, false otherwise' , VALUE_OPTIONAL)
             )
         );
     }

@@ -29,11 +29,7 @@ $PAGE->requires->js_call_amd('local_dta/masonry', 'init');
 
 echo $OUTPUT->header();
 
-$experiences = Experience::get_all_experiences(false);
-$experiences = array_map(function ($experience) {
-    $experience->description = StringUtils::truncateHtmlText($experience->description);
-    return $experience;
-}, $experiences);
+
 
 $user = get_complete_user_data("id", $USER->id);
 $picture = new user_picture($user);
@@ -42,14 +38,7 @@ $user->imageurl = $picture->get_url($PAGE)->__toString();
 
 $templateContext = [
     "user" => $user,
-    "experiences" => [
-        "data" => $experiences,
-        "showimageprofile" => true,
-        "showcontrols" => false,
-        "showcontrolsadmin" => is_siteadmin($USER),
-        "addurl" => $CFG->wwwroot . "/local/dta/pages/cases/manage.php",
-        "viewurl" => $CFG->wwwroot . '/local/dta/pages/experience/view.php?id='
-    ]
+
 ];
 
 echo $OUTPUT->render_from_template('local_dta/cases/repository', $templateContext);

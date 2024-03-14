@@ -1,0 +1,17 @@
+{
+    "name": "franklin.lopez/dta",
+    "autoload": {
+        "psr-4": {
+            "FranklinLopez\\Dta\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Franklin Alejando López Ramírez",
+            "email": "franklin.lopez@ct.uneatlantico.es"
+        }
+    ],
+    "require": {
+        "tinymce/tinymce": "^6.8"
+    }
+}

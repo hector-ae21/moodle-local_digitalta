@@ -57,7 +57,11 @@ $string['ourcases_modal_save_title'] = 'Save case';
 $string['ourcases_modal_save_body'] = 'Are you ready to save this case?';
 
 
-
+// Experience delete form
+$string['form_case_delete_header'] = 'Delete case';
+$string['form_case_delete_confirm'] = 'Are you sure you want to delete this case?';
+$string['form_case_delete_yes'] = 'Case deleted successfully'; 
+$string['form_case_delete_no'] = 'No';
 
 
 // Ourcases repository

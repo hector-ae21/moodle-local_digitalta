@@ -46,7 +46,7 @@ $templateContext = [
     'sections' => $sections,
     'sectionheader' => $section_header,
     'ourcase' => $ourcase,
-    'editurl' => new moodle_url('/local/dta/pages/cases/edit.php', ['id' => $ourcase->id]),
+    'editurl' => new moodle_url('/local/dta/pages/cases/manage.php', ['caseid' => $ourcase->id]),
     'deleteurl' => new moodle_url('/local/dta/pages/cases/delete.php', ['id' => $ourcase->id]),
     'user' => $user,
 ];

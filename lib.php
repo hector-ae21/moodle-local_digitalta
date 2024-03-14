@@ -27,6 +27,20 @@ function local_dta_check_permissions($experience, $user)
 }
 
 /**
+ * check permissions to delete or edit a case owner or admin
+ * 
+ */
+function local_dta_check_permissions_case($case, $user)
+{
+    global $USER;
+    
+    if ($user->id == $case->userid  || is_siteadmin($USER)) {
+        return true;
+    }
+    return false;
+}
+
+/**
  * Serve the files from the myplugin file areas.
  *
  * @param stdClass $course The course object

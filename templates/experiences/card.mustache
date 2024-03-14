@@ -1,26 +1,32 @@
-<div class="mb-5 experience-card">
-  {{#pictureurl}}
-    <div class="experience-card-img-container border-bottom">
-    <a href="{{experiences.viewurl}}{{id}}">
-      <img
-        src="{{pictureurl}}"
-        alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
-        class="img-fluid experience-card-img p-0"
-        style="object-fit: cover; max-height: 200px, width: 100%;"
-      />
-    </a>
-    </div>
-  {{/pictureurl}}
-  <div class="experience-card-body">
-    <h4 class="mb-1 experience-card-title">
-    <a href="{{experiences.viewurl}}{{id}}">{{title}}</a>
-    </h4>
+<div class="experience-card">
+  <div class="exp-card-head">
     {{> local_dta/experiences/experience-metadata}}
-    <a href="{{experiences.viewurl}}{{id}}">
-    <div class="experience-description mb-3">{{{description}}}</div>
-    </a>
-      {{#reactions}}
-        {{> local_dta/experiences/reactions-buttons}}
-      {{/reactions}}
+  </div>
+  <div class="exp-card-body">
+    {{#pictureurl}}
+    <div class="exp-img-container border-bottom">
+      <a href="{{experiences.viewurl}}{{id}}">
+        <img
+          src="{{pictureurl}}"
+          alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
+          class="img-fluid experience-card-img p-0"
+          style="object-fit: cover; max-height: 200px, width: 100%;"
+        />
+      </a>
+    </div>
+    {{/pictureurl}}
+    <div class="experience-card-body">
+      <h4 class="mb-1 experience-card-title">
+      <a href="{{experiences.viewurl}}{{id}}">{{title}}</a>
+      </h4>
+      
+      <a href="{{experiences.viewurl}}{{id}}">
+      <div class="experience-description mb-3">{{{description}}}</div>
+    </div>
+  </div>
+  <div class="exp-card-action-btns">
+    {{#reactions}}
+      {{> local_dta/experiences/reactions-buttons}}
+    {{/reactions}}
   </div>
 </div>

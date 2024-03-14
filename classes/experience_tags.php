@@ -59,4 +59,18 @@ class ExperienceTag
                 WHERE et.experienceid = ?";
         return $db->get_records_sql($sql, array($experienceId));
     }
+
+    /**
+     * Get all experiences associated with a tag
+     * 
+     * @param int $tagId
+     * @return array
+     */
+    public static function getExperiencesForTag($tagId, $db) {
+        $sql = "SELECT e.*
+                FROM {digital_experience} e
+                JOIN {experience_tag} et ON e.id = et.experienceid
+                WHERE et.tagid = ?";
+        return $db->get_records_sql($sql, array($tagId));
+    }
 }

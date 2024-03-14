@@ -217,7 +217,7 @@ class OurCases
     }
 
     /**
-     * Delete a case
+     * Delete a case by ID and all its sections
      *
      * @param int $id ID of the case
      * @return bool Returns true if successful, false otherwise
@@ -225,9 +225,15 @@ class OurCases
     public static function delete_case($id)
     {
         global $DB;
+        if (empty($id)) {
+            return false;
+        }
+        // delete all sections
+        if (!$DB->delete_records(self::$table_section_text, ['ourcaseid' => $id])) {
+            return false;
+        }        
         return $DB->delete_records(self::$table, ['id' => $id]);
     }
-
 
     /**
      * Get the text of a section by section id order by sequence ignoring sequence 0

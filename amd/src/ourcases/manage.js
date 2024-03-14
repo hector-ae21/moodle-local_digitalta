@@ -69,7 +69,6 @@ function changeSectionToNewId(id, toId) {
 }
 
 
-
 /**
  * Set event listeners for the module.
  * @return {void}
@@ -155,7 +154,6 @@ async function showSaveCase() {
 }
 
 
-
 /**
  * Delete text section
  * @return {void}
@@ -208,6 +206,8 @@ function setEventListeners() {
     // Change the header section to edit mode
     $(document).on('click', '#header-to-edit-button', () => {
         changeSectionHeaderToEdit(true);
+        // eslint-disable-next-line no-console
+        console.log($("#section-header-description").val());
     });
     // Change the header section to view mode withour editing
     $(document).on('click', '#header-edit-close-button', () => {

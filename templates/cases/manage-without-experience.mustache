@@ -22,18 +22,13 @@
 .tox-promotion {
   display: none !important;
 }
-.tox-menubar {
-  display: none !important;
-}
-.tox-statusbar {
-  display: none !important;
-}
 </style>
 <script src="{{url_tiny}}" referrerpolicy="origin"></script>  
 {{#js}}
     setTimeout(() => {
         tinymce.init({
-            selector: 'textarea#section-header-description'
+            selector: 'textarea#section-header-description',
+              plugins: 'image , table',
         });
     }, 200);
     $(document).on('click', '#header-edit-button', () => {
@@ -44,6 +39,7 @@
         setTimeout(() => {
             tinymce.init({
                 selector: 'textarea#section-header-description'
+                plugins: 'image , table',
             });
         }, 200);
     });
@@ -67,7 +63,8 @@
           const id = $(this).data('id');
           const selector = `textarea#${id.toString().includes('content_') ? id : `content_${id}`}`;
             tinymce.init({
-                selector: `textarea#content_${id}`
+                selector: `textarea#content_${id}`,
+                plugins: 'image , table',
             });
         }, 200);
     });
@@ -75,7 +72,8 @@
         setTimeout(() => {
           const id = $('.card-body:has(textarea)').last().find('textarea').attr('id');
             tinymce.init({
-                selector: `textarea#${id}`
+                selector: `textarea#${id}`,
+              plugins: 'image , table',
             });
         }, 200);
     });

@@ -45,7 +45,7 @@ function changeSectionHeaderToEdit(toView = false) {
  * @return {void}
  */
 function changeSectionToEdit(toView = false, id) {
-    const description = $(`#content_${id}`).val();
+    const description = toView ? $(`#content_${id}`).html() : $(`#content_${id}`).val();
     const template = toView ? 'local_dta/cases/section-text-edit' : 'local_dta/cases/section-text-view';
     Templates.render(template,
      {id, description}).then((html) => {

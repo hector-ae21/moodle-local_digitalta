@@ -70,6 +70,7 @@ if ($experienceid) {
         'sectionheader' => $section_header,
         'sections' => $sections,
         'ourcase' => $ourcase,
+        'url_tiny' => $CFG->wwwroot . '/local/dta/vendor/tinymce/tinymce/tinymce.min.js'
     ];
 
     echo $OUTPUT->render_from_template('local_dta/cases/manage-without-experience', $templateContext);

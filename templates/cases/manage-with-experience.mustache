@@ -71,7 +71,6 @@
         setTimeout(() => {
           const id = $(this).data('id');
           const selector = `textarea#${id.toString().includes('content_') ? id : `content_${id}`}`;
-          console.log(selector); 
             tinymce.init({
                 selector: `textarea#content_${id}`
             });
@@ -80,7 +79,6 @@
     $(document).on('click', '#add-section', () => {
         setTimeout(() => {
           const id = $('.card-body:has(textarea)').last().find('textarea').attr('id');
-          console.log(id);
             tinymce.init({
                 selector: `textarea#${id}`
             });

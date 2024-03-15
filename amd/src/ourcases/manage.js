@@ -135,7 +135,7 @@ function removeSection(sectionid) {
 async function showDeleteSectionModal(sectionid) {
     sectionTextModal = await ModalFactory.create({
         title: get_string("ourcases_section_text_delete_modal_title", "local_dta"),
-        body: Templates.render('local_dta/casessection-text-modal', {modalDeleteId: sectionid}),
+        body: Templates.render('local_dta/cases/section-text-modal', {modalDeleteId: sectionid}),
     });
     $("#modal_delete_id").val();
     sectionTextModal.show();
@@ -146,9 +146,13 @@ async function showDeleteSectionModal(sectionid) {
  * @return {void}
  */
 async function showSaveCase() {
+    const button = $('#header-edit-button');
+    const button2 = $('#section-edit-button');
     const saveModal = await ModalFactory.create({
         title: get_string("ourcases_modal_save_title", "local_dta"),
-        body: Templates.render('local_dta/cases/manage-save-modal', {}),
+        body: Templates.render('local_dta/cases/manage-save-modal', {
+            havePendingChanges: button || button2,
+        }),
     });
     saveModal.show();
 }

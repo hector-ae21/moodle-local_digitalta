@@ -31,6 +31,11 @@
 </style>
 <script src="{{url_tiny}}" referrerpolicy="origin"></script>  
 {{#js}}
+    setTimeout(() => {
+        tinymce.init({
+            selector: 'textarea#section-header-description'
+        });
+    }, 200);
     $(document).on('click', '#header-edit-button', () => {
         tinymce.get('section-header-description').remove();
     });

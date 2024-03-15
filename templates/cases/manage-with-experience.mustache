@@ -50,7 +50,7 @@
             tinymce.init({
                 selector: 'textarea#section-header-description'
             });
-        }, 225);
+        }, 200);
     });
     // Change the header section to view mode withour editing
     $(document).on('click', '#header-edit-close-button', () => {
@@ -69,19 +69,22 @@
     // Change the section to edit mode
     $(document).on('click', '.section-to-edit-button', function() {
         setTimeout(() => {
-          const id = $(this).find(`textarea`).attr('id');
+          const id = $(this).data('id');
+          const selector = `textarea#${id.toString().includes('content_') ? id : `content_${id}`}`;
+          console.log(selector); 
             tinymce.init({
-                selector: `textarea#${id}`
+                selector: `textarea#content_${id}`
             });
-        }, 225);
+        }, 200);
     });
     $(document).on('click', '#add-section', () => {
         setTimeout(() => {
-          const id = $('#sections-body').find('textarea').attr('id');
+          const id = $('.card-body:has(textarea)').last().find('textarea').attr('id');
+          console.log(id);
             tinymce.init({
                 selector: `textarea#${id}`
             });
-        }, 225);
+        }, 200);
     });
 
 {{/js}}

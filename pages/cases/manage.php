@@ -21,11 +21,11 @@ global $CFG, $PAGE, $OUTPUT, $USER;
 $experienceid = optional_param('id', 0, PARAM_INT);
 $case = optional_param('caseid', 0, PARAM_INT);
 
-$strings = get_strings(['experiences_header', 'experiences_title'], "local_dta");
+$strings = get_strings(['ourcases_header', 'ourcases_title'], "local_dta");
 
 $PAGE->set_url(new moodle_url('/local/dta/pages/cases/manage.php', ['id' => $experienceid]));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->experiences_title);
+$PAGE->set_title($strings->ourcases_title);
 $PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init');
 
 echo $OUTPUT->header();

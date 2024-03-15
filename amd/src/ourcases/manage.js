@@ -146,12 +146,12 @@ async function showDeleteSectionModal(sectionid) {
  * @return {void}
  */
 async function showSaveCase() {
-    const button = $('#header-edit-button');
-    const button2 = $('#section-edit-button');
+    const button = $('#header-edit-button')[0];
+    const button2 = $('#section-edit-button')[0];
     const saveModal = await ModalFactory.create({
         title: get_string("ourcases_modal_save_title", "local_dta"),
         body: Templates.render('local_dta/cases/manage-save-modal', {
-            havePendingChanges: button || button2,
+            havePendingChanges: (button || button2) ? true : false,
         }),
     });
     saveModal.show();

@@ -18,11 +18,11 @@ global $CFG, $PAGE, $OUTPUT, $USER;
 
 $id = optional_param('id', 0, PARAM_INT);
 
-$strings = get_strings(['experiences_header', 'experiences_title'], "local_dta");
+$strings = get_strings(['ourcases_header', 'ourcases_title'], "local_dta");
 
 $PAGE->set_url(new moodle_url('/local/dta/pages/cases/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->experiences_title);
+$PAGE->set_title($strings->ourcases_title);
 
 
 echo $OUTPUT->header();

@@ -68,7 +68,7 @@ $string['form_case_delete_no'] = 'No';
 $string['ourcases_repository_placeholder'] = 'Write your own case...';
 $string['ourcases_repository_title'] = 'Study Cases';
 $string['ourcases_header'] = 'ourcases'; 
-$string['ourcases_title'] = 'Experiences';
+$string['ourcases_title'] = 'Cases';
 
 
 // Teacher Academy

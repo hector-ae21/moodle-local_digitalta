@@ -38,7 +38,7 @@
     $(document).on('click', '#header-to-edit-button', () => {
         setTimeout(() => {
             tinymce.init({
-                selector: 'textarea#section-header-description'
+                selector: 'textarea#section-header-description',
                 plugins: 'image , table',
             });
         }, 200);

@@ -20,6 +20,7 @@ global $CFG, $PAGE, $OUTPUT, $USER;
 
 $experienceid = optional_param('id', 0, PARAM_INT);
 $case = optional_param('caseid', 0, PARAM_INT);
+$case_title = optional_param('  ', 0, PARAM_RAW);
 
 $strings = get_strings(['ourcases_header', 'ourcases_title'], "local_dta");
 
@@ -34,7 +35,7 @@ echo $OUTPUT->header();
 
 
 if ($experienceid) {
-
+    // IF EXPERIENCE EXISTS
     if(!$experience = Experience::get_experience($experienceid)) {
         throw new moodle_exception('invalidcases', 'local_dta');
     }
@@ -59,7 +60,7 @@ if ($experienceid) {
 
     echo $OUTPUT->render_from_template('local_dta/cases/manage-with-experience', $templateContext);
 }elseif($case){
-
+    // IF CASE EXISTS
     if(!$ourcase = OurCases::get_case($case)){
         throw new moodle_exception('invalidcases', 'local_dta');
     };
@@ -75,12 +76,13 @@ if ($experienceid) {
 
     echo $OUTPUT->render_from_template('local_dta/cases/manage-without-experience', $templateContext);
 }else{
-
+    // IF NO EXPERIENCE OR CASE
     $ourcase = OurCases::add_without_experience(date("Y-m-d H:i:s"), $USER->id);
     
     if (!$section_header = OurCases::get_section_header($ourcase->id)) {
         throw new moodle_exception('invalidcasessection', 'local_dta');
     }
+    if($case_title) $section_header->title = $case_title;
 
     $sections = array_values(OurCases::get_sections_text($ourcase->id));
     

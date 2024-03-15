@@ -64,6 +64,7 @@ if ($experienceid) {
     if(!$ourcase = OurCases::get_case($case)){
         throw new moodle_exception('invalidcases', 'local_dta');
     };
+    if($case_title) $section_header->title = $case_title;
 
     $sections = array_values(OurCases::get_sections_text($ourcase->id));
     $section_header = OurCases::get_section_header($ourcase->id);

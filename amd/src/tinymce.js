@@ -2,7 +2,7 @@
  * TinyMCE version 6.8.3 (2024-02-08)
  */
 /* eslint-disable */
-(function () {
+const tinymce = () => {
     'use strict';
 
     var typeOf$1 = function (x) {
@@ -31753,4 +31753,8 @@
     exportToWindowGlobal(tinymce$1);
     exportToModuleLoaders(tinymce$1);
 
-})();
+};
+
+export default exportGlobal = () => {
+  tinymce();
+}

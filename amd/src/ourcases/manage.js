@@ -206,8 +206,6 @@ function setEventListeners() {
     // Change the header section to edit mode
     $(document).on('click', '#header-to-edit-button', () => {
         changeSectionHeaderToEdit(true);
-        // eslint-disable-next-line no-console
-        console.log($("#section-header-description").val());
     });
     // Change the header section to view mode withour editing
     $(document).on('click', '#header-edit-close-button', () => {

@@ -13,16 +13,6 @@
 </div>
 
 <script>
-    /*document.addEventListener('DOMContentLoaded', function() {
-        const themes = document.querySelector('.themes');
-        const items = themes.querySelectorAll('.theme-item');
-        items.forEach(item => {
-            item.addEventListener('click', function() {
-                const id = this.getAttribute('{{id}}');
-                window.location.href = '#';
-            });
-        });
-    });*/
     document.getElementById("tag_search_text").addEventListener("keydown", function(e) {
         if(event.keyCode == 13) {
             event.preventDefault();

@@ -1,27 +1,19 @@
-<div alt="{{name}}" class="theme d-flex flex-row align-items-center mr-5" style="width: auto !important;">
+<div alt="{{name}}" 
+    class="theme d-flex flex-row align-items-center mr-5" 
+    style="width: auto !important;"
+    onClick="searchByTag('{{id}}')"
+>
     <div class="theme-img mr-2">
         <i class="fa fa-tag" aria-hidden="true"></i>
     </div>
     <p class="theme-name mb-0">{{name}}</p>
 </div>
 
-<style>
-.theme:hover {
-    cursor: pointer;
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    padding: 3px;
-    transition: 0.3s;
-    animation-play-state: paused;
-}
-
-.theme-name {
-    text-transform: lowercase;
-}
-</style>
-
 <script>
+function searchByTag(tagId) {
+    console.log('Searching tag with id=',tagId);
+}
+
 function getDarkColor() {
     var color = '#';
     for (var i = 0; i < 6; i++) {

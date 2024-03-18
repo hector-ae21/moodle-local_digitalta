@@ -245,4 +245,45 @@ class Experience
     {
         return new \moodle_url('/local/dta/pages/experiences/view.php', ['id' => $this->id]);
     }
+
+    // Get the three latest experiences
+    public static function get_latest_experiences($includePrivates = true)
+    {
+        global $DB;
+        $latestExperiences = array_values(
+            $DB->get_records(
+                self::$table, 
+                $includePrivates ? null : ['visible' => 1],
+                'date DESC',
+                '*',
+                0,
+                3
+            )
+        );
+        $latestExperiences = self::get_extra_fields($latestExperiences);
+        return $latestExperiences;
+    }
+
+    // Get the five featured experiences
+    public static function get_featured_experiences($includePrivates = true)
+    {
+        global $DB;
+        $featuredExperiences = array_values(
+            $DB->get_records(
+                self::$table, 
+                $includePrivates ? null : ['visible' => 1],
+                '',
+                '*',
+                0,
+                5
+            )
+        );
+        $featuredExperiences = self::get_extra_fields($featuredExperiences);
+
+        usort($featuredExperiences, function($first, $second) {
+            return $first->reactions['likes']['count'] - $second->reactions['likes']['count'];
+        });
+
+        return $featuredExperiences;
+    }
 }

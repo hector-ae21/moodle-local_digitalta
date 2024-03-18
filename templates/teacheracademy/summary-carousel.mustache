@@ -2,39 +2,9 @@
     <h2 class="text-primary">{{#str}} teacheracademy_featured_exps_title, local_dta {{/str}}</h2>
     <div class="container">
         <div class="palette">
-            <div class="color"><span>Buenos días colegas docentes,
-
-he recibido mi primera falta de respeto por parte de un alumno.  ¿Cómo lo solventáis vosotros?</span></div>
-            <div class="color"><span>Buenos días docentes digitales.
-
-Hoy he realizado una actividad con mis alumno@s que igual interesa a más de un@: ¡Día de Pizza!
-
-Parece que ha fomentado el compañerismo y ha ayudado a que distintos grupos de chicos y chicas se traten con normalidad.
-
-¡Con comida cualquier cosa se arregla!
-
-¿Habéis hecho esto o algo parecido?
-
-Un slaudo.</span></div>
-            <div class="color"><span>Buenas tardes docentes,
-
-hoy uno de mis alumnos me ha traído un problema personal grave a mi mesa. 
-¿Qué puedo hacer? Quiero ayudar pero no sé hasta que punto puedo intervenir.
-
-Tampoco puedo detallar mucho pero es un caso muy delicado. Seguro que habéis visto casos similares.
-
-Un saludo y gracias de antemano.</span></div>
-            <div class="color"><span>Buenas noches docentes,
-
-traigo una duda y pido consejo. Mi experiencia calificando se me hace muy monótona, y quisiera calificar a mis alumn@s por algún criterio más creativo. No se me ocurre nada que no parezca injusto.
-
-¿Busco algo más? ¿Me ataño a los actuales? ¿Qué opináis?
-
-
-
-Un saludo y gracias de antemano.</span></div>
-            <div class="color"><span>Hoy uno de mis alumnos me ha traído un problema personal grave a mi mesa. 
-¿Qué puedo hacer? Quiero ayudar pero no sé hasta que punto puedo intervenir.</span></div>
+            {{#experiences.featured}}
+                {{> local_dta/teacheracademy/summary-carousel-item}}
+            {{/experiences.featured}}
         </div>
     </div>
 </div>

@@ -1,14 +1,12 @@
 <div class="container-fluid teacher-academy">
   <div class="home w-100 d-flex flex-column">
-    <!-- Themes -->
-    <div class="theme-container p-3 mb-5 bg-body rounded">
-    {{> local_dta/teacheracademy/themes-list}}
-    </div>
     <div class="w-100 h-auto mb-3 p-3 mb-5 bg-body rounded">
       <div class="d-flex h-auto">
-        <div class="summary-text col-md-4 pl-0 pr-md-5 pr-0">
-          {{> local_dta/teacheracademy/news-list}}
+        <!-- Themes List -->
+        <div class="theme-container col-md-4 p-3 mb-5 bg-body rounded">
+          {{> local_dta/teacheracademy/themes-list}}
         </div>
+        <!-- Summary Carousel -->
         <div class="col-md-8 px-0 d-none d-md-flex">
           {{> local_dta/teacheracademy/summary-carousel}}
         </div>

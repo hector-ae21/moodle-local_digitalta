@@ -1,7 +1,8 @@
-<div alt="{{name}}" 
-    class="theme d-flex flex-row align-items-center mr-5" 
-    style="width: auto !important;"
+<div alt="{{name}}"
+    data-weight="{{id}}"
+    class="theme d-flex flex-row w-auto align-items-center mr-5"
     onClick="searchByTag('{{id}}')"
+    color="#000000"
 >
     <div class="theme-img mr-2">
         <i class="fa fa-tag" aria-hidden="true"></i>
@@ -26,5 +27,12 @@ function setRandomBackground() {
   document.getElementsByClassName('theme').forEach((tag) => {tag.style.color = getDarkColor();});
 }
 
+function setVars() {
+      document.getElementsByClassName('theme').forEach((tag) => {
+            tag.style.setProperty('--color', 'color');
+        });
+}
+
+setVars()
 setRandomBackground();
 </script>

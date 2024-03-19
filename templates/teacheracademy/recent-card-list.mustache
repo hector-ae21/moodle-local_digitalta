@@ -1,11 +1,11 @@
 <div class="col-8">
-    <h2>Recent Experiences</h2>
+    <h2>{{#str}} teacheracademy_recent_exps_title, local_dta {{/str}}</h2>
     <div class="experiences recent-experiences d-flex flex-row flex-wrap grid-masonry">
-    {{#experiences.data}}
+    {{#experiences.recent}}
         <div class="col-12 col-md-6 col-lg-4 item">
             {{> local_dta/teacheracademy/recent-card }}
         </div>
-    {{/experiences.data}}
+    {{/experiences.recent}}
     </div>
     <div class="d-flex justify-content-start">
         <a href="{{experiences.allurl}}" class="btn btn-primary">See More</a>

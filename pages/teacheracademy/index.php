@@ -33,13 +33,17 @@ $PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
 echo $OUTPUT->header();
 
 $experiences = Experience::get_all_experiences(false);
-if(count($experiences) > 3){
-    $experiences = array_slice($experiences, 0, 3);
-}
 $experiences = array_map(function ($experience) {
     $experience->description = StringUtils::truncateHtmlText($experience->description);
     return $experience;
 }, $experiences);
+
+// Recent experiences
+$recentExperiences = Experience::get_latest_experiences(false);
+
+// Featured Experiences
+$featuredExperiences = Experience::get_featured_experiences(false);
+
 $tags = Tags::getAllTags();
 $cases = OurCases::get_cases();
 
@@ -53,6 +57,8 @@ $templateContext = [
     "themepixurl" => $CFG->wwwroot . "/theme/dta/pix/",
     "experiences" => [
         "data" => $experiences,
+        "recent" => $recentExperiences,
+        "featured" => $featuredExperiences,
         "showimageprofile" => true,
         "showcontrols" => false,
         "showcontrolsadmin" => is_siteadmin($USER),

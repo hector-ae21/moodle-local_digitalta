@@ -74,6 +74,11 @@ $string['ourcases_title'] = 'Cases';
 // Teacher Academy
 $string['teacheracademy_header'] = 'Teacher Academy';
 $string['teacheracademy_title'] = 'Teacher Academy';
+$string['teacheracademy_featured_exps_title'] = 'Featured Experiences';
+$string['teacheracademy_themes_title'] = 'Themes';
+$string['teacheracademy_recent_exps_title'] = 'Recent Experiences';
+$string['teacheracademy_recent_cases_title'] = 'Recent Cases';
+
 
 // General
 $string['avatar_alt'] = 'User avatar';

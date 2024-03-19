@@ -17,15 +17,30 @@ class external_reactions_toggle_like_dislike extends external_api
     {
         return new external_function_parameters(
             array(
-                'experienceid' => new external_value(PARAM_INT, 'ID of the experience', VALUE_REQUIRED),
-                'action' => new external_value(PARAM_BOOL, '1 for like, 0 for dislike', VALUE_OPTIONAL)
+                'id' => new external_value(PARAM_INT, 'ID of the instance (CASE OR EXPERIENCE) id', VALUE_REQUIRED),
+                'action' => new external_value(PARAM_BOOL, '1 for like, 0 for dislike', VALUE_OPTIONAL),
+                'type' => new external_value(PARAM_INT, 'Type of reaction 1 for experiences, 0 for cases', VALUE_REQUIRED)
             )
         );
     }
 
-    public static function reactions_toggle_like_dislike($experienceid, $action = null)
+    public static function reactions_toggle_like_dislike($id, $action = null , $type)
     {
         global $USER, $DB;
+
+        if($type == 0){
+            if (!$case = $DB->get_record('digital_ourcases', array('id' => $id))) {
+                return array('result' => false, 'error' => 'Case not found');
+            }
+
+            $reaction = new \stdClass();
+            $reaction->caseid = $id;
+            $reaction->userid = $USER->id;
+            $reaction->reactiontype = $action;
+            
+        }
+
+
 
         if (!$experience = $DB->get_record('digital_experiences', array('id' => $experienceid))) {
             return array('result' => false, 'error' => 'Experience not found');

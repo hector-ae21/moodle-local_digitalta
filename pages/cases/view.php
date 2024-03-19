@@ -9,8 +9,10 @@
  */
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/ourcases.php');
+require_once(__DIR__ . './../../classes/reactions.php');
 
 use local_dta\OurCases;
+use local_dta\Reaction;
 
 require_login();
 
@@ -23,6 +25,7 @@ $strings = get_strings(['ourcases_header', 'ourcases_title'], "local_dta");
 $PAGE->set_url(new moodle_url('/local/dta/pages/cases/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->ourcases_title);
+$PAGE->requires->js_call_amd('local_dta/ourcases/manageReactions', 'init');
 
 
 echo $OUTPUT->header();
@@ -30,6 +33,8 @@ echo $OUTPUT->header();
 if (!$ourcase = OurCases::get_case($id)) {
     throw new moodle_exception('invalidcases', 'local_dta');
 }
+
+$ourcase->reactions = Reaction::get_reactions_for_render_case($ourcase->id);
 
 $sections = array_values(OurCases::get_sections_text($ourcase->id));
 
@@ -53,6 +58,5 @@ $templateContext = [
 
 
 echo $OUTPUT->render_from_template('local_dta/cases/view/view', $templateContext);
-
 
 echo $OUTPUT->footer();

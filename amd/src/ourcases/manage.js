@@ -8,6 +8,7 @@ import {getTinyMCE} from 'editor_tiny/loader';
 
 let sectionTextModal;
 let tinymce;
+let urlView = null;
 
 /**
  * Add a new text section to the page.
@@ -20,8 +21,9 @@ function addTextSection() {
         exist: true
     }).then((html) => {
         $('#sections-body').append(html);
-        const id = $('.card-body:has(textarea)').last().find('textarea').attr('id');
-        return createTinyMCE(id);
+        createTinyMCE($('.card-body:has(textarea)').last().find('textarea').attr('id'));
+        window.scrollTo(0, document.body.scrollHeight);
+        return;
     }).fail(Notification.exception);
 }
 
@@ -33,7 +35,7 @@ function addTextSection() {
 function changeSectionHeaderToEdit(toView = false) {
     const id = $('#section-header-id').val();
     const title = $('#section-header-title').val();
-    const description = $('#section-header-description').val();
+    const description = toView ? $('#section-header-description').val() : getTinyMCEContent('section-header-description');
     const template = toView ? 'local_dta/cases/section-header-edit' : 'local_dta/cases/section-header-view';
     Templates.render(template,
      {sectionheader: {id, title, description}}).then((html) => {
@@ -82,10 +84,11 @@ function upsertHeaderSection() {
     const sectionid = $('#section-header-id').val();
     const ourcaseid = $('#ourcases-id').val();
     const title = $('#section-header-title').val();
-    const text = $('#section-header-description').val();
+    const text = getTinyMCEContent('section-header-description');
     const sequence = 0;
     sectionTextUpsert({ourcaseid, sectionid, title, text, sequence});
     changeSectionHeaderToEdit();
+    removeTinyMCEFromArea('section-header-description');
 }
 
 /**
@@ -191,7 +194,7 @@ function changeStatusToComplete() {
 
     ourcaseEdit(args).then((data) => {
         if (data.result) {
-            window.location.href = '/local/dta/pages/cases/repository.php';
+            window.location.href = urlView;
         }
         return;
     }).fail(Notification.exception);
@@ -204,6 +207,15 @@ function changeStatusToComplete() {
  */
 function removeTinyMCEFromArea(area) {
     tinymce.get(area).remove();
+}
+
+/**
+ * Remove tinyMCE from an area.
+ * @param {string} area - The id of the area to remove tinyMCE from.
+ * @returns {string} The content of the tinyMCE area.
+ */
+function getTinyMCEContent(area) {
+    return tinymce.get(area).getContent();
 }
 
 /**
@@ -232,7 +244,6 @@ function setEventListeners() {
     // Edit the header
     $(document).on('click', '#header-edit-button', () => {
         upsertHeaderSection();
-        removeTinyMCEFromArea('section-header-description');
     });
     // Change the header section to edit mode
     $(document).on('click', '#header-to-edit-button', () => {
@@ -284,15 +295,12 @@ function setEventListeners() {
 
 /**
  * Initialize the module.
+ * @param {string} urlRepository - The url to view the case.
  * @return {void}
  */
-export const init = async() => {
+export const init = async(urlRepository) => {
     setEventListeners();
     tinymce = await getTinyMCE();
-    setTimeout(() => {
-        tinymce.init({
-            selector: 'textarea#section-header-description',
-              plugins: 'image , table',
-        });
-    }, 200);
+    createTinyMCE('section-header-description');
+    urlView = urlRepository;
 };

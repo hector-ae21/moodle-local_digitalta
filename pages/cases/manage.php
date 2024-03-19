@@ -27,7 +27,7 @@ $strings = get_strings(['ourcases_header', 'ourcases_title'], "local_dta");
 $PAGE->set_url(new moodle_url('/local/dta/pages/cases/manage.php', ['id' => $experienceid]));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->ourcases_title);
-$PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init');
+$PAGE->requires->js_call_amd('local_dta/ourcases/manage', 'init', array('url_view' => $CFG->wwwroot . '/local/dta/pages/cases/repository.php' ));
 
 echo $OUTPUT->header();
 
@@ -37,7 +37,7 @@ echo $OUTPUT->header();
 if ($experienceid) {
     // IF EXPERIENCE EXISTS
     if(!$experience = Experience::get_experience($experienceid)) {
-        throw new moodle_exception('invalidcases', 'local_dta');
+        throw new moodle_exception('invalidcases', 'local_dta');    
     }
     
     if (!$ourcase = OurCases::get_case_by_experience($experienceid)) {
@@ -55,7 +55,6 @@ if ($experienceid) {
         'sectionheader' => $section_header,
         'sections' => $sections,
         'ourcase' => $ourcase,
-        'url_tiny' => $CFG->wwwroot . '/local/dta/vendor/tinymce/tinymce/tinymce.min.js'
     ];
 
     echo $OUTPUT->render_from_template('local_dta/cases/manage-with-experience', $templateContext);
@@ -72,7 +71,6 @@ if ($experienceid) {
         'sectionheader' => $section_header,
         'sections' => $sections,
         'ourcase' => $ourcase,
-        'url_tiny' => $CFG->wwwroot . '/local/dta/vendor/tinymce/tinymce/tinymce.min.js'
     ];
 
     echo $OUTPUT->render_from_template('local_dta/cases/manage-without-experience', $templateContext);
@@ -91,7 +89,6 @@ if ($experienceid) {
         'sectionheader' => $section_header,
         'sections' => $sections,
         'ourcase' => $ourcase,
-        'url_tiny' => $CFG->wwwroot . '/local/dta/vendor/tinymce/tinymce/tinymce.min.js'
     ];
 
     echo $OUTPUT->render_from_template('local_dta/cases/manage-without-experience', $templateContext);

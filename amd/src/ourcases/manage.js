@@ -4,8 +4,10 @@ import Notification from 'core/notification';
 import {sectionTextUpsert, sectionTextDelete, ourcaseEdit} from 'local_dta/repositories/ourcasesRepository';
 import ModalFactory from 'core/modal_factory';
 import {get_string} from 'core/str';
+import {getTinyMCE} from 'editor_tiny/loader';
 
 let sectionTextModal;
+let tinymce;
 
 /**
  * Add a new text section to the page.
@@ -17,7 +19,9 @@ function addTextSection() {
         description: null,
         exist: true
     }).then((html) => {
-        return $('#sections-body').append(html);
+        $('#sections-body').append(html);
+        const id = $('.card-body:has(textarea)').last().find('textarea').attr('id');
+        return createTinyMCE(id);
     }).fail(Notification.exception);
 }
 
@@ -193,6 +197,28 @@ function changeStatusToComplete() {
     }).fail(Notification.exception);
 }
 
+/**
+ * Remove tinyMCE from an area.
+ * @param {string} area - The id of the area to remove tinyMCE from.
+ * @return {void}
+ */
+function removeTinyMCEFromArea(area) {
+    tinymce.get(area).remove();
+}
+
+/**
+ * Create tinyMCE in an area.
+ * @param {string} area - The id of the area to create tinyMCE in.
+ * @return {void}
+ */
+function createTinyMCE(area) {
+    setTimeout(() => {
+      tinymce.init({
+        selector: `textarea#${area}`,
+        plugins: "image , table",
+      });
+    }, 200);
+}
 
 /**
  * Set event listeners for the module.
@@ -206,26 +232,35 @@ function setEventListeners() {
     // Edit the header
     $(document).on('click', '#header-edit-button', () => {
         upsertHeaderSection();
+        removeTinyMCEFromArea('section-header-description');
     });
     // Change the header section to edit mode
     $(document).on('click', '#header-to-edit-button', () => {
         changeSectionHeaderToEdit(true);
+        createTinyMCE('section-header-description');
     });
     // Change the header section to view mode withour editing
     $(document).on('click', '#header-edit-close-button', () => {
         changeSectionHeaderToEdit();
+        removeTinyMCEFromArea('section-header-description');
     });
     // Remove a section
     $(document).on('click', '.section-close-button', function() {
-        removeSection($(this).data('id'));
+        const id = $(this).data('id');
+        removeSection(id);
+        removeTinyMCEFromArea(`content_${id}`);
     });
     // Edit the section
     $(document).on('click', '.section-edit-button', function() {
-        upsertSection($(this).data('id'));
+        const id = $(this).data('id');
+        upsertSection(id);
+        removeTinyMCEFromArea(`content_${id}`);
     });
     // Change the section to edit mode
     $(document).on('click', '.section-to-edit-button', function() {
         changeSectionToEdit(true, $(this).data('id'));
+        const id = $(this).data('id');
+        createTinyMCE(`content_${id}`);
     });
     // Showt section delete modal
     $(document).on('click', '.section-delete-button', function() {
@@ -253,4 +288,11 @@ function setEventListeners() {
  */
 export const init = async() => {
     setEventListeners();
+    tinymce = await getTinyMCE();
+    setTimeout(() => {
+        tinymce.init({
+            selector: 'textarea#section-header-description',
+              plugins: 'image , table',
+        });
+    }, 200);
 };

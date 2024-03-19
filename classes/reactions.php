@@ -11,8 +11,8 @@ namespace local_dta;
 
 class Reaction
 {
-    private static $table_likes = 'digital_experience_likes';
-    private static $table_comments = 'digital_experience_comments';
+    private static $table_experience_likes = 'digital_experience_likes';
+    private static $table_experience_comments = 'digital_experience_comments';
 
     public function __construct()
     {
@@ -73,7 +73,7 @@ class Reaction
     public static function get_likes_for_experience($experienceid)
     {
         global $DB;
-        $sql = "SELECT * FROM {" . self::$table_likes . "} WHERE experienceid = ? AND reactiontype = '1'";
+        $sql = "SELECT * FROM {" . self::$table_experience_likes . "} WHERE experienceid = ? AND reactiontype = '1'";
         return $DB->get_records_sql($sql, array($experienceid));
     }
 
@@ -86,7 +86,7 @@ class Reaction
     public static function get_unlikes_for_experience($experienceid)
     {
         global $DB;
-        $sql = "SELECT * FROM {" . self::$table_likes . "} WHERE experienceid = ? AND reactiontype = '0'";
+        $sql = "SELECT * FROM {" . self::$table_experience_likes . "} WHERE experienceid = ? AND reactiontype = '0'";
         return $DB->get_records_sql($sql, array($experienceid));
     }
 
@@ -99,7 +99,28 @@ class Reaction
     public static function get_comments_for_experience($experienceid)
     {
         global $DB;
-        $sql = "SELECT * FROM {" . self::$table_comments . "} WHERE experienceid = ?";
+        $sql = "SELECT * FROM {" . self::$table_experience_likes . "} WHERE experienceid = ?";
         return $DB->get_records_sql($sql, array($experienceid));
     }
+    
+    /**
+     * Get the most liked experiences
+     *
+     * @param int $limit The number of experiences to return
+     * @return array Returns an array of records
+     */
+    public static function get_most_liked_experience($limit = 5)
+    {
+        global $DB;
+        $sql = "SELECT e.id, e.title, e.description, COUNT(l.id) as likes
+                FROM {digital_experiences} e
+                LEFT JOIN {digital_experience_likes} l ON e.id = l.experienceid
+                WHERE l.reactiontype = 1
+                GROUP BY e.id
+                ORDER BY likes DESC
+                LIMIT ?";
+        return $DB->get_records_sql($sql, array($limit));
+    }
+
+    
 }

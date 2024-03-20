@@ -1,6 +1,6 @@
 <div alt="{{name}}"
     data-weight="{{id}}"
-    class="theme d-flex flex-row w-auto align-items-center mr-5"
+    class="theme d-flex flex-row w-auto align-items-center mr-5 m"
     onClick="searchByTag('{{id}}')"
     color="#000000"
 >
@@ -24,15 +24,30 @@ function getDarkColor() {
 }
 
 function setRandomBackground() {
-  document.getElementsByClassName('theme').forEach((tag) => {tag.style.color = getDarkColor();});
+    document.getElementsByClassName('theme').forEach((tag) => {tag.style.color = getDarkColor();});
 }
 
 function setVars() {
-      document.getElementsByClassName('theme').forEach((tag) => {
+    document.getElementsByClassName('theme').forEach((tag) => {
             tag.style.setProperty('--color', 'color');
+            tag.style.setProperty('--size', 'font-size');
         });
 }
 
-setVars()
+function setSize() {
+    document.getElementsByClassName('theme').forEach((tag) => {
+        var tagUsageNum = tag.getAttribute('data-weight');
+        if (tagUsageNum > 8) {
+            tag.style.setProperty('font-size', '2.5em');
+        } else if (tagUsageNum > 2) {
+            tag.style.setProperty('font-size', '1.5em');
+        } else {
+            tag.style.setProperty('font-size', '0.9em');
+        }
+    });
+}
+
+setVars();
+setSize();
 setRandomBackground();
 </script>

@@ -111,7 +111,7 @@ class Experience
      * @param array $experiences
      * @return array
      */
-    private static function get_extra_fields($experiences)
+    public static function get_extra_fields($experiences)
     {
         global $PAGE;
         foreach ($experiences as $experience) {
@@ -262,28 +262,5 @@ class Experience
         );
         $latestExperiences = self::get_extra_fields($latestExperiences);
         return $latestExperiences;
-    }
-
-    // Get the five featured experiences
-    public static function get_featured_experiences($includePrivates = true)
-    {
-        global $DB;
-        $featuredExperiences = array_values(
-            $DB->get_records(
-                self::$table, 
-                $includePrivates ? null : ['visible' => 1],
-                '',
-                '*',
-                0,
-                5
-            )
-        );
-        $featuredExperiences = self::get_extra_fields($featuredExperiences);
-
-        usort($featuredExperiences, function($first, $second) {
-            return $first->reactions['likes']['count'] - $second->reactions['likes']['count'];
-        });
-
-        return $featuredExperiences;
     }
 }

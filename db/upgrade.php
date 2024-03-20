@@ -28,7 +28,7 @@ function xmldb_local_dta_upgrade($oldversion)
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2024031306) {
+    if ($oldversion < 2024031307) {
         // Define table digital_cases_likes to be created.
         $table = new xmldb_table('digital_case_likes');
 

@@ -88,8 +88,42 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" />
-                <KEY NAME="casesid" TYPE="foreign" FIELDS="casesid" REFTABLE="digital_ourcases"
+                <KEY NAME="caseid" TYPE="foreign" FIELDS="caseid" REFTABLE="digital_ourcases"
                     REFFIELDS="id" />
+                <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" />
+            </KEYS>
+        </TABLE>
+
+        <TABLE NAME="digital_experience_report" COMMENT="Table for storing report on experiences">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"
+                    LENGTH="11" COMMENT="Primary key" />
+                <FIELD NAME="experienceid" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false"
+                    UNSIGNED="true" COMMENT="ID of the experience" />
+                <FIELD NAME="userid" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true"
+                    SEQUENCE="false" COMMENT="ID of the user" />
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id" />
+                <KEY NAME="experienceid" TYPE="foreign" FIELDS="experienceid"
+                    REFTABLE="digital_experiences" REFFIELDS="id" />
+                <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" />
+            </KEYS>
+        </TABLE>
+
+        <TABLE NAME="digital_case_report" COMMENT="Table for storing report on case">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"
+                    LENGTH="11" COMMENT="Primary key" />
+                <FIELD NAME="caseid" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false"
+                    UNSIGNED="true" COMMENT="ID of the case" />
+                <FIELD NAME="userid" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="true"
+                    SEQUENCE="false" COMMENT="ID of the user" />
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id" />
+                <KEY NAME="caseid" TYPE="foreign" FIELDS="caseid"
+                    REFTABLE="digital_ourcases" REFFIELDS="id" />
                 <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" />
             </KEYS>
         </TABLE>
@@ -108,7 +142,7 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" />
-                <KEY NAME="casesid" TYPE="foreign" FIELDS="casesid"
+                <KEY NAME="caseid" TYPE="foreign" FIELDS="caseid"
                     REFTABLE="digital_ourcases" REFFIELDS="id" />
                 <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" />
             </KEYS>

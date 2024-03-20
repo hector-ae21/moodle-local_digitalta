@@ -33,14 +33,14 @@ function xmldb_local_dta_upgrade($oldversion)
         $table = new xmldb_table('digital_case_likes');
 
         // Adding fields to table digital_cases_likes.
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true , 'sequence' => true]);
-        $table->add_field('casesid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true, 'sequence' => true]);
+        $table->add_field('caseid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
         $table->add_field('userid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
         $table->add_field('reactiontype', XMLDB_TYPE_INTEGER, '1', ['unsigned' => false, 'notnull' => false]);
 
         // Adding keys to table digital_cases_likes.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-        $table->add_key('caseid', XMLDB_KEY_FOREIGN, ['casesid'], 'digital_ourcases', ['id']);
+        $table->add_key('caseid', XMLDB_KEY_FOREIGN, ['caseid'], 'digital_ourcases', ['id']);
         $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
 
         // Conditionally launch create table for digital_cases_likes.
@@ -52,14 +52,14 @@ function xmldb_local_dta_upgrade($oldversion)
         $table = new xmldb_table('digital_case_comments');
 
         // Adding fields to table digital_cases_comments.
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true , 'sequence' => true]);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true, 'sequence' => true]);
         $table->add_field('caseid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
         $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', ['unsigned' => true, 'notnull' => true]);
         $table->add_field('comment', XMLDB_TYPE_TEXT, null, ['notnull' => true]);
 
         // Adding keys to table digital_cases_comments.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-        $table->add_key('casesid', XMLDB_KEY_FOREIGN, ['casesid'], 'digital_ourcases', ['id']);
+        $table->add_key('caseid', XMLDB_KEY_FOREIGN, ['caseid'], 'digital_ourcases', ['id']);
         $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
 
         // Conditionally launch create table for digital_cases_comments.
@@ -70,6 +70,52 @@ function xmldb_local_dta_upgrade($oldversion)
         // DTA savepoint reached.
         upgrade_plugin_savepoint(true, 2024031306, 'local', 'dta');
     }
+
+
+    if ($oldversion < 2024032001) {
+
+        // Define table digital_cases_comments to be created.
+        $table = new xmldb_table('digital_experience_report');
+
+        // Adding fields to table digital_cases_likes.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true, 'sequence' => true]);
+        $table->add_field('experienceid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
+
+        // Adding keys to table digital_cases_likes.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('experienceid', XMLDB_KEY_FOREIGN, ['experienceid'], 'digital_experiences', ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+
+        // Conditionally launch create table for digital_cases_comments.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Define table digital_cases_comments to be created.
+        $table = new xmldb_table('digital_case_report');
+
+        // Adding fields to table digital_cases_likes.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true, 'sequence' => true]);
+        $table->add_field('caseid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
+
+        // Adding keys to table digital_cases_likes.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('caseid', XMLDB_KEY_FOREIGN, ['caseid'], 'digital_ourcases', ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+
+        // Conditionally launch create table for digital_cases_comments.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // DTA savepoint reached.
+        upgrade_plugin_savepoint(true, 2024032001, 'local', 'dta');
+    }
+
+
+
 
     return true;
 }

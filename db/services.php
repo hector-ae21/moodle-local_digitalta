@@ -32,6 +32,15 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_dta_report_add' => [
+        'classname'   => 'external_report_add',
+        'methodname'  => 'report_add',
+        'classpath'   => 'local/dta/classes/webservices/external_report_add.php',
+        'description' => 'Add a report',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     'local_dta_myexperience_save_comment' => [
         'classname'   => 'external_myexperience_save_comment',
         'methodname'  => 'myexperience_save_comment',

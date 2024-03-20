@@ -8,6 +8,7 @@ import {getTinyMCE} from 'editor_tiny/loader';
 
 let sectionTextModal;
 let tinymce;
+let tinyConfig;
 let urlView = null;
 
 /**
@@ -295,12 +296,17 @@ function setEventListeners() {
 
 /**
  * Initialize the module.
- * @param {string} urlRepository - The url to view the case.
+ * @param {object} data - The data to initialize the module with.
  * @return {void}
  */
-export const init = async(urlRepository) => {
+export const init = async(data) => {
     setEventListeners();
     tinymce = await getTinyMCE();
     createTinyMCE('section-header-description');
-    urlView = urlRepository;
+    urlView = data.urlRepository;
+    tinyConfig = data.tinyconfig;
+    // eslint-disable-next-line no-console
+    console.log(data);
+    // eslint-disable-next-line no-console
+    console.log(tinyConfig);
 };

@@ -112,14 +112,15 @@ class Reaction
     public static function get_most_liked_experience($limit = 5)
     {
         global $DB;
-        $sql = "SELECT e.id, e.title, e.description, COUNT(l.id) as likes
+        $sql = "SELECT e.id, e.userid, e.title, e.description, e.date, e.lang, e.visible, e.status, COUNT(l.id) as likes
                 FROM {digital_experiences} e
                 LEFT JOIN {digital_experience_likes} l ON e.id = l.experienceid
-                WHERE l.reactiontype = 1
+                WHERE l.reactiontype = 1 AND e.visible = 1
                 GROUP BY e.id
                 ORDER BY likes DESC
-                LIMIT ?";
-        return $DB->get_records_sql($sql, array($limit));
+                LIMIT ". $limit;
+
+        return array_values($DB->get_records_sql($sql));
     }
 
     

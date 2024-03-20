@@ -11,6 +11,7 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
 require_once(__DIR__ . './../../classes/tags.php');
 require_once(__DIR__ . './../../classes/ourcases.php');
+require_once(__DIR__ . './../../classes/reactions.php');
 require_once(__DIR__ . './../../classes/utils/string_utils.php');
 
 require_login();
@@ -18,6 +19,7 @@ require_login();
 use local_dta\Experience;
 use local_dta\Tags;
 use local_dta\OurCases;
+use local_dta\Reaction;
 use local_dta\utils\StringUtils;
 
 global $CFG, $PAGE, $OUTPUT;
@@ -40,9 +42,17 @@ $experiences = array_map(function ($experience) {
 
 // Recent experiences
 $recentExperiences = Experience::get_latest_experiences(false);
+$recentExperiences = array_map(function ($experience) {
+    $experience->description = StringUtils::truncateHtmlText($experience->description);
+    return $experience;
+}, $recentExperiences);
 
 // Featured Experiences
-$featuredExperiences = Experience::get_featured_experiences(false);
+$featuredExperiences = Experience::get_extra_fields(Reaction::get_most_liked_experience(5));
+$featuredExperiences = array_map(function ($experience) {
+    $experience->description = StringUtils::truncateHtmlText($experience->description);
+    return $experience;
+}, $featuredExperiences);
 
 $tags = Tags::getAllTags();
 $cases = OurCases::get_cases();
@@ -68,9 +78,7 @@ $templateContext = [
     ],
     "tags" => $tags,
     "ourcases" => [
-        "title" => "Our cases",
-        "description" => "Discover the experiences of our community",
-        "allurl" => $CFG->wwwroot . "/local/dta/pages/cases/repository.php",
+        "cases" => $cases,
     ]
 ];
 

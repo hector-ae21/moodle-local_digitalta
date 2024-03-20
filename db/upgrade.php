@@ -28,19 +28,19 @@ function xmldb_local_dta_upgrade($oldversion)
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2024031306) {
+    if ($oldversion < 2024031307) {
         // Define table digital_cases_likes to be created.
         $table = new xmldb_table('digital_case_likes');
 
         // Adding fields to table digital_cases_likes.
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true , 'sequence' => true]);
-        $table->add_field('casesid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
+        $table->add_field('caseid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
         $table->add_field('userid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
         $table->add_field('reactiontype', XMLDB_TYPE_INTEGER, '1', ['unsigned' => false, 'notnull' => false]);
 
         // Adding keys to table digital_cases_likes.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-        $table->add_key('caseid', XMLDB_KEY_FOREIGN, ['casesid'], 'digital_ourcases', ['id']);
+        $table->add_key('caseid', XMLDB_KEY_FOREIGN, ['caseid'], 'digital_ourcases', ['id']);
         $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
 
         // Conditionally launch create table for digital_cases_likes.
@@ -59,7 +59,7 @@ function xmldb_local_dta_upgrade($oldversion)
 
         // Adding keys to table digital_cases_comments.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-        $table->add_key('casesid', XMLDB_KEY_FOREIGN, ['casesid'], 'digital_ourcases', ['id']);
+        $table->add_key('caseid', XMLDB_KEY_FOREIGN, ['caseid'], 'digital_ourcases', ['id']);
         $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
 
         // Conditionally launch create table for digital_cases_comments.

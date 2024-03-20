@@ -88,7 +88,7 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" />
-                <KEY NAME="casesid" TYPE="foreign" FIELDS="casesid" REFTABLE="digital_ourcases"
+                <KEY NAME="caseid" TYPE="foreign" FIELDS="caseid" REFTABLE="digital_ourcases"
                     REFFIELDS="id" />
                 <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" />
             </KEYS>
@@ -108,7 +108,7 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" />
-                <KEY NAME="casesid" TYPE="foreign" FIELDS="casesid"
+                <KEY NAME="caseid" TYPE="foreign" FIELDS="caseid"
                     REFTABLE="digital_ourcases" REFFIELDS="id" />
                 <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" />
             </KEYS>

@@ -17,34 +17,54 @@ class external_reactions_toggle_like_dislike extends external_api
     {
         return new external_function_parameters(
             array(
-                'experienceid' => new external_value(PARAM_INT, 'ID of the experience', VALUE_REQUIRED),
-                'action' => new external_value(PARAM_BOOL, '1 for like, 0 for dislike', VALUE_OPTIONAL)
+                'id' => new external_value(PARAM_INT, 'ID of the instance (CASE OR EXPERIENCE) id', VALUE_REQUIRED),
+                'action' => new external_value(PARAM_BOOL, '1 for like, 0 for dislike', VALUE_OPTIONAL),
+                'type' => new external_value(PARAM_INT, 'Type of reaction 1 for experiences, 0 for cases', VALUE_REQUIRED)
             )
         );
     }
 
-    public static function reactions_toggle_like_dislike($experienceid, $action = null)
+    public static function reactions_toggle_like_dislike($id = 1, $action = null , $type = null)
     {
         global $USER, $DB;
 
-        if (!$experience = $DB->get_record('digital_experiences', array('id' => $experienceid))) {
-            return array('result' => false, 'error' => 'Experience not found');
+        $reaction = new \stdClass();
+
+        if($type == 0){
+            if (!$DB->get_record('digital_ourcases', array('id' => $id))) {
+                return array('result' => false, 'error' => 'Case not found');
+            }
+
+            $reaction->caseid = $id;
+            $reaction->userid = $USER->id;
+            $reaction->reactiontype = $action;
+
+            $table = 'digital_case_likes';
+            $column = 'caseid';   
+        }else{
+            if (!$DB->get_record('digital_experiences', array('id' => $id))) {
+                return array('result' => false, 'error' => 'Experience not found');
+            }
+
+            $reaction->experienceid = $id;
+            $reaction->userid = $USER->id;
+            $reaction->reactiontype = $action;
+
+            $table = 'digital_experience_likes';
+            $column = 'experienceid';   
         }
 
-        $like = new \stdClass();
-        $like->experienceid = $experienceid;
-        $like->userid = $USER->id;
-        $like->reactiontype = $action;
 
-        if ($actual_reaction = $DB->get_record('digital_experience_likes', array('experienceid' => $experienceid, 'userid' => $USER->id))) {
-            $like->id = $actual_reaction->id;
-            $DB->update_record('digital_experience_likes', $like);
+        if ($actual_reaction = $DB->get_record($table, array($column => $id, 'userid' => $USER->id))) {
+            $reaction->id = $actual_reaction->id;
+            $DB->update_record($table, $reaction);
         } else {
-            $DB->insert_record('digital_experience_likes', $like);
+            $DB->insert_record($table, $reaction);
         }
 
-        $likes = $DB->count_records('digital_experience_likes', array('experienceid' => $experienceid, 'reactiontype' => 1));
-        $dislikes = $DB->count_records('digital_experience_likes', array('experienceid' => $experienceid, 'reactiontype' => 0));
+
+        $likes = $DB->count_records($table, array($column => $id, 'reactiontype' => 1));
+        $dislikes = $DB->count_records($table, array($column => $id, 'reactiontype' => 0));
 
         return ['result' => true, 'likes' => $likes, 'dislikes' => $dislikes];
     }

@@ -2,6 +2,10 @@ import Ajax from 'core/ajax';
 
 
 /**
+ * Valid args are:
+ * - id (int) The id of the instance CASE OR EXPERIENCE.
+ * - action (int) The action to perform. Valid values are 'like' or 'dislike' 0 for dislike or 1 for like.
+ * - type (int) The type of the instance. Valid values are 'case' or 'experience'. 0 for cases or 1 for experience.
  * Set the favourite state on a list of courses.
  * @method toogleLikeAndDislike
  * @param {Object} args Arguments send to the webservice.

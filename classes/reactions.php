@@ -14,8 +14,8 @@ class Reaction
     private static $table_experience_likes = 'digital_experience_likes';
     private static $table_experience_comments = 'digital_experience_comments';
 
-    private static $table_cases_likes = 'digital_cases_likes';
-    private static $table_cases_comments = 'digital_cases_comments';
+    private static $table_cases_likes = 'digital_case_likes';
+    private static $table_cases_comments = 'digital_case_comments';
 
     public function __construct()
     {

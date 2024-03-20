@@ -79,7 +79,7 @@
         </TABLE>
 
 
-        <TABLE NAME="digital_cases_likes" COMMENT="Table for storing likes on cases">
+        <TABLE NAME="digital_case_likes" COMMENT="Table for storing likes on cases">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" />
                 <FIELD NAME="caseid" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" />
@@ -94,7 +94,7 @@
             </KEYS>
         </TABLE>
 
-        <TABLE NAME="digital_cases_comments"
+        <TABLE NAME="digital_case_comments"
             COMMENT="Table for storing comments on cases">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"

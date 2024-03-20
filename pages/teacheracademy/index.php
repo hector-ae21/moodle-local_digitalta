@@ -74,6 +74,7 @@ $templateContext = [
     ]
 ];
 
+
 echo $OUTPUT->render_from_template('local_dta/teacheracademy/dashboard', $templateContext);
 
 echo $OUTPUT->footer();

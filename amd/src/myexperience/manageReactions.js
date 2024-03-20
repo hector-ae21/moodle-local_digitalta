@@ -16,8 +16,7 @@ function toggle(experienceid, reaction = null) {
   };
   const isActive = $(reactionSelectors[reaction] + SELECTORS.DATA.id(experienceid)).hasClass("active");
   const action = isActive ? null : reaction;
-
-  toogleLikeAndDislike({ experienceid, action })
+  toogleLikeAndDislike({id: experienceid, action, type: 1})
     .then((response) => {
       return updateReactionsUI(experienceid, response.likes, response.dislikes, action);
     })

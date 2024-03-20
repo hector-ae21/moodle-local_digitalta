@@ -2,7 +2,7 @@ import $ from "jquery";
 import Notification from "core/notification";
 import Template from "core/templates";
 import {toogleLikeAndDislike, saveComment, getComments} from "local_dta/repositories/reactionsRepository";
-import {SELECTORS} from "./selectors";
+import {SELECTORS} from "../myexperience/selectors";
 
 /**
  * Toggle the like and dislike buttons.
@@ -16,8 +16,7 @@ function toggle(caseid, reaction = null) {
     };
     const isActive = $(reactionSelectors[reaction] + SELECTORS.DATA.id(caseid)).hasClass("active");
     const action = isActive ? null : reaction;
-
-    toogleLikeAndDislike({caseid, action})
+    toogleLikeAndDislike({id: caseid, action, type: 0})
         .then((response) => {
             return updateReactionsUI(caseid, response.likes, response.dislikes, action);
         })

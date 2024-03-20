@@ -30,10 +30,10 @@ function xmldb_local_dta_upgrade($oldversion)
 
     if ($oldversion < 2024031306) {
         // Define table digital_cases_likes to be created.
-        $table = new xmldb_table('digital_cases_likes');
+        $table = new xmldb_table('digital_case_likes');
 
         // Adding fields to table digital_cases_likes.
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true , 'sequence' => true]);
         $table->add_field('casesid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
         $table->add_field('userid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
         $table->add_field('reactiontype', XMLDB_TYPE_INTEGER, '1', ['unsigned' => false, 'notnull' => false]);
@@ -49,10 +49,10 @@ function xmldb_local_dta_upgrade($oldversion)
         }
 
         // Define table digital_cases_comments to be created.
-        $table = new xmldb_table('digital_cases_comments');
+        $table = new xmldb_table('digital_case_comments');
 
         // Adding fields to table digital_cases_comments.
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true , 'sequence' => true]);
         $table->add_field('caseid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
         $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', ['unsigned' => true, 'notnull' => true]);
         $table->add_field('comment', XMLDB_TYPE_TEXT, null, ['notnull' => true]);

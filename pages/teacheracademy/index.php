@@ -55,7 +55,30 @@ $featuredExperiences = array_map(function ($experience) {
 }, $featuredExperiences);
 
 $tags = Tags::getAllTags();
-$cases = OurCases::get_cases();
+$allCases = array_values(OurCases::get_cases());
+
+$cases = array();
+
+for ($i=0; $i < count($allCases) ; $i++) {
+
+    $caseText = OurCases::get_sections_text($allCases[$i]->id);
+
+    print_r("Case text: ");
+    print_r($caseText);
+
+    $newCase = [
+        "id" => $allCases[$i]->id,
+        "experienceid" => $allCases[$i]->experienceid,
+        "userid" => $allCases[$i]->userid,
+        "date" => $allCases[$i]->date,
+        "status" => $allCases[$i]->status,
+        "casetext" => $caseText,
+    ];
+
+    array_push($cases, $newCase);
+}
+
+print_object($cases);
 
 $user = get_complete_user_data("id", $USER->id);
 $picture = new user_picture($user);
@@ -78,7 +101,7 @@ $templateContext = [
     ],
     "tags" => $tags,
     "ourcases" => [
-        "cases" => $cases,
+        "cases" => array_slice($cases, 0, 4),
     ]
 ];
 

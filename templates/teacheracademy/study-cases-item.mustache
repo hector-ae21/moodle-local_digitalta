@@ -1,0 +1,18 @@
+<div class="study-case d-flex"> 
+    <div class="study-case-img w-100 overflow-hidden">
+        {{#pictureurl}}
+            <img class="img-fluid embed-responsive-item"
+                        alt="Study Case 0"
+                        src="{{pictureurl}}"/>
+        {{/pictureurl}}
+        {{^pictureurl}}
+            <img class="img-fluid embed-responsive-item"
+                        alt="Study Case 0"
+                        src="{{themepixurl}}screenshot.png" />
+        {{/pictureurl}}
+    </div>
+    <div class="pl-2">
+        <h4>Study Case 0</h4>
+        <p class="text-dark">In eget euismod nisl. Interdum et malesuada fames ac ante ipsum primis in faucibus</p>
+    </div>
+</div>

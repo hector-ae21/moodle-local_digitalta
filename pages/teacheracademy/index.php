@@ -50,7 +50,7 @@ $recentExperiences = array_map(function ($experience) {
 // Featured Experiences
 $featuredExperiences = Experience::get_extra_fields(Reaction::get_most_liked_experience(5));
 $featuredExperiences = array_map(function ($experience) {
-    $experience->description = StringUtils::truncateHtmlText($experience->description);
+    $experience->description = StringUtils::truncateHtmlText($experience->description, 350);
     return $experience;
 }, $featuredExperiences);
 
@@ -60,11 +60,7 @@ $allCases = array_values(OurCases::get_cases());
 $cases = array();
 
 for ($i=0; $i < count($allCases) ; $i++) {
-
-    $caseText = OurCases::get_sections_text($allCases[$i]->id);
-
-    print_r("Case text: ");
-    print_r($caseText);
+    $caseText = OurCases::get_sections_text($allCases[$i]->id, true);
 
     $newCase = [
         "id" => $allCases[$i]->id,
@@ -72,13 +68,16 @@ for ($i=0; $i < count($allCases) ; $i++) {
         "userid" => $allCases[$i]->userid,
         "date" => $allCases[$i]->date,
         "status" => $allCases[$i]->status,
-        "casetext" => $caseText,
+        "casetext" => array_values($caseText)[0],
     ];
 
     array_push($cases, $newCase);
 }
 
-print_object($cases);
+$cases = array_map(function ($case) {
+    $case['casetext']->description = str_replace("<br>"," ",StringUtils::truncateHtmlText($case['casetext']->description, 100));
+    return $case;
+}, $cases);
 
 $user = get_complete_user_data("id", $USER->id);
 $picture = new user_picture($user);

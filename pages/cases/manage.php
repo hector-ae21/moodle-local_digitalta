@@ -40,9 +40,6 @@ $PAGE->requires->js_call_amd(
 
 echo $OUTPUT->header();
 
-
-print_r($tinyconfig);
-
 if ($experienceid) {
     // IF EXPERIENCE EXISTS
     if (!$experience = Experience::get_experience($experienceid)) {

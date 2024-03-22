@@ -11,6 +11,10 @@ namespace local_dta;
 require_once($CFG->dirroot . '/lib/editor/tiny/classes/editor.php');
 require_once($CFG->dirroot . '/lib/editor/tiny/classes/manager.php');
 
+require_once($CFG->dirroot . '/config.php');
+
+require_login();
+
 use editor_tiny\manager;
 
 class tiny_editor_handler extends \editor_tiny\editor {
@@ -21,12 +25,18 @@ class tiny_editor_handler extends \editor_tiny\editor {
 
     public function get_config_editor($options = null, $fpoptions = null) {
         global $PAGE;
+
+        $PAGE->set_context(context_system::instance());
+
         // Crear una instancia de manager
         $manager = new manager();
         
         // Llamar al método de la clase padre para establecer la configuración predeterminada
         $config = parent::set_default_configuration($manager);
-        
+            
+        // Ensure that the default configuration is set.
+        self::set_default_configuration($this->manager);
+
         if ($fpoptions === null) {
             $fpoptions = [];
         }

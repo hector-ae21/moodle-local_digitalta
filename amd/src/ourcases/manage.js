@@ -1,13 +1,18 @@
 import $ from 'jquery';
 import Templates from 'core/templates';
 import Notification from 'core/notification';
-import {sectionTextUpsert, sectionTextDelete, ourcaseEdit} from 'local_dta/repositories/ourcasesRepository';
+import {
+    sectionTextUpsert,
+    sectionTextDelete,
+    ourcaseEdit
+} from 'local_dta/repositories/ourcasesRepository';
 import ModalFactory from 'core/modal_factory';
 import {get_string} from 'core/str';
 import {getTinyMCE} from 'editor_tiny/loader';
 
 let sectionTextModal;
 let tinymce;
+// eslint-disable-next-line no-unused-vars
 let tinyConfig;
 let urlView = null;
 
@@ -296,17 +301,12 @@ function setEventListeners() {
 
 /**
  * Initialize the module.
- * @param {object} data - The data to initialize the module with.
+ * @param {string} dataUrlView - The url to redirect to after completing the case.
  * @return {void}
  */
-export const init = async(data) => {
+export const init = async(dataUrlView) => {
     setEventListeners();
     tinymce = await getTinyMCE();
     createTinyMCE('section-header-description');
-    urlView = data.urlRepository;
-    tinyConfig = data.tinyconfig;
-    // eslint-disable-next-line no-console
-    console.log(data);
-    // eslint-disable-next-line no-console
-    console.log(tinyConfig);
+    urlView = dataUrlView;
 };

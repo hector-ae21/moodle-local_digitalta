@@ -41,6 +41,15 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_dta_tiny_get_config' => [
+        'classname'   => 'external_tiny_get_config',
+        'methodname'  => 'tiny_get_config',
+        'classpath'   => 'local/dta/classes/webservices/external_tiny_get_config.php',
+        'description' => 'Get the TinyMCE configuration',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     'local_dta_myexperience_save_comment' => [
         'classname'   => 'external_myexperience_save_comment',
         'methodname'  => 'myexperience_save_comment',

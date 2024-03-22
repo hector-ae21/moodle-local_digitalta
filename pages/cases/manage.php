@@ -10,11 +10,9 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
 require_once(__DIR__ . './../../classes/ourcases.php');
-require_once(__DIR__ . './../../classes/tiny_editor_handler.php');
 
 use local_dta\Experience;
 use local_dta\OurCases;
-use local_dta\tiny_editor_handler;
 
 require_login();
 
@@ -29,7 +27,6 @@ $strings = get_strings(['ourcases_header', 'ourcases_title'], "local_dta");
 $PAGE->set_url(new moodle_url('/local/dta/pages/cases/manage.php', ['id' => $experienceid]));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->ourcases_title);
-$tinyconfig = (new tiny_editor_handler())->get_config_editor([]);
 $PAGE->requires->js_call_amd(
     'local_dta/ourcases/manage',
     'init',
@@ -39,9 +36,6 @@ $PAGE->requires->js_call_amd(
 );
 
 echo $OUTPUT->header();
-
-
-print_r($tinyconfig);
 
 if ($experienceid) {
     // IF EXPERIENCE EXISTS

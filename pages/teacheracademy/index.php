@@ -101,6 +101,7 @@ $templateContext = [
     "tags" => $tags,
     "ourcases" => [
         "cases" => array_slice($cases, 0, 4),
+	"allurl" => $CFG->wwwroot . "/local/dta/pages/cases/repository.php"
     ]
 ];
 

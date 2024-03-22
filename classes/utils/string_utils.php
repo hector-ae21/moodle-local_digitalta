@@ -62,8 +62,8 @@ class StringUtils {
             $truncated .= '</' . array_pop($openTags) . '>';
         }
 
-        // Eliminar cualquier paragrafo vacío
-        $truncated = preg_replace('/<p[^>]*><\\/p[^>]*>/', '', $truncated);
+        // Eliminar cualquier parrafo vacío
+        $truncated = preg_replace('/<p[^>]*><\\/p[^>]*>/', '', $truncated); //! Consultar
     
         return $truncated;
     }

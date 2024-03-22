@@ -36,7 +36,7 @@ echo $OUTPUT->header();
 
 $experiences = Experience::get_all_experiences(false);
 $experiences = array_map(function ($experience) {
-    $experience->description = StringUtils::truncateHtmlText($experience->description);
+    $experience->description = StringUtils::truncateHtmlText($experience->description, 600);
     return $experience;
 }, $experiences);
 

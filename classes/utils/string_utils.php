@@ -61,6 +61,9 @@ class StringUtils {
         while (!empty($openTags)) {
             $truncated .= '</' . array_pop($openTags) . '>';
         }
+
+        // Eliminar cualquier parrafo vacío
+        $truncated = preg_replace('/<p[^>]*><\\/p[^>]*>/', '', $truncated); //! Consultar
     
         return $truncated;
     }

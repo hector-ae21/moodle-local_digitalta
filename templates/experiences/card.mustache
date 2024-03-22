@@ -2,9 +2,9 @@
   <div class="exp-card-head">
     {{> local_dta/experiences/experience-metadata}}
   </div>
-  <div class="exp-card-body">
+  <div class="exp-card-body col-12 p-0 m-0">
     {{#pictureurl}}
-    <div class="exp-img-container border-bottom">
+    <div class="exp-img-container border-bottom  col-12 col-md-2">
       <a href="{{experiences.viewurl}}{{id}}">
         <img
           src="{{pictureurl}}"
@@ -15,7 +15,7 @@
       </a>
     </div>
     {{/pictureurl}}
-    <div class="experience-card-body">
+    <div class="experience-card-body col-12 col-md-10">
       <h4 class="mb-1 experience-card-title">
       <a href="{{experiences.viewurl}}{{id}}" class="experience-card-title text-secondary">{{title}}</a>
       </h4>
@@ -29,6 +29,12 @@
     {{#reactions}}
       {{> local_dta/experiences/reactions-buttons}}
     {{/reactions}}
-    {{> local_dta/experiences/experience-tags}}
+    <div class="experience-tags d-flex px-1 align-items-center">
+      <ul class="tags-list">
+        {{#tags}}
+          {{> local_dta/experiences/experience-tags}}
+        {{/tags}}
+      </ul>
+    </div>
   </div>
 </div>

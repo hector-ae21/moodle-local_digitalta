@@ -76,8 +76,8 @@ $string['teacheracademy_header'] = 'Teacher Academy';
 $string['teacheracademy_title'] = 'Teacher Academy';
 $string['teacheracademy_featured_exps_title'] = 'Featured Experiences';
 $string['teacheracademy_themes_title'] = 'Themes';
-$string['teacheracademy_recent_exps_title'] = 'Recent Experiences';
-$string['teacheracademy_recent_cases_title'] = 'Recent Cases';
+$string['teacheracademy_latest_exps_title'] = 'Latest Experiences';
+$string['teacheracademy_latest_cases_title'] = 'Latest Cases';
 
 
 // General
@@ -89,3 +89,4 @@ $string['delete'] = 'Delete';
 $string['create_case'] = 'Create case';
 $string['cancel'] = 'Cancel';
 $string['save'] = 'Save';
+$string['see_more'] = 'See More';

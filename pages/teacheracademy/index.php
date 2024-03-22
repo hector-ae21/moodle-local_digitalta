@@ -55,7 +55,7 @@ $featuredExperiences = array_map(function ($experience) {
 }, $featuredExperiences);
 
 $tags = Tags::getAllTags();
-$allCases = array_values(OurCases::get_cases());
+$allCases = array_values(OurCases::get_active_cases());
 
 $cases = array();
 

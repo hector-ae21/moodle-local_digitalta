@@ -21,6 +21,7 @@ $string['form_experience_picture'] = 'Picture';
 $string['form_experience_visibility'] = 'Visibility';
 $string['form_experience_visibility_public'] = 'Public';
 $string['form_experience_visibility_private'] = 'Private';
+$string['form_experience_tags'] = 'Tags';
 
 
 // Experience delete form

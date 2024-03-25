@@ -46,6 +46,24 @@ $string['myexperience_add_new_experience'] = 'Add new experience';
 $string['myexperience_add_comment'] = 'Add a new comment...';
 $string['myexperience_picture_alt'] = 'Experience picture';
 
+// Experience View
+$string['experience_view_ourcases_title'] = 'Our cases';
+$string['experience_view_ourcases_desc_nocases'] = 'There are not cases available.';
+$string['experience_view_mytutoring_title'] = 'My Tutoring';
+$string['experience_view_mytutoring_request_title'] = 'Tutoring requests';
+$string['experience_view_mytutoring_ok_button'] = 'Accept';
+$string['experience_view_mytutoring_decline_button'] = 'Decline';
+$string['experience_view_reflectionmanager_title'] = 'Reflection Manager';
+$string['experience_view_resrepo_title'] = 'Resources Repository';
+// Experience View Tooltips
+$string['experience_view_tooltip_ourcases'] = 'Link a case to this experience';
+$string['experience_view_tooltip_mytutoring'] = 'Manage your tutoring sessions';
+$string['experience_view_tooltip_reflectionmanager'] = 'Manage your reflections for this experience';
+$string['experience_view_tooltip_resrepo'] = 'Link resources to this experience';
+
+// Reflection
+$string['experience_reflection_header'] = 'Reflection Creator';
+
 
 // Ourcases main
 $string['ourcases_header_title'] = 'Case title';
@@ -79,6 +97,9 @@ $string['teacheracademy_featured_exps_title'] = 'Featured Experiences';
 $string['teacheracademy_themes_title'] = 'Themes';
 $string['teacheracademy_latest_exps_title'] = 'Latest Experiences';
 $string['teacheracademy_latest_cases_title'] = 'Latest Cases';
+
+// Teacher Academy Tooltips
+$string['teacheracademy_tooltip_themes'] = 'Select a theme to filter experiences';
 
 
 // General

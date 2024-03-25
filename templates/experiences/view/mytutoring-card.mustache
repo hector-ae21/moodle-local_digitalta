@@ -1,6 +1,9 @@
 <div class="card experience-card-module">
     <div class="card-header">
-        <h2>My Tutoring</h2>
+        <div class="d-flex flex-row">
+            <h2>{{#str}}experience_view_mytutoring_title, local_dta{{/str}}</h2>
+            <div data-tooltip-content="{{#str}}experience_view_tooltip_mytutoring, local_dta{{/str}}" class="data-tooltip"><i class="fa fa-question"></i></div>
+        </div>
     </div>
     <div class="card-body">
         <div class="custom-searchbar">
@@ -14,7 +17,7 @@
             <input class="input" disabled type="search" placeholder="Search users to ask tutoring" />
         </div>
         <div class="container">
-            <h4 class="text-muted my-3">Tutoring requests</h4>
+            <h4 class="text-muted my-3">{{#str}}experience_view_mytutoring_request_title, local_dta{{/str}}</h4>
             <div class="row">
                 <div class="w-100">
                     <div class="people-nearby">
@@ -29,8 +32,8 @@
                             <p>Teachear at University</p>
                         </div>
                         <div class="col-md-3 col-sm-3">
-                            <button class="btn btn-primary pull-right mb-1">Accept</button>
-                            <button class="btn btn-secondary pull-right mt-1">Refuse</button>
+                            <button class="btn btn-primary pull-right mb-1">{{#str}}experience_view_mytutoring_ok_button, local_dta{{/str}}</button>
+                            <button class="btn btn-secondary pull-right mt-1">{{#str}}experience_view_mytutoring_decline_button, local_dta{{/str}}</button>
                         </div>
                         </div>
                     </div>
@@ -44,8 +47,8 @@
                             <p>Teacher at University</p>
                         </div>
                         <div class="col-md-3 col-sm-3">
-                            <button class="btn btn-primary pull-right mb-1">Accept</button>
-                            <button class="btn btn-secondary pull-right mt-1">Refuse</button>
+                            <button class="btn btn-primary pull-right mb-1">{{#str}}experience_view_mytutoring_ok_button, local_dta{{/str}}</button>
+                            <button class="btn btn-secondary pull-right mt-1">{{#str}}experience_view_mytutoring_decline_button, local_dta{{/str}}</button>
                         </div>
                         </div>
                     </div>

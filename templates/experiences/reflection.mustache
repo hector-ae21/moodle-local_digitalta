@@ -1,0 +1,103 @@
+    <div class="parent">
+        <h2>{{#str}}local_dta, experience_reflection_header{{/str}}</h2>
+            <div class="sections d-flex flex-column">
+            <div class="section section-what">
+                <h2>What?</h2>
+                <div id="question" class="d-flex flex-column">
+                    <h3>experience_reflection_what_header_q1</h3>
+                    <span></span>
+                </div>
+                <div id="question" class="d-flex flex-column">
+                    <h3>experience_reflection_sowhat_header_q2</h3>
+                    <span></span>
+                </div>
+            </div>
+            <div class="section section-sowhat">
+                <h2>So What?</h2>
+                <div id="question" class="d-flex flex-column">
+                    <h3>experience_reflection_sowhat_header_q3</h3>
+                    <span></span>
+                </div>
+            </div>
+            <div class="section section-nowwhat">
+                <h2>Now What?</h2>
+                <div id="question" class="d-flex flex-column">
+                    <h3>experience_reflection_nowwhat_header_q4</h3>
+                    <span></span>
+                </div>
+                <div id="question" class="d-flex flex-column">
+                    <h3>experience_reflection_extra_header_q4</h3>
+                    <span></span>
+                </div>
+            </div>
+            <div class="section section-extra">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+<style>
+    #page-local-dta-pages-experiences-reflection {
+        .parent {
+            width: 85%;
+            height: 100%;
+            background-color: #f8f8f8;
+
+            h2 {
+            margin-bottom: 40px;
+            }
+
+            .sections {
+                gap: 20px;
+            }
+
+
+            .section {
+                width: 100%;
+                height: fit-content;
+                box-shadow: 0px 0px 2px 0px rgba(6, 47, 74, 1);
+                background-color: #fff;
+                border-radius: 20px; 
+                border: 2px dashed rgba(128, 0, 0, 0.5);
+                padding: 10px 20px;
+
+                h2 {
+                    font-size: 1.5em !important;
+                    font-weight: bold;
+                    color: #062f4a;
+                    transform: rotate(270deg); 
+                }
+
+                #question {
+                    box-shadow: 0px 0px 2px 0px rgba(6, 47, 74, 1);
+                    padding: 10px 20px;
+
+                    h3 {
+                        font-size: 1.5em !important;
+                        font-weight: bold;
+                        color: #062f4a;
+                    }
+
+                    span
+                    { 
+                        width: 90%;
+                        height: 400px;
+                        background-color: #324c5c;
+                    }
+                }
+            }
+
+            .section-what {
+            }
+
+            .section-sowhat {
+            }
+
+            .section-nowwhat {
+            }
+
+            .section-extra {
+            }
+        }
+    }
+</style>

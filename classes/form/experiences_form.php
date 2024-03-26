@@ -11,11 +11,18 @@
 // moodleform is defined in formslib.php
 require_once("$CFG->libdir/formslib.php");
 require_once("$CFG->dirroot/local/dta/lib.php");
+require_once("$CFG->dirroot/repository/lib.php");
+require_once("$CFG->dirroot/local/dta/classes/tags.php");
+
+
+use \local_dta\Tags;
+
 
 class local_experiences_form extends moodleform
 {
-    
-    public function __construct() {
+
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -24,17 +31,13 @@ class local_experiences_form extends moodleform
     {
         $mform = $this->_form;
 
-        $strings = get_strings(['form_experience_description', 'form_experience_lang', 'form_experience_visibility', 'form_experience_title', 'form_experience_picture', 'form_experience_visibility_public', 'form_experience_visibility_private', 'form_experience_tags'], "local_dta");
+        $strings = get_strings(['form_experience_description', 'form_experience_lang', 'form_experience_visibility', 'form_experience_title', 'form_experience_picture', 'form_experience_visibility_public', 'form_experience_visibility_private', 'form_experience_tags', 'form_experience_tags_placeholder'], "local_dta");
 
         $mform->addElement('html', '<div class="d-flex flex-column w-100">');
 
         /* TITLE */
         $mform->addElement('text', 'title',  $strings->form_experience_title);
         $mform->setType('title', PARAM_TEXT);
-
-        /* DESCRIPTION */
-        $mform->addElement('editor', 'description', $strings->form_experience_description);
-        $mform->setType('description', PARAM_RAW);
 
         /* FILE */
         $mform->addElement(
@@ -51,7 +54,9 @@ class local_experiences_form extends moodleform
             ]
         );
 
-        $mform->addElement('html', '<div class="d-flex flex-row justify-content-around align-items-center align-self-center w-88">');
+        /* DESCRIPTION */
+        $mform->addElement('editor', 'description', $strings->form_experience_description);
+        $mform->setType('description', PARAM_RAW);
 
         /* LANG */
         $stringmanager = get_string_manager();
@@ -66,11 +71,22 @@ class local_experiences_form extends moodleform
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
 
-        $mform->addElement('html', '</div>');
-
         /* TAGS */
-        $mform->addElement('text', 'tags', 'Tags');
-        $mform->setType('tags', PARAM_TEXT);
+        $tags = Tags::getAllTags();
+        if(!$tags) {
+            $tags = [];
+        }
+
+        $tagsName = array_reduce($tags, function($carry, $tag) {
+            $carry[$tag->id] = $tag->name;
+            return $carry;
+        }, []);
+        
+        $options = array(
+            'multiple' => true,
+            'noselectionstring' => $strings->form_experience_tags_placeholder,
+        );
+        $mform->addElement('autocomplete', 'tags',$strings->form_experience_tags, $tagsName, $options);
 
         /* SUBMIT */
         $this->add_action_buttons(false);

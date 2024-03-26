@@ -25,6 +25,7 @@ $id = required_param('id', PARAM_INT);
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
 $PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/myexperience/view', 'init');
 
 // Get the experience
 if(!$experience = Experience::get_experience($id)) {
@@ -67,6 +68,7 @@ $template_context = [
     'createcaseurl' => $CFG->wwwroot . "/local/dta/pages/cases/manage.php?id=",
     "createreflectionurl" => $CFG->wwwroot . "/local/dta/pages/experiences/reflection.php?id=",
 ];
+
 
 echo $OUTPUT->render_from_template('local_dta/experiences/view/view', $template_context);
 

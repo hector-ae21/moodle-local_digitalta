@@ -13,7 +13,7 @@ namespace local_dta;
 class ExperienceTag
 {
 
-    private static $table = 'experience_tag';
+    private static $table = 'digital_experience_tag';
 
     
     /**
@@ -25,9 +25,9 @@ class ExperienceTag
      */
     public static function assignTagToExperience($experienceId, $tagId, $db)
     {
-        $record = new stdClass();
-        $record->experience_id = $experienceId;
-        $record->tag_id = $tagId;
+        $record = new \stdClass();
+        $record->experienceid = $experienceId;
+        $record->tagid = $tagId;
 
         return $db->insert_record(self::$table, $record);
     }
@@ -55,7 +55,7 @@ class ExperienceTag
     {
         $sql = "SELECT t.*
                 FROM {digital_tags} t
-                JOIN {experience_tag} et ON t.id = et.tagid
+                JOIN {digital_experience_tag} et ON t.id = et.tagid
                 WHERE et.experienceid = ?";
         return $db->get_records_sql($sql, array($experienceId));
     }

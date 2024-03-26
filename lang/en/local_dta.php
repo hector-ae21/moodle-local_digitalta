@@ -17,11 +17,12 @@ $string['form_experience_header'] = 'Add new experience';
 $string['form_experience_title'] = 'Title'; 
 $string['form_experience_description'] = 'Description';
 $string['form_experience_lang'] = 'Language';
-$string['form_experience_picture'] = 'Picture';
+$string['form_experience_picture'] = 'Featured image';
 $string['form_experience_visibility'] = 'Visibility';
 $string['form_experience_visibility_public'] = 'Public';
 $string['form_experience_visibility_private'] = 'Private';
 $string['form_experience_tags'] = 'Tags';
+$string['form_experience_tags_placeholder'] = 'Select or create a tag...';
 
 
 // Experience delete form

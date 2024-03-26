@@ -282,4 +282,26 @@ class Experience
         $latestExperiences = self::get_extra_fields($latestExperiences);
         return $latestExperiences;
     }
+
+    /**
+     * Close the experience
+     */
+    public static function close_experience($experience)
+    {
+        global $DB, $USER;
+        if (!self::check_experience($experience->id)) {
+            throw new Exception('Error experience not found');
+        }
+        // Check permissions
+        if (!local_dta_check_permissions($experience, $USER)) {
+            throw new Exception('Error permissions');
+        }
+        $experience->status = 1;
+        $record = new \stdClass();
+        $record->id = $experience->id;
+        $record->status = 1;
+        $DB->update_record(self::$table, $record);
+        return new Experience($record);
+    }
+
 }

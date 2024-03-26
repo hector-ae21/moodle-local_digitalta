@@ -10,9 +10,11 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
 require_once(__DIR__ . './../../classes/ourcases.php');
+require_once(__DIR__ . './../../classes/tiny_editor_handler.php');
 
 use local_dta\Experience;
 use local_dta\OurCases;
+use local_dta\tiny_editor_handler;
 
 require_login();
 
@@ -36,6 +38,10 @@ $PAGE->requires->js_call_amd(
 );
 
 echo $OUTPUT->header();
+
+$tiny = (new tiny_editor_handler)->get_config_editor(['maxfiles' =>1]);
+
+// print_r($tiny);
 
 if ($experienceid) {
     // IF EXPERIENCE EXISTS

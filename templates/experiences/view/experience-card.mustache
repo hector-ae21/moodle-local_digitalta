@@ -13,12 +13,20 @@
         {{/user}}
         {{#experience}} 
         <div class="d-flex">
+        {{! TODO agregar boton de borrado dentro del form }}
+            {{^experience.data.status}} 
             <a href="{{editurl}}{{data.id}}" class="mr-3 shadow-none" title="{{#str}}edit, local_dta{{/str}}">
                 <i class="fa fa-pencil fa-lg text-primary"></i>
             </a>
-            <a href="{{deleteurl}}{{data.id}}" class="mr-3 shadow-none" title="{{#str}}delete, local_dta{{/str}}">
-                <i class="fa fa-trash fa-lg text-danger"></i>
+            <a href="#" class="mr-3 shadow-none">
+                <i class="fa fa-times-circle fa-lg text-secondary"></i>
             </a>
+            {{/experience.data.status}} 
+            {{#experience.data.status}} 
+            <a href="#" class="mr-3 shadow-none" id="open-experience-button" data-id="{{experience.data.id}}">
+                <i class="fa fa-unlock-alt fa-lg text-secondary"></i>
+            </a>
+            {{/experience.data.status}} 
         </div>
         {{/experience}}
     </div>

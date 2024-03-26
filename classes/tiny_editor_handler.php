@@ -1,4 +1,5 @@
 <?php
+
 /**
  * tiny handler
  *
@@ -6,36 +7,30 @@
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_dta;
 
 require_once($CFG->dirroot . '/lib/editor/tiny/classes/editor.php');
 require_once($CFG->dirroot . '/lib/editor/tiny/classes/manager.php');
-
 require_once($CFG->dirroot . '/config.php');
-
-require_login();
 
 use editor_tiny\manager;
 
-class tiny_editor_handler extends \editor_tiny\editor {
+class tiny_editor_handler extends \editor_tiny\editor
+{
 
-    public function __construct() {
-        parent::__construct(); 
+    public function __construct()
+    {
+        parent::__construct();
     }
 
-    public function get_config_editor($options = null, $fpoptions = null) {
+    public function get_config_editor($options = null, $fpoptions = null)
+    {
         global $PAGE;
 
-        $PAGE->set_context(context_system::instance());
-
-        // Crear una instancia de manager
         $manager = new manager();
-        
-        // Llamar al método de la clase padre para establecer la configuración predeterminada
-        $config = parent::set_default_configuration($manager);
-            
         // Ensure that the default configuration is set.
-        self::set_default_configuration($this->manager);
+        parent::set_default_configuration($manager);
 
         if ($fpoptions === null) {
             $fpoptions = [];
@@ -81,8 +76,8 @@ class tiny_editor_handler extends \editor_tiny\editor {
             // editor_tiny/options::registerPlaceholderSelectors.
             'placeholderSelectors' => [],
 
-            // Plugin configuration.
-            'plugins' => $this->manager->get_plugin_configuration($context, $options, $fpoptions, $this),
+            // Plugin configuration1.
+            'plugins' => $manager->get_plugin_configuration($context, $options, $fpoptions, $this),
 
             // Nest menu inside parent DOM.
             'nestedmenu' => true,
@@ -104,6 +99,10 @@ class tiny_editor_handler extends \editor_tiny\editor {
 
         $configoptions = json_encode(convert_to_array($config));
 
-        return $configoptions;
+        $inlinejs = <<<EOF
+        window.dta_tiny_config = $configoptions;
+        EOF;
+
+        $PAGE->requires->js_amd_inline($inlinejs);
     }
 }

@@ -24,11 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-<<<<<<< HEAD
 $plugin->version = 2024032601;
-=======
-$plugin->version = 2024032010;
->>>>>>> 0ac76a8bf0e214845ed2bfec7fb7f15d572fb1f1
 $plugin->requires = 2021051100;
 $plugin->component = 'local_dta';
 $plugin->maturity = MATURITY_ALPHA;

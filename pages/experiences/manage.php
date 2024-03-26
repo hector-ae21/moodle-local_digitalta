@@ -31,6 +31,7 @@ $title = $_POST['experiencetitle'] ?? '';
 require_login();
 use local_dta\Experience;
 
+
 global $CFG, $PAGE, $OUTPUT, $USER, $DB;
 $strings = get_strings(['form_experience_header'], "local_dta");
 
@@ -41,6 +42,7 @@ $PAGE->set_title($strings->form_experience_header);
 $PAGE->set_heading($strings->form_experience_header);
 
 $form = new local_experiences_form();
+
 
 if ($form->is_cancelled()) {
     redirect(new moodle_url('/local/dta/pages/experiences/manage.php', ['id' => $id]));

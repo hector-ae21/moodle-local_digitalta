@@ -8,11 +8,10 @@ import {
 } from 'local_dta/repositories/ourcasesRepository';
 import ModalFactory from 'core/modal_factory';
 import {get_string} from 'core/str';
-import {getTinyMCE} from 'editor_tiny/loader';
+import {setupForElementId} from 'editor_tiny/editor';
+
 
 let sectionTextModal;
-let tinymce;
-// eslint-disable-next-line no-unused-vars
 let tinyConfig;
 let urlView = null;
 
@@ -212,7 +211,7 @@ function changeStatusToComplete() {
  * @return {void}
  */
 function removeTinyMCEFromArea(area) {
-    tinymce.get(area).remove();
+    window.tinymce.get(area).remove();
 }
 
 /**
@@ -221,7 +220,7 @@ function removeTinyMCEFromArea(area) {
  * @returns {string} The content of the tinyMCE area.
  */
 function getTinyMCEContent(area) {
-    return tinymce.get(area).getContent();
+    return window.tinyMCE.get(area).getContent();
 }
 
 /**
@@ -231,11 +230,11 @@ function getTinyMCEContent(area) {
  */
 function createTinyMCE(area) {
     setTimeout(() => {
-      tinymce.init({
-        selector: `textarea#${area}`,
-        plugins: "image , table",
-      });
-    }, 200);
+        setupForElementId({
+            elementId: `${area}`,
+            options: tinyConfig,
+        });
+      }, 200);
 }
 
 /**
@@ -295,7 +294,6 @@ function setEventListeners() {
     $(document).on('click', '#complete-case-button', function() {
         changeStatusToComplete();
     });
-
 }
 
 
@@ -306,7 +304,7 @@ function setEventListeners() {
  */
 export const init = async(dataUrlView) => {
     setEventListeners();
-    tinymce = await getTinyMCE();
-    createTinyMCE('section-header-description');
     urlView = dataUrlView;
+    tinyConfig = window.dta_tiny_config;
+    createTinyMCE('section-header-description');
 };

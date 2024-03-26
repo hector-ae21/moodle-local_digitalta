@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card mb-3">
+      <div class="card-header d-flex justify-content-end py-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm" id="header-to-edit-button"><i
+            class="fa fa-pencil" aria-hidden="true"></i></button>
+      </div>
+      <div class="card-body">
+        <input type="hidden" name="id" id="section-header-id" value="{{sectionheader.id}}">
+        <input type="hidden" id="section-header-title" value="{{sectionheader.title}}">
+        <input type="hidden" id="section-header-description" value="{{sectionheader.description}}">
+        <label class="form-label">{{#str}} ourcases_header_title, local_dta {{/str}}</label>
+        <p>{{{sectionheader.title}}}</p>
+        <label class="form-label">{{#str}} ourcases_header_description, local_dta {{/str}}</label>
+        <p>{{{sectionheader.description}}}</p>
+      </div>
+    </div>
+  </div>
+</div>

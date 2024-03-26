@@ -69,7 +69,6 @@ $template_context = [
     "createreflectionurl" => $CFG->wwwroot . "/local/dta/pages/experiences/reflection.php?id=",
 ];
 
-
 echo $OUTPUT->render_from_template('local_dta/experiences/view/view', $template_context);
 
 echo $OUTPUT->footer();

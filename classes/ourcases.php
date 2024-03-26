@@ -46,7 +46,9 @@ class OurCases
     public static function get_cases()
     {
         global $DB;
-        return $DB->get_records(self::$table);
+        $cases = $DB->get_records(self::$table);
+        $cases = self::get_extra_fields($cases);
+        return $cases;
     }
 
     /**
@@ -57,7 +59,9 @@ class OurCases
     public static function get_active_cases()
     {
         global $DB;
-        return $DB->get_records(self::$table , ['status' => 1]);
+        $cases = $DB->get_records(self::$table, ['status' => 1]);
+        $cases = self::get_extra_fields($cases);
+        return $cases;
     }
     /**
      * Get a specific case
@@ -293,5 +297,25 @@ class OurCases
     {
         global $DB;
         return $DB->get_record(self::$table_section_text, ['ourcase' => $id, 'sequence' => $sequence]);
+    }
+
+    public static function get_extra_fields($cases)
+    {
+        global $PAGE, $DB;
+        foreach ($cases as $case) {
+            $user = get_complete_user_data("id", $case->userid);
+            $picture = new \user_picture($user);
+            $picture->size = 101;
+            $case->date = date("d/m/Y", strtotime($case->date));
+            $case->user = [
+                'id' => $user->id,
+                'name' => $user->firstname . " " . $user->lastname,
+                'email' => $user->email,
+                'imageurl' => $picture->get_url($PAGE)->__toString(),
+                'profileurl' => new \moodle_url('/user/profile.php', ['id' => $user->id])
+            ];
+            $case->reactions = Reaction::get_reactions_for_render_experience($case->id);
+        }
+        return $cases;
     }
 }

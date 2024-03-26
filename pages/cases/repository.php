@@ -57,7 +57,6 @@ $templateContext = [
     "url_case" => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id='
 ];
 
-
 echo $OUTPUT->render_from_template('local_dta/cases/repository', $templateContext);
 
 echo $OUTPUT->footer();

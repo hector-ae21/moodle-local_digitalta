@@ -1,17 +1,7 @@
-<div class="col-12">
-    <div class="study-cases">
-        {{#cases}}
-        <a href="{{url_case}}{{ourcaseid}}" >
-        <div class="study-case d-flex m-3 " style="border-bottom: 1px solid black;"> 
-            <div class="study-case-img mb-2 w-25 overflow-hidden" style="object-fit: cover; max-height: 150px; max-width: 250px;">
-                <img class="img-fluid embed-responsive-item" alt="Study Case 0" src="https://digitalta.eu/wp-content/uploads/2022/11/logo-digitalta.svg" >
-            </div>
-            <div class="pl-2">
-                <h4>{{title}}</h4>
-                <p class="text-dark">{{{description}}}</p>
-            </div>
-        </div>
-        </a>
-        {{/cases}}
+<div class="pt-3">
+    <div class="row grid">
+    {{#cases}}
+        <div class="item col-12">{{> local_dta/cases/respository-cases-card }}</div>
+    {{/cases}}
     </div>
 </div>

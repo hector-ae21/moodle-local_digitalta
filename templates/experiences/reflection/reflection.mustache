@@ -1,0 +1,197 @@
+<div class="parent col-10 mx-auto">
+    <h2>{{#str}}experience_reflection_header, local_dta{{/str}}</h2>
+        <div class="sections d-flex flex-column">
+            <div id="section_what" class="section d-flex flex-column">
+                <div class="header d-flex flex-row align-items-center">
+                    <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
+                    <h2>What?</h2>
+                </div>
+                <div id="questions_what" class="collapse questions flex-column">
+                    <div class="question d-flex flex-column">
+                        <h3>Introduction</h3>
+                        <span></span>
+                        {{> local_dta/experiences/reflection/reflection-importer}}
+                    </div>
+                    <div class="question d-flex flex-column">
+                        <h3>Problem context</h3>
+                        <span>Describe what is happening in your class? What is the issue? What were you thinking/feeling?</span>
+                        {{> local_dta/experiences/reflection/reflection-importer}}
+                    </div>
+                </div>
+            </div>
+            <div id="section_so_what" class="section d-flex flex-column">
+                <div class="header d-flex flex-row align-items-center">
+                    <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
+                    <h2>So What?</h2>
+                </div>
+                <div class="questions flex-column">
+                    <div class="question d-flex flex-column">
+                        <h3>How did I find out more...</h3>
+                        <span>...about this: colleagues, literature, mentor, .... What did you read, who did you ask?</span>
+                        {{> local_dta/experiences/reflection/reflection-importer}}
+                    </div>
+                </div>
+            </div>
+            <div id="section_now_what" class="section d-flex flex-column">
+                <div class="header d-flex flex-row align-items-center">
+                    <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
+                    <h2>Now What?</h2>
+                </div>
+                <div class="questions flex-column">
+                    <div class="question d-flex flex-column">
+                        <h3>Action</h3>
+                        <span>What did I do, why. What happened when I tried it out.</span>
+                        {{> local_dta/experiences/reflection/reflection-importer}}
+                    </div>
+                    <div class="question d-flex flex-column">
+                        <h3>Reflection</h3>
+                        <span>What did I learn and gain from this. What impact did it have? What should I do next?</span>
+                        {{> local_dta/experiences/reflection/reflection-importer}}
+                    </div>
+                </div>
+            </div>
+            <div id="section_extra" class="section d-flex flex-column">
+                <div class="header d-flex flex-row align-items-center">
+                    <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
+                    <h2>Extra</h2>
+                </div>
+                <div class="questions flex-column">
+                    <div class="question d-flex flex-column">
+                        <h3>extra_header_XX</h3>
+                        <span></span>
+                        {{> local_dta/experiences/reflection/reflection-importer}}
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+<style>
+#page-local-dta-pages-experiences-reflection {
+
+    .parent {
+        height: 100%;
+        transition: all 1s ease-in-out;
+        border-radius: 10px;
+
+        .header {
+            cursor: pointer;
+        }
+
+        #import_div {
+            display: none;
+            width: fit-content;
+            height: fit-content;
+            margin-top: 10px;
+            box-shadow: 0px 0px 2px 0px rgba(6, 47, 74, 1);
+            border-radius: 10px;
+            padding: 10px;
+            gap: 20px;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: row;
+        }
+
+        .import_button {
+            min-width: 50px;
+            width: fit-content;
+            max-height: 50px;
+            margin: auto;
+            box-shadow: 0px 0px 2px 0px rgba(6, 47, 74, 1);
+            border-radius: 10px;
+            cursor: pointer;
+            padding-right: 10px;
+
+            i {
+                padding: 10px;
+                font-size: 1em;
+                color: #1382c5;
+                margin: auto;
+            }
+        }
+
+        #add_button {
+            display: flex;
+            font-size: 2em;
+            color: #1382c5;
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 {
+            color: #1382c5;
+            margin-bottom: 40px;
+        }
+
+        .sections {
+            gap: 20px;
+        }
+
+        #section_what {
+            .questions {
+                border: 2px dashed rgba(204, 98, 33, 0.9);
+            }
+        }
+
+        #section_so_what {
+            .questions {
+                border: 2px dashed rgba(57, 98, 33, 0.9);
+            }
+        }
+
+        #section_now_what {
+            .questions {
+                border: 2px dashed rgba(19, 130, 197, 0.9);
+            }
+        }
+
+        #section_extra {
+            .questions {
+                border: 2px dashed rgba(200, 20, 50, 0.9);
+            }
+        }
+
+        .section {
+            h2 {
+                font-size: 2em !important;
+                font-weight: bold;
+                color: #1382c5;
+                /*transform: rotate(270deg);*/
+                margin-bottom: 20px;
+                height: fit-content;
+                text-wrap: nowrap;
+                width: 150px;
+                margin-top: 15px;
+                padding-left: 10px;
+            }
+        }
+
+        .questions {
+            display: flex;
+            width: 100%;
+            height: fit-content;
+            background-color: #fff;
+            border-radius: 10px; 
+            padding: 10px 20px;                
+
+            .question {
+                padding: 20px 40px;
+                width: 100%;
+
+                h3 {
+                    font-size: 1.5em !important;
+                    font-weight: bold;
+                    color: #062f4a;
+                }
+
+                span
+                { 
+                    width: 100%;
+                    height: 400px;
+                }
+            }
+        }
+    }
+}
+</style>

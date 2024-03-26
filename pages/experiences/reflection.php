@@ -21,13 +21,13 @@ require_login();
 global $CFG, $PAGE, $OUTPUT , $USER;
 
 // Seting the page url and context
-$id = required_param('id', PARAM_INT);
-$PAGE->set_url(new moodle_url('/local/dta/pages/experiences/reflection.php', ['id' => $id]));
+$experienceid = optional_param('id', 0, PARAM_INT);
+$PAGE->set_url(new moodle_url('/local/dta/pages/experiences/reflection.php', ['id' => $experienceid]));
 $PAGE->set_context(context_system::instance());
 $PAGE->requires->js_call_amd('local_dta/myexperience/reflection/manageReflection', 'init');
 
 // Get the experience
-if(!$experience = Experience::get_experience($id)) {
+if(!$experience = Experience::get_experience($experienceid)) {
     throw new moodle_exception('invalidexperience', 'local_dta');
 }
 
@@ -35,7 +35,7 @@ if(!$experience = Experience::get_experience($id)) {
 $user = get_complete_user_data("id", $experience->userid);
 $user_picture = new user_picture($user);
 $user_picture->size = 101;
-$experience_case = OurCases::get_cases_by_experience($id);
+$experience_case = OurCases::get_cases_by_experience($experienceid);
 $experience_case_info = [];
 foreach ($experience_case as $case) {
     $case = OurCases::get_section_header($case->id);

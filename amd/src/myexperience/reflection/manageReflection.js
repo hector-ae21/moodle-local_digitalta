@@ -6,8 +6,6 @@
 function setEvents() {
   document.querySelectorAll('.section').forEach(section => {
     var collapseButton = section.querySelector('.header');
-    //eslint-disable-next-line no-console
-    console.log(collapseButton);
 
     if (collapseButton) {
       collapseButton.addEventListener('click', () => {
@@ -33,17 +31,9 @@ function setEvents() {
     var addButton = importer.querySelector('#add_button');
     var importerDiv = importer.querySelector('#import_div');
 
-    //eslint-disable-next-line no-console
-    console.log(addButton);
-    //eslint-disable-next-line no-console
-    console.log(importerDiv);
-
     // Add Button Clic Event
     addButton.addEventListener('click', () => {
-
         importerDiv.style.display = importerDiv.style.display == 'flex' ? 'none' : 'flex';
-        //eslint-disable-next-line no-console
-        console.log("Add Button Clicked");
     });
 
     importerDiv.querySelectorAll('.import_button').forEach(importButton => {

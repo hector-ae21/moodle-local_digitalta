@@ -12,9 +12,11 @@ namespace local_dta;
 
 require_once(__DIR__ . '/../../../config.php');
 require_once(__DIR__ . '/reactions.php');
+require_once(__DIR__ . '/experience_tags.php');
 
 use stdClass;
 use local_dta\Reaction;
+use local_dta\ExperienceTag;
 
 class Experience
 {
@@ -113,7 +115,7 @@ class Experience
      */
     public static function get_extra_fields($experiences)
     {
-        global $PAGE;
+        global $PAGE, $DB;
         foreach ($experiences as $experience) {
             $user = get_complete_user_data("id", $experience->userid);
             $picture = new \user_picture($user);
@@ -126,13 +128,21 @@ class Experience
                 'imageurl' => $picture->get_url($PAGE)->__toString(),
                 'profileurl' => new \moodle_url('/user/profile.php', ['id' => $user->id])
             ];
-            $tag1 = new stdClass();
-            $tag1->name = $experience->visible ? 'Public' : 'Private';
-            $tag1->color = '#b0b0b0';
-            $tag2 = new stdClass();
-            $tag2->name = $experience->lang;
-            $tag2->color = '#b0b0b0';
-            $experience->tags = array_values(array($tag1, $tag2));
+            $tags = ExperienceTag::getTagsForExperience($experience->id, $DB);
+            $transformedTags = array_map(function($tag) {
+                return (object)[
+                    'name' => $tag->name,
+                    'color' => '#b0b0b0'
+                ];
+            }, array_values($tags));
+            $visibilityTag = new stdClass();
+            $visibilityTag->name = $experience->visible ? 'Public' : 'Private';
+            $visibilityTag->color = '#b0b0b0';
+            $languageTag = new stdClass();
+            $languageTag->name = $experience->lang;
+            $languageTag->color = '#b0b0b0';
+
+            $experience->tags = array_values(array_merge(array($visibilityTag, $languageTag), $transformedTags));
 
             $experience->pictureurl = self::get_picture_url($experience);
             $experience->reactions = Reaction::get_reactions_for_render_experience($experience->id);
@@ -196,11 +206,20 @@ class Experience
         $record->status = $experience->status ?? 0;
 
 
+
         if($experience->id) {
             $record->id = $experience->id;
             $DB->update_record(self::$table, $record);
+            //TODO: logic to update tags
         } else {
             $record->id = $DB->insert_record(self::$table, $record);
+            if ($experience->tags) {
+                foreach ($experience->tags as $tagId) {
+                    if ($tagId !== null) {
+                        ExperienceTag::assignTagToExperience($record->id, $tagId, $DB);
+                    }
+                }
+            }
         }
 
         return new Experience($record);

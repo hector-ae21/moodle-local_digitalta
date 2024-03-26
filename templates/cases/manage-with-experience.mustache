@@ -1,0 +1,81 @@
+<div class="container-fluid">
+  <input type="hidden" id="ourcases-id" value="{{ourcase.id}}">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar">
+          <h4>{{#str}}experience, local_dta{{/str}}</h4>
+          <hr />
+          <h5>{{experience.title}}</h5>
+          <p>{{{experience.description}}}</p>
+        </div>
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-md-12" id="sections-header">
+              {{#sectionheader}} {{> local_dta/cases/section-header-view }} {{/sectionheader}}
+            </div>
+            <div class="col-md-12" id="sections-body">
+              {{#sections}} {{> local_dta/cases/section-text-view}} {{/sections}}
+            </div>
+            <div class="col-md-12">{{>local_dta/cases/section-add }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-right pt-4">
+    <button type="button" id="save-case-button" class="btn btn-primary">{{#str}}ourcases_button_save, local_dta{{/str}}</button>
+  </div>
+</div>
+
+<script src="{{url_tiny}}" referrerpolicy="origin"></script>  
+{{#js}}
+    $(document).on('click', '#header-edit-button', () => {
+        tinymce.get('section-header-description').remove();
+    });
+    // Change the header section to edit mode
+    $(document).on('click', '#header-to-edit-button', () => {
+        setTimeout(() => {
+            tinymce.init({
+                selector: 'textarea#section-header-description',
+                plugins: 'image , table',
+            });
+        }, 200);
+    });
+    // Change the header section to view mode withour editing
+    $(document).on('click', '#header-edit-close-button', () => {
+        tinymce.get('section-header-description').remove();
+    });
+    // Remove a section
+    $(document).on('click', '.section-close-button', function() {
+        const id = $(this).data('id');
+        tinymce.get(`content_${id}`).remove();
+    });
+    // Edit the section
+    $(document).on('click', '.section-edit-button', function() {
+        const id = $(this).data('id');
+        tinymce.get(`content_${id}`).remove();
+    });
+    // Change the section to edit mode
+    $(document).on('click', '.section-to-edit-button', function() {
+        setTimeout(() => {
+          const id = $(this).data('id');
+          const selector = `textarea#${id.toString().includes('content_') ? id : `content_${id}`}`;
+            tinymce.init({
+                selector: `textarea#content_${id}`,
+                plugins: 'image , table',
+            });
+        }, 200);
+    });
+    $(document).on('click', '#add-section', () => {
+        setTimeout(() => {
+          const id = $('.card-body:has(textarea)').last().find('textarea').attr('id');
+            tinymce.init({
+                selector: `textarea#${id}`,
+              plugins: 'image , table',
+            });
+        }, 200);
+    });
+
+{{/js}}

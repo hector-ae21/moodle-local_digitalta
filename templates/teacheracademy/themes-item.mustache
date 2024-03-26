@@ -1,0 +1,53 @@
+<div alt="{{name}}"
+    data-weight="{{id}}"
+    class="theme d-flex flex-row w-auto align-items-center mx-2"
+    onClick="searchByTag('{{id}}')"
+    color="#000000"
+>
+    <div class="theme-img mr-2">
+        <i class="fa fa-tag" aria-hidden="true"></i>
+    </div>
+    <p class="theme-name mb-0">{{name}}</p>
+</div>
+
+<script>
+function searchByTag(tagId) {
+    console.log('Searching tag with id=',tagId);
+}
+
+function getDarkColor() {
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += Math.floor(Math.random() * 10);
+    }
+    return color;
+}
+
+function setRandomBackground() {
+    document.getElementsByClassName('theme').forEach((tag) => {tag.style.color = getDarkColor();});
+}
+
+function setVars() {
+    document.getElementsByClassName('theme').forEach((tag) => {
+            tag.style.setProperty('--color', 'color');
+            tag.style.setProperty('--size', 'font-size');
+        });
+}
+
+function setSize() {
+    document.getElementsByClassName('theme').forEach((tag) => {
+        var tagUsageNum = tag.getAttribute('data-weight');
+        if (tagUsageNum > 8) {
+            tag.style.setProperty('font-size', '2.5em');
+        } else if (tagUsageNum > 2) {
+            tag.style.setProperty('font-size', '1.5em');
+        } else {
+            tag.style.setProperty('font-size', '0.9em');
+        }
+    });
+}
+
+setVars();
+setSize();
+setRandomBackground();
+</script>

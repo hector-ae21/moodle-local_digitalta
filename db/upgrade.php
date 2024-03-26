@@ -13,8 +13,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
- * Upgrade script for local_dta
+ *  Upgrade steps for the local_dta plugin.
+ *
+ * @package    local_dta
+ * @copyright  2024 ADSDR-FUNIBER Scepter Team
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 function xmldb_local_dta_upgrade($oldversion)

@@ -1,0 +1,67 @@
+<div class="parent col-10 mx-auto">
+    <h2>{{#str}}experience_reflection_header, local_dta{{/str}}</h2>
+        <div class="sections d-flex flex-column">
+            <div id="section_what" class="section d-flex flex-column">
+                <div class="header d-flex flex-row align-items-center">
+                    <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
+                    <h2>What?</h2>
+                </div>
+                <div id="questions_what" class="collapse questions flex-column">
+                    <div class="question d-flex flex-column">
+                        <h3>Introduction</h3>
+                        <span></span>
+                        {{> local_dta/experiences/reflection/reflection-importer}}
+                    </div>
+                    <div class="question d-flex flex-column">
+                        <h3>Problem context</h3>
+                        <span>Describe what is happening in your class? What is the issue? What were you thinking/feeling?</span>
+                        {{> local_dta/experiences/reflection/reflection-importer}}
+                    </div>
+                </div>
+            </div>
+            <div id="section_so_what" class="section d-flex flex-column">
+                <div class="header d-flex flex-row align-items-center">
+                    <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
+                    <h2>So What?</h2>
+                </div>
+                <div class="questions flex-column">
+                    <div class="question d-flex flex-column">
+                        <h3>How did I find out more...</h3>
+                        <span>...about this: colleagues, literature, mentor, .... What did you read, who did you ask?</span>
+                        {{> local_dta/experiences/reflection/reflection-importer}}
+                    </div>
+                </div>
+            </div>
+            <div id="section_now_what" class="section d-flex flex-column">
+                <div class="header d-flex flex-row align-items-center">
+                    <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
+                    <h2>Now What?</h2>
+                </div>
+                <div class="questions flex-column">
+                    <div class="question d-flex flex-column">
+                        <h3>Action</h3>
+                        <span>What did I do, why. What happened when I tried it out.</span>
+                        {{> local_dta/experiences/reflection/reflection-importer}}
+                    </div>
+                    <div class="question d-flex flex-column">
+                        <h3>Reflection</h3>
+                        <span>What did I learn and gain from this. What impact did it have? What should I do next?</span>
+                        {{> local_dta/experiences/reflection/reflection-importer}}
+                    </div>
+                </div>
+            </div>
+            <div id="section_extra" class="section d-flex flex-column">
+                <div class="header d-flex flex-row align-items-center">
+                    <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
+                    <h2>Extra</h2>
+                </div>
+                <div class="questions flex-column">
+                    <div class="question d-flex flex-column">
+                        <h3>extra_header_XX</h3>
+                        <span></span>
+                        {{> local_dta/experiences/reflection/reflection-importer}}
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

@@ -21,6 +21,18 @@ class Tags
     }
 
     /**
+     * Get all tags
+     *
+     * @return stdClass|null
+     */
+    public static function getAllTags()
+    {
+        global $DB;
+        $tags = array_values($DB->get_records('digital_tags'));
+        return $tags;
+    }
+
+    /**
      * Get a tag by its ID
      *
      * @param int $id

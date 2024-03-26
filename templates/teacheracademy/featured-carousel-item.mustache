@@ -1,0 +1,20 @@
+<a href="{{experiences.viewurl}}{{id}}" class="text-decoration-none" target="_blank">
+{{#pictureurl}}
+<div class="color" style="
+                    background: url('{{pictureurl}}') no-repeat center center !important; 
+                    object-fit: cover;
+                    background-size: cover !important;"
+>
+{{/pictureurl}}
+{{^pictureurl}}
+<div class="color" style="
+                    background: url('https://picsum.photos/seed/picsum/600/700') no-repeat center center !important; 
+                    object-fit: cover;
+                    background-size: cover !important;"
+>
+{{/pictureurl}}
+    <span class="d-flex flex-column">
+        {{{description}}}
+    </span>
+</div>
+</a>

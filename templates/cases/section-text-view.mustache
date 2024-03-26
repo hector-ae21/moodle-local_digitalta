@@ -1,0 +1,20 @@
+<div class="row mt-3" id="section_{{id}}">
+    <input type="hidden" id="not_exist_{{id}}" value="{{exist}}">
+    <input type="hidden" id="sectionid_{{id}}" value="{{id}}">
+    <div class="col-md-12">
+        <div class="card mb-3">
+            <div class="card-header d-flex justify-content-end py-2">
+                <div class="d-flex align-items-center">
+                    <button type="button" data-id="{{id}}" class="btn btn-outline-danger btn-sm mr-2 section-delete-button">
+                        <i class="fa fa-trash" aria-hidden="true"></i></button>
+                    <button type="button" data-id="{{id}}" class="btn btn-outline-secondary btn-sm section-to-edit-button">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body" id="content_{{id}}">
+                {{{description}}}
+            </div>
+        </div>
+    </div>
+</div>

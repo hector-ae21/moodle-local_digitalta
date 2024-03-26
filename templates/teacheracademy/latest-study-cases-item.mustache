@@ -1,0 +1,18 @@
+<div class="study-case d-flex align-items-center"> 
+    <div class="study-case-img w-100 overflow-hidden">
+        {{#pictureurl}}
+            <img class="img-fluid embed-responsive-item"
+                        alt="Case Study"
+                        src="{{pictureurl}}"/>
+        {{/pictureurl}}
+        {{^pictureurl}}
+            <img class="img-fluid embed-responsive-item"
+                        alt="Case Study"
+                        src="{{themepixurl}}screenshot.png" />
+        {{/pictureurl}}
+    </div>
+    <div class="latest-study-case-text pl-2 text-dark">
+        <h4 class="latest-study-case-title" title="{{casetext.title}}">{{casetext.title}}</h4>
+        <p class="latest-study-case-description">{{{casetext.description}}}</p>
+    </div>
+</div>

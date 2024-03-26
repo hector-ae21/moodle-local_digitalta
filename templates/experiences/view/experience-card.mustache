@@ -1,0 +1,71 @@
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        {{#user}}
+            <div class="user-info d-flex align-items-center">
+                <a href="{{profileurl}}" class="perfil-link d-flex align-items-center text-muted text-decoration-none">
+                    <img src="{{imageurl}}" class="rounded-circle mr-2" alt="{{#str}}avatar_alt, local_dta{{/str}}" style="width: 50px; height: 50px;">
+                    <div class="text-dark">
+                        <strong>{{name}}</strong><br>
+                        <small>{{email}}</small>
+                    </div>
+                </a>
+            </div>
+        {{/user}}
+        {{#experience}} 
+        <div class="d-flex">
+        {{! TODO agregar boton de borrado dentro del form }}
+            {{^experience.data.status}} 
+            <a href="{{editurl}}{{data.id}}" class="mr-3 shadow-none" title="{{#str}}edit, local_dta{{/str}}">
+                <i class="fa fa-pencil fa-lg text-primary"></i>
+            </a>
+            <a href="#" class="mr-3 shadow-none">
+                <i class="fa fa-times-circle fa-lg text-secondary"></i>
+            </a>
+            {{/experience.data.status}} 
+            {{#experience.data.status}} 
+            <a href="#" class="mr-3 shadow-none" id="open-experience-button" data-id="{{experience.data.id}}">
+                <i class="fa fa-unlock-alt fa-lg text-secondary"></i>
+            </a>
+            {{/experience.data.status}} 
+        </div>
+        {{/experience}}
+    </div>
+    {{#experience}}
+        {{#pictureurl}}
+            <img src="{{.}}" class="img-fluid card-img-top border-bottom" alt="{{#str}}myexperience_picture_alt, local_dta{{/str}}"> 
+        {{/pictureurl}}
+
+        {{#data}}
+            <div class="card-body">
+                <h4 class="card-title text-primary">{{title}}</h4>
+                
+
+                <div class="d-flex align-items-start">
+                    <span class="text-muted">
+                        <i class="fa fa-calendar me-1"></i>
+                        {{date}}
+                    </span>
+                </div>
+
+                <p class="card-text">{{{description}}}</p>
+                {{> local_dta/experiences/tags}}
+                {{#reactions}}
+                    {{> local_dta/experiences/reactions-buttons}}
+                {{/reactions}}
+            </div>
+    
+
+            <div class="collapse" id="commentsCollapse">
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="{{#str}}myexperience_add_comment, local_dta{{/str}}" aria-label="{{#str}}myexperience_add_comment, local_dta{{/str}}" id="commentInput">
+                        <div class="input-group-append">
+                            <button data-action="send-comment" data-id={{id}} class="btn btn-primary" type="button"><i class="fa fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-group list-group-flush rounded-bottom" id="commentsList"></ul>
+            </div>
+        {{/data}}
+    {{/experience}}
+</div>

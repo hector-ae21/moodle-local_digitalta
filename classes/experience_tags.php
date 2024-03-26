@@ -13,7 +13,7 @@ namespace local_dta;
 class ExperienceTag
 {
 
-    private static $table = 'experience_tag';
+    private static $table = 'digital_experience_tag';
 
     
     /**
@@ -25,9 +25,9 @@ class ExperienceTag
      */
     public static function assignTagToExperience($experienceId, $tagId, $db)
     {
-        $record = new stdClass();
-        $record->experience_id = $experienceId;
-        $record->tag_id = $tagId;
+        $record = new \stdClass();
+        $record->experienceid = $experienceId;
+        $record->tagid = $tagId;
 
         return $db->insert_record(self::$table, $record);
     }
@@ -41,7 +41,7 @@ class ExperienceTag
      */
     public static function removeTagFromExperience($experienceId, $tagId, $db)
     {
-        $conditions = array('experience_id' => $experienceId, 'tag_id' => $tagId);
+        $conditions = array('experienceid' => $experienceId, 'tagid' => $tagId);
         return $db->delete_records(self::$table, $conditions);
     }
 
@@ -55,8 +55,22 @@ class ExperienceTag
     {
         $sql = "SELECT t.*
                 FROM {digital_tags} t
-                JOIN {experience_tag} et ON t.id = et.tag_id
-                WHERE et.experience_id = ?";
+                JOIN {digital_experience_tag} et ON t.id = et.tagid
+                WHERE et.experienceid = ?";
         return $db->get_records_sql($sql, array($experienceId));
+    }
+
+    /**
+     * Get all experiences associated with a tag
+     * 
+     * @param int $tagId
+     * @return array
+     */
+    public static function getExperiencesForTag($tagId, $db) {
+        $sql = "SELECT e.*
+                FROM {digital_experience} e
+                JOIN {experience_tag} et ON e.id = et.experienceid
+                WHERE et.tagid = ?";
+        return $db->get_records_sql($sql, array($tagId));
     }
 }

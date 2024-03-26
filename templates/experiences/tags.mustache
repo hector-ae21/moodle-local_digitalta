@@ -1,0 +1,11 @@
+<div class="mb-3">
+    <div class="d-flex justify-content-between">
+        <div class="d-flex">
+            {{#tags}}
+            <div class="d-flex flex-wrap mr-1">
+                    <span class="badge {{^color}}bg-primary{{/color}} me-1" style="background-color: {{color}};">{{name}}</span>
+            </div>
+            {{/tags}}
+        </div>
+    </div>
+</div>

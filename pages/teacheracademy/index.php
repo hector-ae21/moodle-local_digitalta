@@ -40,12 +40,12 @@ $experiences = array_map(function ($experience) {
     return $experience;
 }, $experiences);
 
-// Recent experiences
-$recentExperiences = Experience::get_latest_experiences(false);
-$recentExperiences = array_map(function ($experience) {
+// Latest experiences
+$latestExperiences = Experience::get_latest_experiences(false);
+$latestExperiences = array_map(function ($experience) {
     $experience->description = StringUtils::truncateHtmlText($experience->description);
     return $experience;
-}, $recentExperiences);
+}, $latestExperiences);
 
 // Featured Experiences
 $featuredExperiences = Experience::get_extra_fields(Reaction::get_most_liked_experience(5));
@@ -89,7 +89,7 @@ $templateContext = [
     "themepixurl" => $CFG->wwwroot . "/theme/dta/pix/",
     "experiences" => [
         "data" => $experiences,
-        "recent" => $recentExperiences,
+        "latest" => $latestExperiences,
         "featured" => $featuredExperiences,
         "showimageprofile" => true,
         "showcontrols" => false,

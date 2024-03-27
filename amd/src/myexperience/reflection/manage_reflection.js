@@ -1,3 +1,7 @@
+import $ from 'jquery';
+import {setupForElementId} from 'editor_tiny/editor';
+
+let tinyConfig;
 
 /**
  * Set the events for the module.
@@ -71,6 +75,38 @@ function setEvents() {
   });
 }
 
+/**
+ * Create tinyMCE in an area.
+ * @param {string} area - The id of the area to create tinyMCE in.
+ * @return {void}
+ */
+function createTinyMCE(area) {
+    setupForElementId({
+        elementId: `${area}`,
+        options: tinyConfig,
+    });
+}
+
+/**
+ * Set event listeners for the module.
+ * @return {void}
+ * */
+function setDefaultTinyMCE() {
+  $('.editor').each(function() {
+    createTinyMCE(this.id);
+  });
+}
+
+/**
+ * Set the tinyMCE config.
+ * @return {void}
+ */
+function setTinyConfig() {
+  tinyConfig = window.dta_tiny_config;
+}
+
 export const init = () => {
     setEvents();
-  };
+    setTinyConfig();
+    setDefaultTinyMCE();
+};

@@ -31,31 +31,36 @@ $PAGE->requires->js_call_amd('local_dta/masonry', 'init' , ["url_repository" => 
 
 echo $OUTPUT->header();
 
+$cases = OurCases::get_active_cases();
+$full_cases = array();
+
+if (!empty($cases)) {
+    $full_cases = array_values(array_map(function ($case) {
+        $object = OurCases::get_section_header($case->id);
+        $object->description = StringUtils::truncateHtmlText($object->description, 500);
+        $object->date = $case->date;
+        $object->user = $case->user;
+        $object->pictureurl = $case->pictureurl;
+        $object->reactions = $case->reactions;
+        return $object;
+    }, $cases));
+}
 
 $user = get_complete_user_data("id", $USER->id);
 $picture = new user_picture($user);
 $picture->size = 101;
 $user->imageurl = $picture->get_url($PAGE)->__toString();
 
-$cases_metadata = OurCases::get_active_cases();
-$cases = array();
-
-if (!empty($cases_metadata)) {
-    $cases = array_values(array_map(function ($case) {
-        $object = OurCases::get_section_header($case->id);
-        $object->description = StringUtils::truncateHtmlText($object->description, 100);
-        $object->reactions = Reaction::get_reactions_for_render_case($case->id);
-        return $object;
-    }, $cases_metadata));
-
-}
 
 $templateContext = [
     "user" => $user,
-    "cases" => $cases,
+    "cases" => array_values($full_cases),
     "url_create_case" => $CFG->wwwroot . '/local/dta/pages/cases/manage.php',
-    "url_case" => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id='
+    "url_case" => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id=',
+    "themepixurl" => $CFG->wwwroot . "/theme/dta/pix/",
 ];
+
+
 
 echo $OUTPUT->render_from_template('local_dta/cases/repository', $templateContext);
 

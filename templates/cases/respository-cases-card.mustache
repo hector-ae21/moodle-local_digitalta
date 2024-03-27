@@ -1,37 +1,14 @@
 <div class="experience-card">
   <div class="exp-card-head">
-    {{> local_dta/experiences/experience-metadata}}
+    {{> local_dta/cases/case-metadata}}
   </div>
   <div class="exp-card-body col-12 p-0 m-0">
-    
-    <div class="exp-img-container border-bottom  col-12 col-md-2">
-      <a href="{{url_case}}{{ourcaseid}}">
-      {{#pictureurl}}
-        <img
-          src="{{pictureurl}}"
-          alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
-          class="img-fluid experience-card-img p-0"
-          style="object-fit: cover; max-height: 200px, width: 100%;"
-        />
-      {{/pictureurl}}
-      {{^pictureurl}}
-        <img
-          src="{{themepixurl}}screenshot.png"
-          alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
-          class="img-fluid experience-card-img p-0"
-          style="object-fit: cover; max-height: 200px, width: 100%;"
-        />
-      {{/pictureurl}}
-      </a>
-    </div>
-    
-    <div class="experience-card-body col-12 col-md-10">
+    <div class="experience-card-body col-12">
       <h4 class="mb-1 experience-card-title">
-      <a href="{{url_case}}{{ourcaseid}}" class="experience-card-title text-secondary">{{title}}</a>
+        <a href="{{url_case}}{{ourcaseid}}" class="experience-card-title text-secondary">{{title}}</a>
       </h4>
-      
       <a href="{{url_case}}{{ourcaseid}}">
-      <div class="experience-description mb-3 text-dark">{{{description}}}</div>
+        <div class="experience-description mb-3 text-dark">{{{description}}}</div>
       </a>
     </div>
   </div>

@@ -85,7 +85,7 @@ $string['form_case_delete_no'] = 'No';
 
 
 // Ourcases repository
-$string['ourcases_repository_placeholder'] = 'Write your own case...';
+$string['ourcases_repository_placeholder'] = 'Create a new case';
 $string['ourcases_repository_title'] = 'Study Cases';
 $string['ourcases_header'] = 'ourcases'; 
 $string['ourcases_title'] = 'Cases';

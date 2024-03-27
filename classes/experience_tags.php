@@ -33,6 +33,34 @@ class ExperienceTag
         return $DB->insert_record(self::$table, $record);
     }
 
+    public static function update_experience_tags($experienceId, $tags)
+    {
+        global $DB;
+        var_dump($experienceId);
+        
+        $tags = array_map(function ($tag) {
+            return (int)$tag;
+        }, $tags);
+        var_dump($tags);
+
+        $currentTags = self::getTagsForExperience($experienceId, $DB);
+        $currentTagIds = array_map(function ($tag) {
+            return $tag->id;
+        }, $currentTags);
+
+        foreach ($currentTags as $tag) {
+            if (!in_array($tag->id, $tags)) {
+                self::removeTagFromExperience($experienceId, $tag->id, $DB);
+            }
+        }
+
+        foreach ($tags as $tag) {
+            if (!in_array($tag, $currentTagIds)) {
+                self::assignTagToExperience($experienceId, $tag);
+            }
+        }
+    }
+
     /**
      * Remove a tag from an experience
      *

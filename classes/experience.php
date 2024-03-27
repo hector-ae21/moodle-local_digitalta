@@ -132,7 +132,8 @@ class Experience
             $transformedTags = array_map(function($tag) {
                 return (object)[
                     'name' => $tag->name,
-                    'color' => '#b0b0b0'
+                    'color' => '#b0b0b0',
+                    'id' => $tag->id
                 ];
             }, array_values($tags));
             $visibilityTag = new stdClass();
@@ -210,6 +211,9 @@ class Experience
         if($experience->id) {
             $record->id = $experience->id;
             $DB->update_record(self::$table, $record);
+            if ($experience->tags) {
+                ExperienceTag::update_experience_tags($record->id, $experience->tags);
+            }
         } else {
             $record->id = $DB->insert_record(self::$table, $record);
             if ($experience->tags) {

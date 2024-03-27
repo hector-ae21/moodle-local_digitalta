@@ -21,16 +21,18 @@
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
- require_once(__DIR__ . '/../../../../config.php');
- require_once(__DIR__ . './../../classes/experience.php');
- require_once(__DIR__ . './../../classes/form/experiences_form.php');
+require_once(__DIR__ . '/../../../../config.php');
+require_once(__DIR__ . './../../classes/experience.php');
+require_once(__DIR__ . './../../classes/form/experiences_form.php');
+require_once(__DIR__ . './../../classes/tags.php');
 
 $id = optional_param('id', 0, PARAM_INT);
 $title = $_POST['experiencetitle'] ?? '';
 
 require_login();
-use local_dta\Experience;
 
+use local_dta\Experience;
+use local_dta\Tags;
 
 global $CFG, $PAGE, $OUTPUT, $USER, $DB;
 $strings = get_strings(['form_experience_header'], "local_dta");
@@ -51,8 +53,11 @@ if ($form->is_cancelled()) {
     // Add the experience
     $data->userid = $USER->id;
     $data->date = date("Y-m-d H:i:s");
+    //map tags to tag ids
+    $data->tags = array_map(function ($tag) {
+        return Tags::addTag($tag);
+    }, $data->tags);
     $experience = Experience::store($data);
-
     // Process the picture
     file_save_draft_area_files(
         $data->picture,

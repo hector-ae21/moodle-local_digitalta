@@ -210,13 +210,12 @@ class Experience
         if($experience->id) {
             $record->id = $experience->id;
             $DB->update_record(self::$table, $record);
-            //TODO: logic to update tags
         } else {
             $record->id = $DB->insert_record(self::$table, $record);
             if ($experience->tags) {
                 foreach ($experience->tags as $tagId) {
                     if ($tagId !== null) {
-                        ExperienceTag::assignTagToExperience($record->id, $tagId, $DB);
+                        ExperienceTag::assignTagToExperience($record->id, $tagId);
                     }
                 }
             }

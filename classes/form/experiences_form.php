@@ -85,6 +85,7 @@ class local_experiences_form extends moodleform
         $options = array(
             'multiple' => true,
             'noselectionstring' => $strings->form_experience_tags_placeholder,
+            'tags' => true,
         );
         $mform->addElement('autocomplete', 'tags',$strings->form_experience_tags, $tagsName, $options);
 

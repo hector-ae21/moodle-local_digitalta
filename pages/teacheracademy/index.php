@@ -46,7 +46,6 @@ $latestExperiences = array_map(function ($experience) {
     $experience->description = StringUtils::truncateHtmlText($experience->description);
     return $experience;
 }, $latestExperiences);
-
 // Featured Experiences
 $featuredExperiences = Experience::get_extra_fields(Reaction::get_most_liked_experience(5));
 $featuredExperiences = array_map(function ($experience) {

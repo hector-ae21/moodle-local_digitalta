@@ -50,16 +50,18 @@ class Tags
      * @param string $tag
      * @return bool
      */
-    public function addTag($tag)
+    public static function addTag($tag)
     {
+        global $DB;
         if (empty($tag)) {
             return false;
         }
-
-        $record = new stdClass();
-        $record->tag = $tag;
-
-        return $this->db->insert_record('digital_tags', $record);
+        if ($id = $DB->get_field('digital_tags', 'id', array('name' => $tag))) {
+            return $id;
+        }
+        $record = new \stdClass();
+        $record->name = $tag;
+        return $DB->insert_record('digital_tags', $record);
     }
 
     /**

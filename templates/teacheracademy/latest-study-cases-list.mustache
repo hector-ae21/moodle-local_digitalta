@@ -1,17 +1,16 @@
-<section>
-<div class="row">
-    <h2>{{#str}} teacheracademy_latest_cases_title, local_dta {{/str}}</h2>
-    <div class="study-cases">
-        {{#ourcases.cases}}
-            {{> local_dta/teacheracademy/latest-study-cases-item }}
-        {{/ourcases.cases}}
-    </div>
-</div>
 <div class="row">
     <div class="col-12">
-    <div class="d-flex justify-content-start">
+    <h2 class="mb-2">{{#str}} teacheracademy_latest_cases_title, local_dta {{/str}}</h2>
+    <div class="study-cases">
+        {{#ourcases}}
+            {{> local_dta/teacheracademy/latest-study-cases-item }}
+        {{/ourcases}}
+    </div>
+    </div>
+    <div class="col-12">
+    <div class="d-flex justify-content-start mt-6">
         <a href="{{ourcases.allurl}}" class="btn btn-primary">{{#str}}see_more, local_dta{{/str}}</a>
     </div>
-    </div>
 </div>
-</section>
+
+</div>

@@ -1,5 +1,7 @@
 import $ from 'jquery';
 import {setupForElementId} from 'editor_tiny/editor';
+import {sectionTextUpsert} from 'local_dta/repositories/reflection_repository';
+import Notification from 'core/notification';
 
 let tinyConfig;
 
@@ -105,7 +107,41 @@ function setTinyConfig() {
   tinyConfig = window.dta_tiny_config;
 }
 
+/**
+ * Save the text section.
+ * @param {object} btn - The data to save.
+ * @return {void}
+ */
+function saveTextSection(btn) {
+  const data = btn.data();
+  const {target, group} = data;
+  const reflectionid = $('#reflectionid').val();
+  const content = window.tinyMCE.get(target).getContent();
+  sectionTextUpsert({reflectionid, group, content}).then((sectionid) => {
+
+    // TODO: Hector, add the sectionid to the section so we can update it later. happy holidays :D be safe and have fun with your family
+    Notification.addNotification({
+        message: 'Section saved successfully.',
+        type: 'success'
+    });
+    return;
+  }).fail(Notification.exception);
+}
+
+
+/**
+ * Set event listeners for the module.
+ * @return {void}
+ * */
+function setEventListeners() {
+    // Save section
+    $(document).on('click', '.submit', function() {
+      saveTextSection($(this));
+    });
+}
+
 export const init = () => {
+    setEventListeners();
     setEvents();
     setTinyConfig();
     setDefaultTinyMCE();

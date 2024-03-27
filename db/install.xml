@@ -232,7 +232,6 @@
             </KEYS>
         </TABLE>
 
-<<<<<<< HEAD
         <TABLE NAME="digital_reflection" COMMENT="Table for storing reflection">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"
@@ -302,8 +301,6 @@
 
 
 
-=======
->>>>>>> 0ac76a8bf0e214845ed2bfec7fb7f15d572fb1f1
 
     </TABLES>
 </XMLDB>

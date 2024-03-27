@@ -11,35 +11,17 @@
 namespace local_dta;
 
 require_once(__DIR__ . '/../../../config.php');
+require_once($CFG->dirroot . '/local/dta/classes/experience.php');
 
 use stdClass;
 
 class Reflection extends Experience
 {
-    /*
-    * Reflection section types
-    */
-    const SECTION_TYPES = [
-        "TEXT" => [
-            "ID" => 1,
-            "TABLE" => "digital_refl_sec_text",
-        ]
-    ];
 
-    /*
-    * Reflection group types
-    */
-    const GROUPS = [
-        "WHAT" => 1 ,
-        "SO_WHAT" => 2,
-        "NOW_WHAT" => 3,
-        "EXTRA" => 4 
-    ]; 
-
-    // Reflection table
     private static $table = 'digital_reflection';
-    // Reflection section table
+
     private static $table_section = 'digital_refl_sections';
+
 
     /**
      * Get reflections by experience id
@@ -47,60 +29,99 @@ class Reflection extends Experience
      * @param object $data
      * @return array
      */
-    public static function create_reflection($data)
+    public static function create_reflection($userid, $experienceid)
     {
         global $DB;
 
-        if(!isset($data->userid) || !isset($data->experienceid) || !isset($data->reflection))
-            throw new \Exception('Invalid data');
-
         $reflection = new stdClass();
-        $reflection->experienceid = $data->experienceid;
-        $reflection->userid = $data->userid;
-        $reflection->timecreated = time();
-        $reflection->timemodified = time();
+        $reflection->experienceid = $experienceid;
+        $reflection->userid = $userid;
+        $reflection->timecreated = date('Y-m-d H:i:s', time());
+        $reflection->timemodified = date('Y-m-d H:i:s', time());
         $reflection->status = 0;
         $reflection->visible = 0;
-        $reflection->reflection = $data->reflection;
-        $reflection->date = time();
 
-        if($DB->insert_record(self::$table, $reflection)){
-            return true;
+        if ($reflection->id = $DB->insert_record(self::$table, $reflection)) {
+            return $reflection;
         };
         return false;
     }
 
-    
 
+    /**
+     * Get reflections by experience id
+     *
+     * @param object $data
+     * @return object | bool
+     */
     private static function create_reflection_section($data)
     {
         global $DB;
 
-        if(!isset($data->reflectionid) || !isset($data->sectiontype) || !isset($data->contentid) || !isset($data->groupid) )
+        if (!isset($data->reflectionid) || !isset($data->sectiontype) || !isset($data->contentid) || !isset($data->groupid))
             throw new \Exception('Invalid data');
 
         $section = new stdClass();
         $section->reflectionid = $data->reflectionid;
         $section->groupid = $data->groupid;
-        $section->sequence = $data->sequence;
+        $section->sequence = self::get_last_sequence($data->reflectionid) + 1;
         $section->sectiontype = $data->sectiontype;
         $section->contentid = $data->contentid;
+        $section->timecreated = date('Y-m-d H:i:s', time());
+        $section->timemodified = date('Y-m-d H:i:s', time());
 
-        if($DB->insert_record(self::$table_section, $section)){
-            return true;
+        if ($section->id = $DB->insert_record(self::$table_section, $section)) {
+            return $section;
         };
         return false;
     }
 
 
-    /*
-    * Get las sequence of a reflection
-    */
-    private static function get_last_sequence($reflectionid)
+    /**
+     * Get reflections by experience id
+     *
+     * @param object $data
+     * @return object | bool
+     */
+    public static function upsert_reflection_section_text($reflectionid, $group, $content, $id = null)
     {
         global $DB;
 
-        $sql = "SELECT MAX(sequence) as sequence FROM {self::$table_section} WHERE reflectionid = ?";
+        if (!isset($group) || !isset($reflectionid) || !isset($content))
+            throw new \Exception('Invalid data');
+
+        if ($id) {
+            $data = new stdClass();
+            $data->id = $id;
+            $data->content = $content;
+            $DB->update_record(CONSTANTS::SECTION_TYPES['TEXT']['TABLE'], $data);
+            return true;
+        }
+
+        $data = new stdClass();
+        $data->groupid = CONSTANTS::GROUPS[$group];
+        $data->reflectionid = $reflectionid;
+        $data->content = $content;
+        $data->sectiontype = CONSTANTS::SECTION_TYPES['TEXT']['ID'];
+        $data->contentid = $DB->insert_record(CONSTANTS::SECTION_TYPES['TEXT']['TABLE'], $data);
+
+        return self::create_reflection_section($data);
+    }
+
+
+    /**
+     * Get reflections by experience id
+     *
+     * @param object $data
+     * @return array
+     */
+    private static function get_last_sequence($reflectionid)
+    {
+        global $DB;
+        $tableName = self::$table_section;
+
+        $sql = "SELECT MAX(sequence) AS sequence FROM {" . $tableName . "} WHERE reflectionid = ?";
+
         $params = [$reflectionid];
         $result = $DB->get_record_sql($sql, $params);
 
@@ -108,7 +129,54 @@ class Reflection extends Experience
     }
 
 
+    /**
+     * Create reflection if experience exists and reflection does not exist
+     * @param int $experienceid
+     * @return bool
+     */
+    public static function create_reflection_if_experience_exist($experienceid)
+    {
+        if (!parent::check_experience($experienceid)) return false;
+        if ($reflection = self::check_exist_reflection_experience($experienceid)) return $reflection;
+        if (!self::check_experience_own($experienceid)) return false;
+        global $USER;
+        return self::create_reflection($USER->id, $experienceid);
+    }
 
 
+    /**
+     * Check if reflection exists
+     * @param int $experienceid
+     * @return bool
+     */
+    public static function check_exist_reflection_experience($experienceid)
+    {
+        global $DB;
+        // Intenta obtener el registro basado en experienceid
+        $reflection = $DB->get_record(self::$table, ['experienceid' => $experienceid]);
 
+        // Si $reflection es false, significa que no se encontró el registro
+        if (!$reflection) {
+            return false;
+        }
+
+        // Si se encontró el registro, retorna el objeto $reflection
+        return $reflection;
+    }
+
+
+    /**
+     * Check if user has permission to create reflection
+     * @param int $experienceid
+     * @return bool
+     */
+    public static function check_experience_own($experienceid)
+    {
+        global $USER;
+        $experience = parent::get_experience($experienceid);
+        if ($experience->userid != $USER->id) {
+            return false;
+        }
+        return true;
+    }
 }

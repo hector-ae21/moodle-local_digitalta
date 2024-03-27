@@ -8,9 +8,12 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_dta;
 defined('MOODLE_INTERNAL') || die();
 
 require_once(__DIR__ . './../../config.php');
+
+
 
 /**
  * check permissions to delete or edit an experience owner or admin
@@ -70,3 +73,20 @@ function local_dta_pluginfile($course, $cm, $context, $filearea, $args, $forcedo
     send_stored_file($file, 0, 0, $forcedownload, $options);
 }
 
+
+
+class CONSTANTS{
+    const GROUPS = [
+        "WHAT" => 1 ,
+        "SO_WHAT" => 2,
+        "NOW_WHAT" => 3,
+        "EXTRA" => 4 
+    ]; 
+
+    const SECTION_TYPES = [
+        "TEXT" => [
+            "ID" => 1,
+            "TABLE" => "digital_refl_sec_text",
+        ]
+    ];
+}

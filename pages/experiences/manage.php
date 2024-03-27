@@ -93,7 +93,12 @@ if ($form->is_cancelled()) {
 
         // Set the description as a text format
         $experience->description = ['text' => $experience->description];
-
+        $experience->tags = array_reduce($experience->tags, function($carry, $tag) {
+            if(isset($tag->id)){
+                $carry[$tag->id] = $tag->name;
+                return $carry; 
+            }
+        }, []);
         // Set the form data
         $form->set_data($experience);
     } elseif ($title != "") {

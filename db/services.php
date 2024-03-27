@@ -41,12 +41,12 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_tiny_get_config' => [
-        'classname'   => 'external_tiny_get_config',
-        'methodname'  => 'tiny_get_config',
-        'classpath'   => 'local/dta/classes/webservices/external_tiny_get_config.php',
-        'description' => 'Get the TinyMCE configuration',
-        'type'        => 'read',
+    'local_dta_reflection_upsert_text_section' => [
+        'classname'   => 'external_reflection_upsert_text_section',
+        'methodname'  => 'reflection_upsert_text_section',
+        'classpath'   => 'local/dta/classes/webservices/external_reflection_upsert_text_section.php',
+        'description' => 'Upsert the text of a section of a reflection',
+        'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],

@@ -1,5 +1,10 @@
 import $ from 'jquery';
+import Templates from 'core/templates';
+import ModalFactory from 'core/modal_factory';
+import {get_string} from 'core/str';
 import {setupForElementId} from 'editor_tiny/editor';
+import {sectionTextUpsert} from 'local_dta/repositories/reflection_repository';
+import Notification from 'core/notification';
 
 let tinyConfig;
 
@@ -7,7 +12,7 @@ let tinyConfig;
  * Set the events for the module.
  * @return {void}
  */
-function setEvents() {
+function setEventListeners() {
   document.querySelectorAll('.section').forEach(section => {
     var collapseButton = section.querySelector('.header');
 
@@ -54,8 +59,7 @@ function setEvents() {
             console.log("Tiny Record");
             break;
           case "import_cases":
-            //eslint-disable-next-line no-console
-            console.log("Import Cases");
+            showImportCase();
             break;
           case "import_experiences":
             //eslint-disable-next-line no-console
@@ -105,7 +109,41 @@ function setTinyConfig() {
   tinyConfig = window.dta_tiny_config;
 }
 
+/**
+ * Save the text section.
+ * @param {object} btn - The data to save.
+ * @return {void}
+ */
+function saveTextSection(btn) {
+  const data = btn.data();
+  const {target, group} = data;
+  const reflectionid = $('#reflectionid').val();
+  const content = window.tinyMCE.get(target).getContent();
+  sectionTextUpsert({reflectionid, group, content}).then((sectionid) => {
+
+    // TODO: Hector, add the sectionid to the section so we can update it later. happy holidays :D be safe and have fun with your family
+    Notification.addNotification({
+        message: 'Section saved successfully.',
+        type: 'success'
+    });
+    return;
+  }).fail(Notification.exception);
+}
+
+
+/**
+ * Set event listeners for the module.
+ * @return {void}
+ * */
+function setEventListeners() {
+    // Save section
+    $(document).on('click', '.submit', function() {
+      saveTextSection($(this));
+    });
+}
+
 export const init = () => {
+    setEventListeners();
     setEvents();
     setTinyConfig();
     setDefaultTinyMCE();

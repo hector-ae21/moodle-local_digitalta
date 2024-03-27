@@ -15,18 +15,64 @@ require_once($CFG->dirroot . '/lib/editor/tiny/classes/manager.php');
 require_once($CFG->dirroot . '/config.php');
 
 use editor_tiny\manager;
+use stdClass;
 
 class tiny_editor_handler extends \editor_tiny\editor
 {
 
+    /** @var array options provided to initalize filepicker */
+    protected $_options = array(
+        'subdirs' => 0, 'maxbytes' => 0, 'maxfiles' => 0, 'changeformat' => 0,
+        'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED, 'context' => null, 'noclean' => 0, 'trusttext' => 0,
+        'return_types' => 15, 'enable_filemanagement' => true, 'removeorphaneddrafts' => false, 'autosave' => true
+    );
+
     public function __construct()
     {
+        global $CFG, $PAGE;
+
         parent::__construct();
+
+        if (!empty($options['maxbytes'])) {
+            $this->_options['maxbytes'] = get_max_upload_file_size($CFG->maxbytes, $options['maxbytes']);
+        }
     }
+
+    public static function get_filepicker_options($context, $draftitemid)
+    {
+        return [
+            'image' => self::specific_filepicker_options(['image'], $draftitemid, $context),
+            'media' => self::specific_filepicker_options(['video', 'audio'], $draftitemid, $context),
+            'link'  => self::specific_filepicker_options('*', $draftitemid, $context),
+        ];
+    }
+
+    protected static function specific_filepicker_options($acceptedtypes, $draftitemid, $context)
+    {
+        $filepickeroptions = new stdClass();
+        $filepickeroptions->accepted_types = $acceptedtypes;
+        $filepickeroptions->return_types = FILE_INTERNAL | FILE_EXTERNAL;
+        $filepickeroptions->context = $context;
+        $filepickeroptions->env = 'filepicker';
+        $options = initialise_filepicker($filepickeroptions);
+        $options->context = $context;
+        $options->client_id = uniqid();
+        $options->env = 'editor';
+        $options->itemid = $draftitemid;
+
+        return $options;
+    }
+
+
 
     public function get_config_editor($options = null, $fpoptions = null)
     {
         global $PAGE;
+
+        $context = $PAGE->context;
+
+        $fpoptions = $this->get_filepicker_options($context,  file_get_unused_draft_itemid());
+
 
         $manager = new manager();
         // Ensure that the default configuration is set.
@@ -36,7 +82,6 @@ class tiny_editor_handler extends \editor_tiny\editor
             $fpoptions = [];
         }
 
-        $context = $PAGE->context;
 
         if (isset($options['context']) && ($options['context'] instanceof \context)) {
             // A different context was provided.
@@ -106,3 +151,4 @@ class tiny_editor_handler extends \editor_tiny\editor
         $PAGE->requires->js_amd_inline($inlinejs);
     }
 }
+

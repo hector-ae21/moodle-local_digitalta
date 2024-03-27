@@ -1,3 +1,4 @@
+<input type="hidden" id="reflectionid" value="{{reflection.id}}">
 <div class="parent col-10 mx-auto">
     <h2>{{#str}}experience_reflection_header, local_dta{{/str}}</h2>
         <div class="sections d-flex flex-column">
@@ -10,6 +11,7 @@
                     <div class="question d-flex flex-column">
                         <h3>Introduction</h3>
                         <textarea name="" cols="" rows="" class="editor form-control" id="introduction_txtarea"></textarea>
+                        <button class="btn btn-primary mt-3 submit" data-group="WHAT" data-target="introduction_txtarea" data-id="">{{#str}}save, local_dta{{/str}}</button>
                         {{> local_dta/experiences/reflection/reflection-importer}}
                     </div>
                     <div class="question d-flex flex-column">

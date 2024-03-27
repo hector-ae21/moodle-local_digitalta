@@ -58,7 +58,7 @@ $allCases = array_values(OurCases::get_active_cases());
 
 $cases = array();
 
-for ($i=0; $i < count($allCases) ; $i++) {
+for ($i = 0; $i < count($allCases); $i++) {
     $caseText = OurCases::get_sections_text($allCases[$i]->id, true);
 
     $newCase = [
@@ -74,7 +74,7 @@ for ($i=0; $i < count($allCases) ; $i++) {
 }
 
 $cases = array_map(function ($case) {
-    $case['casetext']->description = str_replace("<br>"," ",StringUtils::truncateHtmlText($case['casetext']->description, 100));
+    $case['casetext']->description = str_replace("<br>", " ", StringUtils::truncateHtmlText($case['casetext']->description, 100));
     return $case;
 }, $cases);
 
@@ -100,7 +100,8 @@ $templateContext = [
     "tags" => $tags,
     "ourcases" => [
         "cases" => array_slice($cases, 0, 4),
-	"allurl" => $CFG->wwwroot . "/local/dta/pages/cases/repository.php"
+        "viewurl" => $CFG->wwwroot . "/local/dta/pages/cases/view.php?id=",
+        "allurl" => $CFG->wwwroot . "/local/dta/pages/cases/repository.php"
     ]
 ];
 

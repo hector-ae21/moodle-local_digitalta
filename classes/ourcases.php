@@ -299,6 +299,12 @@ class OurCases
         return $DB->get_record(self::$table_section_text, ['ourcase' => $id, 'sequence' => $sequence]);
     }
 
+    /**
+     * Get extra fields for cases
+     * 
+     * @param array $cases
+     * @return array
+     */
     public static function get_extra_fields($cases)
     {
         global $PAGE, $DB;
@@ -314,8 +320,41 @@ class OurCases
                 'imageurl' => $picture->get_url($PAGE)->__toString(),
                 'profileurl' => new \moodle_url('/user/profile.php', ['id' => $user->id])
             ];
-            $case->reactions = Reaction::get_reactions_for_render_experience($case->id);
+            $case->pictureurl = self::get_picture_url($case);
+            $case->reactions = Reaction::get_reactions_for_render_case($case->id);
         }
         return $cases;
+    }
+
+    /**
+     * Gets the picture url for the case.
+     */
+    public static function get_picture_url($case) {
+        global $CFG;
+
+        $fs = get_file_storage();
+        $files = $fs->get_area_files(
+            \context_system::instance()->id,
+            'local_dta',
+            'picture',
+            $case->id,
+            'sortorder DESC, id ASC',
+            false
+        );
+
+        if (empty($files)) {
+            return false;
+        }
+
+        $file = reset($files);
+        $pictureurl = \moodle_url::make_pluginfile_url(
+            $file->get_contextid(),
+            $file->get_component(),
+            $file->get_filearea(),
+            $file->get_itemid(),
+            $file->get_filepath(),
+            $file->get_filename()
+        );
+        return $pictureurl;
     }
 }

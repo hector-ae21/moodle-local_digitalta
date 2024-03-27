@@ -14,18 +14,23 @@ use local_dta\OurCases;
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
 require_once(__DIR__ . './../../classes/ourcases.php');
+require_once(__DIR__ . './../../classes/tiny_editor_handler.php');
 
+
+use local_dta\tiny_editor_handler;
 
 require_login();
 
 global $CFG, $PAGE, $OUTPUT , $USER;
 
+
 // Seting the page url and context
 $experienceid = optional_param('id', 0, PARAM_INT);
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/reflection.php', ['id' => $experienceid]));
 $PAGE->set_context(context_system::instance());
-$PAGE->requires->js_call_amd('local_dta/myexperience/reflection/manageReflection', 'init');
+$PAGE->requires->js_call_amd('local_dta/myexperience/reflection/manage_reflection', 'init');
 
+(new tiny_editor_handler)->get_config_editor(['maxfiles' =>2]);
 // Get the experience
 if(!$experience = Experience::get_experience($experienceid)) {
     throw new moodle_exception('invalidexperience', 'local_dta');

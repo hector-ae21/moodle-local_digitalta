@@ -1,20 +1,20 @@
-<div class="experiences-view ">
+<div class="experiences-view">
     <div class="experience-card mb-4">
         <div class="exp-card-head d-flex justify-content-between align-items-center">
             {{#user}}
             <div class="user-info d-flex align-items-center">
                 <a href="{{profileurl}}" class="perfil-link d-flex align-items-center text-muted text-decoration-none">
-                    <img src="{{imageurl}}" class="rounded-circle mr-2" alt="{{#str}}avatar_alt, local_dta{{/str}}"
+                    <img src="{{imageurl}}" class="rounded-circle mr-2" alt="{{#str}}avatar_alt, local_dta{{/str}}" title="{{firstname}} {{lastname}}"
                         style="width: 50px; height: 50px;">
-                    <div class="text-dark">
-                        <strong>{{firstname}} {{lastname}}</strong><br>
-                        <small>{{email}}</small>
+                    <div class="user-info-text text-dark">
+                        <strong title="{{firstname}} {{lastname}}">{{firstname}} {{lastname}}</strong><br>
+                        <small title="{{email}}">{{email}}</small>
                     </div>
                 </a>
             </div>
             {{/user}}
             {{#ourcase}}
-            <div class="d-flex">
+            <div class="controls d-flex">
                 <a href="{{editurl}}{{case.id}}" class="mr-3 shadow-none" title="{{#str}}edit, local_dta{{/str}}">
                     <i class="fa fa-pencil fa-lg text-primary"></i>
                 </a>

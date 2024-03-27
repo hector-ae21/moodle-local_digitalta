@@ -65,6 +65,12 @@ $string['experience_view_tooltip_resrepo'] = 'Link resources to this experience'
 // Reflection
 $string['experience_reflection_header'] = 'Reflection Creator';
 
+// Reflection - Import Case Modal
+$string['experience_reflection_import_cases_title'] = 'Import Cases';
+$string['experience_reflection_import_cases_searchbar_placeholder'] = 'Search a case...';
+$string['experience_reflection_import_cases_button'] = 'Import';
+$string['experience_reflection_import_cases_nocases'] = 'No cases found.';
+
 
 // Ourcases main
 $string['ourcases_header_title'] = 'Case title';

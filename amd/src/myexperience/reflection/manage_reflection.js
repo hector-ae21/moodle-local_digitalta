@@ -1,4 +1,7 @@
 import $ from 'jquery';
+import Templates from 'core/templates';
+import ModalFactory from 'core/modal_factory';
+import {get_string} from 'core/str';
 import {setupForElementId} from 'editor_tiny/editor';
 
 let tinyConfig;
@@ -7,7 +10,7 @@ let tinyConfig;
  * Set the events for the module.
  * @return {void}
  */
-function setEvents() {
+function setEventListeners() {
   document.querySelectorAll('.section').forEach(section => {
     var collapseButton = section.querySelector('.header');
 
@@ -54,8 +57,7 @@ function setEvents() {
             console.log("Tiny Record");
             break;
           case "import_cases":
-            //eslint-disable-next-line no-console
-            console.log("Import Cases");
+            showImportCase();
             break;
           case "import_experiences":
             //eslint-disable-next-line no-console
@@ -105,8 +107,25 @@ function setTinyConfig() {
   tinyConfig = window.dta_tiny_config;
 }
 
+/**
+ * Show save case modal
+ * @return {void}
+ */
+async function showImportCase() {
+  const saveModal = await ModalFactory.create({
+      title: get_string("experience_reflection_import_cases_title", "local_dta"),
+      body: Templates.render('local_dta/experiences/reflection/import-case-modal', {
+      }),
+  });
+  saveModal.show();
+}
+
+/**
+ * Initialize the module.
+ * @return {void}
+ */
 export const init = () => {
-    setEvents();
+    setEventListeners();
     setTinyConfig();
     setDefaultTinyMCE();
 };

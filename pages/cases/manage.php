@@ -39,9 +39,8 @@ $PAGE->requires->js_call_amd(
 
 echo $OUTPUT->header();
 
-$tiny = (new tiny_editor_handler)->get_config_editor(['maxfiles' =>1]);
+(new tiny_editor_handler)->get_config_editor(['maxfiles' =>1]);
 
-// print_r($tiny);
 
 if ($experienceid) {
     // IF EXPERIENCE EXISTS
@@ -94,7 +93,7 @@ if ($experienceid) {
     if ($case_title) $section_header->title = $case_title;
 
     $sections = array_values(OurCases::get_sections_text($ourcase->id));
-
+    $section_header->title = format_text($section_header->title, FORMAT_HTML, ['filter' => true]);
     $templateContext = [
         'sectionheader' => $section_header,
         'sections' => $sections,

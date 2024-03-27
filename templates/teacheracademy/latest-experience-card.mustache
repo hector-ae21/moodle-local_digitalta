@@ -1,11 +1,11 @@
-<div class="mb-5 experience-card">
+<!-- <div class="mb-5 experience-card">
   {{#pictureurl}}
     <div class="experience-card-img-container border-bottom d-flex justify-content-center align-items-center">
     <a href="{{experiences.viewurl}}{{id}}">
       <img
         src="{{pictureurl}}"
         alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
-        class="img-fluid experience-card-img p-0"
+        class="img-fluid"
       />
     </a>
     </div>
@@ -16,7 +16,7 @@
         <img
           src="{{themepixurl}}screenshot.png"
           alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
-          class="img-fluid experience-card-img p-0"
+          class="img-fluid"
         />
       </a>
     </div>
@@ -30,3 +30,39 @@
     </a>
   </div>
 </div>
+-->
+
+
+
+<div class="col-lg-4 col-md-12 mb-4">
+        <div class="experience-card">
+          <div
+            class="hover-overlay-image ripple  border-bottom d-flex justify-content-center align-items-center"
+            data-mdb-ripple-init
+            data-mdb-ripple-color="light"
+          >
+          <a href="{{experiences.viewurl}}{{id}}">
+          {{#pictureurl}}
+            <img
+              src="https://mdbootstrap.com/img/new/standard/nature/184.jpg"
+              alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
+              class="img-fluid"
+            />
+          </a>
+          {{/pictureurl}}
+          {{^pictureurl}}
+            <img
+              src="{{themepixurl}}screenshot.png"
+              alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
+              class="img-fluid"
+            />
+          {{/pictureurl}}
+          </div>
+          <div class="experience-card-body">
+            <h5 title="{{title}}" class="experience-card-title"><a href="{{experiences.viewurl}}{{id}}">{{title}}</a></h5>
+            <p class="experience-description">
+              {{{description}}}
+            </p>
+          </div>
+        </div>
+      </div>

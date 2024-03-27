@@ -1,13 +1,15 @@
-<div class="latest-exp-container col-12 col-lg-8 mb-2">
+<div class="latest-exp-container">
     <h2>{{#str}} teacheracademy_latest_exps_title, local_dta {{/str}}</h2>
     <div class="experiences latest-experiences d-flex flex-row flex-wrap grid-masonry">
+    <div class="row">
     {{#experiences.latest}}
-        <div class="col-12 col-md-6 col-lg-4 item">
             {{> local_dta/teacheracademy/latest-experience-card }}
-        </div>
     {{/experiences.latest}}
     </div>
+    </div>
+    <div class="row card-cases">
     <div class="d-flex justify-content-start">
         <a href="{{experiences.allurl}}" class="btn btn-primary">{{#str}}see_more, local_dta{{/str}}</a>
+    </div>
     </div>
 </div>

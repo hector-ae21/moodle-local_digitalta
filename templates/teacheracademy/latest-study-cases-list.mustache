@@ -1,16 +1,16 @@
-<div class="row">
-    <div class="col-12">
-    <h2 class="mb-2">{{#str}} teacheracademy_latest_cases_title, local_dta {{/str}}</h2>
-    <div class="study-cases">
+<div class="latest-cases-container">
+        <h2 class="mb-2">{{#str}} teacheracademy_latest_cases_title, local_dta {{/str}}</h2>
+            <div class="study-cases">
+    <div class="row">
         {{#ourcases}}
             {{> local_dta/teacheracademy/latest-study-cases-item }}
         {{/ourcases}}
+            </div>
     </div>
     </div>
-    <div class="col-12">
-    <div class="d-flex justify-content-start mt-6">
+    <div class="row">
+    <div class="d-flex justify-content-start">
         <a href="{{ourcases.allurl}}" class="btn btn-primary">{{#str}}see_more, local_dta{{/str}}</a>
     </div>
-</div>
-
+    </div>
 </div>

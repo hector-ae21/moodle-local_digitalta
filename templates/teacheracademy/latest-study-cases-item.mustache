@@ -1,4 +1,4 @@
-<div class="study-case d-flex align-items-center"> 
+<!-- <div class="study-case d-flex align-items-center">
     <div class="study-case-img w-100 overflow-hidden">
         {{#pictureurl}}
             <img class="img-fluid embed-responsive-item"
@@ -15,4 +15,37 @@
         <h4 class="latest-study-case-title" title="{{casetext.title}}">{{casetext.title}}</h4>
         <p class="latest-study-case-description">{{{casetext.description}}}</p>
     </div>
-</div>
+</div> --->
+
+
+<div class="row">
+            <div class="col-4 mb-4">
+              <div
+                class="hover-image hover-overlay shadow-1-strong rounded"
+                data-mdb-ripple-init
+                data-mdb-ripple-color="light"
+              >
+                <a href="{{url_case}}{{ourcaseid}}">
+              {{#pictureurl}}
+                <img
+                  src="{{pictureurl}}"
+                  alt="Case Study"
+                  class="img-fluid"
+                />
+              {{/pictureurl}}
+              {{^pictureurl}}
+            <img class="img-fluid"
+                        alt="Case Study"
+                        src="{{themepixurl}}screenshot.png" />
+              {{/pictureurl}}
+                </a>
+              </div>
+            </div>
+
+            <div class="col-8 mb-4 overflow-hidden text-dark">
+              <h5 title="{{casetext.title}}">{{casetext.title}}</h5>
+              <p>
+                {{{casetext.description}}}
+              </p>
+            </div>
+          </div>

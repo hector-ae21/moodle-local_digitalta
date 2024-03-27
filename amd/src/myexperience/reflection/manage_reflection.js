@@ -1,4 +1,7 @@
 import $ from 'jquery';
+import Templates from 'core/templates';
+import ModalFactory from 'core/modal_factory';
+import {get_string} from 'core/str';
 import {setupForElementId} from 'editor_tiny/editor';
 import {sectionTextUpsert} from 'local_dta/repositories/reflection_repository';
 import Notification from 'core/notification';
@@ -9,7 +12,7 @@ let tinyConfig;
  * Set the events for the module.
  * @return {void}
  */
-function setEvents() {
+function setEventListeners() {
   document.querySelectorAll('.section').forEach(section => {
     var collapseButton = section.querySelector('.header');
 
@@ -56,8 +59,7 @@ function setEvents() {
             console.log("Tiny Record");
             break;
           case "import_cases":
-            //eslint-disable-next-line no-console
-            console.log("Import Cases");
+            showImportCase();
             break;
           case "import_experiences":
             //eslint-disable-next-line no-console

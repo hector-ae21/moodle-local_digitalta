@@ -23,13 +23,14 @@ class ExperienceTag
      * @param int $tagId
      * @return bool
      */
-    public static function assignTagToExperience($experienceId, $tagId, $db)
+    public static function assignTagToExperience($experienceId, $tagId)
     {
+        global $DB;
         $record = new \stdClass();
         $record->experienceid = $experienceId;
         $record->tagid = $tagId;
 
-        return $db->insert_record(self::$table, $record);
+        return $DB->insert_record(self::$table, $record);
     }
 
     /**

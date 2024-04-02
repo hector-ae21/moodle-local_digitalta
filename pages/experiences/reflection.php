@@ -36,14 +36,14 @@ echo $OUTPUT->header();
 $reflection = Reflection::create_reflection_if_experience_exist($experienceid);
 
 // Get reflection sections
-$reflection->sections = $reflection_sections = Reflection::get_sections_by_groups($reflection->id,"ALL");
+$reflection->sections = Reflection::get_sections_by_groups($reflection->id,"ALL");
 
 
 $template_context = [
     'reflection' => $reflection,
 ];
 
-// print_object($template_context);
+print_object($template_context);
 
 
 echo $OUTPUT->render_from_template('local_dta/experiences/reflection/reflection', $template_context);

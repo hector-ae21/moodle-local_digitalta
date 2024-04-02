@@ -36,7 +36,7 @@ echo $OUTPUT->header();
 $reflection = Reflection::create_reflection_if_experience_exist($experienceid);
 
 // Get reflection sections
-$reflection->sections = $reflection_sections = Reflection::get_sections_by_groups($reflection->id,"ALL");
+$reflection->sections = Reflection::get_sections_by_groups($reflection->id,"ALL");
 
 
 $template_context = [

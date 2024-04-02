@@ -10,10 +10,12 @@
 
 use local_dta\Experience;
 use local_dta\OurCases;
+use local_dta\Reflection;
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
 require_once(__DIR__ . './../../classes/ourcases.php');
+require_once(__DIR__ . './../../classes/reflection.php');
 
 
 require_login();
@@ -43,6 +45,43 @@ foreach ($experience_case as $case) {
     array_push($experience_case_info, $case);
 }
 
+// Get reflection if exist
+$reflection = Reflection::check_exist_reflection_experience($id);
+$formattedReflectionSections = array();
+
+if ($reflection !== null && $reflection !== false) {
+    $reflection->sections = Reflection::get_sections_by_groups($reflection->id, "ALL");
+
+    foreach ($reflection->sections as $key => $section) {
+
+        switch ($key) {
+            case 'WHAT_INTRO':
+                $key = get_string("experience_reflection_section_what_question_1_title", "local_dta");
+                break;
+            case 'WHAT_CONTEXT':
+                $key = get_string("experience_reflection_section_what_question_2_title", "local_dta");
+                break;
+            case 'SO_WHAT_HOW':
+                $key = get_string("experience_reflection_section_sowhat_question_1_title", "local_dta");
+                break;
+            case 'NOW_WHAT_ACTION':
+                $key = get_string("experience_reflection_section_nowwhat_question_1_title", "local_dta");
+                break;
+            case 'NOW_WHAT_REFLECTION':
+                $key = get_string("experience_reflection_section_nowwhat_question_2_title", "local_dta");
+                break;
+            case 'EXTRA':
+                $key = get_string("experience_reflection_section_extra_question_1_title", "local_dta");
+                break;
+        }
+
+        array_push($formattedReflectionSections, [
+            'header' => $key,
+            'content' => $section[0]->content ?? '',
+        ]);
+    }
+
+}
 
 echo $OUTPUT->header();
 
@@ -66,7 +105,9 @@ $template_context = [
     'showcontrols' => $experience->userid == $USER->id,
     'iconsurl' => $CFG->wwwroot . '/local/dta/pages/icons/',
     'createcaseurl' => $CFG->wwwroot . "/local/dta/pages/cases/manage.php?id=",
-    "createreflectionurl" => $CFG->wwwroot . "/local/dta/pages/experiences/reflection.php?id=",
+    'createreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection.php?id=',
+    'reflection' => $reflection,
+    'reflectionsections' => $formattedReflectionSections,
 ];
 
 echo $OUTPUT->render_from_template('local_dta/experiences/view/view', $template_context);

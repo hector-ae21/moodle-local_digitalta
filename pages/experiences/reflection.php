@@ -31,7 +31,6 @@ echo $OUTPUT->header();
 // Set tiny configs in DOM
 (new tiny_editor_handler)->get_config_editor(['maxfiles' => 1]);
 
-
 // Check if reflection exist and create it if not, get it if exist  NOTE: it can just exist one reflection per experience
 $reflection = Reflection::create_reflection_if_experience_exist($experienceid);
 

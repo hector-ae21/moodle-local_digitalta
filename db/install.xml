@@ -190,28 +190,6 @@
         </TABLE>
 
 
-        <TABLE NAME="digital_ourcases" COMMENT="Table for storing ourcases">
-            <FIELDS>
-                <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"
-                    LENGTH="11" COMMENT="Primary key" />
-                <FIELD NAME="experienceid" TYPE="int" LENGTH="11" NOTNULL="false" SEQUENCE="false"
-                    UNSIGNED="true" COMMENT="ID of the experience" />
-                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"
-                    UNSIGNED="true" COMMENT="ID of the user" />
-                <FIELD NAME="date" TYPE="datetime" NOTNULL="true" SEQUENCE="false"
-                    COMMENT="Experience date" />
-                <FIELD NAME="status" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0"
-                    SEQUENCE="false" COMMENT="status 0 until finished 1)" />
-            </FIELDS>
-            <KEYS>
-                <KEY NAME="primary" TYPE="primary" FIELDS="id" />
-                <KEY NAME="experienceid" TYPE="foreign" FIELDS="experienceid"
-                    REFTABLE="digital_experiences" REFFIELDS="id" />
-                <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="userid" REFFIELDS="id" />
-            </KEYS>
-        </TABLE>
-
-
         <TABLE NAME="digital_oc_sec_text" COMMENT="Table for storing text section">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"
@@ -256,8 +234,6 @@
                 <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="userid" REFFIELDS="id" />
             </KEYS>
         </TABLE>
-
-
 
         <TABLE NAME="digital_refl_sections" COMMENT="Table for storing text section">
             <FIELDS>

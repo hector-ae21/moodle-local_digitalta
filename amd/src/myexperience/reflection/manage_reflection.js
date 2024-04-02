@@ -45,10 +45,10 @@ function setTinyConfig() {
  */
 function saveTextSection(btn) {
   const data = btn.data();
-  const {target, group} = data;
+  const {target, group, id} = data;
   const reflectionid = $('#reflectionid').val();
   const content = window.tinyMCE.get(target).getContent();
-  sectionTextUpsert({reflectionid, group, content}).then(() => {
+  sectionTextUpsert({reflectionid, group, content, id}).then(() => {
 
     // TODO: Hector, add the sectionid to the section so we can update it later.
     // TODO: happy holidays :D be safe and have fun with your family

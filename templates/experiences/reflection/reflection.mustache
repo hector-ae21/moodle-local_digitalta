@@ -12,27 +12,30 @@
                         <h3>Introduction</h3>
 
 
-
-
-
-                        {{ #reflection }}
-                        <p> AQUI : {{reflection.sections[0].id}} </p>
-                        <textarea name="" cols="" rows="" class="editor form-control" id="introduction_txtarea">
-                        </textarea>
-                        <button class="btn btn-primary mt-3 submit" data-group="WHAT" data-target="introduction_txtarea" data-id="{{id}}">
-                        {{ /reflection }}
-
-
-
-
-
-                        {{#str}}save, local_dta{{/str}}</button>
+                        {{#reflection.sections.WHAT_INTRO}}
+                        <textarea name="" cols="" rows="" class="editor form-control" id="introduction_txtarea">{{content}}</textarea>
+                        <button class="btn btn-primary mt-3 submit" data-group="WHAT_INTRO" data-target="introduction_txtarea" data-id="{{id}}">{{#str}}save, local_dta{{/str}}</button>
+                        <hr>
+                        {{/reflection.sections.WHAT_INTRO}}
+                        {{^reflection.sections.WHAT_INTRO}}
+                        <textarea name="" cols="" rows="" class="editor form-control" id="introduction_txtarea"></textarea>
+                        <button class="btn btn-primary mt-3 submit" data-group="WHAT_INTRO" data-target="introduction_txtarea" data-id="0">{{#str}}save, local_dta{{/str}}</button>
+                        {{/reflection.sections.WHAT_INTRO}}
+           
                         {{> local_dta/experiences/reflection/reflection-importer}}
                     </div>
                     <div class="question d-flex flex-column">
                         <h3>Problem context</h3>
                         <p>Describe what is happening in your class? What is the issue? What were you thinking/feeling?</p>
+                        {{#reflection.sections.WHAT_CONTEXT}}
+                        <textarea name="" cols="" rows="" class="editor form-control" id="problem_txtarea">{{content}}</textarea>
+                        <button class="btn btn-primary mt-3 submit" data-group="WHAT_CONTEXT" data-target="problem_txtarea" data-id="{{id}}">{{#str}}save, local_dta{{/str}}</button>
+                        <hr>
+                        {{/reflection.sections.WHAT_CONTEXT}}
+                        {{^reflection.sections.WHAT_CONTEXT}}
                         <textarea name="" cols="" rows="" class="editor form-control" id="problem_txtarea"></textarea>
+                        <button class="btn btn-primary mt-3 submit" data-group="WHAT_CONTEXT" data-target="problem_txtarea" data-id="0">{{#str}}save, local_dta{{/str}}</button>
+                        {{/reflection.sections.WHAT_CONTEXT}}
                         {{> local_dta/experiences/reflection/reflection-importer}}
                     </div>
                 </div>
@@ -46,7 +49,15 @@
                     <div class="question d-flex flex-column">
                         <h3>How did I find out more...</h3>
                         <p>...about this: colleagues, literature, mentor, .... What did you read, who did you ask?</p>
-                        <textarea name="" cols="" rows="" class="editor form-control" id="find_txtarea"></textarea>
+                        {{#reflection.sections.SO_WHAT_HOW}}
+                        <textarea name="" cols="" rows="" class="editor form-control" id="sowhat_txtarea">{{content}}</textarea>
+                        <button class="btn btn-primary mt-3 submit" data-group="SO_WHAT_HOW" data-target="sowhat_txtarea" data-id="{{id}}">{{#str}}save, local_dta{{/str}}</button>
+                        <hr>
+                        {{/reflection.sections.SO_WHAT_HOW}}
+                        {{^reflection.sections.SO_WHAT_HOW}}
+                        <textarea name="" cols="" rows="" class="editor form-control" id="sowhat_txtarea"></textarea>
+                        <button class="btn btn-primary mt-3 submit" data-group="SO_WHAT_HOW" data-target="sowhat_txtarea" data-id="0">{{#str}}save, local_dta{{/str}}</button>
+                        {{/reflection.sections.SO_WHAT_HOW}}
                         {{> local_dta/experiences/reflection/reflection-importer}}
                     </div>
                 </div>
@@ -60,13 +71,31 @@
                     <div class="question d-flex flex-column">
                         <h3>Action</h3>
                         <p>What did I do, why. What happened when I tried it out.</p>
+                        {{#reflection.sections.NOW_WHAT_ACTION}}
+                        <textarea name="" cols="" rows="" class="editor form-control" id="action_txtarea">{{content}}</textarea>
+                        <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_ACTION" data-target="action_txtarea" data-id="{{id}}">{{#str}}save, local_dta{{/str}}</button>
+                        <hr>
+                        {{/reflection.sections.NOW_WHAT_ACTION}}
+                        {{^reflection.sections.NOW_WHAT_ACTION}}
                         <textarea name="" cols="" rows="" class="editor form-control" id="action_txtarea"></textarea>
+                        <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_ACTION" data-target="action_txtarea" data-id="0">{{#str}}save, local_dta{{/str}}</button>
+                        {{/reflection.sections.NOW_WHAT_ACTION}}
                         {{> local_dta/experiences/reflection/reflection-importer}}
                     </div>
                     <div class="question d-flex flex-column">
                         <h3>Reflection</h3>
                         <p>What did I learn and gain from this. What impact did it have? What should I do next?</p>
+
+                        {{#reflection.sections.NOW_WHAT_REFLECTION}}
+                        <textarea name="" cols="" rows="" class="editor form-control" id="learn_txtarea">{{content}}</textarea>
+                        <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_REFLECTION" data-target="learn_txtarea" data-id="{{id}}">{{#str}}save, local_dta{{/str}}</button>
+                        <hr>
+                        {{/reflection.sections.NOW_WHAT_REFLECTION}}
+                        {{^reflection.sections.NOW_WHAT_REFLECTION}}
                         <textarea name="" cols="" rows="" class="editor form-control" id="learn_txtarea"></textarea>
+                        <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_REFLECTION" data-target="learn_txtarea" data-id="0">{{#str}}save, local_dta{{/str}}</button>
+                        {{/reflection.sections.NOW_WHAT_REFLECTION}}
+
                         {{> local_dta/experiences/reflection/reflection-importer}}
                     </div>
                 </div>

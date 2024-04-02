@@ -184,13 +184,14 @@ class Reflection extends Experience
     
     public static function order_by_groups($sections)
     {
-
+        $ordered_sections = new \stdClass();
         foreach (array_keys(CONSTANTS::GROUPS) as $group) {
-            $ordered_sections[$group] = [];
+            $ordered_sections->$group = [];
         }
 
         foreach ($sections['text'] as $section) {
-            $ordered_sections[array_search($section->groupid , CONSTANTS::GROUPS)][] = $section;
+            $group = array_search($section->groupid, CONSTANTS::GROUPS);
+            $ordered_sections->$group[] = $section;
         }
 
         

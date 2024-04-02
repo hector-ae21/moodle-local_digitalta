@@ -35,6 +35,19 @@ function setEventListeners() {
     }
 });
 
+/**
+ * Show save case modal
+ * @return {void}
+ */
+async function showImportCase() {
+  const saveModal = await ModalFactory.create({
+      title: get_string("experience_reflection_import_cases_title", "local_dta"),
+      body: Templates.render('local_dta/experiences/reflection/import-case-modal', {
+      }),
+  });
+  saveModal.show();
+}
+
 
   document.querySelectorAll('#importer').forEach(importer => {
     var addButton = importer.querySelector('#add_button');
@@ -76,6 +89,10 @@ function setEventListeners() {
         }
       });
     });
+  });
+
+  $(document).on('click', '.submit', function() {
+    saveTextSection($(this));
   });
 }
 
@@ -119,32 +136,19 @@ function saveTextSection(btn) {
   const {target, group} = data;
   const reflectionid = $('#reflectionid').val();
   const content = window.tinyMCE.get(target).getContent();
-  sectionTextUpsert({reflectionid, group, content}).then((sectionid) => {
+  sectionTextUpsert({reflectionid, group, content}).then(() => {
 
-    // TODO: Hector, add the sectionid to the section so we can update it later. happy holidays :D be safe and have fun with your family
     Notification.addNotification({
         message: 'Section saved successfully.',
         type: 'success'
     });
     return;
+
   }).fail(Notification.exception);
-}
-
-
-/**
- * Set event listeners for the module.
- * @return {void}
- * */
-function setEventListeners() {
-    // Save section
-    $(document).on('click', '.submit', function() {
-      saveTextSection($(this));
-    });
 }
 
 export const init = () => {
     setEventListeners();
-    setEvents();
     setTinyConfig();
     setDefaultTinyMCE();
 };

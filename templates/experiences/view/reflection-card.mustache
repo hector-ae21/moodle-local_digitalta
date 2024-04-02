@@ -18,12 +18,16 @@
         {{#content}}
           <h6>{{header}}</h6>
           <ul class="list-group list-group-flush">
-            
             <li class="list-group-item">
               {{{ content }}}
             </li>
           </ul>
         {{/content}}  
     {{/ reflectionsections }}
+    {{#reflection}}
+        <a href="{{viewreflectionurl}}{{experience.data.id}}" class="shadow-none text-decoration-none">
+          <p class="text-primary">{{#str}}see_more, local_dta{{/str}}</p>
+        </a>
+      {{/reflection}}
   </div>
 </div>

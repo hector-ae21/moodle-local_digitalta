@@ -106,6 +106,7 @@ $template_context = [
     'iconsurl' => $CFG->wwwroot . '/local/dta/pages/icons/',
     'createcaseurl' => $CFG->wwwroot . "/local/dta/pages/cases/manage.php?id=",
     'createreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection.php?id=',
+    'viewreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection/view.php?id=',
     'reflection' => $reflection,
     'reflectionsections' => $formattedReflectionSections,
 ];

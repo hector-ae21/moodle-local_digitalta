@@ -1,11 +1,89 @@
-<div class="container-fluid mt-3 col-10">
-    <div class="row">
-        <div class="col-12 col-xl-6 mb-4">
-            <div class="row">
-            <div class="col-12">
-                {{> local_dta/experiences/reflection/reflection}}
+<input type="hidden" id="reflectionid" value="{{reflection.id}}">
+<div class="parent col-10 mx-auto">
+    <h2>{{#str}}experience_reflection_header, local_dta{{/str}}</h2>
+        <div class="sections d-flex flex-column">
+            <div id="section_what" class="section d-flex flex-column">
+                <div class="header d-flex flex-row align-items-center">
+                    <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
+                    <h2>{{#str}}experience_reflection_section_what_title, local_dta{{/str}}</h2>
+                </div>
+                <div id="questions_what" class="collapse questions flex-column">
+                    <div class="question d-flex flex-column">
+                        <h3>{{#str}}experience_reflection_section_what_question_1_title, local_dta{{/str}}</h3>
+                        <p>{{#str}}experience_reflection_section_what_question_1_desc, local_dta{{/str}}</p>
+
+                        {{#reflection.sections.WHAT_INTRO}}
+                        <div name="" cols="" rows="" class="" id="introduction_txtarea">{{{content}}}</div>
+                        <hr>
+                        {{/reflection.sections.WHAT_INTRO}}
+           
+                    </div>
+                    <div class="question d-flex flex-column">
+                        <h3>{{#str}}experience_reflection_section_what_question_2_title, local_dta{{/str}}</h3>
+                        <p>{{#str}}experience_reflection_section_what_question_2_desc, local_dta{{/str}}</p>
+                        {{#reflection.sections.WHAT_CONTEXT}}
+                        <div name="" cols="" rows="" class="" id="problem_txtarea">{{{content}}}</div>
+                        <hr>
+                        {{/reflection.sections.WHAT_CONTEXT}}
+                    </div>
+                </div>
             </div>
+            <div id="section_so_what" class="section d-flex flex-column">
+                <div class="header d-flex flex-row align-items-center">
+                    <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
+                    <h2>{{#str}}experience_reflection_section_sowhat_title, local_dta{{/str}}</h2>
+                </div>
+                <div class="questions flex-column">
+                    <div class="question d-flex flex-column">
+                        <h3>{{#str}}experience_reflection_section_sowhat_question_1_title, local_dta{{/str}}</h3>
+                        <p>.{{#str}}experience_reflection_section_sowhat_question_1_desc, local_dta{{/str}}</p>
+                        {{#reflection.sections.SO_WHAT_HOW}}
+                        <div name="" cols="" rows="" class="" id="sowhat_txtarea">{{{content}}}</div>
+                        <hr>
+                        {{/reflection.sections.SO_WHAT_HOW}}
+                    </div>
+                </div>
             </div>
-        </div>
+            <div id="section_now_what" class="section d-flex flex-column">
+                <div class="header d-flex flex-row align-items-center">
+                    <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
+                    <h2>{{#str}}experience_reflection_section_nowwhat_title, local_dta{{/str}}</h2>
+                </div>
+                <div class="questions flex-column">
+                    <div class="question d-flex flex-column">
+                        <h3>{{#str}}experience_reflection_section_nowwhat_question_1_title, local_dta{{/str}}</h3>
+                        <p>{{#str}}experience_reflection_section_nowwhat_question_1_desc, local_dta{{/str}}</p>
+                        {{#reflection.sections.NOW_WHAT_ACTION}}
+                        <div name="" cols="" rows="" class="" id="action_txtarea">{{{content}}}</div>
+                        <hr>
+                        {{/reflection.sections.NOW_WHAT_ACTION}}
+                    </div>
+                    <div class="question d-flex flex-column">
+                        <h3>{{#str}}experience_reflection_section_nowwhat_question_2_title, local_dta{{/str}}</h3>
+                        <p>{{#str}}experience_reflection_section_nowwhat_question_2_desc, local_dta{{/str}}</p>
+
+                        {{#reflection.sections.NOW_WHAT_REFLECTION}}
+                        <div name="" cols="" rows="" class="" id="learn_txtarea">{{{content}}}</div>
+                        <hr>
+                        {{/reflection.sections.NOW_WHAT_REFLECTION}}
+                    </div>
+                </div>
+            </div>
+            <div id="section_extra" class="section d-flex flex-column">
+                <div class="header d-flex flex-row align-items-center">
+                    <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
+                    <h2>{{#str}}experience_reflection_section_extra_title, local_dta{{/str}}</h2>
+                </div>
+                <div class="questions flex-column">
+                    <div class="question d-flex flex-column">
+                        <h3>{{#str}}experience_reflection_section_extra_question_1_title, local_dta{{/str}}</h3>
+                        <p>{{#str}}experience_reflection_section_extra_question_1_desc, local_dta{{/str}}</p>
+                        {{#reflection.sections.EXTRA}}
+                        <div name="" cols="" rows="" class="" id="learn_txtarea">{{{content}}}</div>
+                        <hr>
+                        {{/reflection.sections.EXTRA}}
+                    </div>
+                </div>
+            </div>
     </div>
 </div>

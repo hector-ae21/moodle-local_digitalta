@@ -77,10 +77,12 @@ function local_dta_pluginfile($course, $cm, $context, $filearea, $args, $forcedo
 
 class CONSTANTS{
     const GROUPS = [
-        "WHAT" => 1 ,
-        "SO_WHAT" => 2,
-        "NOW_WHAT" => 3,
-        "EXTRA" => 4 
+        "WHAT_INTRO" => 1,
+        "WHAT_CONTEXT" => 2,
+        "SO_WHAT_HOW" => 3,
+        "NOW_WHAT_ACTION" => 4,
+        "NOW_WHAT_REFLECTION" => 5,
+        "EXTRA" => 6 
     ]; 
 
     const SECTION_TYPES = [

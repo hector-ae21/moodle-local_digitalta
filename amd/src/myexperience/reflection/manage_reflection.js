@@ -133,10 +133,10 @@ function setTinyConfig() {
  */
 function saveTextSection(btn) {
   const data = btn.data();
-  const {target, group} = data;
+  const {target, group, id} = data;
   const reflectionid = $('#reflectionid').val();
   const content = window.tinyMCE.get(target).getContent();
-  sectionTextUpsert({reflectionid, group, content}).then(() => {
+  sectionTextUpsert({reflectionid, group, content, id}).then(() => {
 
     Notification.addNotification({
         message: 'Section saved successfully.',

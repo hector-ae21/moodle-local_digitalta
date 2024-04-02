@@ -43,7 +43,7 @@ $template_context = [
     'reflection' => $reflection,
 ];
 
-print_object($template_context);
+// print_object($template_context);
 
 
 echo $OUTPUT->render_from_template('local_dta/experiences/reflection/reflection', $template_context);

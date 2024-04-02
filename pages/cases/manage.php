@@ -22,7 +22,7 @@ global $CFG, $PAGE, $OUTPUT, $USER;
 
 $experienceid = optional_param('id', 0, PARAM_INT);
 $case = optional_param('caseid', 0, PARAM_INT);
-$case_title = optional_param('  ', 0, PARAM_RAW);
+$case_title = optional_param('title', 0, PARAM_RAW);
 
 $strings = get_strings(['ourcases_header', 'ourcases_title'], "local_dta");
 

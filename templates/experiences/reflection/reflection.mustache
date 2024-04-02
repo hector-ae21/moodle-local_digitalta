@@ -5,12 +5,12 @@
             <div id="section_what" class="section d-flex flex-column">
                 <div class="header d-flex flex-row align-items-center">
                     <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
-                    <h2>What?</h2>
+                    <h2>{{#str}}experience_reflection_section_what_title, local_dta{{/str}}</h2>
                 </div>
                 <div id="questions_what" class="collapse questions flex-column">
                     <div class="question d-flex flex-column">
-                        <h3>Introduction</h3>
-
+                        <h3>{{#str}}experience_reflection_section_what_question_1_title, local_dta{{/str}}</h3>
+                        <p>{{#str}}experience_reflection_section_what_question_1_desc, local_dta{{/str}}</p>
 
                         {{#reflection.sections.WHAT_INTRO}}
                         <textarea name="" cols="" rows="" class="editor form-control" id="introduction_txtarea">{{content}}</textarea>
@@ -25,8 +25,8 @@
                         {{> local_dta/experiences/reflection/reflection-importer}}
                     </div>
                     <div class="question d-flex flex-column">
-                        <h3>Problem context</h3>
-                        <p>Describe what is happening in your class? What is the issue? What were you thinking/feeling?</p>
+                        <h3>{{#str}}experience_reflection_section_what_question_2_title, local_dta{{/str}}</h3>
+                        <p>{{#str}}experience_reflection_section_what_question_2_desc, local_dta{{/str}}</p>
                         {{#reflection.sections.WHAT_CONTEXT}}
                         <textarea name="" cols="" rows="" class="editor form-control" id="problem_txtarea">{{content}}</textarea>
                         <button class="btn btn-primary mt-3 submit" data-group="WHAT_CONTEXT" data-target="problem_txtarea" data-id="{{id}}">{{#str}}save, local_dta{{/str}}</button>
@@ -43,12 +43,12 @@
             <div id="section_so_what" class="section d-flex flex-column">
                 <div class="header d-flex flex-row align-items-center">
                     <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
-                    <h2>So What?</h2>
+                    <h2>{{#str}}experience_reflection_section_sowhat_title, local_dta{{/str}}</h2>
                 </div>
                 <div class="questions flex-column">
                     <div class="question d-flex flex-column">
-                        <h3>How did I find out more...</h3>
-                        <p>...about this: colleagues, literature, mentor, .... What did you read, who did you ask?</p>
+                        <h3>{{#str}}experience_reflection_section_sowhat_question_1_title, local_dta{{/str}}</h3>
+                        <p>.{{#str}}experience_reflection_section_sowhat_question_1_desc, local_dta{{/str}}</p>
                         {{#reflection.sections.SO_WHAT_HOW}}
                         <textarea name="" cols="" rows="" class="editor form-control" id="sowhat_txtarea">{{content}}</textarea>
                         <button class="btn btn-primary mt-3 submit" data-group="SO_WHAT_HOW" data-target="sowhat_txtarea" data-id="{{id}}">{{#str}}save, local_dta{{/str}}</button>
@@ -65,12 +65,12 @@
             <div id="section_now_what" class="section d-flex flex-column">
                 <div class="header d-flex flex-row align-items-center">
                     <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
-                    <h2>Now What?</h2>
+                    <h2>{{#str}}experience_reflection_section_nowwhat_title, local_dta{{/str}}</h2>
                 </div>
                 <div class="questions flex-column">
                     <div class="question d-flex flex-column">
-                        <h3>Action</h3>
-                        <p>What did I do, why. What happened when I tried it out.</p>
+                        <h3>{{#str}}experience_reflection_section_nowwhat_question_1_title, local_dta{{/str}}</h3>
+                        <p>{{#str}}experience_reflection_section_nowwhat_question_1_desc, local_dta{{/str}}</p>
                         {{#reflection.sections.NOW_WHAT_ACTION}}
                         <textarea name="" cols="" rows="" class="editor form-control" id="action_txtarea">{{content}}</textarea>
                         <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_ACTION" data-target="action_txtarea" data-id="{{id}}">{{#str}}save, local_dta{{/str}}</button>
@@ -83,8 +83,8 @@
                         {{> local_dta/experiences/reflection/reflection-importer}}
                     </div>
                     <div class="question d-flex flex-column">
-                        <h3>Reflection</h3>
-                        <p>What did I learn and gain from this. What impact did it have? What should I do next?</p>
+                        <h3>{{#str}}experience_reflection_section_nowwhat_question_2_title, local_dta{{/str}}</h3>
+                        <p>{{#str}}experience_reflection_section_nowwhat_question_2_desc, local_dta{{/str}}</p>
 
                         {{#reflection.sections.NOW_WHAT_REFLECTION}}
                         <textarea name="" cols="" rows="" class="editor form-control" id="learn_txtarea">{{content}}</textarea>
@@ -103,11 +103,12 @@
             <div id="section_extra" class="section d-flex flex-column">
                 <div class="header d-flex flex-row align-items-center">
                     <a id="collapse_button" class="text-decoration-none"><i class="fa fa-chevron-down"></i></a>
-                    <h2>Extra</h2>
+                    <h2>{{#str}}experience_reflection_section_extra_title, local_dta{{/str}}</h2>
                 </div>
                 <div class="questions flex-column">
                     <div class="question d-flex flex-column">
-                        <h3>extra_header_XX</h3>
+                        <h3>{{#str}}experience_reflection_section_extra_question_1_title, local_dta{{/str}}</h3>
+                        <p>{{#str}}experience_reflection_section_extra_question_1_desc, local_dta{{/str}}</p>
                         {{> local_dta/experiences/reflection/reflection-importer}}
                     </div>
                 </div>

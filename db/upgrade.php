@@ -28,7 +28,7 @@ function xmldb_local_dta_upgrade($oldversion)
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2024032607) {
+    if ($oldversion < 2024031307) {
         // Define table digital_cases_likes to be created.
         $table = new xmldb_table('digital_case_likes');
 
@@ -113,59 +113,7 @@ function xmldb_local_dta_upgrade($oldversion)
         // DTA savepoint reached.
         upgrade_plugin_savepoint(true, 2024032001, 'local', 'dta');
     }
-    
-    if ($oldversion < 2024032600) {
 
-        // Table for storing reflections
-        $table = new xmldb_table('digital_reflection');
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true, 'sequence' => true]);
-        $table->add_field('experienceid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => false]);
-        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', ['unsigned' => true, 'notnull' => true]);
-        $table->add_field('timecreated', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
-        $table->add_field('timemodified', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
-        $table->add_field('status', XMLDB_TYPE_INTEGER, '1', ['notnull' => true, 'default' => 0]);
-        $table->add_field('visible', XMLDB_TYPE_INTEGER, '1', ['notnull' => true, 'default' => 0]);
-    
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-        $table->add_key('experienceid', XMLDB_KEY_FOREIGN, ['experienceid'], 'digital_experiences', ['id']);
-        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']); // Ensure 'user' table is correctly referenced
-    
-        if (!$dbman->table_exists($table)) {
-            $dbman->create_table($table);
-        }
-    
-        // Table for storing reflection sections
-        $table = new xmldb_table('digital_refl_sections');
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true, 'sequence' => true]);
-        $table->add_field('reflectionid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
-        $table->add_field('groupid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
-        $table->add_field('sequence', XMLDB_TYPE_INTEGER, '11', ['notnull' => true]);
-        $table->add_field('sectiontype', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
-        $table->add_field('contentid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
-        $table->add_field('timecreated', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
-        $table->add_field('timemodified', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
-    
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-        $table->add_key('reflectionid', XMLDB_KEY_FOREIGN, ['reflectionid'], 'digital_reflection', ['id']);
-    
-        if (!$dbman->table_exists($table)) {
-            $dbman->create_table($table);
-        }
-    
-        // Table for storing text section content
-        $table = new xmldb_table('digital_refl_sec_text');
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true, 'sequence' => true]);
-        $table->add_field('content', XMLDB_TYPE_TEXT, null, ['notnull' => true]);
-    
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-    
-        if (!$dbman->table_exists($table)) {
-            $dbman->create_table($table);
-        }
-    
-        // Savepoint reached
-        upgrade_plugin_savepoint(true, 2024032600, 'local', 'dta');
-    }
 
 
 

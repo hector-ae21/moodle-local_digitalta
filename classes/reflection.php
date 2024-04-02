@@ -10,10 +10,12 @@
 
 namespace local_dta;
 
-require_once(__DIR__ . '/../../../config.php');
+require_once(__DIR__ . '/../../../config.php'); 
 require_once($CFG->dirroot . '/local/dta/classes/experience.php');
+require_once($CFG->dirroot . '/local/dta/lib.php');
 
 use stdClass;
+use \local_dta\CONSTANTS;
 
 class Reflection extends Experience
 {
@@ -25,8 +27,8 @@ class Reflection extends Experience
 
     /**
      * Get reflections by experience id
-     *
-     * @param object $data
+     * @param int $experienceid
+     * @param int $experienceid
      * @return array
      */
     public static function create_reflection($userid, $experienceid)
@@ -132,7 +134,7 @@ class Reflection extends Experience
     /**
      * Create reflection if experience exists and reflection does not exist
      * @param int $experienceid
-     * @return bool
+     * @return bool | object
      */
     public static function create_reflection_if_experience_exist($experienceid)
     {
@@ -164,7 +166,6 @@ class Reflection extends Experience
         return $reflection;
     }
 
-
     /**
      * Check if user has permission to create reflection
      * @param int $experienceid
@@ -178,5 +179,102 @@ class Reflection extends Experience
             return false;
         }
         return true;
+    }
+
+    
+    public static function order_by_groups($sections)
+    {
+
+        foreach (array_keys(CONSTANTS::GROUPS) as $group) {
+            $ordered_sections[$group] = [];
+        }
+
+        foreach ($sections['text'] as $section) {
+            $ordered_sections[array_search($section->groupid , CONSTANTS::GROUPS)][] = $section;
+        }
+
+        
+        return $ordered_sections;
+    }
+
+
+    /**
+     * Get sections by group.
+     * @param int $reflection_id The ID associated with the reflection.
+     * @param string $group The group of sections to retrieve, or 'ALL' for all sections.
+     * @return array An array of sections.
+     */
+    public static function get_section($reflection_id, $group)
+    {
+        if ($group == 'ALL') { 
+            return self::get_all_sections($reflection_id);
+        }
+        return self::get_sections_by_group($reflection_id, $group);
+    }
+
+    /**
+     * Get sections by group.
+     * @param int $reflection_id The ID associated with the reflection.
+     * @param string $group The group of sections to retrieve, or 'ALL' for all sections.
+     * @return array An array of sections.
+     */
+    public static function get_sections_by_groups($reflection_id, $group)
+    {
+        $sections = $group ?? 'ALL'  ? self::get_all_sections($reflection_id) : self::get_sections_by_group($reflection_id, $group);
+        return self::order_by_groups($sections);
+    }
+
+    /**
+     * Get all sections for a given reflection ID.
+     * @param int $reflection_id The reflection ID.
+     * @return array An array of sections.
+     */
+    private static function get_all_sections($reflection_id)
+    {
+        $section_text = self::get_section_text($reflection_id, 'ALL');
+
+        $sections = [
+            'text' => $section_text
+        ];
+
+        return $sections;
+    }
+
+    /**
+     * Get text sections by group.
+     * @param int $reflection_id The reflection ID.
+     * @param string $group The group of sections to retrieve, or 'ALL' for all sections.
+     * @return mixed The result of the database query to fetch section texts.
+     */
+    public static function get_section_text($reflection_id, $group = "ALL")
+    {
+        global $DB;
+        $table_section = self::$table_section;
+        $table_section_text = CONSTANTS::SECTION_TYPES['TEXT']['TABLE'];
+        $sql = "SELECT * FROM {{$table_section}} as t1 INNER JOIN {{$table_section_text}} as t2 ON t1.contentid = t2.id WHERE t1.reflectionid = ?";
+        $params = [$reflection_id];
+        if ($group != "ALL") {
+            $sql .= " AND t1.groupid = ?";
+            $params[] = CONSTANTS::GROUPS[$group];
+        }
+
+        $sql .= " ORDER BY t1.groupid ASC, t1.sequence ASC";
+
+        return $DB->get_records_sql($sql, $params);
+    }
+
+    /**
+     * Get sections by a specific group.
+     * @param int $reflection_id The reflection ID.
+     * @param string $group The group of sections to retrieve.
+     * @return array An array of sections.
+     */
+    private static function get_sections_by_group($reflection_id, $group)
+    {
+        $sections = [
+            'text' => self::get_section_text($reflection_id, $group)
+        ];
+
+        return $sections;
     }
 }

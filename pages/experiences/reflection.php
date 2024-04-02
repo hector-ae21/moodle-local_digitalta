@@ -27,16 +27,24 @@ $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/reflection.php', ['i
 $PAGE->set_context(context_system::instance());
 $PAGE->requires->js_call_amd('local_dta/myexperience/reflection/manage_reflection', 'init');
 echo $OUTPUT->header();
+
+// Set tiny configs in DOM
 (new tiny_editor_handler)->get_config_editor(['maxfiles' => 1]);
 
 
-// Check if reflection exist and create it if not  NOTE: it can just exist one reflection per experience
+// Check if reflection exist and create it if not, get it if exist  NOTE: it can just exist one reflection per experience
 $reflection = Reflection::create_reflection_if_experience_exist($experienceid);
+
+// Get reflection sections
+$reflection->sections = $reflection_sections = Reflection::get_sections_by_groups($reflection->id,"ALL");
 
 
 $template_context = [
     'reflection' => $reflection,
 ];
+
+print_object($template_context);
+
 
 echo $OUTPUT->render_from_template('local_dta/experiences/reflection/reflection', $template_context);
 

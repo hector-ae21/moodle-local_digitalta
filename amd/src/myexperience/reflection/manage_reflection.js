@@ -1,4 +1,7 @@
 import $ from 'jquery';
+import ModalFactory from 'core/modal_factory';
+import Templates from 'core/templates';
+import {get_string} from 'core/str';
 import {setupForElementId} from 'editor_tiny/editor';
 import {sectionTextUpsert} from 'local_dta/repositories/reflection_repository';
 import Notification from 'core/notification';
@@ -54,7 +57,21 @@ function saveTextSection(btn) {
         type: 'success'
     });
     return;
+
   }).fail(Notification.exception);
+}
+
+/**
+ * Show save case modal
+ * @return {void}
+ */
+async function showImportCase() {
+  const saveModal = await ModalFactory.create({
+      title: get_string("experience_reflection_import_cases_title", "local_dta"),
+      body: Templates.render('local_dta/experiences/reflection/import-case-modal', {
+      }),
+  });
+  saveModal.show();
 }
 
 
@@ -115,6 +132,7 @@ function setEventListeners() {
           console.log('Tiny Record');
           break;
         case 'import_cases':
+          showImportCase();
           break;
         case 'import_experiences':
           //eslint-disable-next-line no-console

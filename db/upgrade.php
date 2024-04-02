@@ -28,7 +28,7 @@ function xmldb_local_dta_upgrade($oldversion)
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2024031307) {
+    if ($oldversion < 2024032607) {
         // Define table digital_cases_likes to be created.
         $table = new xmldb_table('digital_case_likes');
 
@@ -118,7 +118,7 @@ function xmldb_local_dta_upgrade($oldversion)
 
         // Table for storing reflections
         $table = new xmldb_table('digital_reflection');
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true, 'sequence' => true]);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true, 'sequence' => true]);
         $table->add_field('experienceid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => false]);
         $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', ['unsigned' => true, 'notnull' => true]);
         $table->add_field('timecreated', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
@@ -136,7 +136,7 @@ function xmldb_local_dta_upgrade($oldversion)
     
         // Table for storing reflection sections
         $table = new xmldb_table('digital_refl_sections');
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true, 'sequence' => true]);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true, 'sequence' => true]);
         $table->add_field('reflectionid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
         $table->add_field('groupid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
         $table->add_field('sequence', XMLDB_TYPE_INTEGER, '11', ['notnull' => true]);
@@ -154,7 +154,7 @@ function xmldb_local_dta_upgrade($oldversion)
     
         // Table for storing text section content
         $table = new xmldb_table('digital_refl_sec_text');
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true, 'sequence' => true]);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true, 'sequence' => true]);
         $table->add_field('content', XMLDB_TYPE_TEXT, null, ['notnull' => true]);
     
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);

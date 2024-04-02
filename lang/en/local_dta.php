@@ -64,6 +64,22 @@ $string['experience_view_tooltip_resrepo'] = 'Link resources to this experience'
 
 // Reflection
 $string['experience_reflection_header'] = 'Reflection Creator';
+$string['experience_reflection_section_what_title'] = 'What?';
+$string['experience_reflection_section_what_question_1_title'] = 'Introduction';
+$string['experience_reflection_section_what_question_1_desc'] = 'Briefly describe the context of the experience.';
+$string['experience_reflection_section_what_question_2_title'] = 'Problem context';
+$string['experience_reflection_section_what_question_2_desc'] = 'Describe what is happening in your class? What is the issue? What were you thinking/feeling?';
+$string['experience_reflection_section_sowhat_title'] = 'So What?';
+$string['experience_reflection_section_sowhat_question_1_title'] = 'How did I find out more...';
+$string['experience_reflection_section_sowhat_question_1_desc'] = '...about this: colleagues, literature, mentor, .... What did you read, who did you ask?';
+$string['experience_reflection_section_nowwhat_title'] = 'Now What?';
+$string['experience_reflection_section_nowwhat_question_1_title'] = 'Action';
+$string['experience_reflection_section_nowwhat_question_1_desc'] = 'What did I do, why. What happened when I tried it out.';
+$string['experience_reflection_section_nowwhat_question_2_title'] = 'Reflection';
+$string['experience_reflection_section_nowwhat_question_2_desc'] = 'What did I learn and gain from this. What impact did it have? What should I do next?';
+$string['experience_reflection_section_extra_title'] = 'Extra';
+$string['experience_reflection_section_extra_question_1_title'] = 'Extra resources';
+$string['experience_reflection_section_extra_question_1_desc'] = 'Add extra resources to this reflection';
 
 // Reflection - Import Case Modal
 $string['experience_reflection_import_cases_title'] = 'Import Cases';

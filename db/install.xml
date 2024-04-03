@@ -275,7 +275,17 @@
         </TABLE>
 
 
-
+        <TABLE NAME="digital_refl_sec_cases" COMMENT="Table for storing case section content">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"
+                    LENGTH="11" COMMENT="Primary key" />
+                <FIELD NAME="caseid" TYPE="text" NOTNULL="true" SEQUENCE="false"
+                    COMMENT="case id" />
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id" />
+            </KEYS>
+        </TABLE>
 
 
     </TABLES>

@@ -89,6 +89,10 @@ class CONSTANTS{
         "TEXT" => [
             "ID" => 1,
             "TABLE" => "digital_refl_sec_text",
-        ]
+        ],
+        "CASES" => [
+            "ID" => 2,
+            "TABLE" => "digital_refl_sec_cases",
+        ],
     ];
 }

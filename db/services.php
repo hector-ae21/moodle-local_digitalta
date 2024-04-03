@@ -95,5 +95,14 @@ $functions = [
         'requirelogin' => false,
         'ajax'        => true,
     ],
+    'local_dta_get_cases' => [
+        'classname'   => 'external_get_cases',
+        'methodname'  => 'get_cases',
+        'classpath'   => 'local/dta/classes/webservices/external_get_cases.php',
+        'description' => 'Get all cases',
+        'type'        => 'read',
+        'requirelogin' => false,
+        'ajax'        => true,
+    ],
     
 ];

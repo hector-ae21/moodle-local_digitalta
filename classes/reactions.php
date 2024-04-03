@@ -62,7 +62,7 @@ class Reaction
         $likes = self::get_likes_for_case($caseid);
         $unlikes = self::get_unlikes_for_case($caseid);
         $comments = self::get_comments_for_case($caseid);
-
+        
         return [
             'likes' => [
                 'count' => count($likes),
@@ -138,7 +138,7 @@ class Reaction
     public static function get_comments_for_experience($experienceid)
     {
         global $DB;
-        $sql = "SELECT * FROM {" . self::$table_experience_likes . "} WHERE experienceid = ?";
+        $sql = "SELECT * FROM {" . self::$table_experience_comments . "} WHERE experienceid = ?";
         return $DB->get_records_sql($sql, array($experienceid));
     }
 
@@ -177,7 +177,8 @@ class Reaction
     public static function get_comments_for_case($caseid)
     {
         global $DB;
-        $sql = "SELECT * FROM {" . self::$table_cases_likes . "} WHERE caseid = ?";
+        $sql = "SELECT * FROM {" . self::$table_cases_comments . "} WHERE caseid = ?";
+
         return $DB->get_records_sql($sql, array($caseid)); 
     }
 

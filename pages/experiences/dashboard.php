@@ -46,7 +46,7 @@ $template_context = [
         "showcontrolsadmin" => is_siteadmin($USER),
         "addurl" => $CFG->wwwroot . "/local/dta/pages/experiences/manage.php",
         "viewurl" => $CFG->wwwroot . '/local/dta/pages/experiences/view.php?id='
-    ]
+    ],
 ];
 
 echo $OUTPUT->render_from_template('local_dta/experiences/dashboard', $template_context);

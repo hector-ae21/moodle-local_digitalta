@@ -9,10 +9,10 @@
  */
 
 use local_dta\Experience;
-use local_dta\OurCases;
 
 require_once(__DIR__ . '/../../../../../config.php');
-require_once(__DIR__ . './../../classes/reflection.php');
+require_once(__DIR__ . './../../../classes/reflection.php');
+require_once($CFG->dirroot . '/local/dta/classes/experience.php');
 
 use local_dta\Reflection;
 
@@ -31,18 +31,7 @@ if(!$experience = Experience::get_experience($id)) {
     throw new moodle_exception('invalidexperience', 'local_dta');
 }
 
-// Get the user and the user picture
-$user = get_complete_user_data("id", $experience->userid);
-$user_picture = new user_picture($user);
-$user_picture->size = 101;
-$experience_case = OurCases::get_cases_by_experience($id);
-$experience_case_info = [];
-foreach ($experience_case as $case) {
-    $case = OurCases::get_section_header($case->id);
-    array_push($experience_case_info, $case);
-}
-
-$reflection = new stdClass();
+$reflection = Reflection::get_by_experience($id);
 
 // Get reflection sections
 $reflection->sections = Reflection::get_sections_by_groups($reflection->id,"ALL");

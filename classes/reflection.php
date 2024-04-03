@@ -110,6 +110,12 @@ class Reflection extends Experience
         return self::create_reflection_section($data);
     }
 
+    public static function get_by_experience($experienceid)
+    {
+        global $DB;
+        return $DB->get_record(self::$table, ['experienceid' => $experienceid]);
+    }
+
 
     /**
      * Get reflections by experience id

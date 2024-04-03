@@ -19,3 +19,15 @@ export const sectionTextUpsert = args => {
     };
     return Ajax.call([request])[0];
 };
+
+/**
+ * Get cases.
+ * @return {Promise} Resolve with warnings.
+ */
+export const getCases = () => {
+    const request = {
+        methodname: 'local_dta_get_cases',
+        args: {}
+    };
+    return Ajax.call([request])[0];
+};

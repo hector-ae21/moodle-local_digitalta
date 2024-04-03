@@ -16,7 +16,7 @@ function toggle(experienceid, reaction = null) {
   };
   const isActive = $(reactionSelectors[reaction] + SELECTORS.DATA.id(experienceid)).hasClass("active");
   const action = isActive ? null : reaction;
-  toogleLikeAndDislike({id: experienceid, action, type: 1})
+  toogleLikeAndDislike({ id: experienceid, action, type: 1 })
     .then((response) => {
       return updateReactionsUI(experienceid, response.likes, response.dislikes, action);
     })
@@ -87,7 +87,9 @@ function updateCommentsUI() {
       Template.render("local_dta/experiences/comments", { comments }).then((html) => {
         $(SELECTORS.COMMENTS_LIST).html(html);
       });
-      $(SELECTORS.ACTIONS.viewComment + SELECTORS.DATA.id(experienceid) + " span").text(response.comments.length);
+      $(SELECTORS.ACTIONS.viewComment + SELECTORS.DATA.id(experienceid) + " span").text(
+        response.comments.length ? response.comments.length : ""
+      );
       return;
     })
     .fail(Notification.exception);

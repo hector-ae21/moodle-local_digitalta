@@ -40,14 +40,17 @@ class OurCases
     }
     /**
      * Get all cases
-     *
+     * 
+     * @param bool $with_extra_fields Indicates whether to get extra fields
      * @return array Returns an array of records
      */
-    public static function get_cases()
+    public static function get_cases($with_extra_fields = true)
     {
         global $DB;
         $cases = $DB->get_records(self::$table);
-        $cases = self::get_extra_fields($cases);
+        if ($with_extra_fields) {
+            $cases = self::get_extra_fields($cases);
+        }
         return $cases;
     }
 

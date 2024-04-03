@@ -64,6 +64,7 @@ $string['experience_view_tooltip_resrepo'] = 'Link resources to this experience'
 
 // Reflection
 $string['experience_reflection_header'] = 'Reflection Creator';
+$string['experience_reflection_view_header'] = 'Reflection View';
 $string['experience_reflection_section_what_title'] = 'What?';
 $string['experience_reflection_section_what_question_1_title'] = 'Introduction';
 $string['experience_reflection_section_what_question_1_desc'] = 'Briefly describe the context of the experience.';

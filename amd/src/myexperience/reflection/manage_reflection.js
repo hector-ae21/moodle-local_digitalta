@@ -132,6 +132,52 @@ function setEventListeners() {
     }
   });
 
+  // Change Section
+  $(document).on("click", "#btn_what", function () {
+    $("#btn_what").addClass("active");
+    $("#btn_so_what").removeClass("active");
+    $("#btn_now_what").removeClass("active");
+    const section_what = $("#section_what");
+    const section_so_what = $("#section_so_what");
+    const section_now_what = $("#section_now_what");
+    section_what.addClass("active");
+    section_what.addClass("d-flex").removeClass("d-none");
+    section_so_what.removeClass("active");
+    section_so_what.addClass("d-none").removeClass("d-flex");
+    section_now_what.removeClass("active");
+    section_now_what.addClass("d-none").removeClass("d-flex");
+  });
+
+  $(document).on("click", "#btn_so_what", function () {
+    $("#btn_what").addClass("active");
+    $("#btn_so_what").removeClass("active");
+    $("#btn_now_what").removeClass("active");
+    const section_what = $("#section_what");
+    const section_so_what = $("#section_so_what");
+    const section_now_what = $("#section_now_what");
+    section_what.removeClass("active");
+    section_what.addClass("d-none").removeClass("d-flex");
+    section_so_what.addClass("active");
+    section_so_what.addClass("d-flex").removeClass("d-none");
+    section_now_what.removeClass("active");
+    section_now_what.addClass("d-none").removeClass("d-flex");
+  });
+
+  $(document).on("click", "#btn_now_what", function () {
+    $("#btn_what").addClass("active");
+    $("#btn_so_what").removeClass("active");
+    $("#btn_now_what").removeClass("active");
+    const section_what = $("#section_what");
+    const section_so_what = $("#section_so_what");
+    const section_now_what = $("#section_now_what");
+    section_what.removeClass("active");
+    section_what.addClass("d-none").removeClass("d-flex");
+    section_so_what.removeClass("active");
+    section_so_what.addClass("d-none").removeClass("d-flex");
+    section_now_what.addClass("active");
+    section_now_what.addClass("d-flex").removeClass("d-none");
+  });
+
   // Import Buttons
   $(document).on("click", ".import_button", function () {
     const buttonId = $(this).attr("id");

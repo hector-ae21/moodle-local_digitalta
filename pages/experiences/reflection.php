@@ -10,7 +10,7 @@
 
 use local_dta\Experience;
 
-require_once(__DIR__ . '/../../../../../config.php');
+require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../../classes/reflection.php');
 require_once($CFG->dirroot . '/local/dta/classes/experience.php');
 

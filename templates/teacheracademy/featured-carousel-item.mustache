@@ -1,20 +1,15 @@
-<a href="{{experiences.viewurl}}{{id}}" class="text-decoration-none" target="_blank">
-{{#pictureurl}}
-<div class="color" style="
-                    background: url('{{pictureurl}}') no-repeat center center !important; 
-                    object-fit: cover;
-                    background-size: cover !important;"
->
-{{/pictureurl}}
-{{^pictureurl}}
-<div class="color" style="
-                    background: url('https://picsum.photos/seed/picsum/600/700') no-repeat center center !important; 
-                    object-fit: cover;
-                    background-size: cover !important;"
->
-{{/pictureurl}}
-    <span class="d-flex flex-column">
-        {{{description}}}
-    </span>
+<div class="carousel-item {{label}}">
+  <a href="{{experiences.viewurl}}{{id}}" target="_blank" width="800" height="400">
+    {{#pictureurl}}
+      <img src="{{pictureurl}}" class="d-block rounded" alt="{{{title}}}" >
+    {{/pictureurl}}
+    {{^pictureurl}}
+      <img src="https://picsum.photos/seed/picsum/600/700" class="d-block rounded" alt="{{{title}}}">
+    {{/pictureurl}}
+
+      <div class="carousel-caption d-none d-md-block text-dark">
+        <h5>{{{title}}}</h5>
+      {{{description}}}
+      </div>
+  </a>
 </div>
-</a>

@@ -14,6 +14,8 @@
                     SEQUENCE="false" COMMENT="Experience title" />
                 <FIELD NAME="description" TYPE="text" NOTNULL="true" SEQUENCE="false"
                     COMMENT="Experience description" />
+                <FIELD NAME="context" TYPE="text" NOTNULL="true" SEQUENCE="false"
+                    COMMENT="Experience context" />
                 <FIELD NAME="date" TYPE="datetime" NOTNULL="true" SEQUENCE="false"
                     COMMENT="Experience date" />
                 <FIELD NAME="lang" TYPE="char" LENGTH="5" NOTNULL="true" SEQUENCE="false"

@@ -1,112 +1,41 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * myexperience manage page
+ * Reflection page
  *
  * @package   local_dta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/experience.php');
-require_once(__DIR__ . './../../classes/form/experiences_form.php');
-require_once(__DIR__ . './../../classes/tags.php');
 
-$id = optional_param('id', 0, PARAM_INT);
-$title = $_POST['experiencetitle'] ?? '';
+
+require_once(__DIR__ . './../../../../config.php');
+require_once(__DIR__ . './../../classes/reflection.php');
+require_once(__DIR__ . './../../classes/tiny_editor_handler.php');
+
+
+use local_dta\tiny_editor_handler;
+use local_dta\Reflection;
 
 require_login();
 
-use local_dta\Experience;
-use local_dta\Tags;
+global $CFG, $PAGE, $OUTPUT , $USER;
 
-global $CFG, $PAGE, $OUTPUT, $USER, $DB;
-$strings = get_strings(['form_experience_header'], "local_dta");
+// Seting the page url and context
+$PAGE->set_url(new moodle_url('/local/dta/pages/experiences/manage.php'));
+$PAGE->set_context(context_system::instance());
+// $PAGE->requires->js_call_amd('local_dta/myexperience/reflection/manage_reflection', 'init');
+echo $OUTPUT->header();
 
-$context = context_system::instance();
-$PAGE->set_url('/local/dta/pages/experiences/manage.php', ['id' => $id]);
-$PAGE->set_context($context);
-$PAGE->set_title($strings->form_experience_header);
-$PAGE->set_heading($strings->form_experience_header);
-
-$form = new local_experiences_form();
+// Set tiny configs in DOM
+(new tiny_editor_handler)->get_config_editor(['maxfiles' => 1]);
 
 
-if ($form->is_cancelled()) {
-    redirect(new moodle_url('/local/dta/pages/experiences/manage.php', ['id' => $id]));
-} elseif ($data = $form->get_data()) {
 
-    // Add the experience
-    $data->userid = $USER->id;
-    $data->date = date("Y-m-d H:i:s");
-    //map tags to tag ids
-    $data->tags = array_map(function ($tag) {
-        return Tags::addTag($tag);
-    }, $data->tags);
-    $experience = Experience::store($data);
-    // Process the picture
-    file_save_draft_area_files(
-        $data->picture,
-        $context->id,
-        'local_dta',
-        'picture',
-        $experience->__get('id'),
-        [
-            'subdirs' => false,
-            'maxfiles' => 1
-        ]
-    );
+$template_context = [
 
-    redirect($experience->get_url());
-} else {
-    if ($id) {
-        // Get the experience data
-        $experience = Experience::get_experience($id);
+];
 
-        // Get the current picture draft id
-        $experience->picture = file_get_submitted_draft_itemid('picture');
-        file_prepare_draft_area(
-            $experience->picture,
-            $context->id,
-            'local_dta',
-            'picture',
-            $id,
-            [
-                'subdirs' => false,
-                'maxfiles' => 1
-            ]
-        );
+echo $OUTPUT->render_from_template('local_dta/experiences/manage/manage', $template_context);
 
-        // Set the description as a text format
-        $experience->description = ['text' => $experience->description];
-        $experience->tags = array_reduce($experience->tags, function($carry, $tag) {
-            if(isset($tag->id)){
-                $carry[$tag->id] = $tag->name;
-                return $carry; 
-            }
-        }, []);
-        // Set the form data
-        $form->set_data($experience);
-    } elseif ($title != "") {
-        $data = new stdClass();
-        $data->title = $title;
-        $form->set_data($data);
-    }
-    echo $OUTPUT->header();
-    $form->display();
-    echo $OUTPUT->footer();
-}
+echo $OUTPUT->footer();

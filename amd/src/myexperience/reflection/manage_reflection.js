@@ -70,7 +70,7 @@ async function showImportCase() {
   const saveModal = await ModalFactory.create({
     type: ModalFactory.types.SAVE_CANCEL,
     title: get_string("experience_reflection_import_cases_title", "local_dta"),
-    body: Templates.render("local_dta/experiences/reflection/import-case-modal", { cases }),
+    body: Templates.render("local_dta/experiences/manage/import-case-modal", { cases }),
   });
   saveModal.setSaveButtonText("Import");
 

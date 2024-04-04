@@ -193,13 +193,14 @@ class Experience
     public static function store($experience)
     {
         global $DB;
-        if (empty($experience->title) || empty($experience->description) || empty($experience->date) || empty($experience->lang)) {
+        if (empty($experience->title) || empty($experience->description) || empty($experience->context) || empty($experience->date) || empty($experience->lang) ) {
             throw new Exception('Error adding experience');
         }
 
         $record = new \stdClass();
         $record->title = $experience->title;
-        $record->description = $experience->description['text'];
+        $record->description = $experience->description;
+        $record->context = $experience->context;
         $record->date = $experience->date;
         $record->lang = $experience->lang;
         $record->userid = $experience->userid;

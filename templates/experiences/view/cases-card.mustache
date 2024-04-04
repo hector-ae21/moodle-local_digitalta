@@ -17,22 +17,11 @@
     <div class="card-body">
         {{#experience}}
             {{#cases}}
-            <div class="container-fluid mb-5">
-                    <h4 class="card-title">{{title}}</h4>
-                    <div>{{{description}}}</div>
-                    <div class="d-flex">
-                        <a href="{{viewcaseurl}}{{id}}" class="mr-3 shadow-none" title="{{#str}}view, local_dta{{/str}}">
-                            <i class="fa fa-eye fa-lg text-muted"></i>
-                        </a>
-                        <a href="{{editcaseurl}}{{id}}" class="mr-3 shadow-none" title="{{#str}}edit, local_dta{{/str}}">
-                            <i class="fa fa-pencil fa-lg text-muted"></i>
-                        </a>
-                        <a href="{{deletecaseurl}}{{id}}" class="mr-3 shadow-none" title="{{#str}}delete, local_dta{{/str}}">
-                            <i class="fa fa-trash fa-lg text-muted"></i>
-                        </a>
-                    </div>
-            <hr/>
-            </div>
+                {{>local_dta/experiences/view/case-card-link}}
+                {{>local_dta/experiences/view/case-card-link}}
+                {{>local_dta/experiences/view/case-card-link}}
+                {{>local_dta/experiences/view/case-card-link}}
+                {{>local_dta/experiences/view/case-card-link}}
             {{/cases}}
             {{^cases}}
                 <h4 class="card-title text-muted">{{#str}}experience_view_ourcases_desc_nocases, local_dta{{/str}}</h4>

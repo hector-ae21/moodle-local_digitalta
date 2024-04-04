@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="card-body">
-        <div class="custom-searchbar">
+        <div class="custom-searchbar mb-1">
             <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
                 <g>
                 <path
@@ -16,45 +16,26 @@
             </svg>
             <input class="input" disabled type="search" placeholder="Search users to ask tutoring" />
         </div>
-        <div class="container">
-            <h4 class="text-muted my-3">{{#str}}experience_view_mytutoring_request_title, local_dta{{/str}}</h4>
-            <div class="row">
+        <div class="container request-list mb-1">
+            <h4 class="text-muted my-2">{{#str}}experience_view_mytutoring_request_title, local_dta{{/str}}</h4>
+            <div class="row mx-0">
                 <div class="w-100">
-                    <div class="people-nearby">
-                    
-                    <div class="nearby-user">
-                        <div class="row align-items-center">
-                        <div class="col-md-2 col-sm-2 col-xl-3">
-                            <img src="{{iconsurl}}deer.svg" alt="user" class="profile-photo-lg">
-                        </div>
-                        <div class="col-md-7 col-sm-7 col-xl-6">
-                            <h5><a href="#" class="profile-link">Brian Walton</a></h5>
-                            <p>Teachear at University</p>
-                        </div>
-                        <div class="col-md-3 col-sm-3">
-                            <button class="btn btn-primary pull-right mb-1">{{#str}}experience_view_mytutoring_ok_button, local_dta{{/str}}</button>
-                            <button class="btn btn-secondary pull-right mt-1">{{#str}}experience_view_mytutoring_decline_button, local_dta{{/str}}</button>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="nearby-user">
-                        <div class="row align-items-center">
-                        <div class="col-md-2 col-sm-2 col-xl-3">
-                            <img src="{{iconsurl}}alpaca.svg" alt="user" class="profile-photo-lg">
-                        </div>
-                        <div class="col-md-7 col-sm-7 col-xl-6">
-                            <h5><a href="#" class="profile-link">Cris Haris</a></h5>
-                            <p>Teacher at University</p>
-                        </div>
-                        <div class="col-md-3 col-sm-3">
-                            <button class="btn btn-primary pull-right mb-1">{{#str}}experience_view_mytutoring_ok_button, local_dta{{/str}}</button>
-                            <button class="btn btn-secondary pull-right mt-1">{{#str}}experience_view_mytutoring_decline_button, local_dta{{/str}}</button>
-                        </div>
-                        </div>
-                    </div>
+                    <div class="tutor-list">
+                        {{>local_dta/experiences/view/mytutoring-card-tutor}}
+                        {{>local_dta/experiences/view/mytutoring-card-tutor}}
+                        {{>local_dta/experiences/view/mytutoring-card-tutor}}
+                        {{>local_dta/experiences/view/mytutoring-card-tutor}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .request-list {
+        max-height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+</style>

@@ -47,7 +47,7 @@ function setTinyConfig() {
  */
 function saveTextSection(btn) {
   const data = btn.data();
-  const { target, group, id } = data;
+  const {target, group, id} = data;
   const reflectionid = $("#reflectionid").val();
   const content = window.tinyMCE.get(target).getContent();
   sectionTextUpsert({ reflectionid, group, content, id })
@@ -99,21 +99,6 @@ function setEventListeners() {
     saveTextSection($(this));
   });
 
-  // Collapse Sections
-  $(document).on("click", ".header", function () {
-    const section = $(this).closest(".section");
-    const content = section.find(".questions");
-    const collapseIcon = $(this).find("i");
-    if (section.hasClass("collapsed")) {
-      section.removeClass("collapsed");
-      content.css("display", "flex");
-      collapseIcon.removeClass("fa-chevron-right").addClass("fa-chevron-down");
-    } else {
-      section.addClass("collapsed");
-      content.hide();
-      collapseIcon.removeClass("fa-chevron-down").addClass("fa-chevron-right");
-    }
-  });
 
   // Add-Section-Menu Collapse
   $(document).on("click", "#add_button", function () {
@@ -131,7 +116,8 @@ function setEventListeners() {
       addIcon.removeClass("fa fa-minus-circle").addClass("fa fa-plus-circle");
     }
   });
-
+// TODOOOOO : @Miguel cambiar esto a 
+// TODO: Verificar si esto se puede hacer mejor y mas pequeño
   // Change Section
   $(document).on("click", "#btn_what", function () {
     $("#btn_what").addClass("active");
@@ -187,6 +173,7 @@ function setEventListeners() {
     }
   });
 
+  // TODO @miguel : cambiar esto al init no usar funcion de carga
   // on LOAD - ready is deprecated
   $(function () {
     $("#section_what").addClass("active");

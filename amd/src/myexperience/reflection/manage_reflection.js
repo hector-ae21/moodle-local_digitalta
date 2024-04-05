@@ -177,24 +177,8 @@ function setEventListeners() {
     const buttonId = $(this).attr("id");
 
     switch (buttonId) {
-      case "tiny":
-        //eslint-disable-next-line no-console
-        console.log("Tiny");
-        break;
-      case "tiny_record":
-        //eslint-disable-next-line no-console
-        console.log("Tiny Record");
-        break;
       case "import_cases":
         showImportCase();
-        break;
-      case "import_experiences":
-        //eslint-disable-next-line no-console
-        console.log("Import Experiences");
-        break;
-      case "import_tutor_conc":
-        //eslint-disable-next-line no-console
-        console.log("Import Tutor Conc");
         break;
       case "import_resources":
         //eslint-disable-next-line no-console

@@ -40,26 +40,26 @@ function setTinyConfig() {
   tinyConfig = window.dta_tiny_config;
 }
 
-/**
- * Save the text section.
- * @param {object} btn - The data to save.
- * @return {void}
- */
-function saveTextSection(btn) {
-  const data = btn.data();
-  const {target, group, id} = data;
-  const reflectionid = $("#reflectionid").val();
-  const content = window.tinyMCE.get(target).getContent();
-  sectionTextUpsert({ reflectionid, group, content, id })
-    .then(() => {
-      Notification.addNotification({
-        message: "Section saved successfully.",
-        type: "success",
-      });
-      return;
-    })
-    .fail(Notification.exception);
-}
+// /**
+//  * Save the text section.
+//  * @param {object} btn - The data to save.
+//  * @return {void}
+//  */
+// function saveTextSection(btn) {
+//   const data = btn.data();
+//   const {target, group, id} = data;
+//   const reflectionid = $("#reflectionid").val();
+//   const content = window.tinyMCE.get(target).getContent();
+//   sectionTextUpsert({ reflectionid, group, content, id })
+//     .then(() => {
+//       Notification.addNotification({
+//         message: "Section saved successfully.",
+//         type: "success",
+//       });
+//       return;
+//     })
+//     .fail(Notification.exception);
+// }
 
 /**
  * Show save case modal
@@ -88,6 +88,16 @@ async function showImportCase() {
 
   saveModal.show();
 }
+
+/**
+ * Save the experience.
+ * @return {void}
+ * */
+// function saveExperience(){
+//   const experience_title = $("#experience_title").val()
+//   const experience_lang = $("#experience_lang").val();
+//   const experience_inputState = $("#experience_inputState").val();
+// }
 
 /**
  * Activate the step.
@@ -146,8 +156,8 @@ function showSection(section = "what") {
  * */
 function setEventListeners() {
   // Save section
-  $(document).on("click", ".submit", function () {
-    saveTextSection($(this));
+  $(document).on("click", "#experience_submit", function() {
+    saveExperience();
   });
 
   // Add-Section-Menu Collapse

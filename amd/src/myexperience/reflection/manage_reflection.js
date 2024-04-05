@@ -90,6 +90,57 @@ async function showImportCase() {
 }
 
 /**
+ * Activate the step.
+ * @param {number} stepNum - The step number to activate.
+ * @return {void}
+ * */
+function activateStep(stepNum = 1) {
+  const steps = $("#stepbar").find("li");
+
+  // Change the active step
+  for (let i = 0; i < steps.length; i++) {
+    if (i < stepNum) {
+      $(steps[i]).addClass("active");
+    } else {
+      $(steps[i]).removeClass("active");
+    }
+  }
+
+  // Change the active section
+  switch (stepNum) {
+    case 1:
+      showSection("what");
+      break;
+    case 2:
+      showSection("so_what");
+      break;
+    case 3:
+      showSection("now_what");
+      break;
+  }
+}
+
+/**
+ * Show the section.
+ * @param {string} section - The section to show.
+ * @return {void}
+ * */
+function showSection(section = "what") {
+  const sections = $(".sections").find(".section");
+
+  sections.each(function () {
+    const sectionId = $(this).attr("id");
+    if (sectionId === `section_${section}`) {
+      $(this).addClass("active");
+      $(this).addClass("d-flex").removeClass("d-none");
+    } else {
+      $(this).removeClass("active");
+      $(this).addClass("d-none").removeClass("d-flex");
+    }
+  });
+}
+
+/**
  * Set event listeners for the module.
  * @return {void}
  * */
@@ -97,22 +148,6 @@ function setEventListeners() {
   // Save section
   $(document).on("click", ".submit", function () {
     saveTextSection($(this));
-  });
-
-  // Collapse Sections
-  $(document).on("click", ".header", function () {
-    const section = $(this).closest(".section");
-    const content = section.find(".questions");
-    const collapseIcon = $(this).find("i");
-    if (section.hasClass("collapsed")) {
-      section.removeClass("collapsed");
-      content.css("display", "flex");
-      collapseIcon.removeClass("fa-chevron-right").addClass("fa-chevron-down");
-    } else {
-      section.addClass("collapsed");
-      content.hide();
-      collapseIcon.removeClass("fa-chevron-down").addClass("fa-chevron-right");
-    }
   });
 
   // Add-Section-Menu Collapse
@@ -134,42 +169,15 @@ function setEventListeners() {
 
   // Change Section
   $(document).on("click", "#btn_what", function () {
-    $("#btn_what").addClass("active");
-    $("#btn_so_what").removeClass("active");
-    $("#btn_now_what").removeClass("active");
-
-    $("#section_what").addClass("active");
-    $("#section_what").addClass("d-flex").removeClass("d-none");
-    $("#section_so_what").removeClass("active");
-    $("#section_so_what").addClass("d-none").removeClass("d-flex");
-    $("#section_now_what").removeClass("active");
-    $("#section_now_what").addClass("d-none").removeClass("d-flex");
+    activateStep();
   });
 
   $(document).on("click", "#btn_so_what", function () {
-    $("#btn_what").addClass("active");
-    $("#btn_so_what").addClass("active");
-    $("#btn_now_what").removeClass("active");
-
-    $("#section_what").removeClass("active");
-    $("#section_what").addClass("d-none").removeClass("d-flex");
-    $("#section_so_what").addClass("active");
-    $("#section_so_what").addClass("d-flex").removeClass("d-none");
-    $("#section_now_what").removeClass("active");
-    $("#section_now_what").addClass("d-none").removeClass("d-flex");
+    activateStep(2);
   });
 
   $(document).on("click", "#btn_now_what", function () {
-    $("#btn_what").addClass("active");
-    $("#btn_so_what").addClass("active");
-    $("#btn_now_what").addClass("active");
-
-    $("#section_what").removeClass("active");
-    $("#section_what").addClass("d-none").removeClass("d-flex");
-    $("#section_so_what").removeClass("active");
-    $("#section_so_what").addClass("d-none").removeClass("d-flex");
-    $("#section_now_what").addClass("active");
-    $("#section_now_what").addClass("d-flex").removeClass("d-none");
+    activateStep(3);
   });
 
   // Import Buttons
@@ -189,12 +197,7 @@ function setEventListeners() {
 
   // on LOAD - ready is deprecated
   $(function () {
-    $("#section_what").addClass("active");
-    $("#section_what").addClass("d-flex").removeClass("d-none");
-    $("#section_so_what").removeClass("active");
-    $("#section_so_what").addClass("d-none").removeClass("d-flex");
-    $("#section_now_what").removeClass("active");
-    $("#section_now_what").addClass("d-none").removeClass("d-flex");
+    activateStep();
   });
 }
 

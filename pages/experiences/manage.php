@@ -28,7 +28,7 @@ $experience_title = optional_param('experiencetitle', 0, PARAM_RAW);
 // Seting the page url and context
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/manage.php'));
 $PAGE->set_context(context_system::instance());
-$PAGE->requires->js_call_amd('local_dta/myexperience/reflection/manage_reflection', 'init');
+$PAGE->requires->js_call_amd('local_dta/myexperience/manage/form', 'init');
 echo $OUTPUT->header();
 
 // Set tiny configs in DOM

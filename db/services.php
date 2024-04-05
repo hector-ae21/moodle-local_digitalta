@@ -50,6 +50,16 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_dta_myexperience_save' => [
+        'classname'   => 'external_myexperience_save',
+        'methodname'  => 'myexperience_save',
+        'classpath'   => 'local/dta/classes/webservices/external_myexperience_save.php',
+        'description' => 'Save an experience',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+
+    ],
     'local_dta_myexperience_save_comment' => [
         'classname'   => 'external_myexperience_save_comment',
         'methodname'  => 'myexperience_save_comment',

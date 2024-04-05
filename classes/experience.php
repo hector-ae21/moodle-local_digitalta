@@ -17,7 +17,7 @@ require_once(__DIR__ . '/experience_tags.php');
 use stdClass;
 use local_dta\Reaction;
 use local_dta\ExperienceTag;
-
+use Exception;
 class Experience
 {
     private static $table = 'digital_experiences';

@@ -2,9 +2,15 @@
 <div class="parent col-10 mx-auto">
   <div class="sections d-flex flex-column">
     <ul id="stepbar">
-      <li class="btn active" id="btn_what">{{#str}}experience_reflection_section_what_title, local_dta{{/str}}</li>
-      <li class="btn" id="btn_so_what">{{#str}}experience_reflection_section_sowhat_title, local_dta{{/str}}</li>
-      <li class="btn" id="btn_now_what">{{#str}}experience_reflection_section_nowwhat_title, local_dta{{/str}}</li>
+      <li class="btn active" id="btn_what">
+        {{#str}}experience_reflection_section_what_title, local_dta{{/str}}
+      </li>
+      <li class="btn" id="btn_so_what">
+        {{#str}}experience_reflection_section_sowhat_title, local_dta{{/str}}
+      </li>
+      <li class="btn" id="btn_now_what">
+        {{#str}}experience_reflection_section_nowwhat_title, local_dta{{/str}}
+      </li>
     </ul>
 
     <div id="section_what" class="section active flex-column">
@@ -16,30 +22,29 @@
 
       <div id="questions_what" class="questions flex-column">
         <div class="question d-flex flex-column">
-        
-      <div class="form-row">
-        <div class="form-group col-md-12">
-          <label for="title">Title of your experience</label>
-          <input type="text" value="{{title}}" class="form-control" id="title" placeholder="Write a meaningful title..." />
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="lang">Language</label>
-          <select id="lang" class="form-control">
-            <option value="en" selected>English</option>
-            <option value="es">Spanish</option>
-          </select>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="inputState">Visibility</label>
-          <select id="inputState" class="form-control">
-            <option value="1">Public</option>
-            <option value="0">Private</option>
-          </select>
-        </div>
-      </div>
-
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="experience_title">Title of your experience</label>
+              <input type="text" value="{{title}}" class="form-control" id="experience_title"
+                placeholder="Write a meaningful title..." />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="experience_lang">Language</label>
+              <select id="experience_lang" class="form-control">
+                <option value="en" selected>English</option>
+                <option value="es">Spanish</option>
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="experience_inputState">Visibility</label>
+              <select id="experience_inputState" class="form-control">
+                <option value="1">Public</option>
+                <option value="0">Private</option>
+              </select>
+            </div>
+          </div>
 
           <h3>
             {{#str}}experience_reflection_section_what_question_1_title,
@@ -49,7 +54,7 @@
             {{#str}}experience_reflection_section_what_question_1_desc,
             local_dta{{/str}}
           </p>
-          <textarea name="" cols="" rows="" class="editor form-control" id="introduction_txtarea">{{content}}</textarea>
+          <textarea name="" cols="" rows="" class="editor form-control" id="experience_introduction">{{content}}</textarea>
           <hr />
         </div>
         <div class="question d-flex flex-column">
@@ -61,9 +66,9 @@
             {{#str}}experience_reflection_section_what_question_2_desc,
             local_dta{{/str}}
           </p>
-          <textarea name="" cols="" rows="" class="editor form-control" id="problem_txtarea"></textarea>
+          <textarea name="" cols="" rows="" class="editor form-control" id="experience_problem"></textarea>
         </div>
-        <button class="btn btn-primary mt-3 submit" data-group="WHAT_CONTEXT" data-target="problem_txtarea" data-id="0">
+        <button class="btn btn-primary mt-3" id="experience_submit">
           {{#str}}save, local_dta{{/str}}
         </button>
       </div>
@@ -86,7 +91,8 @@
             local_dta{{/str}}
           </p>
           {{#reflection.sections.SO_WHAT_HOW}}
-          <textarea name="" cols="" rows="" class="editor form-control" id="sowhat_txtarea">{{content}}</textarea>
+          <textarea name="" cols="" rows="" class="editor form-control" id="sowhat_txtarea">
+{{content}}</textarea>
           <button class="btn btn-primary mt-3 submit" data-group="SO_WHAT_HOW" data-target="sowhat_txtarea"
             data-id="{{id}}">
             {{#str}}save, local_dta{{/str}}
@@ -121,7 +127,8 @@
             local_dta{{/str}}
           </p>
           {{#reflection.sections.NOW_WHAT_ACTION}}
-          <textarea name="" cols="" rows="" class="editor form-control" id="action_txtarea">{{content}}</textarea>
+          <textarea name="" cols="" rows="" class="editor form-control" id="action_txtarea">
+{{content}}</textarea>
           <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_ACTION" data-target="action_txtarea"
             data-id="{{id}}">
             {{#str}}save, local_dta{{/str}}
@@ -148,7 +155,8 @@
           </p>
 
           {{#reflection.sections.NOW_WHAT_REFLECTION}}
-          <textarea name="" cols="" rows="" class="editor form-control" id="learn_txtarea">{{content}}</textarea>
+          <textarea name="" cols="" rows="" class="editor form-control" id="learn_txtarea">
+{{content}}</textarea>
           <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_REFLECTION" data-target="learn_txtarea"
             data-id="{{id}}">
             {{#str}}save, local_dta{{/str}}

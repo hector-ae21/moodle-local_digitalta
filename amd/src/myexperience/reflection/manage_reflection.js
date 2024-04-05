@@ -47,7 +47,7 @@ function setTinyConfig() {
  */
 function saveTextSection(btn) {
   const data = btn.data();
-  const { target, group, id } = data;
+  const {target, group, id} = data;
   const reflectionid = $("#reflectionid").val();
   const content = window.tinyMCE.get(target).getContent();
   sectionTextUpsert({ reflectionid, group, content, id })
@@ -166,7 +166,8 @@ function setEventListeners() {
       addIcon.removeClass("fa fa-minus-circle").addClass("fa fa-plus-circle");
     }
   });
-
+// TODOOOOO : @Miguel cambiar esto a 
+// TODO: Verificar si esto se puede hacer mejor y mas pequeño
   // Change Section
   $(document).on("click", "#btn_what", function () {
     activateStep();
@@ -195,6 +196,7 @@ function setEventListeners() {
     }
   });
 
+  // TODO @miguel : cambiar esto al init no usar funcion de carga
   // on LOAD - ready is deprecated
   $(function () {
     activateStep();

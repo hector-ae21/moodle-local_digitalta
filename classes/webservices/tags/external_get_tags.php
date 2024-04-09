@@ -11,48 +11,37 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/classes/ourcases.php');
+require_once($CFG->dirroot . '/local/dta/classes/tags.php');
 
-use local_dta\OurCases;
+use local_dta\Tags;
 
-class external_create_tags extends external_api
+class external_get_tags extends external_api
 {
 
-    public static function ourcases_get_parameters()
+    public static function get_tags_parameters()
     {
         return new external_function_parameters(
-            []
+            [
+                'searchText' => new external_value(PARAM_TEXT, 'Search text', VALUE_OPTIONAL)
+            ]
         );
     }
 
-    public static function ourcases_get()
+    public static function get_tags($searchText = '%%')
     {
-        $cases = OurCases::get_cases(false);
-        foreach ($cases as $case) {
-            $headerSection = OurCases::get_section_header($case->id);
-            if ($headerSection) {
-                $case->title = $headerSection->title;
-                $case->description = $headerSection->description;
-            } else {
-                $case->title = null;
-                $case->description = null;
-            }
-        }
-        return $cases;
+        $searchText = '%' . $searchText . '%';
+        $tags = Tags::getTagsByText($searchText) ?? [];
+        
+        return $tags;
     }
 
-    public static function ourcases_get_returns()
+    public static function get_tags_returns()
     {
         return new external_multiple_structure(
             new external_single_structure(
                 array(
-                    'id' => new external_value(PARAM_INT, 'ID of the ourcase'),
-                    'experienceid' => new external_value(PARAM_INT, 'ID of the experience', VALUE_OPTIONAL),
-                    'userid' => new external_value(PARAM_INT, 'ID of the user'),
-                    'date' => new external_value(PARAM_TEXT, 'Experience date'),
-                    'status' => new external_value(PARAM_INT, 'Status of the ourcase'),
-                    'title' => new external_value(PARAM_RAW, 'Title of the header section', VALUE_OPTIONAL),
-                    'description' => new external_value(PARAM_RAW, 'Description of the header section', VALUE_OPTIONAL)
+                    'id' => new external_value(PARAM_INT, 'Tag ID'),
+                    'name' => new external_value(PARAM_TEXT, 'Tag name')
                 )
             )
         );

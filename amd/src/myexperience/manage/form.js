@@ -4,6 +4,7 @@ import {setupForElementId} from "editor_tiny/editor";
 import {setEventListeners} from "./listeners";
 import {activateStep} from "./steps";
 import {experienceUpsert} from "./../../repositories/experience_repository";
+import {autocompleteTags} from "./autocomplete";
 
 let tinyConfig;
 
@@ -143,4 +144,5 @@ export const init = () => {
   setEventListeners();
   setDefaultTinyMCE();
   activateStep();
+  autocompleteTags();
 };

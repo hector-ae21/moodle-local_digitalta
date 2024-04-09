@@ -38,6 +38,6 @@ $template_context = [
     "title" => $experience_title,
 ];
 
-echo $OUTPUT->render_from_template('local_dta/experiences/manage/manage', $template_context);
+echo $OUTPUT->render_from_template('local_dta/experiences/manage/form', $template_context);
 
 echo $OUTPUT->footer();

@@ -16,14 +16,16 @@
                     COMMENT="Experience description" />
                 <FIELD NAME="context" TYPE="text" NOTNULL="true" SEQUENCE="false"
                     COMMENT="Experience context" />
-                <FIELD NAME="date" TYPE="datetime" NOTNULL="true" SEQUENCE="false"
-                    COMMENT="Experience date" />
                 <FIELD NAME="lang" TYPE="char" LENGTH="5" NOTNULL="true" SEQUENCE="false"
                     DEFAULT="en" COMMENT="Language" />
                 <FIELD NAME="visible" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"
                     DEFAULT="0" COMMENT="Visibility (0 or 1)" />
                 <FIELD NAME="status" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"
                     DEFAULT="0" COMMENT="status (0 = unfinished, 1 = finished)" />
+                <FIELD NAME="timecreated" TYPE="datetime" NOTNULL="true" SEQUENCE="false"
+                    COMMENT="Time created" />
+                <FIELD NAME="timemodified" TYPE="datetime" NOTNULL="true" SEQUENCE="false"
+                    COMMENT="Time modified" />
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" />

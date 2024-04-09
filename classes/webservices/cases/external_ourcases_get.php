@@ -15,17 +15,17 @@ require_once($CFG->dirroot . '/local/dta/classes/ourcases.php');
 
 use local_dta\OurCases;
 
-class external_get_cases extends external_api
+class external_ourcases_get extends external_api
 {
 
-    public static function get_cases_parameters()
+    public static function ourcases_get_parameters()
     {
         return new external_function_parameters(
             []
         );
     }
 
-    public static function get_cases()
+    public static function ourcases_get()
     {
         $cases = OurCases::get_cases(false);
         foreach ($cases as $case) {
@@ -41,7 +41,7 @@ class external_get_cases extends external_api
         return $cases;
     }
 
-    public static function get_cases_returns()
+    public static function ourcases_get_returns()
     {
         return new external_multiple_structure(
             new external_single_structure(

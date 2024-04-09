@@ -190,27 +190,28 @@ class Experience
      * @param object $experience
      * @return object
      */
-    public static function store($experience)
+    public static function upsert($experience)
     {
         global $DB;
-        if (empty($experience->title) || empty($experience->description) || empty($experience->context) || empty($experience->date) || empty($experience->lang) ) {
-            throw new Exception('Error adding experience');
+        if (empty($experience->title) || empty($experience->description) || empty($experience->context) || empty($experience->lang) ) {
+            throw new Exception('Error adding experience missing fields');
         }
 
         $record = new \stdClass();
+        $record->userid = $experience->userid;
         $record->title = $experience->title;
         $record->description = $experience->description;
         $record->context = $experience->context;
-        $record->date = $experience->date;
         $record->lang = $experience->lang;
-        $record->userid = $experience->userid;
         $record->visible = $experience->visible;
         $record->status = $experience->status ?? 0;
-
+        $record->timecreated = date('Y-m-d H:i:s', time());
+        $record->timemodified = date('Y-m-d H:i:s', time());
 
 
         if($experience->id) {
             $record->id = $experience->id;
+            $record->timecreated = $experience->timecreated;
             $DB->update_record(self::$table, $record);
             if ($experience->tags) {
                 ExperienceTag::update_experience_tags($record->id, $experience->tags);

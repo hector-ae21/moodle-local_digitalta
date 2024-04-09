@@ -1,8 +1,9 @@
 import $ from "jquery";
-import { Notification } from "core/notification";
-import { setupForElementId } from "editor_tiny/editor";
-import { setEventListeners } from "./listeners";
-import { activateStep } from "./steps";
+import Notification from "core/notification";
+import {setupForElementId} from "editor_tiny/editor";
+import {setEventListeners} from "./listeners";
+import {activateStep} from "./steps";
+import {experienceUpsert} from "./../../repositories/experience_repository";
 
 let tinyConfig;
 
@@ -23,7 +24,7 @@ function createTinyMCE(area) {
  * @return {void}
  * */
 function setDefaultTinyMCE() {
-  $(".editor").each(function () {
+  $(".editor").each(function() {
     createTinyMCE(this.id);
   });
 }
@@ -34,6 +35,26 @@ function setDefaultTinyMCE() {
  */
 function setTinyConfig() {
   tinyConfig = window.dta_tiny_config;
+}
+
+
+/**
+ * Collapse the add section menu.
+ * @return {void}
+ */
+export function collapseAddSectionMenu() {
+  const importerParent = $(this).closest("#importer");
+  const importerDiv = importerParent.find("#import_div");
+  const addIcon = $(this).find("i");
+  if (importerParent.hasClass("collapsed")) {
+    importerParent.removeClass("collapsed");
+    importerDiv.css("display", "flex");
+    addIcon.removeClass("fa fa-plus-circle").addClass("fa fa-minus-circle");
+  } else {
+    importerParent.addClass("collapsed");
+    importerDiv.hide();
+    addIcon.removeClass("fa fa-minus-circle").addClass("fa fa-plus-circle");
+  }
 }
 
 // /**
@@ -89,23 +110,33 @@ function setTinyConfig() {
  * Save the experience.
  * @return {void}
  * */
-export function saveExperience() {
+export async function saveExperience() {
   const experienceTitle = $("#experience_title").val(),
+  experienceVisibility = $("#experience_visibility").val(),
     experienceLang = $("#experience_lang").val(),
-    experienceInputState = $("#experience_inputState").val(),
     experienceIntroduction = window.tinyMCE.get("experience_introduction").getContent(),
     experienceProblem = window.tinyMCE.get("experience_problem").getContent();
 
-  if (experienceTitle === "" || experienceLang === ""
-  || experienceInputState === "" || experienceIntroduction === "" || experienceProblem === "") {
-    Notification.addNotification({
-      message: "Please fill in all fields.",
-      type: "error",
-    });
-    return;
-  }
-
+    try {
+      await experienceUpsert({
+        id: 0,
+        title: experienceTitle,
+        description: experienceIntroduction,
+        context: experienceProblem,
+        lang: experienceLang,
+        visible: experienceVisibility
+      });
+      Notification.addNotification({
+        message: "Experience saved successfully.",
+        type: "success",
+      });
+      activateStep(2);
+      return;
+    } catch (error) {
+      Notification.exception(error);
+    }
 }
+
 
 export const init = () => {
   setTinyConfig();

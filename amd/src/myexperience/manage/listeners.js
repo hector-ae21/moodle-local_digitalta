@@ -1,6 +1,7 @@
 import $ from "jquery";
 import {activateStep} from "./steps";
-import {saveExperience} from "./form";
+import {saveExperience, collapseAddSectionMenu} from "./form";
+import {handleNewTag} from "./autocomplete";
 
 /**
  * Set event listeners for the module.
@@ -14,31 +15,24 @@ export function setEventListeners() {
 
     // Add-Section-Menu Collapse
     $(document).on("click", "#add_button", function() {
-      const importerParent = $(this).closest("#importer");
-      const importerDiv = importerParent.find("#import_div");
-      const addIcon = $(this).find("i");
-      if (importerParent.hasClass("collapsed")) {
-        importerParent.removeClass("collapsed");
-        importerDiv.css("display", "flex");
-        addIcon.removeClass("fa fa-plus-circle").addClass("fa fa-minus-circle");
-      } else {
-        importerParent.addClass("collapsed");
-        importerDiv.hide();
-        addIcon.removeClass("fa fa-minus-circle").addClass("fa fa-plus-circle");
-      }
+      collapseAddSectionMenu();
     });
 
     // Change Section
-    $(document).on("click", "#btn_what", function () {
+    $(document).on("click", "#btn_what", function() {
       activateStep();
     });
 
-    $(document).on("click", "#btn_so_what", function () {
+    $(document).on("click", "#btn_so_what", function() {
       activateStep(2);
     });
 
-    $(document).on("click", "#btn_now_what", function () {
+    $(document).on("click", "#btn_now_what", function() {
       activateStep(3);
+    });
+
+    $(document).on('autocomplete:select', '#autocomplete_tags', function(e, data) {
+      handleNewTag(data);
     });
 
     // Import Buttons

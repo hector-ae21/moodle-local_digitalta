@@ -1,27 +1,10 @@
-<!--
-<div class="items"  style="height: 150px;">
+<div class="card rounded shadow-none border-0 m-2">
   <a href="{{experiences.viewurl}}{{id}}" target="_blank">
     {{#pictureurl}}
-      <img src="{{pictureurl}}" class="d-block rounded" alt="{{{title}}}" >
+      <img class="card-img-top" src="{{pictureurl}}" alt="{{{title}}}">
     {{/pictureurl}}
     {{^pictureurl}}
-      <img src="https://picsum.photos/seed/picsum/600/700" class="d-block rounded" alt="{{{title}}}">
-    {{/pictureurl}}
-      <div class="text-dark">
-        <h5>{{{title}}}</h5>
-      {{{description}}}
-      </div>
-  </a>
-</div>
--->
-
-<div class="card rounded shadow-none border-0 m-2" style="width: 2rem;">
-  <a href="{{experiences.viewurl}}{{id}}" target="_blank">
-    {{#pictureurl}}
-      <img class="card-img-top" src="{{pictureurl}}" alt="{{{title}}}" style="height: 10rem;">
-    {{/pictureurl}}
-    {{^pictureurl}}
-      <img class="card-img-top" src="https://picsum.photos/seed/picsum/600/700" alt="{{{title}}}" style="height: 10rem;">
+      <img class="card-img-top" src="https://picsum.photos/seed/picsum/600/700" alt="{{{title}}}">
     {{/pictureurl}}
   <div class="card-body">
     <h5 class="card-title">{{{title}}}</h5>

@@ -10,9 +10,9 @@
 
 namespace local_dta;
 
-require_once($CFG->dirroot . '/lib/editor/tiny/classes/editor.php');
-require_once($CFG->dirroot . '/lib/editor/tiny/classes/manager.php');
-require_once($CFG->dirroot . '/config.php');
+require_once ($CFG->dirroot . '/lib/editor/tiny/classes/editor.php');
+require_once ($CFG->dirroot . '/lib/editor/tiny/classes/manager.php');
+require_once ($CFG->dirroot . '/config.php');
 
 use editor_tiny\manager;
 use stdClass;
@@ -22,9 +22,18 @@ class tiny_editor_handler extends \editor_tiny\editor
 
     /** @var array options provided to initalize filepicker */
     protected $_options = array(
-        'subdirs' => 0, 'maxbytes' => 0, 'maxfiles' => 0, 'changeformat' => 0,
-        'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED, 'context' => null, 'noclean' => 0, 'trusttext' => 0,
-        'return_types' => 15, 'enable_filemanagement' => true, 'removeorphaneddrafts' => false, 'autosave' => true
+        'subdirs' => 0,
+        'maxbytes' => 0,
+        'maxfiles' => 0,
+        'changeformat' => 0,
+        'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED,
+        'context' => null,
+        'noclean' => 0,
+        'trusttext' => 0,
+        'return_types' => 15,
+        'enable_filemanagement' => true,
+        'removeorphaneddrafts' => false,
+        'autosave' => true
     );
 
     public function __construct()
@@ -43,7 +52,7 @@ class tiny_editor_handler extends \editor_tiny\editor
         return [
             'image' => self::specific_filepicker_options(['image'], $draftitemid, $context),
             'media' => self::specific_filepicker_options(['video', 'audio'], $draftitemid, $context),
-            'link'  => self::specific_filepicker_options('*', $draftitemid, $context),
+            'link' => self::specific_filepicker_options('*', $draftitemid, $context),
         ];
     }
 
@@ -71,7 +80,7 @@ class tiny_editor_handler extends \editor_tiny\editor
 
         $context = $PAGE->context;
 
-        $fpoptions = $this->get_filepicker_options($context,  file_get_unused_draft_itemid());
+        $fpoptions = $this->get_filepicker_options($context, file_get_unused_draft_itemid());
 
 
         $manager = new manager();
@@ -145,10 +154,26 @@ class tiny_editor_handler extends \editor_tiny\editor
         $configoptions = json_encode(convert_to_array($config));
 
         $inlinejs = <<<EOF
-        window.dta_tiny_config = $configoptions;
-        EOF;
+    window.dta_tiny_config = $configoptions;
 
-        $PAGE->requires->js_amd_inline($inlinejs);
+    // Create a temporary variable and assign the data from window.dta_tiny_config
+    var tempData = window.dta_tiny_config;
+
+    // Array of plugin names that you want to remove
+    var pluginsToRemove = ["tiny_recordrtc/plugin", "tiny_media/plugin", "tiny_link/plugin", "tiny_h5p/plugin", "tiny_equation/plugin", "tiny_autosave/plugin", "tiny_accessibilitychecker/plugin", "wordcount"];
+
+    // Filter out the plugins that you want to remove
+    for (var i = 0; i < pluginsToRemove.length; i++) {
+        delete tempData.plugins[pluginsToRemove[i]];
+    }
+
+    // Assign the modified data back to window.dta_tiny_config
+    window.dta_tiny_config = tempData;
+EOF;
+
+$PAGE->requires->js_amd_inline($inlinejs);
+
+
     }
 }
 

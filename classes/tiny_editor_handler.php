@@ -137,6 +137,14 @@ class tiny_editor_handler extends \editor_tiny\editor
             'nestedmenu' => true,
         ];
 
+        $pluginsToRemove = array("tiny_recordrtc/plugin", "tiny_media/plugin", "tiny_link/plugin", "tiny_h5p/plugin", "tiny_equation/plugin", "tiny_autosave/plugin", "tiny_accessibilitychecker/plugin", "wordcount");
+
+        foreach ($pluginsToRemove as $plugin) {
+            if (isset($config->plugins[$plugin])) {
+                unset($config->plugins[$plugin]);
+            }
+        }
+
         if (defined('BEHAT_SITE_RUNNING') && BEHAT_SITE_RUNNING) {
             // Add sample selectors for Behat test.
             $config->placeholderSelectors = ['.behat-tinymce-placeholder'];
@@ -155,23 +163,9 @@ class tiny_editor_handler extends \editor_tiny\editor
 
         $inlinejs = <<<EOF
     window.dta_tiny_config = $configoptions;
+    EOF;
 
-    // Create a temporary variable and assign the data from window.dta_tiny_config
-    var tempData = window.dta_tiny_config;
-
-    // Array of plugin names that you want to remove
-    var pluginsToRemove = ["tiny_recordrtc/plugin", "tiny_media/plugin", "tiny_link/plugin", "tiny_h5p/plugin", "tiny_equation/plugin", "tiny_autosave/plugin", "tiny_accessibilitychecker/plugin", "wordcount"];
-
-    // Filter out the plugins that you want to remove
-    for (var i = 0; i < pluginsToRemove.length; i++) {
-        delete tempData.plugins[pluginsToRemove[i]];
-    }
-
-    // Assign the modified data back to window.dta_tiny_config
-    window.dta_tiny_config = tempData;
-EOF;
-
-$PAGE->requires->js_amd_inline($inlinejs);
+        $PAGE->requires->js_amd_inline($inlinejs);
 
 
     }

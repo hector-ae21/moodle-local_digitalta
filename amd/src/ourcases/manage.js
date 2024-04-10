@@ -5,7 +5,7 @@ import {
     sectionTextUpsert,
     sectionTextDelete,
     ourcaseEdit
-} from 'local_dta/repositories/ourcasesRepository';
+} from 'local_dta/repositories/ourcases_repository';
 import ModalFactory from 'core/modal_factory';
 import {get_string} from 'core/str';
 import {setupForElementId} from 'editor_tiny/editor';

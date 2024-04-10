@@ -23,6 +23,7 @@ $string['form_experience_visibility_public'] = 'Public';
 $string['form_experience_visibility_private'] = 'Private';
 $string['form_experience_tags'] = 'Tags';
 $string['form_experience_tags_placeholder'] = 'Select or create a tag...';
+$string['form_experience_selected_tags'] = 'Selected tags';
 
 
 // Experience delete form

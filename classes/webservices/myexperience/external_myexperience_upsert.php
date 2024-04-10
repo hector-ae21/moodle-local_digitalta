@@ -11,7 +11,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(__DIR__ . './../experience.php');
+require_once(__DIR__ . './../../experience.php');
 
 
 use local_dta\Experience;
@@ -29,11 +29,14 @@ class external_myexperience_upsert extends external_api
                 'context' => new external_value(PARAM_RAW, 'Context' , VALUE_DEFAULT),
                 'lang' => new external_value(PARAM_RAW, 'Lang'),
                 'visible' => new external_value(PARAM_BOOL, 'Visible'),
+                'tags' => new external_multiple_structure(
+                    new external_value(PARAM_INT, 'ID del elemento')  , 'Tags' , VALUE_DEFAULT
+                )
             )
         );
     }
 
-    public static function myexperience_upsert($id, $title, $description = " ", $context = " ", $lang, $visible)
+    public static function myexperience_upsert($id, $title, $description = " ", $context = " ", $lang, $visible = 1, $tags = [])
     {
         global $USER;
         $experience = new stdClass();
@@ -45,6 +48,7 @@ class external_myexperience_upsert extends external_api
         $experience->visible = $visible;
         $experience->status = 0;
         $experience->id  = $id ?? null;
+        $experience->tags = $tags;
         
         if(!$experience = Experience::upsert($experience)){
             return [

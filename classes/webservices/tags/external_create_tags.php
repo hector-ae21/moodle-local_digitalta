@@ -29,19 +29,16 @@ class external_create_tags extends external_api
 
     public static function create_tags($tag)
     {
-        $tag = Tags::addTag($tag);
-
-        return $tag;
+        $tagid = Tags::addTag($tag);
+        return ['id' => $tagid];
     }
 
     public static function create_tags_returns()
     {
-        return new external_multiple_structure(
-            new external_single_structure(
-                array(
-                    'id' => new external_value(PARAM_INT, 'Tag ID'),
-                )
-            )
+        return new external_single_structure(
+            [
+                'id' => new external_value(PARAM_INT, 'Tag id')
+            ]
         );
     }
 }

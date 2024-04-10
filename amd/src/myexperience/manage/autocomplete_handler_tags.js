@@ -10,7 +10,15 @@ define(['core/ajax'], function(Ajax) {
          * @return {Array}
          */
         processResults: function(selector, data) {
-            return data;
+            const tags = data.map(function(tag) {
+                const value = tag.id;
+                let label = tag.name;
+                if (tag.id === -1) {
+                    label = 'Create: ' + tag.name;
+                }
+                return {label, value};
+            });
+            return tags;
         },
 
         /**
@@ -29,12 +37,9 @@ define(['core/ajax'], function(Ajax) {
                     args: {searchText: query},
                     done: function(result) {
                         if (result.length === 0) {
-                            success([{label: 'Create: ' + query, value: query}]);
+                            success([{name: query, id: -1}]);
                         } else {
-                            const tags = result.map(function(tag) {
-                                return {label: tag.name, value: tag.id};
-                            });
-                            success(tags);
+                            success(result);
                         }
                     },
                     fail: failure

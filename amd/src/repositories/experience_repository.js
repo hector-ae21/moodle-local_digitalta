@@ -11,6 +11,7 @@ import Ajax from 'core/ajax';
  * - context: The context of the experience
  * - lang : The language of the experience
  * - visible: The visibility of the experience
+ * - tags: The tags of the experience
  * @method sectionTextUpsert
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.
@@ -18,6 +19,23 @@ import Ajax from 'core/ajax';
 export const experienceUpsert = args => {
     const request = {
         methodname: 'local_dta_myexperience_upsert',
+        args: args
+    };
+    return Ajax.call([request])[0];
+};
+
+/**
+ * Get tags.
+ *
+ * Valid args are:
+ * - tag: The tag to create
+ * @method getTags
+ * @param {Object} args Arguments send to the webservice.
+ * @return {Promise} Resolve with tags.
+ */
+export const createTags = args => {
+    const request = {
+        methodname: 'local_dta_create_tags',
         args: args
     };
     return Ajax.call([request])[0];

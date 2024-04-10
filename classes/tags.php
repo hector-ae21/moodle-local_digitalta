@@ -94,4 +94,18 @@ class Tags
     {
         return $this->db->delete_records('digital_tags', array('id' => $id));
     }
+
+
+    /**
+     * Get all tags by text
+     *
+     * @param string $text
+     * @return stdClass|null
+     */
+    public static function getTagsByText($text)
+    {
+        global $DB;
+        $tags = array_values($DB->get_records_sql('SELECT * FROM {digital_tags} WHERE name LIKE ?', array($text)));
+        return $tags;
+    }
 }

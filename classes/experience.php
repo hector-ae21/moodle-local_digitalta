@@ -17,7 +17,7 @@ require_once(__DIR__ . '/experience_tags.php');
 use stdClass;
 use local_dta\Reaction;
 use local_dta\ExperienceTag;
-
+use Exception;
 class Experience
 {
     private static $table = 'digital_experiences';
@@ -29,7 +29,9 @@ class Experience
 
     private $userid;
 
-    private $date;
+    private $timecreated;
+    private $timemodified;
+
     private $lang;
 
     /** @var string The picture draft id of the experience */
@@ -120,7 +122,7 @@ class Experience
             $user = get_complete_user_data("id", $experience->userid);
             $picture = new \user_picture($user);
             $picture->size = 101;
-            $experience->date = date("d/m/Y", strtotime($experience->date));
+            $experience->timecreated = date("d/m/Y", strtotime($experience->timecreated));
             $experience->user = [
                 'id' => $user->id,
                 'name' => $user->firstname . " " . $user->lastname,
@@ -190,26 +192,28 @@ class Experience
      * @param object $experience
      * @return object
      */
-    public static function store($experience)
+    public static function upsert($experience)
     {
         global $DB;
-        if (empty($experience->title) || empty($experience->description) || empty($experience->date) || empty($experience->lang)) {
-            throw new Exception('Error adding experience');
+        if (empty($experience->title) || empty($experience->description) || empty($experience->context) || empty($experience->lang) ) {
+            throw new Exception('Error adding experience missing fields');
         }
 
         $record = new \stdClass();
-        $record->title = $experience->title;
-        $record->description = $experience->description['text'];
-        $record->date = $experience->date;
-        $record->lang = $experience->lang;
         $record->userid = $experience->userid;
+        $record->title = $experience->title;
+        $record->description = $experience->description;
+        $record->context = $experience->context;
+        $record->lang = $experience->lang;
         $record->visible = $experience->visible;
         $record->status = $experience->status ?? 0;
-
+        $record->timecreated = date('Y-m-d H:i:s', time());
+        $record->timemodified = date('Y-m-d H:i:s', time());
 
 
         if($experience->id) {
             $record->id = $experience->id;
+            $record->timecreated = $experience->timecreated;
             $DB->update_record(self::$table, $record);
             if ($experience->tags) {
                 ExperienceTag::update_experience_tags($record->id, $experience->tags);
@@ -276,7 +280,7 @@ class Experience
             $DB->get_records(
                 self::$table, 
                 $includePrivates ? null : ['visible' => 1],
-                'date DESC',
+                'timecreated DESC',
                 '*',
                 0,
                 3

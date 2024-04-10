@@ -191,7 +191,7 @@ class Reaction
     public static function get_most_liked_experience($limit = 5)
     {
         global $DB;
-        $sql = "SELECT e.id, e.userid, e.title, e.description, e.date, e.lang, e.visible, e.status, COUNT(l.id) as likes
+        $sql = "SELECT e.id, e.userid, e.title, e.description, e.timecreated, e.lang, e.visible, e.status, COUNT(l.id) as likes
                 FROM {digital_experiences} e
                 LEFT JOIN {digital_experience_likes} l ON e.id = l.experienceid
                 WHERE l.reactiontype = 1 AND e.visible = 1

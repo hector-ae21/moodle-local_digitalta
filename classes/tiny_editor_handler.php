@@ -96,7 +96,6 @@ class tiny_editor_handler extends \editor_tiny\editor
     public function get_config_editor($options = null, $fpoptions = null)
     {
         global $PAGE;
-
         $context = $PAGE->context;
 
         $fpoptions = $this->get_filepicker_options($context, file_get_unused_draft_itemid());
@@ -176,6 +175,9 @@ class tiny_editor_handler extends \editor_tiny\editor
 
         $inlinejs = <<<EOF
     window.dta_tiny_config = $configoptions;
+        require(['local_dta/tiny/cleaner'], function(Cleaner) {
+            Cleaner.init();
+        });
     EOF;
 
         $PAGE->requires->js_amd_inline($inlinejs);

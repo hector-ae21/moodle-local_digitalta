@@ -72,6 +72,25 @@ class tiny_editor_handler extends \editor_tiny\editor
         return $options;
     }
 
+    protected static function remove_unwanted_plugins($config)
+    {
+        $pluginsToRemove = [
+            "code",
+            "help",
+            "wordcount",
+            "tiny_accessibilitychecker/plugin",
+            "tiny_equation/plugin",
+            "tiny_media/plugin",
+
+        ];
+
+        foreach ($pluginsToRemove as $plugin) {
+            if (isset($config->plugins[$plugin])) {
+                unset($config->plugins[$plugin]);
+            }
+        }
+        return $config;
+    }
 
 
     public function get_config_editor($options = null, $fpoptions = null)
@@ -137,13 +156,7 @@ class tiny_editor_handler extends \editor_tiny\editor
             'nestedmenu' => true,
         ];
 
-        $pluginsToRemove = array("tiny_recordrtc/plugin", "tiny_media/plugin", "tiny_link/plugin", "tiny_h5p/plugin", "tiny_equation/plugin", "tiny_autosave/plugin", "tiny_accessibilitychecker/plugin", "wordcount");
-
-        foreach ($pluginsToRemove as $plugin) {
-            if (isset($config->plugins[$plugin])) {
-                unset($config->plugins[$plugin]);
-            }
-        }
+        $config = self::remove_unwanted_plugins($config);
 
         if (defined('BEHAT_SITE_RUNNING') && BEHAT_SITE_RUNNING) {
             // Add sample selectors for Behat test.

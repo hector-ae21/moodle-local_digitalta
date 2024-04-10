@@ -160,10 +160,12 @@
                     UNSIGNED="true" COMMENT="ID of the experience" />
                 <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"
                     UNSIGNED="true" COMMENT="ID of the user" />
-                <FIELD NAME="date" TYPE="datetime" NOTNULL="true" SEQUENCE="false"
-                    COMMENT="Experience date" />
                 <FIELD NAME="status" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0"
                     SEQUENCE="false" COMMENT="status 0 until finished 1)" />
+                <FIELD NAME="timecreated" TYPE="datetime" NOTNULL="true" SEQUENCE="false"
+                    COMMENT="Time created" />
+                <FIELD NAME="timemodified" TYPE="datetime" NOTNULL="true" SEQUENCE="false"
+                    COMMENT="Time modified" />
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id" />

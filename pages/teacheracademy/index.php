@@ -83,7 +83,6 @@ $picture = new user_picture($user);
 $picture->size = 101;
 $user->imageurl = $picture->get_url($PAGE)->__toString();
 
-$featuredExperiences[0]->label = "active";
 
 $templateContext = [
     "user" => $user,

@@ -83,6 +83,8 @@ $picture = new user_picture($user);
 $picture->size = 101;
 $user->imageurl = $picture->get_url($PAGE)->__toString();
 
+$featuredExperiences[0]->label = "active";
+
 $templateContext = [
     "user" => $user,
     "themepixurl" => $CFG->wwwroot . "/theme/dta/pix/",
@@ -104,7 +106,6 @@ $templateContext = [
         "allurl" => $CFG->wwwroot . "/local/dta/pages/cases/repository.php"
     ]
 ];
-
 
 echo $OUTPUT->render_from_template('local_dta/teacheracademy/dashboard', $templateContext);
 

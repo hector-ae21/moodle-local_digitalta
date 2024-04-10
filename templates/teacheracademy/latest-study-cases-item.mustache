@@ -1,33 +1,10 @@
 {{#cases}}
-<div class="row">
-            <div class="col-4 mb-4">
-              <div
-                class="hover-image hover-overlay shadow-1-strong rounded"
-                data-mdb-ripple-init
-                data-mdb-ripple-color="light"
-              >
-                <a href="{{viewurl}}{{id}}">
-              {{#pictureurl}}
-                <img
-                  src="{{pictureurl}}"
-                  alt="Case Study"
-                  class="img-fluid"
-                />
-              {{/pictureurl}}
-              {{^pictureurl}}
-            <img class="img-fluid"
-                        alt="Case Study"
-                        src="{{themepixurl}}screenshot.png" />
-              {{/pictureurl}}
-                </a>
-              </div>
-            </div>
-
-            <div class="col-8 mb-4 overflow-hidden text-dark">
-              <h5 title="{{casetext.title}}">{{casetext.title}}</h5>
-              <p>
-                {{{casetext.description}}}
-              </p>
-            </div>
-          </div>
+<div class="col-8 pt-4 mb-4 overflow-hidden text-dark">
+  <a class="text-dark" href="{{viewurl}}{{id}}">
+    <h5 title="{{casetext.title}}">{{casetext.title}}</h5>
+    <p>
+    {{{casetext.description}}}
+    </p>
+  </a>
+</div>
 {{/cases}}

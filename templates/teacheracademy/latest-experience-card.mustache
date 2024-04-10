@@ -1,39 +1,3 @@
-<!-- <div class="mb-5 experience-card">
-  {{#pictureurl}}
-    <div class="experience-card-img-container border-bottom d-flex justify-content-center align-items-center">
-    <a href="{{experiences.viewurl}}{{id}}">
-      <img
-        src="{{pictureurl}}"
-        alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
-        class="img-fluid"
-      />
-    </a>
-    </div>
-  {{/pictureurl}}
-  {{^pictureurl}}
-    <div class="experience-card-img-container border-bottom d-flex justify-content-center align-items-center">
-      <a href="{{experiences.viewurl}}{{id}}">
-        <img
-          src="{{themepixurl}}screenshot.png"
-          alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
-          class="img-fluid"
-        />
-      </a>
-    </div>
- {{/pictureurl}}
-  <div class="experience-card-body">
-    <h4 class="mb-1 experience-card-title" title="{{title}}">
-    <a href="{{experiences.viewurl}}{{id}}">{{title}}</a>
-    </h4>
-    <a href="{{experiences.viewurl}}{{id}}">
-    <div class="experience-description mb-3">{{{description}}}</div>
-    </a>
-  </div>
-</div>
--->
-
-
-
 <div class="col-lg-4 col-md-12 mb-4">
   <div class="experience-card">
     <div
@@ -46,14 +10,14 @@
           <img
             src="https://mdbootstrap.com/img/new/standard/nature/184.jpg"
             alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
-            class="img-fluid"
+            class="img-fluid rounded"
           />
         {{/pictureurl}}
         {{^pictureurl}}
           <img
             src="{{themepixurl}}screenshot.png"
             alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
-            class="img-fluid"
+            class="img-fluid rounded"
           />
         {{/pictureurl}}
       </a>

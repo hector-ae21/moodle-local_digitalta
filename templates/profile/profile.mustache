@@ -3,8 +3,8 @@
     <div class="col-xl-12 col-lg-12 col-md-12 col-12">
       <div class="card smooth-shadow-sm">
         <div class="pt-20 card-img-top bg-primary"></div>
-        <div class="d-flex align-items-center justify-content-between pb-6 px-4">
-          <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center justify-content-between pb-6 px-4 flex-wrap">
+          <div class="d-flex align-items-center flex-wrap">
             <div
               class="avatar-xxl avatar-indicators avatar-online me-2 position-relative d-flex justify-content-end align-items-end mt-n10">
               <img src="{{user.imageurl}}" class="avatar-xxl rounded-circle border border-2"
@@ -20,36 +20,46 @@
             
           </div>
 
-          <div class="d-flex align-items-center">
+          <div class="d-flex align-items-center flex-wrap">
             <a href="{{user.editurl}}" class="btn btn-outline-secondary m-1 d-md-block">{{#str}} editmyprofile, core
               {{/str}}</a>
             {{#experiences.showaddbutton}}
                 <a href="{{experiences.addurl}}" class="btn btn-outline-primary m-1 d-md-block">{{#str}}
                     myexperience_add_new_experience, local_dta {{/str}}</a>
+            {{/experiences.showaddbutton}}
+            {{#experiences.showaddbutton}}
+                <a href="{{url_create_case}}" class="btn btn-outline-primary m-1 d-md-block">{{#str}}
+                    ourcases_add_new_case, local_dta {{/str}}</a>
             {{/experiences.showaddbutton}}   
           </div>
         </div>
-          <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
-  </li>
-</ul>
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="experiences-tab" data-toggle="tab" href="#experiences" role="tab" aria-controls="experiences" aria-selected="true">
+              {{#str}} experiences_title, local_dta {{/str}}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="cases-tab" data-toggle="tab" href="#cases" role="tab" aria-controls="cases" aria-selected="false">
+              {{#str}} ourcases_title, local_dta {{/str}}
+              </a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
 
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
-</div>
-  <div class="card-list">
-  {{> local_dta/experiences/card-list}}
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="experiences" role="tabpanel" aria-labelledby="experiences-tab">
+      <div class="card-list">
+        {{> local_dta/experiences/card-list}}
+      </div>
+    </div>
+    <div class="tab-pane fade" id="cases" role="tabpanel" aria-labelledby="cases-tab">
+      <div class="card-list">
+        {{> local_dta/cases/repository-cases}}
+      </div>
+    </div>
   </div>
+  
 </div>

@@ -114,6 +114,7 @@ $string['ourcases_repository_placeholder'] = 'Create a new case';
 $string['ourcases_repository_title'] = 'Study Cases';
 $string['ourcases_header'] = 'ourcases'; 
 $string['ourcases_title'] = 'Cases';
+$string['ourcases_add_new_case'] = 'Add new case';
 
 
 // Teacher Academy

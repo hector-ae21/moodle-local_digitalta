@@ -49,6 +49,6 @@ $template_context = [
     ],
 ];
 
-echo $OUTPUT->render_from_template('local_dta/experiences/dashboard', $template_context);
+echo $OUTPUT->render_from_template('local_dta/experiences/dashboard/dashboard', $template_context);
 
 echo $OUTPUT->footer();

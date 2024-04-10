@@ -29,7 +29,9 @@ class Experience
 
     private $userid;
 
-    private $date;
+    private $timecreated;
+    private $timemodified;
+
     private $lang;
 
     /** @var string The picture draft id of the experience */
@@ -120,7 +122,7 @@ class Experience
             $user = get_complete_user_data("id", $experience->userid);
             $picture = new \user_picture($user);
             $picture->size = 101;
-            $experience->date = date("d/m/Y", strtotime($experience->date));
+            $experience->timecreated = date("d/m/Y", strtotime($experience->timecreated));
             $experience->user = [
                 'id' => $user->id,
                 'name' => $user->firstname . " " . $user->lastname,
@@ -278,7 +280,7 @@ class Experience
             $DB->get_records(
                 self::$table, 
                 $includePrivates ? null : ['visible' => 1],
-                'date DESC',
+                'timecreated DESC',
                 '*',
                 0,
                 3

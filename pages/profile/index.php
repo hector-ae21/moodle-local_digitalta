@@ -10,6 +10,7 @@
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
+require_once(__DIR__ . './../../classes/ourcases.php');
 require_once(__DIR__ . './../../classes/utils/string_utils.php');
 
 $id = required_param('id', PARAM_INT);
@@ -17,6 +18,7 @@ $id = required_param('id', PARAM_INT);
 require_login();
 
 use local_dta\Experience;
+use local_dta\OurCases;
 use local_dta\utils\StringUtils;
 
 global $CFG, $PAGE, $OUTPUT , $USER;
@@ -38,9 +40,23 @@ $picture->size = 101;
 $experiences = Experience::get_experiences_by_user($user->id);
 $experiences = array_map(function ($experience) {
     $experience->description = StringUtils::truncateHtmlText($experience->description);
+    $experience->reactions = false;
     return $experience;
 }, $experiences);
+$cases = OurCases::get_cases_by_user($user->id);
+$full_cases = array();
 
+if (!empty($cases)) {
+    $full_cases = array_values(array_map(function ($case) {
+        $object = OurCases::get_section_header($case->id);
+        $object->description = StringUtils::truncateHtmlText($object->description, 500);
+        $object->date = $case->date;
+        $object->user = $case->user;
+        $object->pictureurl = $case->pictureurl;
+        $object->reactions = false;
+        return $object;
+    }, $cases));
+}
 
 $templatecontext = [
     "experiences" => [
@@ -59,6 +75,9 @@ $templatecontext = [
         "imageurl" => $picture->get_url($PAGE)->__toString(),
         "editurl" => $CFG->wwwroot . "/user/editadvanced.php?id=" . $user->id,
     ],
+    "cases" => array_values($full_cases),
+    "url_create_case" => $CFG->wwwroot . '/local/dta/pages/cases/manage.php',
+    "url_case" => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id='
 ];
 
 

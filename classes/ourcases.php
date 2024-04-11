@@ -55,6 +55,21 @@ class OurCases
     }
 
     /**
+     * Get all cases by user
+     * 
+     * @param int $userid ID of the user
+     * @return array Returns an array of records
+     */
+
+    public static function get_cases_by_user($userid)
+    {
+        global $DB;
+        $cases = $DB->get_records(self::$table, ['userid' => $userid]);
+        $cases = self::get_extra_fields($cases);
+        return $cases;
+    }
+
+    /**
      * Get active cases 
      *
      * @return array Returns an array of records

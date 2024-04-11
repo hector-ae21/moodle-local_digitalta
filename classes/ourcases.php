@@ -20,7 +20,8 @@ class OurCases
     public $id;
     private $experienceid;
     private $userid;
-    private $date;
+    private $timecreated;
+    private $timemodified;
     private $status;
 
     /**
@@ -34,7 +35,8 @@ class OurCases
             $this->id = $ourcase->id;
             $this->experienceid = $ourcase->experienceid;
             $this->userid = $ourcase->userid;
-            $this->date = $ourcase->date;
+            $this->timecreated = $ourcase->timecreated;
+            $this->timemodified = $ourcase->timemodified;
             $this->status = $ourcase->status;
         }
     }
@@ -120,11 +122,10 @@ class OurCases
      * Add a case
      *
      * @param int $experienceid ID of the experience
-     * @param string $date Date of the case
      * @param bool $status Status of the case
      * @return bool|int Returns ID of the inserted record if successful, false otherwise
      */
-    public static function add_with_experience($experienceid, $date, $userid, $status = 0)
+    public static function add_with_experience($experienceid, $userid, $status = 0)
     {
         global $DB;
         if (empty($experienceid) || empty($date) || empty($userid)) {
@@ -139,7 +140,8 @@ class OurCases
         $record = new stdClass();
         $record->experienceid = $experienceid;
         $record->userid = $userid;
-        $record->date = $date;
+        $record->timecreated = date('Y-m-d H:i:s', time());
+        $record->timemodified = date('Y-m-d H:i:s', time());
         $record->status = $status;
 
         if (!$id = $DB->insert_record(self::$table,  $record)) {
@@ -220,10 +222,10 @@ class OurCases
      * @param bool $visible Visibility of the case
      * @return bool Returns true if successful, false otherwise
      */
-    public static function update_case($experienceid, $date, $lang, $visible)
+    public static function update_case($experienceid, $lang, $visible)
     {
         global $DB;
-        if (empty($experienceid) || empty($date) || empty($lang) || empty($visible)) {
+        if (empty($experienceid) || empty($lang) || empty($visible)) {
             return false;
         }
 
@@ -231,7 +233,7 @@ class OurCases
         $record->id = $id;
         $record->title = $title;
         $record->description = $description;
-        $record->date = $date;
+        $record->timemodified = date('Y-m-d H:i:s', time());
         $record->lang = $lang;
         $record->visible = $visible;
 
@@ -330,7 +332,6 @@ class OurCases
             $user = get_complete_user_data("id", $case->userid);
             $picture = new \user_picture($user);
             $picture->size = 101;
-            $case->date = date("d/m/Y", strtotime($case->date));
             $case->user = [
                 'id' => $user->id,
                 'name' => $user->firstname . " " . $user->lastname,

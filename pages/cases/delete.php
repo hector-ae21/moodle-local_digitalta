@@ -39,7 +39,7 @@ if (local_dta_check_permissions_case($ourcase, $USER) == false) {
 }
 
 // Check if the delete hash is correct
-if ($delete === md5($ourcase->date)) {
+if ($delete === md5($ourcase->timecreated)) {
     if (!OurCases::delete_case($id)) {
         print_error('errordeletecase', 'local_dta');
     }
@@ -47,7 +47,7 @@ if ($delete === md5($ourcase->date)) {
     exit;
 }
 
-$continueurl = new moodle_url('/local/dta/pages/cases/delete.php', array('id' => $ourcase->id, 'delete' => md5($ourcase->date)));
+$continueurl = new moodle_url('/local/dta/pages/cases/delete.php', array('id' => $ourcase->id, 'delete' => md5($ourcase->timecreated)));
 $backurl = new moodle_url('/local/dta/pages/cases/view.php', ['id' => $ourcase->id]);
 $continuebutton = new single_button(
     $continueurl,

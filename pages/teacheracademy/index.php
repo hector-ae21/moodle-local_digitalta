@@ -65,7 +65,7 @@ for ($i = 0; $i < count($allCases); $i++) {
         "id" => $allCases[$i]->id,
         "experienceid" => $allCases[$i]->experienceid,
         "userid" => $allCases[$i]->userid,
-        "date" => $allCases[$i]->date,
+        "date" => $allCases[$i]->timecreated,
         "status" => $allCases[$i]->status,
         "casetext" => array_values($caseText)[0],
     ];

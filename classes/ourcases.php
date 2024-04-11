@@ -20,7 +20,7 @@ class OurCases
     public $id;
     private $experienceid;
     private $userid;
-    private $date;
+    private $timecreated;
     private $status;
 
     /**
@@ -34,7 +34,7 @@ class OurCases
             $this->id = $ourcase->id;
             $this->experienceid = $ourcase->experienceid;
             $this->userid = $ourcase->userid;
-            $this->date = $ourcase->date;
+            $this->timecreated = $ourcase->timecreated;
             $this->status = $ourcase->status;
         }
     }
@@ -105,14 +105,14 @@ class OurCases
      * Add a case
      *
      * @param int $experienceid ID of the experience
-     * @param string $date Date of the case
+     * @param string $timecreated Time created of the case
      * @param bool $status Status of the case
      * @return bool|int Returns ID of the inserted record if successful, false otherwise
      */
-    public static function add_with_experience($experienceid, $date, $userid, $status = 0)
+    public static function add_with_experience($experienceid, $timecreated, $userid, $status = 0)
     {
         global $DB;
-        if (empty($experienceid) || empty($date) || empty($userid)) {
+        if (empty($experienceid) || empty($timecreated) || empty($userid)) {
             return false;
         }
 
@@ -124,7 +124,7 @@ class OurCases
         $record = new stdClass();
         $record->experienceid = $experienceid;
         $record->userid = $userid;
-        $record->date = $date;
+        $record->timecreated = $timecreated;
         $record->status = $status;
 
         if (!$id = $DB->insert_record(self::$table,  $record)) {
@@ -152,14 +152,14 @@ class OurCases
     /**
      * Add a case
      *
-     * @param string $date Date of the case
+     * @param string $timecreated Date of the case
      * @param bool $status Status of the case
      * @return bool|int Returns ID of the inserted record if successful, false otherwise
      */
-    public static function add_without_experience($date, $userid, $status = 0)
+    public static function add_without_experience($timecreated, $userid, $status = 0)
     {
         global $DB;
-        if (empty($date) || empty($userid)) {
+        if (empty($timecreated) || empty($userid)) {
             return false;
         }
 
@@ -171,7 +171,7 @@ class OurCases
         $record = new stdClass();
         $record->experienceid = 0;
         $record->userid = $userid;
-        $record->date = $date;
+        $record->timecreated = $timecreated;
         $record->status = $status;
 
         if (!$id = $DB->insert_record(self::$table,  $record)) {
@@ -200,15 +200,15 @@ class OurCases
      * @param int $id ID of the case
      * @param string $title Title of the case
      * @param string $description Description of the case
-     * @param string $date Date of the case
+     * @param string $timecreated Date of the case
      * @param string $lang Language of the case
      * @param bool $visible Visibility of the case
      * @return bool Returns true if successful, false otherwise
      */
-    public static function update_case($experienceid, $date, $lang, $visible)
+    public static function update_case($experienceid, $timecreated, $lang, $visible)
     {
         global $DB;
-        if (empty($experienceid) || empty($date) || empty($lang) || empty($visible)) {
+        if (empty($experienceid) || empty($timecreated) || empty($lang) || empty($visible)) {
             return false;
         }
 
@@ -216,7 +216,7 @@ class OurCases
         $record->id = $id;
         $record->title = $title;
         $record->description = $description;
-        $record->date = $date;
+        $record->timecreated = $timecreated;
         $record->lang = $lang;
         $record->visible = $visible;
 
@@ -315,7 +315,7 @@ class OurCases
             $user = get_complete_user_data("id", $case->userid);
             $picture = new \user_picture($user);
             $picture->size = 101;
-            $case->date = date("d/m/Y", strtotime($case->date));
+            $case->timecreated = date("d/m/Y", strtotime($case->timecreated));
             $case->user = [
                 'id' => $user->id,
                 'name' => $user->firstname . " " . $user->lastname,

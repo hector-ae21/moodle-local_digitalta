@@ -52,7 +52,7 @@ if ($form->is_cancelled()) {
 
     // Add the experience
     $data->userid = $USER->id;
-    $data->date = date("Y-m-d H:i:s");
+    $data->timecreated = date("Y-m-d H:i:s");
     //map tags to tag ids
     $data->tags = array_map(function ($tag) {
         return Tags::addTag($tag);

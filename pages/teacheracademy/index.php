@@ -31,6 +31,7 @@ $PAGE->set_url(new moodle_url('/local/dta/pages/teacheracademy/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->teacheracademy_title);
 $PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/utils');
 
 echo $OUTPUT->header();
 

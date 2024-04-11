@@ -10,9 +10,9 @@
 
 namespace local_dta;
 
-require_once ($CFG->dirroot . '/lib/editor/tiny/classes/editor.php');
-require_once ($CFG->dirroot . '/lib/editor/tiny/classes/manager.php');
-require_once ($CFG->dirroot . '/config.php');
+require_once($CFG->dirroot . '/lib/editor/tiny/classes/editor.php');
+require_once($CFG->dirroot . '/lib/editor/tiny/classes/manager.php');
+require_once($CFG->dirroot . '/config.php');
 
 use editor_tiny\manager;
 use stdClass;
@@ -81,7 +81,7 @@ class tiny_editor_handler extends \editor_tiny\editor
             "tiny_accessibilitychecker/plugin",
             "tiny_equation/plugin",
             "tiny_media/plugin",
-
+            "tiny_autosave/plugin",
         ];
 
         foreach ($pluginsToRemove as $plugin) {
@@ -174,15 +174,9 @@ class tiny_editor_handler extends \editor_tiny\editor
         $configoptions = json_encode(convert_to_array($config));
 
         $inlinejs = <<<EOF
-    window.dta_tiny_config = $configoptions;
-        require(['local_dta/tiny/cleaner'], function(Cleaner) {
-            Cleaner.init();
-        });
-    EOF;
+        window.dta_tiny_config = $configoptions;
+        EOF;
 
         $PAGE->requires->js_amd_inline($inlinejs);
-
-
     }
 }
-

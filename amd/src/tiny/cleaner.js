@@ -1,29 +1,50 @@
 import $ from "jquery";
-import { waitForElm } from "../utils";
 
-const cleanTinyBottomBox = () => {
-  waitForElm(".tox-statusbar").then(() => {
-    $(".tox-statusbar").css("border-top", "none");
+const cleanBottomBox = () => {
+  const observer = new MutationObserver((mutations, obs) => {
+    const statusBar = $(".tox-statusbar");
+    const textContainer = $(".tox-statusbar__text-container");
+
+    if (statusBar.length && textContainer.length) {
+      statusBar.css("border-top", "none");
+      textContainer.remove();
+
+      obs.disconnect();
+    }
   });
-  waitForElm(".tox-statusbar__text-container").then(() => {
-    $(".tox-statusbar__text-container").remove();
-  });
+  const config = { childList: true, subtree: true };
+  observer.observe(document.body, config);
 };
 
-//TODO: Make this shit work
-const cleanTinyMenus = () => {
-  waitForElm(".tox-menubar").then(() => {
-    const $menus = $(".tox-menubar .tox-menubar__primary-menu .tox-menubar__menu-item");
-    $menus.each((index, menu) => {
-      const menuPosition = index + 1;
-      if (![1, 4, 5].includes(menuPosition)) {
-        $(menu).remove();
+/**
+ * Clean the menus of the editor.
+ * @return {void}
+ */
+function cleanMenus() {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.addedNodes.length) {
+        const positionToRemove = [ 1, 3];
+        $(".tox-menubar").each(function () {
+          $(this).find("button").each(function (i, el) {
+            if (positionToRemove.includes(i)) {
+              $(el).hide();
+            }
+          } );
+        });
       }
     });
   });
-};
 
-export const init = () => {
-  cleanTinyBottomBox();
-  cleanTinyMenus();
-};
+  const config = { childList: true, subtree: true };
+  observer.observe(document.body, config);
+}
+
+/**
+ * Initialize the module.
+ * @return {void}
+ * */
+export function init() {
+  cleanBottomBox();
+  cleanMenus();
+}

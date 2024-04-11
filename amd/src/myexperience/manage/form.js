@@ -1,24 +1,12 @@
 import $ from "jquery";
 import Notification from "core/notification";
-import {setupForElementId} from "editor_tiny/editor";
+import {createTinyMCE} from './../../tiny/creator';
 import {setEventListeners} from "./listeners";
 import {activateStep} from "./steps";
 import {experienceUpsert, createTags} from "./../../repositories/experience_repository";
 import {autocompleteTags} from "./autocomplete";
 
-let tinyConfig;
 
-/**
- * Create tinyMCE in an area.
- * @param {string} area - The id of the area to create tinyMCE in.
- * @return {void}
- */
-function createTinyMCE(area) {
-  setupForElementId({
-    elementId: `${area}`,
-    options: tinyConfig,
-  });
-}
 
 /**
  * Set event listeners for the module.
@@ -29,15 +17,6 @@ function setDefaultTinyMCE() {
     createTinyMCE(this.id);
   });
 }
-
-/**
- * Set the tinyMCE config.
- * @return {void}
- */
-function setTinyConfig() {
-  tinyConfig = window.dta_tiny_config;
-}
-
 
 /**
  * Collapse the add section menu.
@@ -172,7 +151,6 @@ export async function saveExperience() {
 
 
 export const init = () => {
-  setTinyConfig();
   setDefaultTinyMCE();
   autocompleteTags();
   activateStep();

@@ -1,10 +1,10 @@
 import $ from "jquery";
 import Notification from "core/notification";
-import {createTinyMCE} from './../../tiny/creator';
+import {createTinyMCE} from './../../tiny/manage';
 import {setEventListeners} from "./listeners";
 import {activateStep} from "./steps";
 import {experienceUpsert, createTags} from "./../../repositories/experience_repository";
-import {autocompleteTags} from "./autocomplete";
+import {autocompleteTags} from "local_dta/tags/autocomplete";
 
 
 

@@ -28,7 +28,7 @@ $strings = get_strings(['profile_header' , 'profile_title'], "local_dta");
 $PAGE->set_url(new moodle_url('/local/dta/pages/profile/index.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance()) ;
 $PAGE->set_title($strings->profile_title);
-$PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/myexperience/reactions', 'init');
 
 echo $OUTPUT->header();
 
@@ -50,7 +50,7 @@ if (!empty($cases)) {
     $full_cases = array_values(array_map(function ($case) {
         $object = OurCases::get_section_header($case->id);
         $object->description = StringUtils::truncateHtmlText($object->description, 500);
-        $object->date = $case->date;
+        $object->date = $case->timecreated;
         $object->user = $case->user;
         $object->pictureurl = $case->pictureurl;
         $object->reactions = false;

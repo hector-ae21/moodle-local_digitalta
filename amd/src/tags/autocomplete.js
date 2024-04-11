@@ -6,7 +6,7 @@ import Autocomplete from "theme_dta/form-autocomplete";
  * @return {void}
  */
 export function autocompleteTags() {
-    Autocomplete.enhance('#autocomplete_tags', false, 'local_dta/myexperience/manage/autocomplete_handler_tags');
+    Autocomplete.enhance('#autocomplete_tags', false, 'local_dta/tags/autocomplete_method');
 }
 
 /**

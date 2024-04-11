@@ -44,7 +44,7 @@ function cleanMenus() {
  * Initialize the module.
  * @return {void}
  * */
-export function init() {
+export function clean() {
   cleanBottomBox();
   cleanMenus();
 }

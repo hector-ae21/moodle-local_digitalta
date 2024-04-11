@@ -28,7 +28,7 @@ class external_ourcases_edit extends external_api
         );
     }
 
-    public static function ourcases_edit($ourcaseid, $experienceid = null, $userid = null, $date = null, $status = null)
+    public static function ourcases_edit($ourcaseid, $experienceid = null, $userid = null, $timecreated = null, $status = null)
     {
         global $DB;
 
@@ -43,8 +43,8 @@ class external_ourcases_edit extends external_api
         if ($userid !== null) {
             $ourcase->userid = $userid;
         }
-        if ($date !== null) {
-            $ourcase->date = $date;
+        if ($timecreated !== null) {
+            $ourcase->timecreated = $timecreated;
         }
         if ($status !== null) {
             $ourcase->status = $status;

@@ -128,7 +128,7 @@ class OurCases
     public static function add_with_experience($experienceid, $userid, $status = 0)
     {
         global $DB;
-        if (empty($experienceid) || empty($date) || empty($userid)) {
+        if (empty($experienceid) || empty($timecreated) || empty($userid)) {
             return false;
         }
 
@@ -169,14 +169,14 @@ class OurCases
     /**
      * Add a case
      *
-     * @param string $date Date of the case
+     * @param string $timecreated Date of the case
      * @param bool $status Status of the case
      * @return bool|int Returns ID of the inserted record if successful, false otherwise
      */
-    public static function add_without_experience($date, $userid, $status = 0)
+    public static function add_without_experience($timecreated, $userid, $status = 0)
     {
         global $DB;
-        if (empty($date) || empty($userid)) {
+        if (empty($timecreated) || empty($userid)) {
             return false;
         }
 
@@ -188,7 +188,7 @@ class OurCases
         $record = new stdClass();
         $record->experienceid = 0;
         $record->userid = $userid;
-        $record->date = $date;
+        $record->timecreated = $timecreated;
         $record->status = $status;
 
         if (!$id = $DB->insert_record(self::$table,  $record)) {
@@ -217,15 +217,15 @@ class OurCases
      * @param int $id ID of the case
      * @param string $title Title of the case
      * @param string $description Description of the case
-     * @param string $date Date of the case
+     * @param string $timecreated Date of the case
      * @param string $lang Language of the case
      * @param bool $visible Visibility of the case
      * @return bool Returns true if successful, false otherwise
      */
-    public static function update_case($experienceid, $lang, $visible)
+    public static function update_case($experienceid, $timecreated, $lang, $visible)
     {
         global $DB;
-        if (empty($experienceid) || empty($lang) || empty($visible)) {
+        if (empty($experienceid) || empty($timecreated) || empty($lang) || empty($visible)) {
             return false;
         }
 
@@ -332,6 +332,7 @@ class OurCases
             $user = get_complete_user_data("id", $case->userid);
             $picture = new \user_picture($user);
             $picture->size = 101;
+            $case->timecreated = date("d/m/Y", strtotime($case->timecreated));
             $case->user = [
                 'id' => $user->id,
                 'name' => $user->firstname . " " . $user->lastname,

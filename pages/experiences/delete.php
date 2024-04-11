@@ -38,7 +38,7 @@ if (local_dta_check_permissions($experience, $USER) == false) {
 }
 
 // Check if the delete hash is correct
-if ($delete === md5($experience->date)) {
+if ($delete === md5($experience->timecreated)) {
     if (!Experience::delete_experience($experience)) {
         print_error('errordeleteexperience', 'local_dta');
     }
@@ -46,7 +46,7 @@ if ($delete === md5($experience->date)) {
     exit;
 }
 
-$continueurl = new moodle_url('/local/dta/pages/experiences/delete.php', array('id' => $experience->id, 'delete' => md5($experience->date)));
+$continueurl = new moodle_url('/local/dta/pages/experiences/delete.php', array('id' => $experience->id, 'delete' => md5($experience->timecreated)));
 $backurl = new moodle_url('/local/dta/pages/experiences/view.php', ['id' => $experience->id]);
 $continuebutton = new single_button(
     $continueurl,

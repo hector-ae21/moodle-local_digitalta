@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<XMLDB PATH="local/dta/db" VERSION="2024022000" COMMENT="XMLDB file for local_dta"
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/dta/db" VERSION="20240410" COMMENT="XMLDB file for local_dta"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
 

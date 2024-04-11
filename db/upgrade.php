@@ -183,6 +183,22 @@ function xmldb_local_dta_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024040302, 'local', 'dta');
     }
 
+    if ($oldversion < 2024041000) {
+        // Table for storing resources
+        $table = new xmldb_table('digital_resources_repository');
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+        $table->add_field('path', XMLDB_TYPE_TEXT, null, null, null, null, null, 'id');
+        $table->add_field('source', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'path');
+
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        upgrade_plugin_savepoint(true, 2024041000, 'local', 'dta');
+    }
 
 
     return true;

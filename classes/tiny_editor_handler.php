@@ -22,9 +22,18 @@ class tiny_editor_handler extends \editor_tiny\editor
 
     /** @var array options provided to initalize filepicker */
     protected $_options = array(
-        'subdirs' => 0, 'maxbytes' => 0, 'maxfiles' => 0, 'changeformat' => 0,
-        'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED, 'context' => null, 'noclean' => 0, 'trusttext' => 0,
-        'return_types' => 15, 'enable_filemanagement' => true, 'removeorphaneddrafts' => false, 'autosave' => true
+        'subdirs' => 0,
+        'maxbytes' => 0,
+        'maxfiles' => 0,
+        'changeformat' => 0,
+        'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED,
+        'context' => null,
+        'noclean' => 0,
+        'trusttext' => 0,
+        'return_types' => 15,
+        'enable_filemanagement' => true,
+        'removeorphaneddrafts' => false,
+        'autosave' => true
     );
 
     public function __construct()
@@ -43,7 +52,7 @@ class tiny_editor_handler extends \editor_tiny\editor
         return [
             'image' => self::specific_filepicker_options(['image'], $draftitemid, $context),
             'media' => self::specific_filepicker_options(['video', 'audio'], $draftitemid, $context),
-            'link'  => self::specific_filepicker_options('*', $draftitemid, $context),
+            'link' => self::specific_filepicker_options('*', $draftitemid, $context),
         ];
     }
 
@@ -63,15 +72,33 @@ class tiny_editor_handler extends \editor_tiny\editor
         return $options;
     }
 
+    protected static function remove_unwanted_plugins($config)
+    {
+        $pluginsToRemove = [
+            "code",
+            "help",
+            "wordcount",
+            "tiny_accessibilitychecker/plugin",
+            "tiny_equation/plugin",
+            "tiny_media/plugin",
+            "tiny_autosave/plugin",
+        ];
+
+        foreach ($pluginsToRemove as $plugin) {
+            if (isset($config->plugins[$plugin])) {
+                unset($config->plugins[$plugin]);
+            }
+        }
+        return $config;
+    }
 
 
     public function get_config_editor($options = null, $fpoptions = null)
     {
         global $PAGE;
-
         $context = $PAGE->context;
 
-        $fpoptions = $this->get_filepicker_options($context,  file_get_unused_draft_itemid());
+        $fpoptions = $this->get_filepicker_options($context, file_get_unused_draft_itemid());
 
 
         $manager = new manager();
@@ -128,6 +155,8 @@ class tiny_editor_handler extends \editor_tiny\editor
             'nestedmenu' => true,
         ];
 
+        $config = self::remove_unwanted_plugins($config);
+
         if (defined('BEHAT_SITE_RUNNING') && BEHAT_SITE_RUNNING) {
             // Add sample selectors for Behat test.
             $config->placeholderSelectors = ['.behat-tinymce-placeholder'];
@@ -151,4 +180,3 @@ class tiny_editor_handler extends \editor_tiny\editor
         $PAGE->requires->js_amd_inline($inlinejs);
     }
 }
-

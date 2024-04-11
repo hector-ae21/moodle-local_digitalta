@@ -4,22 +4,22 @@ import Notification from 'core/notification';
 import {
     sectionTextUpsert,
     sectionTextDelete,
-    ourcaseEdit
+    // ourcaseEdit
 } from 'local_dta/repositories/ourcases_repository';
 import ModalFactory from 'core/modal_factory';
 import {get_string} from 'core/str';
-import {setupForElementId} from 'editor_tiny/editor';
 import setEventListeners from './listeners';
+import {createTinyMCE} from 'local_dta/tiny/manage';
+import {autocompleteTags} from "local_dta/tags/autocomplete";
 
 let sectionTextModal;
-let tinyConfig;
-let urlView = null;
+// let urlView = null;
 
 /**
  * Add a new text section to the page.
  * @return {void}
  */
-function addTextSection() {
+export function addTextSection() {
     Templates.render('local_dta/cases/section-text-edit', {
         id: new Date().getTime(),
         description: null,
@@ -27,7 +27,6 @@ function addTextSection() {
     }).then((html) => {
         $('#sections-body').append(html);
         createTinyMCE($('.card-body:has(textarea)').last().find('textarea').attr('id'));
-        window.scrollTo(0, document.body.scrollHeight);
         return;
     }).fail(Notification.exception);
 }
@@ -39,13 +38,20 @@ function addTextSection() {
  * @param {number} id - The id of the section to change.
  * @return {void}
  */
-function changeSectionToEdit(toView = false, id) {
-    const description = toView ? $(`#content_${id}`).html() : $(`#content_${id}`).val();
-    const template = toView ? 'local_dta/cases/section-text-edit' : 'local_dta/cases/section-text-view';
-    Templates.render(template,
-     {id, description}).then((html) => {
-        return $(`#section_${id}`).replaceWith(html);
-    }).fail(Notification.exception);
+export function changeSectionToEdit(toView = false, id) {
+    return new Promise((resolve, reject) => {
+        const description = toView ? $(`#content_${id}`).html() : $(`#content_${id}`).val();
+        const template = toView ? 'local_dta/cases/section-text-edit' : 'local_dta/cases/section-text-view';
+        Templates.render(template, { id, description })
+            .then((html) => {
+                $(`#section_${id}`).replaceWith(html);
+                return resolve();
+            })
+            .fail((error) => {
+                reject(error);
+                Notification.exception(error);
+            });
+    });
 }
 
 
@@ -64,14 +70,13 @@ function changeSectionToNewId(id, toId) {
 }
 
 
-
 /**
  * Set event listeners for the module.
  * @param {number} id - The id of the section to remove.
  * @return {void}
  *
  */
-function upsertSection(id) {
+export function upsertSection(id) {
     const sectionid = $(`#not_exist_${id}`).val() ? null : $(`#sectionid_${id}`).val();
     const ourcaseid = $('#ourcases-id').val();
     const title = null;
@@ -98,7 +103,7 @@ function upsertSection(id) {
  * @param {number} sectionid - The id of the section to remove.
  * @return {void}
  */
-function removeSection(sectionid) {
+export function removeSection(sectionid) {
     if ($(`#not_exist_${sectionid}`).val()) {
         if (sectionid) {
             $(`#section_${sectionid}`).remove();
@@ -113,37 +118,40 @@ function removeSection(sectionid) {
  * @param {number} sectionid - The id of the section to remove.
  * @return {void}
  */
-async function showDeleteSectionModal(sectionid) {
+export async function showDeleteSectionModal(sectionid) {
     sectionTextModal = await ModalFactory.create({
         title: get_string("ourcases_section_text_delete_modal_title", "local_dta"),
-        body: Templates.render('local_dta/cases/section-text-modal', {modalDeleteId: sectionid}),
+        body: Templates.render('local_dta/cases/manage/section-text-modal', {modalDeleteId: sectionid}),
     });
-    $("#modal_delete_id").val();
-    sectionTextModal.show();
+    sectionTextModal.show().then(() => {
+        $("#modal_delete_id").val(sectionid);
+        return;
+    }).fail(Notification.exception);
+
 }
 
 /**
  * Show save case modal
  * @return {void}
  */
-async function showSaveCase() {
-    const button = $('#header-edit-button')[0];
-    const button2 = $('#section-edit-button')[0];
-    const saveModal = await ModalFactory.create({
-        title: get_string("ourcases_modal_save_title", "local_dta"),
-        body: Templates.render('local_dta/cases/manage-save-modal', {
-            havePendingChanges: (button || button2) ? true : false,
-        }),
-    });
-    saveModal.show();
-}
+// async function showSaveCase() {
+//     const button = $('#header-edit-button')[0];
+//     const button2 = $('#section-edit-button')[0];
+//     const saveModal = await ModalFactory.create({
+//         title: get_string("ourcases_modal_save_title", "local_dta"),
+//         body: Templates.render('local_dta/cases/manage-save-modal', {
+//             havePendingChanges: (button || button2) ? true : false,
+//         }),
+//     });
+//     saveModal.show();
+// }
 
 
 /**
  * Delete text section
  * @return {void}
  */
-function deleteSection() {
+export function deleteSection() {
     const sectionid = $("#modal_delete_id").val();
     const ourcaseid = $('#ourcases-id').val();
 
@@ -161,61 +169,26 @@ function deleteSection() {
  * Edit a case.
  * @return {void}
  */
-function changeStatusToComplete() {
-    const ourcaseid = $('#ourcases-id').val();
-    const status = 1;
-    const args = {ourcaseid, status};
+// function changeStatusToComplete() {
+//     const ourcaseid = $('#ourcases-id').val();
+//     const status = 1;
+//     const args = {ourcaseid, status};
 
-    ourcaseEdit(args).then((data) => {
-        if (data.result) {
-            window.location.href = urlView;
-        }
-        return;
-    }).fail(Notification.exception);
-}
-
-/**
- * Remove tinyMCE from an area.
- * @param {string} area - The id of the area to remove tinyMCE from.
- * @return {void}
- */
-function removeTinyMCEFromArea(area) {
-    window.tinymce.get(area).remove();
-}
-
-/**
- * Remove tinyMCE from an area.
- * @param {string} area - The id of the area to remove tinyMCE from.
- * @returns {string} The content of the tinyMCE area.
- */
-function getTinyMCEContent(area) {
-    return window.tinyMCE.get(area).getContent();
-}
-
-/**
- * Create tinyMCE in an area.
- * @param {string} area - The id of the area to create tinyMCE in.
- * @return {void}
- */
-function createTinyMCE(area) {
-    setTimeout(() => {
-        setupForElementId({
-            elementId: `${area}`,
-            options: tinyConfig,
-        });
-      }, 200);
-}
-
-
+//     ourcaseEdit(args).then((data) => {
+//         if (data.result) {
+//             window.location.href = urlView;
+//         }
+//         return;
+//     }).fail(Notification.exception);
+// }
 
 /**
  * Initialize the module.
- * @param {string} dataUrlView - The url to redirect to after completing the case.
  * @return {void}
  */
-export const init = async(dataUrlView) => {
+export const init = async() => {
     setEventListeners();
-    urlView = dataUrlView;
-    tinyConfig = window.dta_tiny_config;
+    autocompleteTags();
+    // urlView = dataUrlView;
     createTinyMCE('section-header-description');
 };

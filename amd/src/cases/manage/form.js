@@ -9,7 +9,7 @@ import {
 import ModalFactory from 'core/modal_factory';
 import {get_string} from 'core/str';
 import {setupForElementId} from 'editor_tiny/editor';
-
+import setEventListeners from './listeners';
 
 let sectionTextModal;
 let tinyConfig;
@@ -29,22 +29,6 @@ function addTextSection() {
         createTinyMCE($('.card-body:has(textarea)').last().find('textarea').attr('id'));
         window.scrollTo(0, document.body.scrollHeight);
         return;
-    }).fail(Notification.exception);
-}
-
-/**
- * Change the section to edit mode.
- * @param {boolean} toView - Whether to change to view mode.
- * @return {void}
- * */
-function changeSectionHeaderToEdit(toView = false) {
-    const id = $('#section-header-id').val();
-    const title = $('#section-header-title').val();
-    const description = toView ? $('#section-header-description').val() : getTinyMCEContent('section-header-description');
-    const template = toView ? 'local_dta/cases/section-header-edit' : 'local_dta/cases/section-header-view';
-    Templates.render(template,
-     {sectionheader: {id, title, description}}).then((html) => {
-        return $('#sections-header').html(html);
     }).fail(Notification.exception);
 }
 
@@ -80,21 +64,6 @@ function changeSectionToNewId(id, toId) {
 }
 
 
-/**
- * Set event listeners for the module.
- * @return {void}
- *
- */
-function upsertHeaderSection() {
-    const sectionid = $('#section-header-id').val();
-    const ourcaseid = $('#ourcases-id').val();
-    const title = $('#section-header-title').val();
-    const text = getTinyMCEContent('section-header-description');
-    const sequence = 0;
-    sectionTextUpsert({ourcaseid, sectionid, title, text, sequence});
-    changeSectionHeaderToEdit();
-    removeTinyMCEFromArea('section-header-description');
-}
 
 /**
  * Set event listeners for the module.
@@ -237,64 +206,6 @@ function createTinyMCE(area) {
       }, 200);
 }
 
-/**
- * Set event listeners for the module.
- * @return {void}
- * */
-function setEventListeners() {
-    // Add a new text section
-    $(document).on('click', '#add-section', () => {
-        addTextSection();
-    });
-    // Edit the header
-    $(document).on('click', '#header-edit-button', () => {
-        upsertHeaderSection();
-    });
-    // Change the header section to edit mode
-    $(document).on('click', '#header-to-edit-button', () => {
-        changeSectionHeaderToEdit(true);
-        createTinyMCE('section-header-description');
-    });
-    // Change the header section to view mode withour editing
-    $(document).on('click', '#header-edit-close-button', () => {
-        changeSectionHeaderToEdit();
-        removeTinyMCEFromArea('section-header-description');
-    });
-    // Remove a section
-    $(document).on('click', '.section-close-button', function() {
-        const id = $(this).data('id');
-        removeSection(id);
-        removeTinyMCEFromArea(`content_${id}`);
-    });
-    // Edit the section
-    $(document).on('click', '.section-edit-button', function() {
-        const id = $(this).data('id');
-        upsertSection(id);
-        removeTinyMCEFromArea(`content_${id}`);
-    });
-    // Change the section to edit mode
-    $(document).on('click', '.section-to-edit-button', function() {
-        changeSectionToEdit(true, $(this).data('id'));
-        const id = $(this).data('id');
-        createTinyMCE(`content_${id}`);
-    });
-    // Showt section delete modal
-    $(document).on('click', '.section-delete-button', function() {
-        showDeleteSectionModal($(this).data('id'));
-    });
-    // Delete section
-    $(document).on('click', '#confirmDelete', function() {
-        deleteSection();
-    });
-    // Save button
-    $(document).on('click', '#save-case-button', function() {
-        showSaveCase();
-    });
-    // Change status to complete
-    $(document).on('click', '#complete-case-button', function() {
-        changeStatusToComplete();
-    });
-}
 
 
 /**

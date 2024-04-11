@@ -26,7 +26,7 @@ $strings = get_strings(['ourcases_header', 'ourcases_title'], "local_dta");
 $PAGE->set_url(new moodle_url('/local/dta/pages/cases/repository.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->ourcases_title);
-$PAGE->requires->js_call_amd('local_dta/myexperience/manageReactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/myexperience/reactions', 'init');
 $PAGE->requires->js_call_amd('local_dta/masonry', 'init' , ["url_repository" => $CFG->wwwroot . '/local/dta/pages/cases/repository.php']);
 
 echo $OUTPUT->header();

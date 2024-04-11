@@ -98,7 +98,7 @@ $templateContext = [
         "viewurl" => $CFG->wwwroot . '/local/dta/pages/experiences/view.php?id=',
         "allurl" => $CFG->wwwroot . "/local/dta/pages/experiences/dashboard.php",
     ],
-    "tags" => $tags,
+    "tags" => array_slice($tags, 0, 10, true),
     "ourcases" => [
         "cases" => array_slice($cases, 0, 4),
         "viewurl" => $CFG->wwwroot . "/local/dta/pages/cases/view.php?id=",

@@ -21,6 +21,7 @@ class OurCases
     private $experienceid;
     private $userid;
     private $timecreated;
+    private $timemodified;
     private $status;
 
     /**
@@ -35,6 +36,7 @@ class OurCases
             $this->experienceid = $ourcase->experienceid;
             $this->userid = $ourcase->userid;
             $this->timecreated = $ourcase->timecreated;
+            $this->timemodified = $ourcase->timemodified;
             $this->status = $ourcase->status;
         }
     }
@@ -120,11 +122,10 @@ class OurCases
      * Add a case
      *
      * @param int $experienceid ID of the experience
-     * @param string $timecreated Time created of the case
      * @param bool $status Status of the case
      * @return bool|int Returns ID of the inserted record if successful, false otherwise
      */
-    public static function add_with_experience($experienceid, $timecreated, $userid, $status = 0)
+    public static function add_with_experience($experienceid, $userid, $status = 0)
     {
         global $DB;
         if (empty($experienceid) || empty($timecreated) || empty($userid)) {
@@ -139,7 +140,8 @@ class OurCases
         $record = new stdClass();
         $record->experienceid = $experienceid;
         $record->userid = $userid;
-        $record->timecreated = $timecreated;
+        $record->timecreated = date('Y-m-d H:i:s', time());
+        $record->timemodified = date('Y-m-d H:i:s', time());
         $record->status = $status;
 
         if (!$id = $DB->insert_record(self::$table,  $record)) {
@@ -231,7 +233,7 @@ class OurCases
         $record->id = $id;
         $record->title = $title;
         $record->description = $description;
-        $record->timecreated = $timecreated;
+        $record->timemodified = date('Y-m-d H:i:s', time());
         $record->lang = $lang;
         $record->visible = $visible;
 

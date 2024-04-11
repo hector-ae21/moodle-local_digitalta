@@ -30,7 +30,7 @@ $PAGE->set_url(new moodle_url('/local/dta/pages/cases/manage.php', ['id' => $exp
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->ourcases_title);
 $PAGE->requires->js_call_amd(
-    'local_dta/ourcases/manage',
+    'local_dta/cases/manage/form',
     'init',
     array(
         'url_view' => $CFG->wwwroot . '/local/dta/pages/cases/repository.php', 
@@ -100,7 +100,7 @@ if ($experienceid) {
         'ourcase' => $ourcase,
     ];
 
-    echo $OUTPUT->render_from_template('local_dta/cases/manage-without-experience', $templateContext);
+    echo $OUTPUT->render_from_template('local_dta/cases/manage/without-experience', $templateContext);
 }
 
 

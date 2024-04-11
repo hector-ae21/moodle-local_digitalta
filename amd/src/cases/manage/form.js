@@ -9,7 +9,9 @@ import {
 import ModalFactory from 'core/modal_factory';
 import {get_string} from 'core/str';
 import setEventListeners from './listeners';
-import {createTinyMCE} from 'local_dta/tiny/manage';
+import {createTinyMCE,
+    //getTinyMCEContent
+} from 'local_dta/tiny/manage';
 import {autocompleteTags} from "local_dta/tags/autocomplete";
 
 let sectionTextModal;
@@ -97,6 +99,34 @@ export function upsertSection(id) {
         });
 }
 
+/**
+ * Set event listeners for the module.
+ * @return {Promise<boolean>} - Resolves to true if the operation was successful, otherwise resolves to false.
+ */
+// function upsertHeaderSection() {
+//     return new Promise((resolve, reject) => {
+//         const sectionid = $('#section-header-id').val();
+//         const ourcaseid = $('#ourcases-id').val();
+//         const title = $('#section-header-title').val();
+//         const text = getTinyMCEContent('section-header-description');
+//         const sequence = 0;
+
+//         sectionTextUpsert({ourcaseid, sectionid, title, text, sequence})
+//             .then((data) => {
+//                 if (data && data.result) {
+//                     return resolve(true);
+//                 } else {
+//                     return resolve(false);
+//                 }
+//             })
+//             .fail((error) => {
+//                 reject(error);
+//                 Notification.exception(error);
+//             });
+//     });
+// }
+
+
 
 /**
  * Remove a section from the page.
@@ -134,17 +164,13 @@ export async function showDeleteSectionModal(sectionid) {
  * Show save case modal
  * @return {void}
  */
-// async function showSaveCase() {
-//     const button = $('#header-edit-button')[0];
-//     const button2 = $('#section-edit-button')[0];
-//     const saveModal = await ModalFactory.create({
-//         title: get_string("ourcases_modal_save_title", "local_dta"),
-//         body: Templates.render('local_dta/cases/manage-save-modal', {
-//             havePendingChanges: (button || button2) ? true : false,
-//         }),
-//     });
-//     saveModal.show();
-// }
+export async function showSaveCase() {
+    const saveModal = await ModalFactory.create({
+        title: get_string("ourcases_modal_save_title", "local_dta"),
+        body: Templates.render('local_dta/cases/manage/save-modal')
+    });
+    await saveModal.show();
+}
 
 
 /**
@@ -169,11 +195,11 @@ export function deleteSection() {
  * Edit a case.
  * @return {void}
  */
-// function changeStatusToComplete() {
+// export async function changeStatusToComplete() {
 //     const ourcaseid = $('#ourcases-id').val();
 //     const status = 1;
 //     const args = {ourcaseid, status};
-
+//     // await upsertHeaderSection();
 //     ourcaseEdit(args).then((data) => {
 //         if (data.result) {
 //             window.location.href = urlView;
@@ -184,6 +210,7 @@ export function deleteSection() {
 
 /**
  * Initialize the module.
+//  * @param {string} dataUrlView - The url to redirect after save the case.
  * @return {void}
  */
 export const init = async() => {

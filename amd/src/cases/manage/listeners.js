@@ -1,5 +1,13 @@
 import $ from "jquery";
-import { addTextSection, changeSectionToEdit, deleteSection, removeSection, upsertSection, showDeleteSectionModal } from "./form";
+import {
+addTextSection,
+changeSectionToEdit,
+deleteSection,
+removeSection,
+upsertSection,
+showDeleteSectionModal,
+showSaveCase,
+changeStatusToComplete} from "./form";
 import { createTinyMCE, removeTinyMCEFromArea } from 'local_dta/tiny/manage';
 
 
@@ -39,11 +47,11 @@ export default function setEventListeners() {
         deleteSection();
     });
     // Save button
-    // $(document).on('click', '#save-case-button', function() {
-    //     showSaveCase();
-    // });
+    $(document).on('click', '#save-case-button', function() {
+        showSaveCase();
+    });
     // Change status to complete
-    // $(document).on('click', '#complete-case-button', function() {
-    //     changeStatusToComplete();
-    // });
+    $(document).on('click', '#complete-case-button', function() {
+        changeStatusToComplete();
+    });
 }

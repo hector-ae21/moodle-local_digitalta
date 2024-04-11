@@ -62,18 +62,3 @@ export const ourcaseEdit = args => {
     return Ajax.call([request])[0];
 };
 
-
-/**
- * Get tinymce config data from moodle
- *
- *
- * @method getMoodleTinyMCEConfig
- * @return {Promise} Resolve with warnings.
- */
-export const getMoodleTinyMCEConfig = () => {
-    const request = {
-        methodname: 'local_dta_tiny_get_config',
-        args: {}
-    };
-    return Ajax.call([request])[0];
-};

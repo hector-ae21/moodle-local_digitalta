@@ -171,7 +171,7 @@ class OurCases
      *
      * @param string $timecreated Date of the case
      * @param bool $status Status of the case
-     * @return bool|int Returns ID of the inserted record if successful, false otherwise
+     * @return object|bool Returns a record object 
      */
     public static function add_without_experience($timecreated, $userid, $status = 0)
     {
@@ -189,6 +189,7 @@ class OurCases
         $record->experienceid = 0;
         $record->userid = $userid;
         $record->timecreated = $timecreated;
+        $record->timemodified = $timecreated;
         $record->status = $status;
 
         if (!$id = $DB->insert_record(self::$table,  $record)) {

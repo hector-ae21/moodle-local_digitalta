@@ -1,5 +1,5 @@
 import Ajax from "core/ajax";
-import Autocomplete from "core/form-autocomplete";
+import Autocomplete from "theme_dta/form-autocomplete";
 
 /**
  * Autocomplete tags.

@@ -15,23 +15,28 @@
         </div>
       </div>
       <div class="form-row">
-      <div class="form-group col-md-6">
-          <label for="experience_visibility" class="text-secondary font-weight-bold">{{#str}}form_experience_visibility, local_dta{{/str}}</label>
-          <select id="experience_visibility" class="form-control">
-            <option value="1" class="text-capitalize">{{#str}}form_experience_visibility_public, local_dta{{/str}}</option>
-            <option value="0" class="text-capitalize">{{#str}}form_experience_visibility_private, local_dta{{/str}}</option>
-          </select>
+        <div class="form-group col-md-3">
+            <div class="w-75">
+            <label for="experience_visibility" class="text-secondary font-weight-bold">{{#str}}form_experience_visibility, local_dta{{/str}}</label>
+            <select id="experience_visibility" class="form-control">
+                <option value="1" class="text-capitalize">{{#str}}form_experience_visibility_public, local_dta{{/str}}</option>
+                <option value="0" class="text-capitalize">{{#str}}form_experience_visibility_private, local_dta{{/str}}</option>
+            </select>
+            </div>
+            <div class="w-75">
+            <label for="experience_lang" class="text-secondary font-weight-bold">{{#str}}form_experience_lang, local_dta{{/str}}</label>
+            <select id="experience_lang" class="form-control">
+                <option value="en" class="text-capitalize" selected>English</option>
+                <option value="es" class="text-capitalize">Spanish</option>
+            </select>
+            </div>
         </div>
-        <div class="form-group col-md-6">
-          <label for="experience_lang" class="text-secondary font-weight-bold">{{#str}}form_experience_lang, local_dta{{/str}}</label>
-          <select id="experience_lang" class="form-control">
-            <option value="en" class="text-capitalize" selected>English</option>
-            <option value="es" class="text-capitalize">Spanish</option>
-          </select>
-        </div>
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-4 d-flex flex-column justify-content-evenly w-75">
           <label for="tags" class="text-secondary font-weight-bold">{{#str}}form_experience_tags, local_dta{{/str}}</label>
           <select multiple class="form-control d-none" id="autocomplete_tags"></select>
+        </div>
+        <div class="img-picker col-md-5 bg-dark rounded">
+
         </div>
       </div>
 

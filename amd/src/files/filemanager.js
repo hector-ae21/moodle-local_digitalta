@@ -1,20 +1,26 @@
 import $ from "jquery";
-import { uploadFile } from "../repositories/files_repository";
+import {uploadFile} from "../repositories/files_repository";
 
-export const saveFiles = (containerId, fileinputId) => {
+export const saveFiles = (containerId, fileinputId, fileid, filearea, contextid = 1) => {
   const fileContainer = $(`#${containerId} `);
-  const filename = fileContainer.find(`.fp-filename`).text();
-  const itemid = fileContainer.find(`#${fileinputId}`).attr("Value");
+  const draftid = fileContainer.find(`#${fileinputId}`).attr("Value");
 
   uploadFile({
-    itemid, filename
-  }).then((response) => {
-    // eslint-disable-next-line no-console
-    console.log(response);
-  } );
+    draftid,
+    fileid,
+    filearea,
+    contextid,
+  })
+    .then((response) => {
+      // eslint-disable-next-line no-console
+      console.log(response);
+    })
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    });
 };
 
 export const init = (containerId) => {
   $(`#${containerId}`).html(M.custom.filemanager.html);
 };
-

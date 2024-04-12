@@ -130,8 +130,7 @@ export async function saveExperience() {
     tags = $("#autocomplete_tags").val();
 
     try {
-      saveFiles("featurePicture", "fileManager");
-      await experienceUpsert({
+      const response = await experienceUpsert({
         id: 0,
         title: experienceTitle,
         description: experienceIntroduction,
@@ -140,6 +139,7 @@ export async function saveExperience() {
         visible: experienceVisibility,
         tags
       });
+      saveFiles("featurePicture", "fileManager", response.experienceid, "experience_picture");
       Notification.addNotification({
         message: "Experience saved successfully.",
         type: "success",

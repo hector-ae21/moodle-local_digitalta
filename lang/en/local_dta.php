@@ -139,4 +139,5 @@ $string['delete'] = 'Delete';
 $string['create_case'] = 'Create case';
 $string['cancel'] = 'Cancel';
 $string['save'] = 'Save';
+$string['finish'] = 'Finish';
 $string['see_more'] = 'See More';

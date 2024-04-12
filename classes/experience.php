@@ -161,10 +161,10 @@ class Experience
 
         $fs = get_file_storage();
         $files = $fs->get_area_files(
-            5,
+            context_system::instance()->id,
             'local_dta',
-            'picture',
-            11,
+            'experiences_pictures',
+            $experience->id,
             'sortorder DESC, id ASC',
             false
         );

@@ -120,7 +120,8 @@ class Experience
     public static function get_all_experiences($includePrivates = true)
     {
         global $DB;
-        $experiences = array_values($DB->get_records(self::$table, $includePrivates ? null : ['visible' => 1]));
+        // Get all experiences by time created descending
+        $experiences = array_values($DB->get_records(self::$table, $includePrivates ? null : ['visible' => 1], 'timecreated DESC'));
         $experiences = self::get_extra_fields($experiences);
         return $experiences;
     }

@@ -1,4 +1,4 @@
-<div class="card experience-card-module">
+<div class="card experience-card-module resource-repository">
   <div class="card-header d-flex justify-content-between align-items-center">
     <div class="d-flex flex-row">
       <div data-tooltip-content="{{#str}}experience_view_tooltip_resrepo, local_dta{{/str}}" class="data-tooltip"><i class="fa fa-question"></i></div>
@@ -7,7 +7,7 @@
     {{#experience}} 
       <div class="d-flex">
           {{#isadmin}}
-          <a href="#" class="shadow-none" title="Add resource...">
+          <a href="#" class="shadow-none" title="{{#str}}experience_view_resrepo_action_tooltip, local_dta{{/str}}">
               <i class="fa fa-plus-circle fa-lg text-info"></i>
           </a>
           {{/isadmin}}
@@ -15,6 +15,17 @@
     {{/experience}}
   </div>
   <div class="card-body">
+      <h4>Related Cases</h4>
+      {{>local_dta/experiences/view/case-card-link}}
+      {{>local_dta/experiences/view/case-card-link}}
+      {{>local_dta/experiences/view/case-card-link}}
+      {{>local_dta/experiences/view/case-card-link}}
+
+      <h4>Related Resources</h4>
+      {{>local_dta/experiences/view/resource-repository-link}}
+      {{>local_dta/experiences/view/resource-repository-link}}
+      {{>local_dta/experiences/view/resource-repository-link}}
+      {{>local_dta/experiences/view/resource-repository-link}}
       {{>local_dta/experiences/view/resource-repository-link}}
       {{>local_dta/experiences/view/resource-repository-link}}
       {{>local_dta/experiences/view/resource-repository-link}}

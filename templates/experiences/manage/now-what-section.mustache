@@ -14,22 +14,14 @@
             {{#str}}experience_reflection_section_nowwhat_question_1_desc,
             local_dta{{/str}}
           </p>
-          {{#reflection.sections.NOW_WHAT_ACTION}}
-          <textarea name="" cols="" rows="" class="editor form-control" id="action_txtarea"{{content}}></textarea>
-          <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_ACTION" data-target="action_txtarea"
-            data-id="{{id}}">
-            {{#str}}save, local_dta{{/str}}
-          </button>
-          <hr />
-          {{/reflection.sections.NOW_WHAT_ACTION}}
-          {{^reflection.sections.NOW_WHAT_ACTION}}
+
           <textarea name="" cols="" rows="" class="editor form-control" id="action_txtarea"></textarea>
-          <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_ACTION" data-target="action_txtarea"
+          <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_ACTION" id="action_btn" data-target="action_txtarea"
             data-id="0">
             {{#str}}save, local_dta{{/str}}
           </button>
-          {{/reflection.sections.NOW_WHAT_ACTION}} {{>
-          local_dta/experiences/manage/reflection-importer}}
+
+
         </div>
         <div class="question d-flex flex-column">
           <h3>
@@ -41,22 +33,13 @@
             local_dta{{/str}}
           </p>
 
-          {{#reflection.sections.NOW_WHAT_REFLECTION}}
-          <textarea name="" cols="" rows="" class="editor form-control" id="learn_txtarea">{{content}}</textarea>
-          <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_REFLECTION" data-target="learn_txtarea"
-            data-id="{{id}}">
-            {{#str}}save, local_dta{{/str}}
-          </button>
-          <hr />
-          {{/reflection.sections.NOW_WHAT_REFLECTION}}
-          {{^reflection.sections.NOW_WHAT_REFLECTION}}
+
           <textarea name="" cols="" rows="" class="editor form-control" id="learn_txtarea"></textarea>
-          <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_REFLECTION" data-target="learn_txtarea"
+          <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_REFLECTION" id="learn_btn" data-target="learn_txtarea"
             data-id="0">
             {{#str}}finish, local_dta{{/str}}
           </button>
-          {{/reflection.sections.NOW_WHAT_REFLECTION}} {{>
-          local_dta/experiences/manage/reflection-importer}}
+
         </div>
       </div>
     </div>

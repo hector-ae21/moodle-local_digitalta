@@ -1,7 +1,7 @@
 import $ from "jquery";
 import Notification from "core/notification";
 import Template from "core/templates";
-import { toogleLikeAndDislike, saveComment, getComments } from "local_dta/repositories/reactions";
+import { toogleLikeAndDislike, saveComment, getComments } from "local_dta/repositories/reactions_repository";
 import { SELECTORS } from "./selectors";
 
 /**

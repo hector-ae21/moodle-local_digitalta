@@ -1,34 +1,26 @@
 <div id="section_so_what" class="section flex-column">
-      <div class="header d-flex flex-row align-items-center">
-        <h2>
-          {{#str}}experience_reflection_section_sowhat_title, local_dta{{/str}}
-        </h2>
-      </div>
-      <div class="questions flex-column">
-        <div class="question d-flex flex-column">
-          <h3>
-            {{#str}}experience_reflection_section_sowhat_question_1_title,
-            local_dta{{/str}}
-          </h3>
-          <p>
-            .{{#str}}experience_reflection_section_sowhat_question_1_desc,
-            local_dta{{/str}}
-          </p>
-          {{#reflection.sections.SO_WHAT_HOW}}
-          <textarea name="" cols="" rows="" class="editor form-control" id="sowhat_txtarea">{{content}}</textarea>
-          <button class="btn btn-primary mt-3 submit" data-group="SO_WHAT_HOW" data-target="sowhat_txtarea"
-            data-id="{{id}}">
-            {{#str}}save, local_dta{{/str}}
-          </button>
-          <hr />
-          {{/reflection.sections.SO_WHAT_HOW}}
-          {{^reflection.sections.SO_WHAT_HOW}}
-          <textarea name="" cols="" rows="" class="editor form-control" id="sowhat_txtarea"></textarea>
-          <button class="btn btn-primary mt-3 submit" data-group="SO_WHAT_HOW" data-target="sowhat_txtarea" data-id="0">
-            {{#str}}save, local_dta{{/str}}
-          </button>
-          {{/reflection.sections.SO_WHAT_HOW}} {{>
-          local_dta/experiences/manage/reflection-importer}}
-        </div>
-      </div>
+  <div class="header d-flex flex-row align-items-center">
+    <h2>
+      {{#str}}experience_reflection_section_sowhat_title, local_dta{{/str}}
+    </h2>
+  </div>
+  <div class="questions flex-column">
+    <div class="question d-flex flex-column">
+      <h3>
+        {{#str}}experience_reflection_section_sowhat_question_1_title,
+        local_dta{{/str}}
+      </h3>
+      <p>
+        .{{#str}}experience_reflection_section_sowhat_question_1_desc,
+        local_dta{{/str}}
+      </p>
+
+
+      <textarea name="" cols="" rows="" class="editor form-control" id="sowhat_txtarea"></textarea>
+      <button class="btn btn-primary mt-3 submit" data-group="SO_WHAT_HOW" id="sowhat_btn" data-target="sowhat_txtarea" data-id="0">
+        {{#str}}save, local_dta{{/str}}
+      </button>
+
     </div>
+  </div>
+</div>

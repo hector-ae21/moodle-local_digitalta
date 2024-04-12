@@ -1,32 +1,48 @@
-import Ajax from "core/ajax";
 import Autocomplete from "theme_dta/form-autocomplete";
+import {createTags} from "local_dta/repositories/autocomplete_repository";
+import Notification from "core/notification";
+
 
 /**
  * Autocomplete tags.
+ * @param {HTMLElement} area - The area to autocomplete.
  * @return {void}
  */
-export function autocompleteTags() {
-    Autocomplete.enhance('#autocomplete_tags', false, 'local_dta/tags/autocomplete_method');
+export function autocompleteTags(area) {
+    Autocomplete.enhance(area, false, 'local_dta/tags/autocomplete_method');
+    area = area.replace("#", "");
+    document.getElementById(area).addEventListener("change", function(e) {
+        handleNewTag(e.target.selectedOptions);
+    });
 }
 
 /**
  * Handle new tag.
- * @param {object} data
+ * @param {Array} selectedOptions - The selected options.
  * @return {void}
  */
-export function handleNewTag(data) {
-    if (data.label.startsWith('Create: ')) {
-        var tagName = data.value;
-        Ajax.call([{
-            methodname: 'local_dta_create_tags',
-            args: {tag: tagName},
-            done: function(result) {
-                return result;
-            },
-            fail: function(err) {
-                // eslint-disable-next-line no-console
-                console.log(err);
-            }
-        }]);
+async function handleNewTag(selectedOptions) {
+
+    for (var i = 0; i < selectedOptions.length; i++) {
+      if (selectedOptions[i].value === "-1") {
+        selectedOptions[i].label = selectedOptions[i].label.replace("Create: ", "");
+        const {id} = await saveNewTag(selectedOptions[i].label);
+        selectedOptions[i].value = parseInt(id);
+      }
+    }
+}
+
+/**
+ * Save new tag
+ * @param {string} tagName - The tag name.
+ * @return {Promise}
+ */
+async function saveNewTag(tagName) {
+    try {
+      return await createTags({
+        tag: tagName
+      });
+    } catch (error) {
+      return Notification.exception(error);
     }
 }

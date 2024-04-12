@@ -1,12 +1,12 @@
 import $ from "jquery";
 import Notification from "core/notification";
-import {createTinyMCE} from './../../tiny/manage';
+import {createTinyMCE, getTinyMCEContent} from './../../tiny/manage';
 import {setEventListeners} from "./listeners";
 import {activateStep} from "./steps";
-import {experienceUpsert, createTags} from "./../../repositories/experience_repository";
+import {experienceUpsert} from "local_dta/repositories/experience_repository";
+import {sectionTextUpsert} from "local_dta/repositories/reflection_repository";
 import {autocompleteTags} from "local_dta/tags/autocomplete";
 import { saveFiles } from "../../files/filemanager";
-
 
 
 /**
@@ -38,26 +38,29 @@ export function collapseAddSectionMenu() {
   }
 }
 
-// /**
-//  * Save the text section.
-//  * @param {object} btn - The data to save.
-//  * @return {void}
-//  */
-// function saveTextSection(btn) {
-//   const data = btn.data();
-//   const {target, group, id} = data;
-//   const reflectionid = $("#reflectionid").val();
-//   const content = window.tinyMCE.get(target).getContent();
-//   sectionTextUpsert({ reflectionid, group, content, id })
-//     .then(() => {
-//       Notification.addNotification({
-//         message: "Section saved successfully.",
-//         type: "success",
-//       });
-//       return;
-//     })
-//     .fail(Notification.exception);
-// }
+/**
+ * Save the text section.
+ * @param {object} btn - The data to save.
+ * @param {number} step - The step to activate.
+ * @return {void}
+ */
+export function saveTextSection(btn, step) {
+  const data = btn.data();
+  const {target, group} = data;
+  const reflectionid = $("#reflectionid").val();
+  const content = getTinyMCEContent(target);
+
+  sectionTextUpsert({ reflectionid, group, content})
+    .then(() => {
+      Notification.addNotification({
+        message: "Section saved successfully.",
+        type: "success",
+      });
+      activateStep(step + 1);
+      return;
+    })
+    .fail(Notification.exception);
+}
 
 /**
  * Show save case modal
@@ -87,36 +90,7 @@ export function collapseAddSectionMenu() {
 //   saveModal.show();
 // }
 
-/**
- * Handle new tag.
- * @param {Array} selectedOptions - The selected options.
- * @return {void}
- */
-export async function handleNewTag(selectedOptions) {
 
-  for (var i = 0; i < selectedOptions.length; i++) {
-    if (selectedOptions[i].value === "-1") {
-      selectedOptions[i].label = selectedOptions[i].label.replace("Create: ", "");
-      const {id} = await saveNewTag(selectedOptions[i].label);
-      selectedOptions[i].value = parseInt(id);
-    }
-  }
-}
-
-/**
- * Save new tag
- * @param {string} tagName - The tag name.
- * @return {Promise}
- */
-async function saveNewTag(tagName) {
-  try {
-    return await createTags({
-      tag: tagName
-    });
-  } catch (error) {
-    return Notification.exception(error);
-  }
-}
 /**
  * Save the experience.
  * @return {void}
@@ -130,7 +104,7 @@ export async function saveExperience() {
     tags = $("#autocomplete_tags").val();
 
     try {
-      const response = await experienceUpsert({
+      experienceUpsert({
         id: 0,
         title: experienceTitle,
         description: experienceIntroduction,
@@ -138,14 +112,16 @@ export async function saveExperience() {
         lang: experienceLang,
         visible: experienceVisibility,
         tags
-      });
-      saveFiles("featurePicture", "fileManager", response.experienceid, "experience_picture");
-      Notification.addNotification({
-        message: "Experience saved successfully.",
-        type: "success",
-      });
-      activateStep(2);
-      return;
+      }).then((response) => {
+        saveFiles("featurePicture", "fileManager", response.experienceid, "experience_picture");
+        Notification.addNotification({
+          message: "Experience saved successfully.",
+          type: "success",
+        });
+        activateStep(2);
+        $("#reflectionid").val(response.reflectionid);
+        return;
+      }).fail(Notification.exception);
     } catch (error) {
       Notification.exception(error);
     }
@@ -154,7 +130,7 @@ export async function saveExperience() {
 
 export const init = () => {
   setDefaultTinyMCE();
-  autocompleteTags();
+  autocompleteTags("#autocomplete_tags");
   activateStep();
   setEventListeners();
 };

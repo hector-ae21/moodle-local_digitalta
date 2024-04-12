@@ -1,6 +1,6 @@
 import $ from "jquery";
 import {activateStep} from "./steps";
-import {saveExperience, collapseAddSectionMenu, handleNewTag} from "./form";
+import {saveExperience, collapseAddSectionMenu, saveTextSection} from "./form";
 
 /**
  * Set event listeners for the module.
@@ -30,8 +30,16 @@ export function setEventListeners() {
       activateStep(3);
     });
 
-    document.getElementById("autocomplete_tags").addEventListener("change", function(e) {
-      handleNewTag(e.target.selectedOptions);
+    $(document).on("click", "#sowhat_btn", function() {
+      saveTextSection($(this), 1);
+    });
+
+    $(document).on("click", "#action_btn", function() {
+      saveTextSection($(this), 1 );
+    });
+
+    $(document).on("click", "#learn_btn", function() {
+      saveTextSection($(this), 2);
     });
 
     // Import Buttons

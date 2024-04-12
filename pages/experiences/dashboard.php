@@ -24,13 +24,13 @@ $strings = get_strings(['experiences_header', 'experiences_title'], "local_dta")
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/dashboard.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->experiences_title);
-$PAGE->requires->js_call_amd('local_dta/myexperience/manage_reactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/myexperience/reactions', 'init');
 
 echo $OUTPUT->header();
 
 $experiences = Experience::get_all_experiences(false);
 $experiences = array_map(function ($experience) {
-    $experience->description = StringUtils::truncateHtmlText($experience->description);
+    $experience->description = StringUtils::truncateHtmlText($experience->description, 1000);
     return $experience;
 }, $experiences);
 

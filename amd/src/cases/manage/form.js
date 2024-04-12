@@ -4,18 +4,18 @@ import Notification from 'core/notification';
 import {
     sectionTextUpsert,
     sectionTextDelete,
-    // ourcaseEdit
+    ourcaseEdit
 } from 'local_dta/repositories/ourcases_repository';
 import ModalFactory from 'core/modal_factory';
 import {get_string} from 'core/str';
 import setEventListeners from './listeners';
 import {createTinyMCE,
-    //getTinyMCEContent
+    getTinyMCEContent
 } from 'local_dta/tiny/manage';
 import {autocompleteTags} from "local_dta/tags/autocomplete";
 
 let sectionTextModal;
-// let urlView = null;
+let urlView = null;
 
 /**
  * Add a new text section to the page.
@@ -44,7 +44,7 @@ export function changeSectionToEdit(toView = false, id) {
     return new Promise((resolve, reject) => {
         const description = toView ? $(`#content_${id}`).html() : $(`#content_${id}`).val();
         const template = toView ? 'local_dta/cases/section-text-edit' : 'local_dta/cases/section-text-view';
-        Templates.render(template, { id, description })
+        Templates.render(template, {id, description})
             .then((html) => {
                 $(`#section_${id}`).replaceWith(html);
                 return resolve();
@@ -103,29 +103,28 @@ export function upsertSection(id) {
  * Set event listeners for the module.
  * @return {Promise<boolean>} - Resolves to true if the operation was successful, otherwise resolves to false.
  */
-// function upsertHeaderSection() {
-//     return new Promise((resolve, reject) => {
-//         const sectionid = $('#section-header-id').val();
-//         const ourcaseid = $('#ourcases-id').val();
-//         const title = $('#section-header-title').val();
-//         const text = getTinyMCEContent('section-header-description');
-//         const sequence = 0;
+function upsertHeaderSection() {
+    return new Promise((resolve, reject) => {
+        const sectionid = $('#section-header-id').val();
+        const ourcaseid = $('#ourcases-id').val();
+        const title = $('#section-header-title').val();
+        const text = getTinyMCEContent('section-header-description');
+        const sequence = 0;
 
-//         sectionTextUpsert({ourcaseid, sectionid, title, text, sequence})
-//             .then((data) => {
-//                 if (data && data.result) {
-//                     return resolve(true);
-//                 } else {
-//                     return resolve(false);
-//                 }
-//             })
-//             .fail((error) => {
-//                 reject(error);
-//                 Notification.exception(error);
-//             });
-//     });
-// }
-
+        sectionTextUpsert({ourcaseid, sectionid, title, text, sequence})
+            .then((data) => {
+                if (data && data.result) {
+                    return resolve(true);
+                } else {
+                    return resolve(false);
+                }
+            })
+            .fail((error) => {
+                reject(error);
+                Notification.exception(error);
+            });
+    });
+}
 
 
 /**
@@ -167,7 +166,7 @@ export async function showDeleteSectionModal(sectionid) {
 export async function showSaveCase() {
     const saveModal = await ModalFactory.create({
         title: get_string("ourcases_modal_save_title", "local_dta"),
-        body: Templates.render('local_dta/cases/manage/save-modal')
+        body: Templates.render('local_dta/cases/manage/save-modal', {})
     });
     await saveModal.show();
 }
@@ -195,27 +194,27 @@ export function deleteSection() {
  * Edit a case.
  * @return {void}
  */
-// export async function changeStatusToComplete() {
-//     const ourcaseid = $('#ourcases-id').val();
-//     const status = 1;
-//     const args = {ourcaseid, status};
-//     // await upsertHeaderSection();
-//     ourcaseEdit(args).then((data) => {
-//         if (data.result) {
-//             window.location.href = urlView;
-//         }
-//         return;
-//     }).fail(Notification.exception);
-// }
+export async function changeStatusToComplete() {
+    const ourcaseid = $('#ourcases-id').val();
+    const status = 1;
+    const tags = $("#autocomplete_tags").val();
+    await upsertHeaderSection();
+    ourcaseEdit({ourcaseid, status, tags}).then((data) => {
+        if (data.result) {
+            window.location.href = urlView;
+        }
+        return;
+    }).fail(Notification.exception);
+}
 
 /**
  * Initialize the module.
-//  * @param {string} dataUrlView - The url to redirect after save the case.
+ * @param {string} dataUrlView - The url to redirect after save the case.
  * @return {void}
  */
-export const init = async() => {
+export const init = async(dataUrlView) => {
     setEventListeners();
-    autocompleteTags();
-    // urlView = dataUrlView;
+    autocompleteTags("#autocomplete_tags");
+    urlView = dataUrlView;
     createTinyMCE('section-header-description');
 };

@@ -71,26 +71,3 @@ function local_dta_pluginfile($course, $cm, $context, $filearea, $args, $forcedo
     send_stored_file($file, 0, 0, $forcedownload, $options);
 }
 
-
-
-class CONSTANTS{
-    const GROUPS = [
-        "WHAT_INTRO" => 1,
-        "WHAT_CONTEXT" => 2,
-        "SO_WHAT_HOW" => 3,
-        "NOW_WHAT_ACTION" => 4,
-        "NOW_WHAT_REFLECTION" => 5,
-        "EXTRA" => 6 
-    ]; 
-
-    const SECTION_TYPES = [
-        "TEXT" => [
-            "ID" => 1,
-            "TABLE" => "digital_refl_sec_text",
-        ],
-        "CASES" => [
-            "ID" => 2,
-            "TABLE" => "digital_refl_sec_cases",
-        ],
-    ];
-}

@@ -33,9 +33,9 @@ $experience = Experience::get_experience($id);
 
 
 // Check permissions
-if (local_dta_check_permissions($experience, $USER) == false) {
-    print_error('errorpermissions', 'local_dta');
-}
+// if (local_dta_check_permissions($experience, $USER) == false) {
+//     print_error('errorpermissions', 'local_dta');
+// }
 
 // Check if the delete hash is correct
 if ($delete === md5($experience->timecreated)) {

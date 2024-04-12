@@ -10,8 +10,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(__DIR__ . './../reflection.php');
-require_once(__DIR__ . './../../lib.php');
+require_once(__DIR__ . './../../reflection.php');
+require_once(__DIR__ . './../../constants.php');
+
 
 use local_dta\CONSTANTS;
 use local_dta\Reflection;
@@ -27,12 +28,11 @@ class external_reflection_upsert_text_section extends external_api
         'reflectionid' => new external_value(PARAM_INT, 'Our Case ID'),
         'group' => new external_value(PARAM_RAW, 'Available Groups', VALUE_OPTIONAL),
         'content' => new external_value(PARAM_RAW, 'Text', VALUE_OPTIONAL),
-        'id' => new external_value(PARAM_INT, 'Sequence', VALUE_OPTIONAL)
       )
     );
   }
 
-  public static function reflection_upsert_text_section($reflectionid, $group = "", $content = '', $id = null)
+  public static function reflection_upsert_text_section($reflectionid, $group = "", $content = '')
   { 
     $valid_groups = CONSTANTS::GROUPS;
 
@@ -40,7 +40,7 @@ class external_reflection_upsert_text_section extends external_api
       return ['error' => 'Invalid group'];
     }
 
-    if(!$upsert = Reflection::upsert_reflection_section_text($reflectionid, $group, $content, $id)){
+    if(!$upsert = Reflection::upsert_reflection_section_text($reflectionid, $group, $content)){
       return ['error' => 'Error upserting reflection section'];
     }
 

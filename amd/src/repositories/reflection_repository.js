@@ -7,7 +7,6 @@ import Ajax from 'core/ajax';
  * - reflectionid (int): The reflection id.
  * - group (string) : The group of the section.
  * - content (string): The content of the section.
- * - id (int): The id of the section. if exists, it will update the section.
  * @method sectionTextUpsert
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.

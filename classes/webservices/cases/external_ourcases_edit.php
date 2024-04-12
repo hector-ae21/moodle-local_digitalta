@@ -11,7 +11,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once(__DIR__ . './../../ourcases.php');
 
+use local_dta\OurCases;
 class external_ourcases_edit extends external_api
 {
 
@@ -21,37 +23,34 @@ class external_ourcases_edit extends external_api
             array(
                 'ourcaseid' => new external_value(PARAM_INT, 'Our Case ID'),
                 'experienceid ' => new external_value(PARAM_INT, 'Experience ID', VALUE_DEFAULT),
-                'userid' => new external_value(PARAM_INT, 'User ID', VALUE_DEFAULT),
-                'date' => new external_value(PARAM_INT, 'Date', VALUE_DEFAULT),
-                'status' => new external_value(PARAM_INT, 'Status', VALUE_DEFAULT)
+                'status' => new external_value(PARAM_INT, 'Status', VALUE_DEFAULT),
+                'tags' => new external_multiple_structure(
+                    new external_value(PARAM_INT, 'ID del elemento')  , 'Tags' , VALUE_OPTIONAL
+                )
             )
         );
     }
 
-    public static function ourcases_edit($ourcaseid, $experienceid = null, $userid = null, $timecreated = null, $status = null)
+    public static function ourcases_edit($ourcaseid, $experienceid = 0, $status, $tags = [])
     {
-        global $DB;
+        global $USER;
 
-        if (!$ourcase = $DB->get_record('digital_ourcases', array('id' => $ourcaseid))) {
+        if (!$ourcase = OurCases::get_case($ourcaseid)) {
             return array('result' => false, 'error' => 'Our case not found');
         }
 
-        // Actualizar propiedades del ourcase si se proporcionan nuevos valores
-        if ($experienceid !== null) {
-            $ourcase->experienceid = $experienceid;
-        }
-        if ($userid !== null) {
-            $ourcase->userid = $userid;
-        }
-        if ($timecreated !== null) {
-            $ourcase->timecreated = $timecreated;
-        }
-        if ($status !== null) {
-            $ourcase->status = $status;
+        if (empty($ourcaseid) || empty($status) ) {
+            return array('result' => false, 'error' => 'Empty Values');
         }
 
-        // Actualizar el registro en la base de datos
-        if (!$DB->update_record('digital_ourcases', $ourcase)) {
+        $newcase = new stdClass();
+        $newcase->id = $ourcaseid;
+        $newcase->experienceid = $experienceid ?? 0 ;
+        $newcase->status = $status;
+        $newcase->tags = $tags;
+
+
+        if (!OurCases::update_case($newcase)) {
             return array('result' => false, 'error' => 'Failed to update our case');
         }
 

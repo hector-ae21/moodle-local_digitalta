@@ -1,12 +1,12 @@
 import Ajax from "core/ajax";
-import Autocomplete from "core/form-autocomplete";
+import Autocomplete from "theme_dta/form-autocomplete";
 
 /**
  * Autocomplete tags.
  * @return {void}
  */
 export function autocompleteTags() {
-    Autocomplete.enhance('#autocomplete_tags', false, 'local_dta/myexperience/manage/autocomplete_handler_tags');
+    Autocomplete.enhance('#autocomplete_tags', false, 'local_dta/tags/autocomplete_method');
 }
 
 /**

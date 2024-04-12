@@ -100,7 +100,7 @@ if ($experienceid) {
         'ourcase' => $ourcase,
     ];
 
-    echo $OUTPUT->render_from_template('local_dta/cases/manage-without-experience', $templateContext);
+    echo $OUTPUT->render_from_template('local_dta/cases/manage/without-experience', $templateContext);
 }
 
 

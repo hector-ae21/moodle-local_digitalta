@@ -1,11 +1,12 @@
 <div class="container-fluid">
 <input type="hidden" id="ourcases-id" value="{{ourcase.id}}">
+<input type="hidden" id="modal_delete_id">
   <div class="row">
     <div class="col-md-12">
     <h3>{{#str}}ourcases_repository_placeholder, local_dta{{/str}}</h3>
       <div class="row">
         <div class="col-md-12" id="sections-header">
-          {{#sectionheader}} {{> local_dta/cases/section-header-edit }} {{/sectionheader}} 
+          {{#sectionheader}} {{> local_dta/cases/manage/section-header-edit }} {{/sectionheader}} 
         </div>
         <div class="col-md-12" id="sections-body">
           {{#sections}} {{> local_dta/cases/section-text-view}} {{/sections}}

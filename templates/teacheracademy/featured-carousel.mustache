@@ -2,9 +2,8 @@
   <h2 class="text-primary">
     {{#str}} teacheracademy_featured_exps_title, local_dta {{/str}}
   </h2>
-  <div class="carouselExpeciences">
-    
-    <div class="carousel-inner d-flex">
+  <div class="carouselExperiences">
+    <div class="featured-carousel carousel-inner d-flex">
       {{#experiences.featured}}
         {{> local_dta/teacheracademy/featured-carousel-item}}
       {{/experiences.featured}}
@@ -48,7 +47,7 @@ require(["local_dta/slick-carousel"], function (slickCarousel) {
         },
       ],
     };
-    slickCarousel.init(".carousel-inner", options);
+    slickCarousel.init(".featured-carousel", options);
   });
 });
 

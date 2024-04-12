@@ -65,7 +65,7 @@ for ($i = 0; $i < count($allCases); $i++) {
         "id" => $allCases[$i]->id,
         "experienceid" => $allCases[$i]->experienceid,
         "userid" => $allCases[$i]->userid,
-        "date" => $allCases[$i]->date,
+        "date" => $allCases[$i]->timecreated,
         "status" => $allCases[$i]->status,
         "casetext" => array_values($caseText)[0],
     ];
@@ -98,7 +98,7 @@ $templateContext = [
         "viewurl" => $CFG->wwwroot . '/local/dta/pages/experiences/view.php?id=',
         "allurl" => $CFG->wwwroot . "/local/dta/pages/experiences/dashboard.php",
     ],
-    "tags" => $tags,
+    "tags" => array_slice($tags, 0, 15, true),
     "ourcases" => [
         "cases" => array_slice($cases, 0, 4),
         "viewurl" => $CFG->wwwroot . "/local/dta/pages/cases/view.php?id=",

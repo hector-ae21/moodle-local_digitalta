@@ -50,7 +50,7 @@ if (!empty($cases)) {
     $full_cases = array_values(array_map(function ($case) {
         $object = OurCases::get_section_header($case->id);
         $object->description = StringUtils::truncateHtmlText($object->description, 500);
-        $object->date = $case->date;
+        $object->date = $case->timecreated;
         $object->user = $case->user;
         $object->pictureurl = $case->pictureurl;
         $object->reactions = false;

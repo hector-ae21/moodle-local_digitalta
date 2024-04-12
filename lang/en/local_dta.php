@@ -56,9 +56,10 @@ $string['experience_view_mytutoring_request_title'] = 'Tutoring requests';
 $string['experience_view_mytutoring_desc_noreq'] = 'Waiting request...';
 $string['experience_view_mytutoring_ok_button'] = 'Accept';
 $string['experience_view_mytutoring_decline_button'] = 'Decline';
-$string['experience_view_reflectionmanager_title'] = 'Reflection Manager';
-$string['experience_view_resrepo_title'] = 'Resources Repository';
+$string['experience_view_reflectionmanager_title'] = 'Reflection';
+$string['experience_view_resrepo_title'] = 'Resources';
 $string['experience_view_resrepo_desc_nores'] = 'There are not resources available.';
+$string['experience_view_resrepo_action_tooltip'] = 'Import resources';
 // Experience View Tooltips
 $string['experience_view_tooltip_ourcases'] = 'Link a case to this experience';
 $string['experience_view_tooltip_mytutoring'] = 'Manage your tutoring sessions';
@@ -128,6 +129,9 @@ $string['teacheracademy_latest_cases_title'] = 'Latest Cases';
 
 // Teacher Academy Tooltips
 $string['teacheracademy_tooltip_themes'] = 'Select a theme to filter experiences';
+
+// Reaction Buttons
+$string['reaction_buttons_flag_title'] = 'Report';
 
 
 // General

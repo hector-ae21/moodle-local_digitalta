@@ -3,9 +3,8 @@ import Notification from "core/notification";
 import {createTinyMCE} from './../../tiny/manage';
 import {setEventListeners} from "./listeners";
 import {activateStep} from "./steps";
-import {experienceUpsert, createTags} from "./../../repositories/experience_repository";
+import {experienceUpsert} from "./../../repositories/experience_repository";
 import {autocompleteTags} from "local_dta/tags/autocomplete";
-
 
 
 /**
@@ -86,36 +85,8 @@ export function collapseAddSectionMenu() {
 //   saveModal.show();
 // }
 
-/**
- * Handle new tag.
- * @param {Array} selectedOptions - The selected options.
- * @return {void}
- */
-export async function handleNewTag(selectedOptions) {
 
-  for (var i = 0; i < selectedOptions.length; i++) {
-    if (selectedOptions[i].value === "-1") {
-      selectedOptions[i].label = selectedOptions[i].label.replace("Create: ", "");
-      const {id} = await saveNewTag(selectedOptions[i].label);
-      selectedOptions[i].value = parseInt(id);
-    }
-  }
-}
 
-/**
- * Save new tag
- * @param {string} tagName - The tag name.
- * @return {Promise}
- */
-async function saveNewTag(tagName) {
-  try {
-    return await createTags({
-      tag: tagName
-    });
-  } catch (error) {
-    return Notification.exception(error);
-  }
-}
 /**
  * Save the experience.
  * @return {void}
@@ -152,7 +123,7 @@ export async function saveExperience() {
 
 export const init = () => {
   setDefaultTinyMCE();
-  autocompleteTags();
+  autocompleteTags("#autocomplete_tags");
   activateStep();
   setEventListeners();
 };

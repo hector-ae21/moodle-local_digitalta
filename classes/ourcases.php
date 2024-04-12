@@ -10,7 +10,11 @@
 
 namespace local_dta;
 
+require_once(__DIR__ . '/cases_tags.php');
+
 use stdClass;
+use Exception;
+use local_dta\CasesTags;
 
 class OurCases
 {
@@ -215,30 +219,28 @@ class OurCases
     /**
      * Update a case
      *
-     * @param int $id ID of the case
-     * @param string $title Title of the case
-     * @param string $description Description of the case
-     * @param string $timecreated Date of the case
-     * @param string $lang Language of the case
-     * @param bool $visible Visibility of the case
+     * @param object $ourcase Case object
      * @return bool Returns true if successful, false otherwise
      */
-    public static function update_case($experienceid, $timecreated, $lang, $visible)
+    public static function update_case($ourcase)
     {
         global $DB;
-        if (empty($experienceid) || empty($timecreated) || empty($lang) || empty($visible)) {
+
+
+        $ourcase->timemodified = date('Y-m-d H:i:s', time());
+        if (!$DB->update_record(self::$table,  $ourcase)) {
+            throw new Exception('Error adding ourcase section text to the database.');
             return false;
         }
 
-        $record = new stdClass();
-        $record->id = $id;
-        $record->title = $title;
-        $record->description = $description;
-        $record->timemodified = date('Y-m-d H:i:s', time());
-        $record->lang = $lang;
-        $record->visible = $visible;
+        if($ourcase->tags){
+            CasesTags::update_case_tags($ourcase->id, $ourcase->tags);
+        }
 
-        return $DB->update_record(self::$table, $record);
+        return true;    
+
+
+
     }
 
     /**

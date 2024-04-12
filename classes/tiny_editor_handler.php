@@ -80,7 +80,6 @@ class tiny_editor_handler extends \editor_tiny\editor
             "wordcount",
             "tiny_accessibilitychecker/plugin",
             "tiny_equation/plugin",
-            "tiny_media/plugin",
             "tiny_autosave/plugin",
         ];
 

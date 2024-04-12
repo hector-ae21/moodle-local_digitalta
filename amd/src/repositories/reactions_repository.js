@@ -34,6 +34,7 @@ export const saveComment = args => {
     return Ajax.call([request])[0];
 };
 
+
 export const getComments = args => {
     const request = {
         methodname: 'local_dta_myexperience_get_comments',

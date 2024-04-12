@@ -26,38 +26,26 @@ class external_upload_file extends external_api
         if (!$file) {
             throw new moodle_exception('filenotfound', 'error');
         }
-        file_save_draft_area_files(
-            $itemid,
-            5,
-            'local_dta',
-            'picture',
-            12,
-            [
-                'subdirs' => 0,
-                'maxfiles' => 1,
-            ]
+
+        // Prepare file record for the target file area
+        $file_record = array(
+            'contextid' => context_system::instance()->id, // or another context id depending on your requirements
+            'component' => 'local_dta',
+            'filearea'  => 'picture', // Change as per your file area definition
+            'itemid'    => $itemid,
+            'filepath'  => "/",
+            'filename'  => $filename,
         );
 
-        $files = $fs->get_area_files(
-            5,
-            'local_dta',
-            'picture',
-            12,
-            'sortorder DESC, id ASC',
-            false
-        );
+        // Move the file from draft to the final file area
+        $newfile = $fs->create_file_from_storedfile($file_record, $file);
 
-        $file = reset($files);
-        $pictureurl = \moodle_url::make_pluginfile_url(
-            $file->get_contextid(),
-            $file->get_component(),
-            $file->get_filearea(),
-            $file->get_itemid(),
-            $file->get_filepath(),
-            $file->get_filename()
-        );
+        // Return the URL of the file
+        $url = moodle_url::make_pluginfile_url($newfile->get_contextid(), $newfile->get_component(),
+                                               $newfile->get_filearea(), $newfile->get_itemid(),
+                                               $newfile->get_filepath(), $newfile->get_filename());
 
-        return array('status' => 'File saved successfully', 'url' => $pictureurl->out(false), 'files' => json_encode($files));
+        return array('status' => 'File saved successfully', 'url' => $url->out(false));
     }
 
     public static function upload_file_returns()
@@ -65,8 +53,7 @@ class external_upload_file extends external_api
         return new external_single_structure(
             array(
                 'status' => new external_value(PARAM_TEXT, 'Status message'),
-                'url' => new external_value(PARAM_URL, 'URL of the uploaded file'),
-                'files' => new external_value(PARAM_RAW, 'Files')
+                'url' => new external_value(PARAM_URL, 'URL of the uploaded file')
             )
         );
     }

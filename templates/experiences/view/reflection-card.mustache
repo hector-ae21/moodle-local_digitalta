@@ -16,12 +16,16 @@
   <div class="card-body mh-100 overflow-auto">
       {{# reflectionsections }}
         {{#content}}
+          {{^reflectionsections.WHAT_CONTEXT}}
+          {{^reflectionsections.WHAT_INTRO}}
           <h6>{{header}}</h6>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               {{{ content }}}
             </li>
           </ul>
+          {{/reflectionsections.WHAT_INTRO}}
+          {{/reflectionsections.WHAT_CONTEXT}}
         {{/content}}  
     {{/ reflectionsections }}
     {{#reflection}}

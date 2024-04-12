@@ -15,7 +15,7 @@
             local_dta{{/str}}
           </p>
           {{#reflection.sections.NOW_WHAT_ACTION}}
-          <textarea name="" cols="" rows="" class="editor form-control" id="action_txtarea"{{content}}</textarea>
+          <textarea name="" cols="" rows="" class="editor form-control" id="action_txtarea"{{content}}></textarea>
           <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_ACTION" data-target="action_txtarea"
             data-id="{{id}}">
             {{#str}}save, local_dta{{/str}}
@@ -53,7 +53,7 @@
           <textarea name="" cols="" rows="" class="editor form-control" id="learn_txtarea"></textarea>
           <button class="btn btn-primary mt-3 submit" data-group="NOW_WHAT_REFLECTION" data-target="learn_txtarea"
             data-id="0">
-            {{#str}}save, local_dta{{/str}}
+            {{#str}}finish, local_dta{{/str}}
           </button>
           {{/reflection.sections.NOW_WHAT_REFLECTION}} {{>
           local_dta/experiences/manage/reflection-importer}}

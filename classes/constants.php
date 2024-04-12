@@ -1,6 +1,11 @@
 <?php
 namespace local_dta;
 class CONSTANTS{
+
+    const REACTIONS_INSTANCES = [
+        "CASE" => 0,
+        "EXPERIENCE" => 1
+    ];
     const GROUPS = [
         "SO_WHAT_HOW" => 1,
         "NOW_WHAT_ACTION" => 2,

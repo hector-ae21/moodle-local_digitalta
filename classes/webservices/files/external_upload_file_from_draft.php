@@ -12,10 +12,10 @@ class external_upload_file_from_draft extends external_api
                 'draftid' => new external_value(PARAM_INT, 'Draft area id', VALUE_REQUIRED),
                 'fileid' => new external_value(PARAM_INT, 'File id', VALUE_REQUIRED),
                 'filearea' => new external_value(PARAM_TEXT, 'File area', VALUE_REQUIRED),
-                'contextid' => new external_value(PARAM_INT, 'Context id', VALUE_OPTIONAL, 1),
-                'maxfiles' => new external_value(PARAM_INT, 'Max files', VALUE_OPTIONAL, 1),
-                'maxbytes' => new external_value(PARAM_INT, 'Max bytes', VALUE_OPTIONAL, 0),
-                'subdirs' => new external_value(PARAM_BOOL, 'Sub directories', VALUE_OPTIONAL, false)
+                'contextid' => new external_value(PARAM_INT, 'Context id', VALUE_DEFAULT, 1),
+                'maxfiles' => new external_value(PARAM_INT, 'Max files', VALUE_DEFAULT, 1),
+                'maxbytes' => new external_value(PARAM_INT, 'Max bytes', VALUE_DEFAULT, 0),
+                'subdirs' => new external_value(PARAM_BOOL, 'Sub directories', VALUE_DEFAULT, false)
             )
         );
     }

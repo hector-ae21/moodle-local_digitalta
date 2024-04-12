@@ -24,20 +24,20 @@
 
 $functions = [
     // REACTIONS
-    'local_dta_myexperience_get_comments' => [
-        'classname'   => 'external_myexperience_get_comments',
-        'methodname'  => 'myexperience_get_comments',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_myexperience_get_comments.php',
-        'description' => 'Get comments for an experience',
+    'local_dta_reactions_get_comments' => [
+        'classname'   => 'external_reactions_get_comments',
+        'methodname'  => 'reactions_get_comments',
+        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_get_comments.php',
+        'description' => 'Get comments for an instance of an experience or a case',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_myexperience_save_comment' => [
-        'classname'   => 'external_myexperience_save_comment',
-        'methodname'  => 'myexperience_save_comment',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_myexperience_save_comment.php',
-        'description' => 'Save a comment for an experience',
+    'local_dta_reactions_save_comment' => [
+        'classname'   => 'external_reactions_save_comment',
+        'methodname'  => 'reactions_save_comment',
+        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_save_comment.php',
+        'description' => 'Save a comment for an instance of an experience or a case',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
@@ -46,16 +46,16 @@ $functions = [
         'classname'   => 'external_reactions_toggle_like_dislike',
         'methodname'  => 'reactions_toggle_like_dislike',
         'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_toggle_like_dislike.php',
-        'description' => 'Toggle like or dislike for an experience',
+        'description' => 'Toggle like or dislike for an instance of an experience or a case',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_report_add' => [
-        'classname'   => 'external_report_add',
-        'methodname'  => 'report_add',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_report_add.php',
-        'description' => 'Add a report',
+    'local_dta_reactions_send_report' => [
+        'classname'   => 'external_reactions_send_report',
+        'methodname'  => 'reactions_send_report',
+        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_send_report.php',
+        'description' => 'Send a report for an experience or a case',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,

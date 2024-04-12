@@ -13,6 +13,7 @@ require_once(__DIR__ . './../../classes/utils/string_utils.php');
 
 require_login();
 
+use local_dta\CONSTANTS;
 use local_dta\Experience;
 use local_dta\utils\StringUtils;
 
@@ -24,7 +25,7 @@ $strings = get_strings(['experiences_header', 'experiences_title'], "local_dta")
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/dashboard.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->experiences_title);
-$PAGE->requires->js_call_amd('local_dta/myexperience/reactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
 
 echo $OUTPUT->header();
 
@@ -41,6 +42,7 @@ $user->imageurl = $picture->get_url($PAGE)->__toString();
 
 $template_context = [
     "user" => $user,
+    "instance" => CONSTANTS::REACTIONS_INSTANCES['EXPERIENCE'],
     "experiences" => [
         "data" => $experiences,
         "showcontrolsadmin" => is_siteadmin($USER),

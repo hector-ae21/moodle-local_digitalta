@@ -57,10 +57,10 @@ class external_myexperience_upsert extends external_api
             ];
         }
 
-
         return [
             'result' => true,
-            'experienceid' => $experience->id
+            'experienceid' => $experience->id,
+            'reflectionid' => $experience->reflectionid
         ];
     }
 
@@ -70,6 +70,7 @@ class external_myexperience_upsert extends external_api
             [
                 'result' => new external_value(PARAM_BOOL, 'Result'),
                 'experienceid' => new external_value(PARAM_INT, 'Section ID' , VALUE_OPTIONAL),
+                'reflectionid' => new external_value(PARAM_RAW, 'Reflection ID' , VALUE_OPTIONAL),
                 'error' => new external_value(PARAM_RAW, 'Error message' , VALUE_OPTIONAL),
             ]
         );

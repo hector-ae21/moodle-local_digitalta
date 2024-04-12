@@ -1,9 +1,10 @@
 import $ from "jquery";
 import Notification from "core/notification";
-import {createTinyMCE} from './../../tiny/manage';
+import {createTinyMCE, getTinyMCEContent} from './../../tiny/manage';
 import {setEventListeners} from "./listeners";
 import {activateStep} from "./steps";
-import {experienceUpsert} from "./../../repositories/experience_repository";
+import {experienceUpsert} from "local_dta/repositories/experience_repository";
+import {sectionTextUpsert} from "local_dta/repositories/reflection_repository";
 import {autocompleteTags} from "local_dta/tags/autocomplete";
 
 
@@ -36,26 +37,29 @@ export function collapseAddSectionMenu() {
   }
 }
 
-// /**
-//  * Save the text section.
-//  * @param {object} btn - The data to save.
-//  * @return {void}
-//  */
-// function saveTextSection(btn) {
-//   const data = btn.data();
-//   const {target, group, id} = data;
-//   const reflectionid = $("#reflectionid").val();
-//   const content = window.tinyMCE.get(target).getContent();
-//   sectionTextUpsert({ reflectionid, group, content, id })
-//     .then(() => {
-//       Notification.addNotification({
-//         message: "Section saved successfully.",
-//         type: "success",
-//       });
-//       return;
-//     })
-//     .fail(Notification.exception);
-// }
+/**
+ * Save the text section.
+ * @param {object} btn - The data to save.
+ * @param {number} step - The step to activate.
+ * @return {void}
+ */
+export function saveTextSection(btn, step) {
+  const data = btn.data();
+  const {target, group} = data;
+  const reflectionid = $("#reflectionid").val();
+  const content = getTinyMCEContent(target);
+
+  sectionTextUpsert({ reflectionid, group, content})
+    .then(() => {
+      Notification.addNotification({
+        message: "Section saved successfully.",
+        type: "success",
+      });
+      activateStep(step + 1);
+      return;
+    })
+    .fail(Notification.exception);
+}
 
 /**
  * Show save case modal
@@ -86,7 +90,6 @@ export function collapseAddSectionMenu() {
 // }
 
 
-
 /**
  * Save the experience.
  * @return {void}
@@ -100,7 +103,7 @@ export async function saveExperience() {
     tags = $("#autocomplete_tags").val();
 
     try {
-      await experienceUpsert({
+      experienceUpsert({
         id: 0,
         title: experienceTitle,
         description: experienceIntroduction,
@@ -108,13 +111,15 @@ export async function saveExperience() {
         lang: experienceLang,
         visible: experienceVisibility,
         tags
-      });
-      Notification.addNotification({
-        message: "Experience saved successfully.",
-        type: "success",
-      });
-      activateStep(2);
-      return;
+      }).then((response) => {
+        Notification.addNotification({
+          message: "Experience saved successfully.",
+          type: "success",
+        });
+        activateStep(2);
+        $("#reflectionid").val(response.reflectionid);
+        return;
+      }).fail(Notification.exception);
     } catch (error) {
       Notification.exception(error);
     }

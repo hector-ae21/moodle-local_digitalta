@@ -26,7 +26,7 @@ global $CFG, $PAGE, $OUTPUT , $USER;
 $id = required_param('id', PARAM_INT);
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
-$PAGE->requires->js_call_amd('local_dta/myexperience/manage_reactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/myexperience/reactions', 'init');
 $PAGE->requires->js_call_amd('local_dta/myexperience/view', 'init');
 
 // Get the experience

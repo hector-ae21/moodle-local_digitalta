@@ -12,11 +12,14 @@ namespace local_dta;
 
 require_once(__DIR__ . '/../../../config.php');
 require_once(__DIR__ . '/reactions.php');
+require_once(__DIR__ . '/reflection.php');
 require_once(__DIR__ . '/experience_tags.php');
+
 
 use stdClass;
 use local_dta\Reaction;
 use local_dta\ExperienceTag;
+use local_dta\Reflection;
 use Exception;
 class Experience
 {
@@ -40,6 +43,7 @@ class Experience
     private $visible;
     private $status;
 
+    private $reflectionid;
 
     /**
      * Constructor.
@@ -81,6 +85,18 @@ class Experience
             $experience = self::get_extra_fields([$experience])[0];
         }
         return $experience;
+    }
+
+    /**
+     * Get an experience by this id
+     * 
+     * @param int $id
+     * @return stdClass|null
+     */
+    public static function get_experience_header($id)
+    {
+        global $DB;
+        return $DB->get_record(self::$table, ['id' => $id]);
     }
 
     /**
@@ -228,6 +244,8 @@ class Experience
                 }
             }
         }
+
+        $record->reflectionid = Reflection::create_reflection_if_experience_exist($record->id)->id;
 
         return new Experience($record);
     }

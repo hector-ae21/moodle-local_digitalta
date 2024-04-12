@@ -24,7 +24,7 @@ $strings = get_strings(['experiences_header', 'experiences_title'], "local_dta")
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/dashboard.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->experiences_title);
-$PAGE->requires->js_call_amd('local_dta/myexperience/manage_reactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/myexperience/reactions', 'init');
 
 echo $OUTPUT->header();
 

@@ -12,7 +12,7 @@ namespace local_dta;
 
 require_once(__DIR__ . '/../../../config.php'); 
 require_once($CFG->dirroot . '/local/dta/classes/experience.php');
-require_once($CFG->dirroot . '/local/dta/lib.php');
+require_once($CFG->dirroot . '/local/dta/classes/constants.php');
 
 use stdClass;
 use \local_dta\CONSTANTS;
@@ -180,7 +180,7 @@ class Reflection extends Experience
     public static function check_experience_own($experienceid)
     {
         global $USER;
-        $experience = parent::get_experience($experienceid);
+        $experience = parent::get_experience_header($experienceid);
         if ($experience->userid != $USER->id) {
             return false;
         }

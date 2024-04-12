@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-start">
+<div id="reaction-buttons" class="d-flex justify-content-start">
     {{#likes}}
         <button id="like-button" data-action="like" data-id="{{id}}" class="btn btn-outline-primary btn-sm mr-2
         {{#isactive}} active {{/isactive}}">
@@ -15,9 +15,13 @@
     {{/dislikes}}
 
     {{#comments}}
-        <button id="comment-button" data-action="view-comment" data-id="{{id}}" class="btn btn-outline-secondary btn-sm" data-toggle="collapse" data-target="#commentsCollapse" aria-expanded="false" aria-controls="commentsCollapse" {{^isview}} onclick="window.open('{{url_case}}{{id}}#comments', '_self')" {{/isview}}>
+        <button id="comment-button" data-action="view-comment" data-id="{{id}}" class="btn btn-outline-secondary btn-sm mr-2" data-toggle="collapse" data-target="#commentsCollapse" aria-expanded="false" aria-controls="commentsCollapse" {{^isview}} onclick="window.open('{{url_case}}{{id}}#comments', '_self')" {{/isview}}>
         <i class="fa fa-comment"></i>
         <span>{{#count}}{{.}}{{/count}}</span>
         </button>
     {{/comments}}
+
+    <button title="{{#str}}reaction_buttons_flag_title, local_dta{{/str}}" id="flag-button" data-action="flag" data-id="{{id}}" class="btn btn-outline btn-sm">
+    <i class="fa fa-flag"></i>
+    </button>
 </div>

@@ -99,11 +99,12 @@ export async function saveExperience() {
     experienceLang = $("#experience_lang").val(),
     experienceIntroduction = window.tinyMCE.get("experience_introduction").getContent(),
     experienceProblem = window.tinyMCE.get("experience_problem").getContent(),
+    experienceid = $("#experience_id").val(),
     tags = $("#autocomplete_tags").val();
 
     try {
       const response = await experienceUpsert({
-        id: 0,
+        id: experienceid ? experienceid : 0,
         title: experienceTitle,
         description: experienceIntroduction,
         context: experienceProblem,

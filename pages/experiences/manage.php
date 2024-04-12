@@ -24,7 +24,8 @@ require_login();
 
 global $CFG, $PAGE, $OUTPUT , $USER;
 
-$experience_title = optional_param('experiencetitle', 0, PARAM_RAW);
+$experience_title = optional_param('experiencetitle', "", PARAM_RAW);
+$experience_id = optional_param('id', 0, PARAM_INT);
 
 // Seting the page url and context
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/manage.php'));
@@ -55,10 +56,24 @@ $filepicker = new MoodleQuickForm_filemanager('filemanager', get_string('file'),
 
 $filepickerHtml = $filepicker->toHtml();
 
-$template_context = [
-    "title" => $experience_title,
-    "filepicker" => $filepickerHtml
-];
+if ($experience_id && $experience_id != 0) {
+    $experience = Experience::get_experience($experience_id);
+    if(!$experience) {
+        echo $OUTPUT->notification(get_string('experience_not_found', 'local_dta'), 'error');
+        echo $OUTPUT->footer();
+        die();
+    }
+    $template_context = [
+        'filepicker' => $filepickerHtml,
+    ];
+    $template_context = array_merge($template_context, get_object_vars($experience));
+}
+else {
+    $template_context = [
+        "title" => $experience_title,
+        "filepicker" => $filepickerHtml
+    ];    
+}
 
 echo $OUTPUT->render_from_template('local_dta/experiences/manage/form', $template_context);
 

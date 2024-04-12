@@ -173,13 +173,12 @@ class Experience
      * Gets the picture url for the experience.
      */
     public static function get_picture_url($experience) {
-        global $CFG;
 
         $fs = get_file_storage();
         $files = $fs->get_area_files(
-            context_system::instance()->id,
+            \context_system::instance()->id,
             'local_dta',
-            'experiences_pictures',
+            'experience_picture',
             $experience->id,
             'sortorder DESC, id ASC',
             false

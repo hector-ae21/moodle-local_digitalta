@@ -143,10 +143,10 @@ $functions = [
     ], 
 
     //FILES
-    'local_dta_upload_file' => [
-        'classname'   => 'external_upload_file',
-        'methodname'  => 'upload_file',
-        'classpath'   => 'local/dta/classes/webservices/files/external_upload_file.php',
+    'local_dta_upload_file_from_draft' => [
+        'classname'   => 'external_upload_file_from_draft',
+        'methodname'  => 'upload_file_from_draft',
+        'classpath'   => 'local/dta/classes/webservices/files/external_upload_file_from_draft.php',
         'description' => 'Upload a file',
         'type'        => 'write',
         'requirelogin' => true,

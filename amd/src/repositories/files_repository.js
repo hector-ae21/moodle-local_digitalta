@@ -8,7 +8,7 @@ import Ajax from "core/ajax";
  */
 export const uploadFile = args => {
   const request = {
-    methodname: "local_dta_upload_file",
+    methodname: "local_dta_upload_file_from_draft",
     args: args,
   };
   return Ajax.call([request])[0];

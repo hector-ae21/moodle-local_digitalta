@@ -1,20 +1,19 @@
 import $ from "jquery";
 import Notification from "core/notification";
-import {createTinyMCE, getTinyMCEContent} from './../../tiny/manage';
-import {setEventListeners} from "./listeners";
-import {activateStep} from "./steps";
-import {experienceUpsert} from "local_dta/repositories/experience_repository";
-import {sectionTextUpsert} from "local_dta/repositories/reflection_repository";
-import {autocompleteTags} from "local_dta/tags/autocomplete";
+import { createTinyMCE, getTinyMCEContent } from "./../../tiny/manage";
+import { setEventListeners } from "./listeners";
+import { activateStep } from "./steps";
+import { experienceUpsert } from "local_dta/repositories/experience_repository";
+import { sectionTextUpsert } from "local_dta/repositories/reflection_repository";
+import { autocompleteTags } from "local_dta/tags/autocomplete";
 import { saveFiles } from "../../files/filemanager";
-
 
 /**
  * Set event listeners for the module.
  * @return {void}
  * */
 function setDefaultTinyMCE() {
-  $(".editor").each(function() {
+  $(".editor").each(function () {
     createTinyMCE(this.id);
   });
 }
@@ -46,11 +45,11 @@ export function collapseAddSectionMenu() {
  */
 export function saveTextSection(btn, step) {
   const data = btn.data();
-  const {target, group} = data;
+  const { target, group } = data;
   const reflectionid = $("#reflectionid").val();
   const content = getTinyMCEContent(target);
 
-  sectionTextUpsert({ reflectionid, group, content})
+  sectionTextUpsert({ reflectionid, group, content })
     .then(() => {
       Notification.addNotification({
         message: "Section saved successfully.",
@@ -90,43 +89,41 @@ export function saveTextSection(btn, step) {
 //   saveModal.show();
 // }
 
-
 /**
  * Save the experience.
  * @return {void}
  * */
 export async function saveExperience() {
   const experienceTitle = $("#experience_title").val(),
-  experienceVisibility = $("#experience_visibility").val(),
+    experienceVisibility = $("#experience_visibility").val(),
     experienceLang = $("#experience_lang").val(),
     experienceIntroduction = window.tinyMCE.get("experience_introduction").getContent(),
     experienceProblem = window.tinyMCE.get("experience_problem").getContent(),
     tags = $("#autocomplete_tags").val();
 
     try {
-      experienceUpsert({
+      const response = await experienceUpsert({
         id: 0,
         title: experienceTitle,
         description: experienceIntroduction,
         context: experienceProblem,
         lang: experienceLang,
         visible: experienceVisibility,
-        tags
-      }).then((response) => {
-        saveFiles("featurePicture", "fileManager", response.experienceid, "experience_picture");
-        Notification.addNotification({
-          message: "Experience saved successfully.",
-          type: "success",
-        });
-        activateStep(2);
-        $("#reflectionid").val(response.reflectionid);
-        return;
-      }).fail(Notification.exception);
+        tags,
+      });
+      await saveFiles("featurePicture", "fileManager", response.experienceid, "experience_picture");
+
+      Notification.addNotification({
+        message: "Experience saved successfully.",
+        type: "success",
+      });
+
+      activateStep(2);
+      $("#reflectionid").val(response.reflectionid);
     } catch (error) {
       Notification.exception(error);
     }
 }
-
 
 export const init = () => {
   setDefaultTinyMCE();

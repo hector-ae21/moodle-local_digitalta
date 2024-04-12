@@ -1,10 +1,11 @@
 <?php
 require_once($CFG->libdir . "/externallib.php");
+require_once($CFG->libdir . "/filelib.php");
 
 class external_upload_file_from_draft extends external_api
 {
 
-    public static function upload_file_parameters()
+    public static function upload_file_from_draft_parameters()
     {
         return new external_function_parameters(
             array(
@@ -19,21 +20,8 @@ class external_upload_file_from_draft extends external_api
         );
     }
 
-    public static function upload_file($contextid = 1, $draftid, $fileid, $filearea, $maxfiles = 1, $maxbytes = 0, $subdirs = false) {
-        global $CFG, $USER;
-
-        // Validate the context
-        $context = context::instance_by_id($contextid);
-        if (!$context) {
-            throw new moodle_exception('invalidcontextid');
-        }
-
-        // Validate the draft area
-        $draftitemid = file_get_submitted_draft_itemid($filearea);
-        if ($draftitemid != $draftid) {
-            throw new moodle_exception('draftmismatch');
-        }
-
+    public static function upload_file_from_draft($draftid, $fileid, $filearea, $contextid = 1, $maxfiles = 1, $maxbytes = 0, $subdirs = false)
+    {
         file_save_draft_area_files(
             $draftid,
             $contextid,
@@ -58,11 +46,11 @@ class external_upload_file_from_draft extends external_api
         );
 
         if (empty($files)) {
-            return false;
+            return ['status' => 'Error uploading file'];
         }
 
         $file = reset($files);
-        $file_url = \moodle_url::make_pluginfile_url(
+        $url = moodle_url::make_pluginfile_url(
             $file->get_contextid(),
             $file->get_component(),
             $file->get_filearea(),
@@ -70,17 +58,16 @@ class external_upload_file_from_draft extends external_api
             $file->get_filepath(),
             $file->get_filename()
         );
-        
 
-        return array('status' => 'File saved successfully', 'url' => $file_url->out(false));
+        return ['status' => 'File uploaded', 'url' => $url->out()];
     }
 
-    public static function upload_file_returns()
+    public static function upload_file_from_draft_returns()
     {
         return new external_single_structure(
             array(
                 'status' => new external_value(PARAM_TEXT, 'Status message'),
-                'url' => new external_value(PARAM_URL, 'URL of the uploaded file')
+                'url' => new external_value(PARAM_URL, 'URL of the uploaded file', VALUE_OPTIONAL)
             )
         );
     }

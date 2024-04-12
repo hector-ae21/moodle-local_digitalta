@@ -5,6 +5,7 @@ import {setEventListeners} from "./listeners";
 import {activateStep} from "./steps";
 import {experienceUpsert, createTags} from "./../../repositories/experience_repository";
 import {autocompleteTags} from "local_dta/tags/autocomplete";
+import { saveFiles } from "../../files/filemanager";
 
 
 
@@ -129,6 +130,7 @@ export async function saveExperience() {
     tags = $("#autocomplete_tags").val();
 
     try {
+      saveFiles("featurePicture", "fileManager");
       await experienceUpsert({
         id: 0,
         title: experienceTitle,

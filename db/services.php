@@ -141,5 +141,16 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ], 
+
+    //FILES
+    'local_dta_upload_file' => [
+        'classname'   => 'external_upload_file',
+        'methodname'  => 'upload_file',
+        'classpath'   => 'local/dta/classes/webservices/files/external_upload_file.php',
+        'description' => 'Upload a file',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     
 ];

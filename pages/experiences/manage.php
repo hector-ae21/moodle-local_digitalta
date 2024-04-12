@@ -42,6 +42,7 @@ require_once("$CFG->dirroot/lib/form/filemanager.php");
 
 // Opciones para el filepicker
 $options = array(
+    'maxfiles' => 1,
     'accepted_types' => array('.jpg', '.png', '.jpeg'),
     'maxbytes' => 5000000,
     'areamaxbytes' => 10485760,
@@ -53,10 +54,6 @@ $attributes = array('id' => 'fileManager', 'class' => 'fileManager', 'name' => '
 $filepicker = new MoodleQuickForm_filemanager('filemanager', get_string('file'), $attributes, null, $options);
 
 $filepickerHtml = $filepicker->toHtml();
-
-// echo html_writer::script("M.filepickerHtml = " . json_encode($filepickerHtml) . ";");
-
-
 
 $template_context = [
     "title" => $experience_title,

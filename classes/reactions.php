@@ -13,9 +13,11 @@ class Reaction
 {
     private static $table_experience_likes = 'digital_experience_likes';
     private static $table_experience_comments = 'digital_experience_comments';
-
+    private static $table_experience_reports = 'digital_experience_report';
+    
     private static $table_cases_likes = 'digital_case_likes';
     private static $table_cases_comments = 'digital_case_comments';
+    private static $table_cases_reports = 'digital_case_report';
 
     public function __construct()
     {
@@ -32,6 +34,7 @@ class Reaction
         $likes = self::get_likes_for_experience($experienceid);
         $unlikes = self::get_unlikes_for_experience($experienceid);
         $comments = self::get_comments_for_experience($experienceid);
+        $reports = self::get_reports_for_experience($experienceid);
 
         return [
             'likes' => [
@@ -47,6 +50,11 @@ class Reaction
             'comments' => [
                 'count' => count($comments),
                 'data' => $comments
+            ],
+            'reports' => [
+                'count' => count($reports),
+                'data' => $reports,
+                'isactive' => self::user_reacted($reports)
             ]
         ];
     }
@@ -62,6 +70,7 @@ class Reaction
         $likes = self::get_likes_for_case($caseid);
         $unlikes = self::get_unlikes_for_case($caseid);
         $comments = self::get_comments_for_case($caseid);
+        $reports = self::get_reports_for_case($caseid);
         
         return [
             'likes' => [
@@ -77,6 +86,11 @@ class Reaction
             'comments' => [
                 'count' => count($comments),
                 'data' => $comments
+            ],
+            'reports' => [
+                'count' => count($reports),
+                'data' => $reports,
+                'isactive' => self::user_reacted($reports)
             ]
         ];
     }
@@ -142,6 +156,13 @@ class Reaction
         return $DB->get_records_sql($sql, array($experienceid));
     }
 
+    public static function get_reports_for_experience($experienceid)
+    {
+        global $DB;
+        $sql = "SELECT * FROM {" . self::$table_experience_reports . "} WHERE experienceid = ?";
+        return $DB->get_records_sql($sql, array($experienceid));
+    }
+
     /**
      * Get all 'like' reactions for a specific experience
      *
@@ -178,6 +199,13 @@ class Reaction
     {
         global $DB;
         $sql = "SELECT * FROM {" . self::$table_cases_comments . "} WHERE caseid = ?";
+
+        return $DB->get_records_sql($sql, array($caseid)); 
+    }
+    public static function get_reports_for_case($caseid)
+    {
+        global $DB;
+        $sql = "SELECT * FROM {" . self::$table_cases_reports . "} WHERE caseid = ?";
 
         return $DB->get_records_sql($sql, array($caseid)); 
     }

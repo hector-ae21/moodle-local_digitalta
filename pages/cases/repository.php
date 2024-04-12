@@ -11,12 +11,13 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/ourcases.php');
 require_once(__DIR__ . './../../classes/utils/string_utils.php');
 require_once(__DIR__ . './../../classes/reactions.php');
+require_once(__DIR__ . './../../classes/constants.php');
 
 require_login();
 
 use local_dta\OurCases;
 use local_dta\utils\StringUtils;
-use local_dta\Reaction;
+use local_dta\CONSTANTS;
 
 global $CFG, $PAGE, $OUTPUT;
 
@@ -26,8 +27,7 @@ $strings = get_strings(['ourcases_header', 'ourcases_title'], "local_dta");
 $PAGE->set_url(new moodle_url('/local/dta/pages/cases/repository.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->ourcases_title);
-$PAGE->requires->js_call_amd('local_dta/myexperience/reactions', 'init');
-$PAGE->requires->js_call_amd('local_dta/masonry', 'init' , ["url_repository" => $CFG->wwwroot . '/local/dta/pages/cases/repository.php']);
+$PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
 
 echo $OUTPUT->header();
 
@@ -54,6 +54,7 @@ $user->imageurl = $picture->get_url($PAGE)->__toString();
 
 $templateContext = [
     "user" => $user,
+    "instance" => CONSTANTS::REACTIONS_INSTANCES['CASE'],
     "cases" => array_values($full_cases),
     "url_create_case" => $CFG->wwwroot . '/local/dta/pages/cases/manage.php',
     "url_case" => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id=',

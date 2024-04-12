@@ -26,13 +26,14 @@ global $CFG, $PAGE, $OUTPUT , $USER;
 $id = required_param('id', PARAM_INT);
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
-$PAGE->requires->js_call_amd('local_dta/myexperience/reactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
 $PAGE->requires->js_call_amd('local_dta/myexperience/view', 'init');
 
 // Get the experience
 if(!$experience = Experience::get_experience($id)) {
     throw new moodle_exception('invalidexperience', 'local_dta');
 }
+use local_dta\CONSTANTS;
 
 // Get the user and the user picture
 $user = get_complete_user_data("id", $experience->userid);
@@ -86,6 +87,7 @@ if ($reflection !== null && $reflection !== false) {
 echo $OUTPUT->header();
 
 $template_context = [
+    "instance" => CONSTANTS::REACTIONS_INSTANCES['EXPERIENCE'],
     'experience' => [
         'data' => $experience,
         'pictureurl' => Experience::get_picture_url($experience),

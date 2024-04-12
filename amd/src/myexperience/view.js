@@ -20,14 +20,8 @@ async function showChangeStatusModal(experienceid) {
 }
 
 export const init = () => {
-
-    // Open experience
     $(document).on('click', '#add-section', () => {
         const experienceid = $(this).data('id');
         showChangeStatusModal(experienceid);
     });
-
-
-    // eslint-disable-next-line no-console
-    console.log('view init');
 };

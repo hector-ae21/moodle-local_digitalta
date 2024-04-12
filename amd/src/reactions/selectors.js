@@ -1,8 +1,8 @@
-
-
 /**
- * @module myexperience/selectors
+ * @module reactions/selectors
  */
+
+
 export const SELECTORS = {
     ACTIONS: {
         addLike: '[data-action="like"]',
@@ -10,6 +10,7 @@ export const SELECTORS = {
         sendComment: '[data-action="send-comment"]',
         viewComment: '[data-action="view-comment"]',
         toggleComments: '[data-target="#commentsCollapse"]',
+        sendReport: '[data-action="flag"]',
     },
     COMMENTS_LIST: '#commentsList',
     COMMENT_INPUT: '#commentInput',
@@ -17,6 +18,7 @@ export const SELECTORS = {
         likes: '#like-button',
         dislikes: '#dislike-button',
         comment: '#comment-button',
+        report: "#flag-button"
     },
     COUNTS: {
         likes: '#like-button span',

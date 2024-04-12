@@ -1,0 +1,29 @@
+<div id="reaction-buttons" class="d-flex justify-content-start">
+    {{#likes}}
+        <button id="like-button" data-action="like" data-instance="{{instance}}" data-id="{{id}}" class="btn btn-outline-primary btn-sm mr-2
+        {{#isactive}} active {{/isactive}}">
+        <i class="fa fa-thumbs-up"></i> 
+        <span>{{#count}}{{.}}{{/count}}</span>
+        </button>
+    {{/likes}}
+
+    {{#dislikes}}
+        <button id="dislike-button" data-action="dislike" data-instance="{{instance}}" data-id="{{id}}" class="btn btn-outline-danger btn-sm mr-2
+        {{#isactive}} active {{/isactive}}">
+        <i class="fa fa-thumbs-down"></i>
+        </button>
+    {{/dislikes}}
+
+    {{#comments}}
+        <button id="comment-button" data-action="view-comment" data-instance="{{instance}}" data-id="{{id}}" class="btn btn-outline-secondary btn-sm mr-2" data-toggle="collapse" data-target="#commentsCollapse" aria-expanded="false" aria-controls="commentsCollapse" {{^isview}} onclick="window.open('{{experiences.viewurl}}{{id}}#comments', '_self')" {{/isview}}>
+        <i class="fa fa-comment"></i>
+        <span>{{#count}}{{.}}{{/count}}</span>
+        </button>
+    {{/comments}}
+
+    {{#reports}}
+        <button id="flag-button" title="{{#str}}reaction_buttons_flag_title, local_dta{{/str}}"  data-action="flag" data-instance="{{instance}}" data-id="{{id}}" class="btn btn-outline-warning btn-sm {{#isactive}} active {{/isactive}}">
+        <i class="fa fa-flag"></i>
+        </button>
+    {{/reports}}
+</div>

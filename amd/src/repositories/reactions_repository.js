@@ -27,7 +27,7 @@ export const toogleLikeAndDislike = args => {
  */
 export const saveComment = args => {
     const request = {
-        methodname: 'local_dta_myexperience_save_comment',
+        methodname: 'local_dta_reactions_save_comment',
         args: args
     };
 
@@ -37,7 +37,16 @@ export const saveComment = args => {
 
 export const getComments = args => {
     const request = {
-        methodname: 'local_dta_myexperience_get_comments',
+        methodname: 'local_dta_reactions_get_comments',
+        args: args
+    };
+
+    return Ajax.call([request])[0];
+};
+
+export const saveReport = args => {
+    const request = {
+        methodname: 'local_dta_reactions_send_report',
         args: args
     };
 

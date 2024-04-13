@@ -24,7 +24,7 @@ function cleanMenus() {
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.addedNodes.length) {
-        const positionToRemove = [ 1, 3];
+        const positionToRemove = [ 1, 2,4];
         $(".tox-menubar").each(function () {
           $(this).find("button").each(function (i, el) {
             if (positionToRemove.includes(i)) {

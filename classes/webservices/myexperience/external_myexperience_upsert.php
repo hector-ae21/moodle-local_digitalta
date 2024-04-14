@@ -25,10 +25,10 @@ class external_myexperience_upsert extends external_api
             array(
                 'id' => new external_value(PARAM_INT, 'experience ID'),
                 'title' => new external_value(PARAM_RAW, 'Title'),
+                'lang' => new external_value(PARAM_RAW, 'Lang'),
+                'visible' => new external_value(PARAM_BOOL, 'Visible', VALUE_DEFAULT, 1),
                 'description' => new external_value(PARAM_RAW, 'Description' , VALUE_DEFAULT, " "),
                 'context' => new external_value(PARAM_RAW, 'Context' , VALUE_DEFAULT, " "),
-                'lang' => new external_value(PARAM_RAW, 'Lang'),
-                'visible' => new external_value(PARAM_BOOL, 'Visible'),
                 'tags' => new external_multiple_structure(
                     new external_value(PARAM_INT, 'ID del elemento')  , 'Tags' , VALUE_DEFAULT, []
                 )
@@ -36,7 +36,7 @@ class external_myexperience_upsert extends external_api
         );
     }
 
-    public static function myexperience_upsert($id, $title, $description = " ", $context = " ", $lang, $visible = 1, $tags = [])
+    public static function myexperience_upsert($id, $title, $lang, $visible = 1, $description = " ", $context = " ", $tags = [])
     {
         global $USER;
         $experience = new stdClass();

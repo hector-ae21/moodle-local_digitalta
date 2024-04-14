@@ -22,7 +22,7 @@ class external_get_tags extends external_api
     {
         return new external_function_parameters(
             [
-                'searchText' => new external_value(PARAM_TEXT, 'Search text', VALUE_OPTIONAL)
+                'searchText' => new external_value(PARAM_TEXT, 'Search text', VALUE_DEFAULT, '%%')
             ]
         );
     }

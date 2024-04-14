@@ -20,10 +20,10 @@ class external_ourcases_section_text_upsert extends external_api
         return new external_function_parameters(
             array(
                 'ourcaseid' => new external_value(PARAM_INT, 'Our Case ID'),
-                'sectionid' => new external_value(PARAM_INT, 'Section ID', VALUE_OPTIONAL),
-                'title' => new external_value(PARAM_RAW, 'Title' , VALUE_OPTIONAL),
-                'text' => new external_value(PARAM_RAW, 'Text' , VALUE_OPTIONAL),
-                'sequence' => new external_value(PARAM_INT, 'Sequence', VALUE_OPTIONAL)
+                'sectionid' => new external_value(PARAM_INT, 'Section ID', VALUE_DEFAULT, 0),
+                'title' => new external_value(PARAM_RAW, 'Title' , VALUE_DEFAULT, "section_body"),
+                'text' => new external_value(PARAM_RAW, 'Text' , VALUE_DEFAULT, ""),
+                'sequence' => new external_value(PARAM_INT, 'Sequence', VALUE_DEFAULT, 0)
             )
         );
     }

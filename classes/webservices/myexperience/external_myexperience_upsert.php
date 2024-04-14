@@ -25,12 +25,12 @@ class external_myexperience_upsert extends external_api
             array(
                 'id' => new external_value(PARAM_INT, 'experience ID'),
                 'title' => new external_value(PARAM_RAW, 'Title'),
-                'description' => new external_value(PARAM_RAW, 'Description' , VALUE_DEFAULT),
-                'context' => new external_value(PARAM_RAW, 'Context' , VALUE_DEFAULT),
+                'description' => new external_value(PARAM_RAW, 'Description' , VALUE_DEFAULT, " "),
+                'context' => new external_value(PARAM_RAW, 'Context' , VALUE_DEFAULT, " "),
                 'lang' => new external_value(PARAM_RAW, 'Lang'),
                 'visible' => new external_value(PARAM_BOOL, 'Visible'),
                 'tags' => new external_multiple_structure(
-                    new external_value(PARAM_INT, 'ID del elemento')  , 'Tags' , VALUE_DEFAULT
+                    new external_value(PARAM_INT, 'ID del elemento')  , 'Tags' , VALUE_DEFAULT, []
                 )
             )
         );

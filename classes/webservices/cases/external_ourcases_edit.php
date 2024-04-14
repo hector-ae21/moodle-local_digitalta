@@ -22,16 +22,16 @@ class external_ourcases_edit extends external_api
         return new external_function_parameters(
             array(
                 'ourcaseid' => new external_value(PARAM_INT, 'Our Case ID'),
-                'experienceid ' => new external_value(PARAM_INT, 'Experience ID', VALUE_DEFAULT),
-                'status' => new external_value(PARAM_INT, 'Status', VALUE_DEFAULT),
+                'experienceid ' => new external_value(PARAM_INT, 'Experience ID', VALUE_DEFAULT, 0),
+                'status' => new external_value(PARAM_INT, 'Status', VALUE_DEFAULT, 0),
                 'tags' => new external_multiple_structure(
-                    new external_value(PARAM_INT, 'ID del elemento')  , 'Tags' , VALUE_OPTIONAL
+                    new external_value(PARAM_INT, 'ID del elemento')  , 'Tags' , VALUE_DEFAULT, []
                 )
             )
         );
     }
 
-    public static function ourcases_edit($ourcaseid, $experienceid = 0, $status, $tags = [])
+    public static function ourcases_edit($ourcaseid, $experienceid = 0, $status = 0, $tags = [])
     {
         global $USER;
 

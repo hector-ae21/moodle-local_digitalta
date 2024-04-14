@@ -26,13 +26,13 @@ class external_reflection_upsert_text_section extends external_api
     return new external_function_parameters(
       array(
         'reflectionid' => new external_value(PARAM_INT, 'Our Case ID'),
-        'group' => new external_value(PARAM_RAW, 'Available Groups', VALUE_OPTIONAL),
-        'content' => new external_value(PARAM_RAW, 'Text', VALUE_OPTIONAL),
+        'group' => new external_value(PARAM_RAW, 'Available Groups', VALUE_DEFAULT, ""),
+        'content' => new external_value(PARAM_RAW, 'Text', VALUE_DEFAULT, ""),
       )
     );
   }
 
-  public static function reflection_upsert_text_section($reflectionid, $group = "", $content = '')
+  public static function reflection_upsert_text_section($reflectionid, $group = "", $content = "")
   { 
     $valid_groups = CONSTANTS::GROUPS;
 

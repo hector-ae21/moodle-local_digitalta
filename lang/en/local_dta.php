@@ -146,3 +146,8 @@ $string['cancel'] = 'Cancel';
 $string['save'] = 'Save';
 $string['finish'] = 'Finish';
 $string['see_more'] = 'See More';
+
+// Date format strings
+
+$string['date_timeago'] = '{$a} ago';
+$string['date_justnow'] = 'Just now';

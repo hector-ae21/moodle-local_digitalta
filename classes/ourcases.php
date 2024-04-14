@@ -11,10 +11,12 @@
 namespace local_dta;
 
 require_once(__DIR__ . '/cases_tags.php');
+require_once(__DIR__ . '/utils/date_utils.php');
 
 use stdClass;
 use Exception;
 use local_dta\CasesTags;
+use local_dta\utils\date_utils;
 
 class OurCases
 {
@@ -330,12 +332,12 @@ class OurCases
      */
     public static function get_extra_fields($cases)
     {
-        global $PAGE, $DB;
+        global $PAGE;
         foreach ($cases as $case) {
             $user = get_complete_user_data("id", $case->userid);
             $picture = new \user_picture($user);
             $picture->size = 101;
-            $case->timecreated = date("d/m/Y", strtotime($case->timecreated));
+            $case->timecreated = date_utils::time_elapsed_string($case->timecreated);
             $case->user = [
                 'id' => $user->id,
                 'name' => $user->firstname . " " . $user->lastname,

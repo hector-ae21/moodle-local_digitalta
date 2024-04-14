@@ -14,13 +14,16 @@ require_once(__DIR__ . '/../../../config.php');
 require_once(__DIR__ . '/reactions.php');
 require_once(__DIR__ . '/reflection.php');
 require_once(__DIR__ . '/experience_tags.php');
+require_once(__DIR__ . '/utils/date_utils.php');
 
 
 use stdClass;
 use local_dta\Reaction;
 use local_dta\ExperienceTag;
 use local_dta\Reflection;
+use local_dta\utils\date_utils;
 use Exception;
+
 class Experience
 {
     private static $table = 'digital_experiences';
@@ -139,7 +142,7 @@ class Experience
             $user = get_complete_user_data("id", $experience->userid);
             $picture = new \user_picture($user);
             $picture->size = 101;
-            $experience->timecreated = date("d/m/Y", strtotime($experience->timecreated));
+            $experience->timecreated = date_utils::time_elapsed_string($experience->timecreated);
             $experience->user = [
                 'id' => $user->id,
                 'name' => $user->firstname . " " . $user->lastname,

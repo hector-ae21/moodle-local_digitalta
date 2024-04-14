@@ -229,6 +229,7 @@ class Experience
 
         if($experience->id) {
             $record->id = $experience->id;
+            $record->userid = $experience->userid;
             $record->timecreated = $experience->timecreated;
             $DB->update_record(self::$table, $record);
             if ($experience->tags) {

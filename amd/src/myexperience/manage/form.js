@@ -6,7 +6,7 @@ import { activateStep } from "./steps";
 import { experienceUpsert } from "local_dta/repositories/experience_repository";
 import { sectionTextUpsert } from "local_dta/repositories/reflection_repository";
 import { autocompleteTags } from "local_dta/tags/autocomplete";
-import { saveFiles } from "../../files/filemanager";
+import { saveFiles, init as fileManagerInit } from "../../files/filemanager";
 
 /**
  * Set event listeners for the module.
@@ -126,6 +126,7 @@ export async function saveExperience() {
 }
 
 export const init = () => {
+  fileManagerInit("featurePicture");
   setDefaultTinyMCE();
   autocompleteTags("#autocomplete_tags");
   activateStep();

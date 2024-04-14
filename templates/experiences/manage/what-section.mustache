@@ -33,10 +33,13 @@
         </div>
         <div class="form-group col-md-4 d-flex flex-column justify-content-evenly w-75">
           <label for="tags" class="text-secondary font-weight-bold">{{#str}}form_experience_tags, local_dta{{/str}}</label>
-          <select multiple class="form-control d-none" id="autocomplete_tags"></select>
+          <select multiple class="form-control d-none" id="autocomplete_tags">
+            {{#tags}}
+            <option value="{{id}}" data-active-selection="true" class="text-capitalize selected">{{name}}</option>
+            {{/tags}}
+          </select>
         </div>
         <div id="featurePicture" class="img-picker col-md-5 rounded">
-          {{{filepicker}}}
         </div>
       </div>
 
@@ -48,7 +51,7 @@
             {{#str}}experience_reflection_section_what_question_1_desc,
             local_dta{{/str}}
           </p>
-          <textarea name="" cols="" rows="" class="editor form-control" id="experience_introduction">{{content}}</textarea>
+          <textarea name="" cols="" rows="20" class="editor form-control" id="experience_introduction">{{{description}}}</textarea>
           <hr />
         </div>
         <div class="question d-flex flex-column">
@@ -60,7 +63,7 @@
             {{#str}}experience_reflection_section_what_question_2_desc,
             local_dta{{/str}}
           </p>
-          <textarea name="" cols="5" rows="5" class="editor form-control" id="experience_problem"></textarea>
+          <textarea name="" cols="" rows="20" class="editor form-control" id="experience_problem">{{{context}}}</textarea>
         </div>
         <button class="btn btn-primary mt-3" id="experience_submit">
           {{#str}}save, local_dta{{/str}}

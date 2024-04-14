@@ -1,4 +1,5 @@
 <div id="section_what" class="section active flex-column">
+  <input id="experience_id" name="experienceId" type="hidden" value="{{id}}" />
       <div class="header d-flex flex-row align-items-center">
         <h2>
           {{#str}}experience_reflection_section_what_title, local_dta{{/str}}
@@ -18,14 +19,14 @@
         <div class="form-group col-md-3">
             <div class="w-75">
             <label for="experience_visibility" class="text-secondary font-weight-bold">{{#str}}form_experience_visibility, local_dta{{/str}}</label>
-            <select id="experience_visibility" class="form-control">
+            <select id="experience_visibility" class="form-control" value="{{visible}}">
                 <option value="1" class="text-capitalize">{{#str}}form_experience_visibility_public, local_dta{{/str}}</option>
                 <option value="0" class="text-capitalize">{{#str}}form_experience_visibility_private, local_dta{{/str}}</option>
             </select>
             </div>
             <div class="w-75">
             <label for="experience_lang" class="text-secondary font-weight-bold">{{#str}}form_experience_lang, local_dta{{/str}}</label>
-            <select id="experience_lang" class="form-control">
+            <select id="experience_lang" class="form-control" value="{{lang}}">
                 <option value="en" class="text-capitalize" selected>English</option>
                 <option value="es" class="text-capitalize">Spanish</option>
             </select>
@@ -51,7 +52,7 @@
             {{#str}}experience_reflection_section_what_question_1_desc,
             local_dta{{/str}}
           </p>
-          <textarea name="" cols="" rows="20" class="editor form-control" id="experience_introduction">{{{description}}}</textarea>
+          <textarea name="" cols="" rows="" class="editor form-control" id="experience_introduction">{{{description}}}</textarea>
           <hr />
         </div>
         <div class="question d-flex flex-column">
@@ -63,7 +64,7 @@
             {{#str}}experience_reflection_section_what_question_2_desc,
             local_dta{{/str}}
           </p>
-          <textarea name="" cols="" rows="20" class="editor form-control" id="experience_problem">{{{context}}}</textarea>
+          <textarea name="" cols="5" rows="5" class="editor form-control" id="experience_problem">{{{context}}}</textarea>
         </div>
         <button class="btn btn-primary mt-3" id="experience_submit">
           {{#str}}save, local_dta{{/str}}

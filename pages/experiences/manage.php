@@ -23,8 +23,8 @@ require_login();
 
 global $CFG, $PAGE, $OUTPUT , $USER;
 
-$id = optional_param('id', null, PARAM_INT);
 $experience_title = optional_param('experiencetitle', "", PARAM_RAW);
+$experience_id = optional_param('id', 0, PARAM_INT);
 
 // Seting the page url and context
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/manage.php', ['id' => $id]));

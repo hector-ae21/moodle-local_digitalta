@@ -47,6 +47,7 @@ $string['profile_title'] = 'My Experience';
 $string['myexperience_add_new_experience'] = 'Add new experience';
 $string['myexperience_add_comment'] = 'Add a new comment...';
 $string['myexperience_picture_alt'] = 'Experience picture';
+$string['experience_not_found'] = 'Experience not found';
 
 // Experience View
 $string['experience_view_ourcases_title'] = 'Our cases';

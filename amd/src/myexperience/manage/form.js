@@ -13,7 +13,7 @@ import { saveFiles, init as fileManagerInit } from "../../files/filemanager";
  * @return {void}
  * */
 function setDefaultTinyMCE() {
-  $(".editor").each(function () {
+  $(".editor").each(function() {
     createTinyMCE(this.id);
   });
 }

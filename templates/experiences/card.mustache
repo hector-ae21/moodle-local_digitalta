@@ -26,16 +26,10 @@
       </a>
     </div>
   </div>
-  <div class="exp-card-action-btns">
+  <div class="card-action-btns">
     {{#reactions}}
       {{> local_dta/reactions/reactions-buttons}}
     {{/reactions}}
-    <div class="experience-tags d-flex px-1 align-items-center">
-      <ul class="tags-list">
-        {{#tags}}
-          {{> local_dta/experiences/experience-tags}}
-        {{/tags}}
-      </ul>
-    </div>
+    {{> local_dta/tags/tags-list}}
   </div>
 </div>

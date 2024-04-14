@@ -1,4 +1,3 @@
-import $ from "jquery";
 import Autocomplete from "theme_dta/form-autocomplete";
 import {createTags} from "local_dta/repositories/autocomplete_repository";
 import Notification from "core/notification";
@@ -10,23 +9,11 @@ import Notification from "core/notification";
  * @return {void}
  */
 export function autocompleteTags(area) {
-    Autocomplete.enhance(area);
-    setDefaultSelectedTags(area);
+    Autocomplete.enhance(area, null, "local_dta/tags/autocomplete_method");
     area = area.replace("#", "");
     document.getElementById(area).addEventListener("change", function(e) {
         handleNewTag(e.target.selectedOptions);
     });
-}
-
-/**
- * Set default selected tags.
- * @param {*} selector - The selector.
- */
-function setDefaultSelectedTags(selector) {
-  var select = $(selector);
-  select.find('option[selected]').each(function() {
-      select.val($(this).val()).trigger('change');
-  });
 }
 
 /**

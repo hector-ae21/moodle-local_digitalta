@@ -33,7 +33,7 @@ $PAGE->requires->js_call_amd(
     'local_dta/cases/manage/form',
     'init',
     array(
-        'url_view' => $CFG->wwwroot . '/local/dta/pages/cases/repository.php', 
+        'url_view' => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id=', 
     )
 );
 
@@ -82,7 +82,7 @@ if ($experienceid) {
     ];
 
 
-    echo $OUTPUT->render_from_template('local_dta/cases/manage-without-experience', $templateContext);
+    echo $OUTPUT->render_from_template('local_dta/cases/manage/without-experience', $templateContext);
 } else {
     // IF NO EXPERIENCE OR CASE
     $ourcase = OurCases::add_without_experience(date("Y-m-d H:i:s"), $USER->id);

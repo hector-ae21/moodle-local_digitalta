@@ -47,11 +47,16 @@
                     </span>
                 </div>
 
-                <p class="card-text">{{{description}}}</p>
-                {{> local_dta/experiences/tags }}
-                {{#reactions}}
-                    {{> local_dta/reactions/reactions-buttons}}
-                {{/reactions}}
+                <div class="card-text">
+                    {{{description}}}
+                    {{{context}}}
+                </div>
+                <div class="card-action-btns">
+                    {{#reactions}}
+                        {{> local_dta/reactions/reactions-buttons}}
+                    {{/reactions}}
+                    {{> local_dta/tags/tags-list}}
+                </div>
             </div>
     
 

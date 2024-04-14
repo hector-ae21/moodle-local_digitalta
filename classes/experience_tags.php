@@ -36,12 +36,10 @@ class ExperienceTag
     public static function update_experience_tags($experienceId, $tags)
     {
         global $DB;
-        var_dump($experienceId);
         
         $tags = array_map(function ($tag) {
             return (int)$tag;
         }, $tags);
-        var_dump($tags);
 
         $currentTags = self::getTagsForExperience($experienceId, $DB);
         $currentTagIds = array_map(function ($tag) {

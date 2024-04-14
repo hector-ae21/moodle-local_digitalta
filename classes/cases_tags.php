@@ -71,8 +71,9 @@ class CasesTags
      * @param object $DB
      * @return array
      */
-    public static function getTagsForCase($caseId, $DB)
+    public static function getTagsForCase($caseId)
     {
+        global $DB;
         return $DB->get_records_sql('SELECT t.id, t.name FROM {digital_tags} t JOIN {digital_cases_tag} ct ON t.id = ct.tagid WHERE ct.caseid = ?', [$caseId]);
     }
 

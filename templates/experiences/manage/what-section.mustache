@@ -36,14 +36,13 @@
           <label for="tags" class="text-secondary font-weight-bold">{{#str}}form_experience_tags, local_dta{{/str}}</label>
           <select multiple class="form-control d-none" id="autocomplete_tags">
             {{#tags}}
-            <option value="{{id}}" data-active-selection="true" class="text-capitalize selected">{{name}}</option>
+            <option selected value="{{id}}" data-active-selection="true" class="text-capitalize selected">{{name}}</option>
             {{/tags}}
           </select>
         </div>
         <div id="featurePicture" class="img-picker col-md-5 rounded">
         </div>
       </div>
-
           <h3>
             {{#str}}experience_reflection_section_what_question_1_title,
             local_dta{{/str}}
@@ -52,8 +51,7 @@
             {{#str}}experience_reflection_section_what_question_1_desc,
             local_dta{{/str}}
           </p>
-          <textarea name="" cols="" rows="" class="editor form-control" id="experience_introduction">{{{description}}}</textarea>
-          <hr />
+          <textarea name="" cols="" rows="15" class="editor form-control" id="experience_introduction">{{{description}}}</textarea>
         </div>
         <div class="question d-flex flex-column">
           <h3>
@@ -64,7 +62,7 @@
             {{#str}}experience_reflection_section_what_question_2_desc,
             local_dta{{/str}}
           </p>
-          <textarea name="" cols="5" rows="5" class="editor form-control" id="experience_problem">{{{context}}}</textarea>
+          <textarea name="" cols="" rows="15" class="editor form-control" id="experience_problem">{{{context}}}</textarea>
         </div>
         <button class="btn btn-primary mt-3" id="experience_submit">
           {{#str}}save, local_dta{{/str}}

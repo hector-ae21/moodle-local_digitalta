@@ -201,7 +201,7 @@ export async function changeStatusToComplete() {
     await upsertHeaderSection();
     ourcaseEdit({ourcaseid, status, tags}).then((data) => {
         if (data.result) {
-            window.location.href = urlView;
+            window.location.href = urlView + ourcaseid;
         }
         return;
     }).fail(Notification.exception);

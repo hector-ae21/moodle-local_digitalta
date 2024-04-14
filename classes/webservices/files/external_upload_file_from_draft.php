@@ -5,6 +5,12 @@ require_once($CFG->libdir . "/filelib.php");
 class external_upload_file_from_draft extends external_api
 {
 
+    protected static $_options = [
+        'maxfiles' => 1,
+        'maxbytes' => 0,
+        'subdirs' => false
+    ];
+
     public static function upload_file_from_draft_parameters()
     {
         return new external_function_parameters(
@@ -13,26 +19,38 @@ class external_upload_file_from_draft extends external_api
                 'fileid' => new external_value(PARAM_INT, 'File id', VALUE_REQUIRED),
                 'filearea' => new external_value(PARAM_TEXT, 'File area', VALUE_REQUIRED),
                 'contextid' => new external_value(PARAM_INT, 'Context id', VALUE_DEFAULT, 1),
-                'maxfiles' => new external_value(PARAM_INT, 'Max files', VALUE_DEFAULT, 1),
-                'maxbytes' => new external_value(PARAM_INT, 'Max bytes', VALUE_DEFAULT, 0),
-                'subdirs' => new external_value(PARAM_BOOL, 'Sub directories', VALUE_DEFAULT, false)
+                'options' => new external_multiple_structure(
+                    new external_single_structure(
+                        array(
+                            'maxfiles' => new external_value(PARAM_INT, 'Max files', VALUE_DEFAULT, 1),
+                            'maxbytes' => new external_value(PARAM_INT, 'Max bytes', VALUE_DEFAULT, 0),
+                            'subdirs' => new external_value(PARAM_BOOL, 'Sub directories', VALUE_DEFAULT, false)
+                        )
+                    ),
+                    'Options for file upload',
+                    VALUE_DEFAULT,
+                    []
+                )
             )
         );
     }
 
-    public static function upload_file_from_draft($draftid, $fileid, $filearea, $contextid = 1, $maxfiles = 1, $maxbytes = 0, $subdirs = false)
+    protected static function set_options($options)
     {
+        self::$_options = array_merge(self::$_options, $options);
+    }
+
+    public static function upload_file_from_draft($draftid, $fileid, $filearea, $contextid = 1, $options = [])
+    {
+        self::set_options($options);
+
         file_save_draft_area_files(
             $draftid,
             $contextid,
             'local_dta',
             $filearea,
             $fileid,
-            [
-                'subdirs' => $subdirs,
-                'maxfiles' => $maxfiles,
-                'maxbytes' => $maxbytes
-            ]
+            self::$_options
         );
 
         $fs = get_file_storage();

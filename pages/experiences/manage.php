@@ -24,7 +24,7 @@ require_login();
 global $CFG, $PAGE, $OUTPUT , $USER;
 
 $experience_title = optional_param('experiencetitle', "", PARAM_RAW);
-$experience_id = optional_param('id', 0, PARAM_INT);
+$id = optional_param('id', 0, PARAM_INT);
 
 // Seting the page url and context
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/manage.php', ['id' => $id]));
@@ -36,7 +36,7 @@ echo $OUTPUT->header();
 // Set tiny configs in DOM
 (new tiny_editor_handler)->get_config_editor(['maxfiles' => 1]);
 // Set filemanager in M variable
-(new filemanager_handler)->init_filemanager();
+(new filemanager_handler($id ?? null))->init("experience_picture");
 
 if (!$id) {
     $template_context = [
@@ -46,6 +46,10 @@ if (!$id) {
     ];
 } else {
     $experience = Experience::get_experience($id);
+
+    if (!$experience) {
+        throw new moodle_exception('Experience not found');
+    }
     $template_context = [
         "experience" => $experience
     ];

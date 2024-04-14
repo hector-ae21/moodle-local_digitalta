@@ -151,18 +151,15 @@ class Experience
             $transformedTags = array_map(function($tag) {
                 return (object)[
                     'name' => $tag->name,
-                    'color' => '#b0b0b0',
                     'id' => $tag->id
                 ];
             }, array_values($tags));
-            $visibilityTag = new stdClass();
-            $visibilityTag->name = $experience->visible ? 'Public' : 'Private';
-            $visibilityTag->color = '#b0b0b0';
-            $languageTag = new stdClass();
-            $languageTag->name = $experience->lang;
-            $languageTag->color = '#b0b0b0';
+            $experience->fixed_tags = [
+                ['name' => $experience->visible ? 'Public' : 'Private'],
+                ['name' => $experience->lang]
+            ];
 
-            $experience->tags = array_values(array_merge(array($visibilityTag, $languageTag), $transformedTags));
+            $experience->tags = array_values($transformedTags);
 
             $experience->pictureurl = self::get_picture_url($experience);
             $experience->reactions = Reaction::get_reactions_for_render_experience($experience->id);
@@ -203,7 +200,7 @@ class Experience
 
 
     /**
-     * Add an experience
+     * Add or update an experience
      *
      * @param object $experience
      * @return object
@@ -227,10 +224,10 @@ class Experience
         $record->timemodified = date('Y-m-d H:i:s', time());
 
 
-        if($experience->id) {
-            $record->id = $experience->id;
-            $record->userid = $experience->userid;
-            $record->timecreated = $experience->timecreated;
+        if($old_experience = $DB->get_record(self::$table, ['id' => $experience->id])){
+            $record->id = $old_experience->id;
+            $record->userid = $old_experience->userid;
+            $record->timecreated = $old_experience->timecreated;
             $DB->update_record(self::$table, $record);
             if ($experience->tags) {
                 ExperienceTag::update_experience_tags($record->id, $experience->tags);

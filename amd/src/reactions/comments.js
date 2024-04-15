@@ -42,7 +42,7 @@ export async function updateUI() {
     const comments = response.comments.map((comment) => ({
       comment: comment.comment,
       userfullname: comment.user.fullname,
-      userprofileUrl: M.cfg.wwwroot + "/user/profile.php?id=" + comment.user.id,
+      userprofileurl: M.cfg.wwwroot + "/user/profile.php?id=" + comment.user.id,
     }));
 
     const html = await Template.render("local_dta/reactions/comments", { comments });

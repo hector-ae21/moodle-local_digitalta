@@ -33,7 +33,7 @@ class external_ourcases_edit extends external_api
     public static function ourcases_edit($ourcaseid, $status = 0, $tags = [])
     {
         
-        if (!$ourcase = OurCases::get_case($ourcaseid)) {
+        if (!$ourcase = OurCases::get_case($ourcaseid, false)) {
             return array('result' => false, 'error' => 'Our case not found');
         }
 

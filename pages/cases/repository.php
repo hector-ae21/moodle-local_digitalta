@@ -43,6 +43,7 @@ if (!empty($cases)) {
         $object->user = $case->user;
         $object->pictureurl = $case->pictureurl;
         $object->reactions = $case->reactions;
+        $object->tags = $case->tags;
         return $object;
     }, $cases));
 }

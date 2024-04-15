@@ -25,24 +25,24 @@
             {{/ourcase}}
         </div>
         {{#ourcase}}
-        <div class="card-body">
-            <h4 class="card-title text-primary">{{title}}</h4>
-            <div class="row">
-                <div class="col-md-12" id="sections-header">
-                    {{#sectionheader}} {{> local_dta/cases/view/header-view }} {{/sectionheader}}
-                </div>
-                <div class="col-md-12" id="sections-body">
-                    {{#sections}} {{> local_dta/cases/view/text-view}} {{/sections}}
+            <div class="card-body">
+                <h4 class="card-title text-primary">{{title}}</h4>
+                <div class="row">
+                    <div class="col-md-12" id="sections-header">
+                        {{#sectionheader}} {{> local_dta/cases/view/header-view }} {{/sectionheader}}
+                    </div>
+                    <div class="col-md-12" id="sections-body">
+                        {{#sections}} {{> local_dta/cases/view/text-view}} {{/sections}}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="m-3 d-flex">
-        {{#reactions}}
-        {{> local_dta/reactions/reactions-buttons}}
-        {{/reactions}}
-        {{ > local_dta/tags/tags-list}}
-        </div>
-        {{> local_dta/reactions/comments-list}}
+            <div class="m-3 d-flex">
+            {{#reactions}}
+            {{> local_dta/reactions/reactions-buttons}}
+            {{/reactions}}
+            {{ > local_dta/tags/tags-list}}
+            </div>
+            {{> local_dta/reactions/comments-list}}
         {{/ourcase}}
     </div>
 </div>

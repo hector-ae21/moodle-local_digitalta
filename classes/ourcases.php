@@ -97,10 +97,15 @@ class OurCases
      * @param int $id ID of the case
      * @return object Returns a record object
      */
-    public static function get_case($id)
+    public static function get_case($id, $fullInformation = true)
     {
         global $DB;
-        return $DB->get_record(self::$table, ['id' => $id]);
+        // add extra fields
+        $case = $DB->get_record(self::$table, ['id' => $id]);
+        if ($case && $fullInformation) {
+            $case = self::get_extra_fields([$case])[0];
+        }
+        return $case;
     }
 
     /**
@@ -338,11 +343,13 @@ class OurCases
             $case->pictureurl = self::get_picture_url($case);
             $case->reactions = Reaction::get_reactions_for_render_case($case->id);
             $tags = CasesTags::getTagsForCase($case->id);
-            $trasformedTags = [];
-            foreach ($tags as $tag) {
-                $trasformedTags[] = $tag->name;
-            }
-            $case->tags = $trasformedTags;
+            $transformedTags = array_map(function($tag) {
+                return (object)[
+                    'name' => $tag->name,
+                    'id' => $tag->id
+                ];
+            }, array_values($tags));
+            $case->tags = $transformedTags;
         }
         return $cases;
     }

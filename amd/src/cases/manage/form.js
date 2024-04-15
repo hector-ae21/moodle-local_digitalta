@@ -22,7 +22,7 @@ let urlView = null;
  * @return {void}
  */
 export function addTextSection() {
-    Templates.render('local_dta/cases/section-text-edit', {
+    Templates.render('local_dta/cases/manage/section-text-edit', {
         id: new Date().getTime(),
         description: null,
         exist: true
@@ -43,7 +43,7 @@ export function addTextSection() {
 export function changeSectionToEdit(toView = false, id) {
     return new Promise((resolve, reject) => {
         const description = toView ? $(`#content_${id}`).html() : $(`#content_${id}`).val();
-        const template = toView ? 'local_dta/cases/section-text-edit' : 'local_dta/cases/section-text-view';
+        const template = toView ? 'local_dta/cases/manage/section-text-edit' : 'local_dta/cases/manage/section-text-view';
         Templates.render(template, {id, description})
             .then((html) => {
                 $(`#section_${id}`).replaceWith(html);
@@ -65,7 +65,7 @@ export function changeSectionToEdit(toView = false, id) {
  */
 function changeSectionToNewId(id, toId) {
     const description = $(`#content_${id}`).val();
-    Templates.render("local_dta/cases/section-text-view",
+    Templates.render("local_dta/cases/manage/section-text-view",
         {id: toId, description, exist: true}).then((html) => {
            return $(`#section_${id}`).replaceWith(html);
     }).fail(Notification.exception);

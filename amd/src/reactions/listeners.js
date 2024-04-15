@@ -1,7 +1,7 @@
 import $ from "jquery";
 import { SELECTORS } from "./selectors";
 import { toggle } from "./likes_dislikes";
-import { sendComment, updateCommentsUI } from "./comments";
+import { sendComment, updateUI as updateCommentsUI } from "./comments";
 import { sendReport } from "./reports";
 
 /**

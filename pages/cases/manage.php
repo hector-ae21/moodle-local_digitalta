@@ -45,13 +45,13 @@ echo $OUTPUT->header();
 if ($experienceid) {
     // IF EXPERIENCE EXISTS
     if (!$experience = Experience::get_experience($experienceid)) {
-        throw new moodle_exception('invalidcases', 'local_dta');
+        throw new moodle_exception('invalidexperience', 'local_dta');
     }
 
     if (!$ourcase = OurCases::get_case_by_experience($experienceid)) {
-        $ourcase = OurCases::add_with_experience($experienceid, date("Y-m-d H:i:s"), $USER->id);
+        $ourcase = OurCases::add_with_experience($experienceid, $USER->id);
     }
-
+    
     $sections = array_values(OurCases::get_sections_text($ourcase->id));
 
     if (!$section_header = OurCases::get_section_header($ourcase->id)) {
@@ -65,7 +65,7 @@ if ($experienceid) {
         'ourcase' => $ourcase,
     ];
 
-    echo $OUTPUT->render_from_template('local_dta/cases/manage-with-experience', $templateContext);
+    echo $OUTPUT->render_from_template('local_dta/cases/manage/with-experience', $templateContext);
 } elseif ($case) {
     // IF CASE EXISTS
     if (!$ourcase = OurCases::get_case($case)) {

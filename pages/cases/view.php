@@ -10,9 +10,11 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/ourcases.php');
 require_once(__DIR__ . './../../classes/reactions.php');
+require_once(__DIR__ . './../../classes/constants.php');
 
 use local_dta\OurCases;
 use local_dta\Reaction;
+use local_dta\CONSTANTS;
 
 require_login();
 
@@ -25,7 +27,7 @@ $strings = get_strings(['ourcases_header', 'ourcases_title'], "local_dta");
 $PAGE->set_url(new moodle_url('/local/dta/pages/cases/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->ourcases_title);
-$PAGE->requires->js_call_amd('local_dta/cases/reactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
 
 
 echo $OUTPUT->header();
@@ -48,6 +50,7 @@ $picture->size = 101;
 $user->imageurl = $picture->get_url($PAGE)->__toString();
 
 $templateContext = [
+    'instance' => CONSTANTS::REACTIONS_INSTANCES['CASE'],
     'sections' => $sections,
     'sectionheader' => $section_header,
     'ourcase' => $ourcase,

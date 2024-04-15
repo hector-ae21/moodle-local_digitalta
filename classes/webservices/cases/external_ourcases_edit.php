@@ -22,7 +22,6 @@ class external_ourcases_edit extends external_api
         return new external_function_parameters(
             array(
                 'ourcaseid' => new external_value(PARAM_INT, 'Our Case ID'),
-                'experienceid ' => new external_value(PARAM_INT, 'Experience ID', VALUE_DEFAULT, 0),
                 'status' => new external_value(PARAM_INT, 'Status', VALUE_DEFAULT, 0),
                 'tags' => new external_multiple_structure(
                     new external_value(PARAM_INT, 'ID del elemento')  , 'Tags' , VALUE_DEFAULT, []
@@ -31,10 +30,9 @@ class external_ourcases_edit extends external_api
         );
     }
 
-    public static function ourcases_edit($ourcaseid, $experienceid = 0, $status = 0, $tags = [])
+    public static function ourcases_edit($ourcaseid, $status = 0, $tags = [])
     {
-        global $USER;
-
+        
         if (!$ourcase = OurCases::get_case($ourcaseid)) {
             return array('result' => false, 'error' => 'Our case not found');
         }
@@ -45,7 +43,6 @@ class external_ourcases_edit extends external_api
 
         $newcase = new stdClass();
         $newcase->id = $ourcaseid;
-        $newcase->experienceid = $experienceid ?? 0 ;
         $newcase->status = $status;
         $newcase->tags = $tags;
 

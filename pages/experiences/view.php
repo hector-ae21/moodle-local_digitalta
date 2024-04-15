@@ -11,6 +11,7 @@
 use local_dta\Experience;
 use local_dta\OurCases;
 use local_dta\Reflection;
+use local_dta\CONSTANTS;
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
@@ -33,7 +34,6 @@ $PAGE->requires->js_call_amd('local_dta/myexperience/view', 'init');
 if(!$experience = Experience::get_experience($id)) {
     throw new moodle_exception('invalidexperience', 'local_dta');
 }
-use local_dta\CONSTANTS;
 
 // Get the user and the user picture
 $user = get_complete_user_data("id", $experience->userid);
@@ -43,6 +43,7 @@ $experience_case = OurCases::get_cases_by_experience($id);
 $experience_case_info = [];
 foreach ($experience_case as $case) {
     $case = OurCases::get_section_header($case->id);
+    $case->id = $case->ourcaseid;
     array_push($experience_case_info, $case);
 }
 
@@ -88,12 +89,15 @@ echo $OUTPUT->header();
 
 $template_context = [
     "instance" => CONSTANTS::REACTIONS_INSTANCES['EXPERIENCE'],
+    'cases' => [
+        'data' => $experience_case_info,
+        'viewurl' => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id='
+    ],
     'experience' => [
         'data' => $experience,
         'pictureurl' => Experience::get_picture_url($experience),
         'deleteurl' => $CFG->wwwroot . "/local/dta/pages/experiences/delete.php?id=",
         'editurl' => $CFG->wwwroot . "/local/dta/pages/experiences/manage.php?id=",
-        'cases' => $experience_case_info,
     ],
     'user' => [
         'id' => $user->id,

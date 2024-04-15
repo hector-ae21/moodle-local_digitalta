@@ -11,11 +11,13 @@
 namespace local_dta;
 
 require_once(__DIR__ . '/cases_tags.php');
+require_once(__DIR__ . '/experience.php');
 require_once(__DIR__ . '/utils/date_utils.php');
 
 use stdClass;
 use Exception;
 use local_dta\CasesTags;
+use local_dta\Experience;
 use local_dta\utils\date_utils;
 
 class OurCases
@@ -134,7 +136,7 @@ class OurCases
     public static function add_with_experience($experienceid, $userid, $status = 0)
     {
         global $DB;
-        if (empty($experienceid) || empty($timecreated) || empty($userid)) {
+        if (empty($experienceid) ||empty($userid)) {
             return false;
         }
 

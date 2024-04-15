@@ -74,7 +74,7 @@ for ($i = 0; $i < count($allCases); $i++) {
 }
 
 $cases = array_map(function ($case) {
-    $case['casetext']->description = str_replace("<br>", " ", StringUtils::truncateHtmlText($case['casetext']->description, 100));
+    $case['casetext']->description = str_replace("<br>", " ", StringUtils::truncateHtmlText($case['casetext']->description, 200));
     return $case;
 }, $cases);
 

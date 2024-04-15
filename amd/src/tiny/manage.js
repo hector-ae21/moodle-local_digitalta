@@ -1,5 +1,7 @@
 import {setupForElementId} from "editor_tiny/editor";
 import {clean} from "./cleaner";
+import Notification from "core/notification";
+
 
 /**
  * Create tinyMCE in an elementId.
@@ -12,8 +14,14 @@ export const createTinyMCE = (elementId) => {
   if (!options) {
     return;
   }
-  setupForElementId({elementId, options});
-  clean();
+
+  setupForElementId({elementId, options}).then(() => {
+    clean();
+    return;
+  }).catch((error) => {
+    Notification.error(error);
+  });
+
 };
 
 /**
@@ -33,3 +41,5 @@ export const removeTinyMCEFromArea = (area) => {
 export const getTinyMCEContent = (area) => {
   return window.tinyMCE.get(area).getContent();
 };
+
+

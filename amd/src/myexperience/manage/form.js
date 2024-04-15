@@ -113,7 +113,6 @@ export async function saveExperience() {
         tags,
       });
       await saveFiles("featurePicture", "fileManager", response.experienceid, "experience_picture");
-
       Notification.addNotification({
         message: "Experience saved successfully.",
         type: "success",

@@ -63,6 +63,6 @@ $templateContext = [
 
 
 
-echo $OUTPUT->render_from_template('local_dta/cases/repository', $templateContext);
+echo $OUTPUT->render_from_template('local_dta/cases/repository/repository', $templateContext);
 
 echo $OUTPUT->footer();

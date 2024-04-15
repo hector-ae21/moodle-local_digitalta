@@ -146,6 +146,7 @@ $string['cancel'] = 'Cancel';
 $string['save'] = 'Save';
 $string['finish'] = 'Finish';
 $string['see_more'] = 'See More';
+$string['coming_soon'] = 'Coming soon...';
 
 // Date format strings
 

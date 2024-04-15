@@ -40,6 +40,8 @@ class external_reactions_get_comments extends external_api
         foreach ($comments as $comment) {
             $user = $DB->get_record('user', array('id' => $comment->userid));
             
+            $comment->instanceid = $instanceid;
+            
             $comment->user = new \stdClass();
             $comment->user->id = $user->id;
             $comment->user->username = $user->username;
@@ -98,7 +100,7 @@ class external_reactions_get_comments extends external_api
                     new external_single_structure(
                         array(
                             'id' => new external_value(PARAM_INT, 'ID'),
-                            'experienceid' => new external_value(PARAM_INT, 'Experience ID'),
+                            'instanceid' => new external_value(PARAM_INT, 'Instance ID'),
                             'user' => new external_single_structure(
                                 array(
                                     'id' => new external_value(PARAM_INT, 'ID'),

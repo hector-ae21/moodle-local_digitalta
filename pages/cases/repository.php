@@ -37,6 +37,7 @@ $full_cases = array();
 if (!empty($cases)) {
     $full_cases = array_values(array_map(function ($case) {
         $object = OurCases::get_section_header($case->id);
+        $object->id = $case->id;
         $object->description = StringUtils::truncateHtmlText($object->description, 500);
         $object->timecreated = $case->timecreated;
         $object->user = $case->user;

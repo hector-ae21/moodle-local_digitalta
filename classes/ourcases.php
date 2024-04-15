@@ -87,7 +87,7 @@ class OurCases
     public static function get_active_cases()
     {
         global $DB;
-        $cases = $DB->get_records(self::$table, ['status' => 1]);
+        $cases = $DB->get_records(self::$table, ['status' => 1], 'timecreated DESC');
         $cases = self::get_extra_fields($cases);
         return $cases;
     }
@@ -104,18 +104,6 @@ class OurCases
     }
 
     /**
-     * Get a specific case by experience
-     *
-     * @param int $id ID of the case
-     * @return object Returns a record object
-     */
-    public static function get_case_by_experience($experience)
-    {
-        global $DB;
-        return $DB->get_record(self::$table, ['experienceid' => $experience]);
-    }
-
-    /**
      * Get all cases by experience
      *
      * @param int $id ID of the case
@@ -124,7 +112,7 @@ class OurCases
     public static function get_cases_by_experience($experience)
     {
         global $DB;
-        return $DB->get_records(self::$table, ['experienceid' => $experience]);
+        return $DB->get_records(self::$table, ['experienceid' => $experience], 'timecreated DESC');
     }
     /**
      * Add a case

@@ -31,15 +31,15 @@ export function setEventListeners() {
     });
 
     $(document).on("click", "#sowhat_btn", function() {
-      saveTextSection($(this), 1);
+      saveTextSection($(this), 2);
     });
 
     $(document).on("click", "#action_btn", function() {
-      saveTextSection($(this), 1 );
+      saveTextSection($(this), 2);
     });
 
     $(document).on("click", "#learn_btn", function() {
-      saveTextSection($(this), 2);
+      saveTextSection($(this), 3);
     });
 
     // Import Buttons

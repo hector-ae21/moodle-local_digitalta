@@ -8,6 +8,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+ // WARNING!!!!! DONT TOUCH THIS FILE
+
 namespace local_dta\file;
 
 require_once("$CFG->dirroot/lib/form/filemanager.php");

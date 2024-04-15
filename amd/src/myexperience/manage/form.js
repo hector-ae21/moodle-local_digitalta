@@ -55,6 +55,9 @@ export function saveTextSection(btn, step) {
         message: "Section saved successfully.",
         type: "success",
       });
+      if (step === 3) {
+        window.location.href = "./view.php?id=" + $("#experience_id").val();
+      }
       activateStep(step + 1);
       return;
     })
@@ -112,6 +115,7 @@ export async function saveExperience() {
         visible: experienceVisibility,
         tags,
       });
+
       await saveFiles("featurePicture", "fileManager", response.experienceid, "experience_picture");
       Notification.addNotification({
         message: "Experience saved successfully.",
@@ -120,6 +124,7 @@ export async function saveExperience() {
 
       activateStep(2);
       $("#reflectionid").val(response.reflectionid);
+      $("#experience_id").val(response.experienceid);
     } catch (error) {
       Notification.exception(error);
     }

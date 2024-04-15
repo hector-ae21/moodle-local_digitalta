@@ -21,15 +21,12 @@ export function activateStep(stepNum = 1) {
   switch (stepNum) {
     case 1:
       showSection("what");
-      removeSkipButton();
       break;
     case 2:
       showSection("so_what");
-      addSkipButton();
       break;
     case 3:
       showSection("now_what");
-      removeSkipButton();
       break;
   }
 }
@@ -52,27 +49,5 @@ function showSection(section = "what") {
       $(this).addClass("d-none").removeClass("d-flex");
     }
   });
-}
-
-/**
- * Add skip button if in the "so_what" section.
- * @return {void}
- */
-function addSkipButton() {
-  const skipButton = $("<li>")
-    .text("Skip")
-    .addClass("skip-button btn btn-link")
-    .on("click", function () {
-      activateStep(3);
-    });
-  $("#stepbar").after(skipButton);
-}
-
-/**
- * Remove skip button if not in the "so_what" section.
- * @return {void}
- */
-function removeSkipButton() {
-  $(".skip-button").remove();
 }
 

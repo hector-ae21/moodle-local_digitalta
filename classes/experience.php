@@ -291,8 +291,8 @@ class Experience
         return new \moodle_url('/local/dta/pages/experiences/view.php', ['id' => $this->id]);
     }
 
-    // Get the three latest experiences
-    public static function get_latest_experiences($includePrivates = true)
+    // Get the latest experiences
+    public static function get_latest_experiences($limit = 3, $includePrivates = true)
     {
         global $DB;
         $latestExperiences = array_values(
@@ -302,7 +302,7 @@ class Experience
                 'timecreated DESC',
                 '*',
                 0,
-                3
+                $limit
             )
         );
         $latestExperiences = self::get_extra_fields($latestExperiences);

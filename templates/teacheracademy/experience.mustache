@@ -1,0 +1,34 @@
+<div class="experience col-xl-4 col-sm-6 col-12">
+	<div
+		class="hover-overlay-image ripple border-bottom d-flex justify-content-center align-items-center"
+		data-mdb-ripple-init
+		data-mdb-ripple-color="light"
+	>
+		<a href="{{experiences.viewurl}}{{id}}">
+            <div class="w-100 p-0 m-0" style="aspect-ratio: 2 / 1;">
+                {{#pictureurl}}
+                    <img
+                        src="{{{pictureurl}}}"
+                        alt="{{title}}"
+                        class="experience-icon img-fluid w-100 h-100 rounded"
+                    />
+                {{/pictureurl}}
+                {{^pictureurl}}
+                    <img
+                        src="{{themepixurl}}screenshot.png"
+                        alt="{{#str}} myexperience_picture_alt, local_dta {{/str}}"
+                        class="experience-icon img-fluid w-100 h-100 rounded"
+                    />
+                {{/pictureurl}}
+            </div>
+		</a>
+	</div>
+    <div class="experience-overlay position-absolute dta-inner p-0 m-0">
+        {{#featured}}
+            <span class="badge bg-warning">{{#str}} myexperience_featured, local_dta {{/str}}</span>
+        {{/featured}}
+    </div>
+	<div class="my-3">
+		<h5 title="{{title}}" class="experience-name"><a href="{{experiences.viewurl}}{{id}}">{{title}}</a></h5>
+	</div>
+</div>

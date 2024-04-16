@@ -8,6 +8,8 @@
  */
 namespace local_dta;
 
+use stdClass;
+
 class Tags
 {
     private $db;
@@ -23,7 +25,7 @@ class Tags
     /**
      * Get all tags
      *
-     * @return stdClass|null
+     * @return array|null
      */
     public static function getAllTags()
     {

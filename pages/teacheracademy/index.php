@@ -26,7 +26,6 @@ global $CFG, $PAGE, $OUTPUT;
 
 $strings = get_strings(['teacheracademy_header', 'teacheracademy_title'], "local_dta");
 
-// Setea el título de la página
 $PAGE->set_url(new moodle_url('/local/dta/pages/teacheracademy/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->teacheracademy_title);
@@ -34,73 +33,65 @@ $PAGE->requires->js_call_amd('local_dta/myexperience/reactions', 'init');
 
 echo $OUTPUT->header();
 
-$experiences = Experience::get_all_experiences(false);
-$experiences = array_map(function ($experience) {
-    $experience->description = StringUtils::truncateHtmlText($experience->description, 600);
+// Get experiences
+$featuredExperiences = Experience::get_extra_fields(Reaction::get_most_liked_experience(5));
+$featuredExperiences = array_map(function($experience) {
+    return $experience->id;
+}, $featuredExperiences);
+$experiences = Experience::get_latest_experiences(9, false);
+$experiences = array_map(function($experience) use ($featuredExperiences) {
+    $experience->description = StringUtils::truncateHtmlText($experience->description);
+    $experience->featured = (in_array($experience->id, $featuredExperiences)) ? true : false;
     return $experience;
 }, $experiences);
+array_multisort(
+    array_column($experiences, 'featured'), SORT_DESC,
+    array_column($experiences, 'timecreated'), SORT_DESC,
+    $experiences);
 
-// Latest experiences
-$latestExperiences = Experience::get_latest_experiences(false);
-$latestExperiences = array_map(function ($experience) {
-    $experience->description = StringUtils::truncateHtmlText($experience->description);
-    return $experience;
-}, $latestExperiences);
-// Featured Experiences
-$featuredExperiences = Experience::get_extra_fields(Reaction::get_most_liked_experience(5));
-$featuredExperiences = array_map(function ($experience) {
-    $experience->description = StringUtils::truncateHtmlText($experience->description, 350);
-    return $experience;
-}, $featuredExperiences);
-
+// Get tags
 $tags = Tags::getAllTags();
-$allCases = array_values(OurCases::get_active_cases());
+$tags = array_slice($tags, 0, 8, true);
+$tags = array_map(function($key, $tag) {
+    global $OUTPUT;
+    $tag->picture = $OUTPUT->image_url('dta-theme' . ($key + 1) . '-colored', 'local_dta');
+    return $tag;
+}, array_keys($tags), $tags);
 
-$cases = array();
-
-for ($i = 0; $i < count($allCases); $i++) {
-    $caseText = OurCases::get_sections_text($allCases[$i]->id, true);
-
-    $newCase = [
-        "id" => $allCases[$i]->id,
-        "experienceid" => $allCases[$i]->experienceid,
-        "userid" => $allCases[$i]->userid,
-        "date" => $allCases[$i]->timecreated,
-        "status" => $allCases[$i]->status,
-        "casetext" => array_values($caseText)[0],
-    ];
-
-    array_push($cases, $newCase);
-}
-
-$cases = array_map(function ($case) {
-    $case['casetext']->description = str_replace("<br>", " ", StringUtils::truncateHtmlText($case['casetext']->description, 200));
+// Get study cases
+$cases = array_values(OurCases::get_active_cases());
+$cases = array_map(function($case) {
+    $caseText = OurCases::get_sections_text($case->id, true);
+    $case->casetext = array_values($caseText)[0];
+    $case->casetext->description = str_replace("<br>",
+        " ",
+        StringUtils::truncateHtmlText($case->casetext->description, 100));
     return $case;
 }, $cases);
 
+// Get user data
 $user = get_complete_user_data("id", $USER->id);
 $picture = new user_picture($user);
 $picture->size = 101;
 $user->imageurl = $picture->get_url($PAGE)->__toString();
 
-
+// Template context
 $templateContext = [
     "user" => $user,
     "themepixurl" => $CFG->wwwroot . "/theme/dta/pix/",
     "experiences" => [
         "data" => $experiences,
-        "latest" => $latestExperiences,
-        "featured" => $featuredExperiences,
-        "showimageprofile" => true,
-        "showcontrols" => false,
-        "showcontrolsadmin" => is_siteadmin($USER),
         "addurl" => $CFG->wwwroot . "/local/dta/pages/experiences/manage.php",
         "viewurl" => $CFG->wwwroot . '/local/dta/pages/experiences/view.php?id=',
         "allurl" => $CFG->wwwroot . "/local/dta/pages/experiences/dashboard.php",
     ],
+    "themes" => [
+        "data" => $tags,
+        "allurl" => "#", // TODO: Add URL
+    ],
     "tags" => array_slice($tags, 0, 15, true),
     "ourcases" => [
-        "cases" => array_slice($cases, 0, 4),
+        "data" => array_slice($cases, 0, 4),
         "viewurl" => $CFG->wwwroot . "/local/dta/pages/cases/view.php?id=",
         "allurl" => $CFG->wwwroot . "/local/dta/pages/cases/repository.php"
     ]

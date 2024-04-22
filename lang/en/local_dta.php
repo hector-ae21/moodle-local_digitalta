@@ -60,6 +60,10 @@ $string['experience_view_reflectionmanager_title'] = 'Reflection';
 $string['experience_view_resrepo_title'] = 'Resources';
 $string['experience_view_resrepo_desc_nores'] = 'There are not resources available.';
 $string['experience_view_resrepo_action_tooltip'] = 'Import resources';
+$string['experience_view_block_modal_title'] = 'Block your experience';
+$string['experience_view_block_modal_confirm'] = 'Close my experience';
+$string['experience_view_block_modal_text'] = 'Are you sure you want to close this experience?';
+
 
 // Experience View Tooltips
 $string['experience_view_tooltip_ourcases'] = 'Link a case to this experience';

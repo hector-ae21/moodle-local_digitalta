@@ -21,6 +21,9 @@
             <a href="{{deleteurl}}{{data.id}}" class="mr-3 shadow-none" title="{{#str}}delete, local_dta{{/str}}">
                 <i class="fa fa-trash fa-lg text-danger"></i>
             </a>
+            <a href="#" class="mr-3 shadow-none" id="block-experience-button" title="{{#str}}finish, local_dta{{/str}}">
+                <i class="fa fa-lock fa-lg"></i>
+            </a>
             {{/experience.data.status}} 
             {{#experience.data.status}} 
             <a href="#" class="mr-3 shadow-none" id="open-experience-button" data-id="{{experience.data.id}}">

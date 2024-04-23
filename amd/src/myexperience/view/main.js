@@ -1,7 +1,10 @@
 import $ from 'jquery';
+import Notification from "core/notification";
 import ModalFactory from 'core/modal_factory';
-import {get_string} from 'core/str';
 import Templates from 'core/templates';
+import {get_string} from 'core/str';
+import {toggleStatus} from 'local_dta/repositories/experience_repository';
+
 
 let changeStatusModal = null;
 
@@ -9,7 +12,8 @@ let changeStatusModal = null;
 const SELECTORS = {
     BUTTONS: {
         block: '#block-experience-button',
-        confirmBlock: '#confirm-block-experience-button',
+        unblock: '#open-experience-button',
+        confirmBlockModal: '#confirm-block-experience-button',
     },
     INPUTS: {
         experienceid: '#experience-id',
@@ -18,7 +22,7 @@ const SELECTORS = {
 
 /**
  * Show the delete section modal
- * @param {number} experienceid
+ * @param {int} experienceid
  * @return {void}
  */
 async function showChangeStatusModal(experienceid) {
@@ -30,18 +34,34 @@ async function showChangeStatusModal(experienceid) {
 }
 
 /**
+ * Toggle the status of an experience
+ * @param {int} experienceid
+ * @return {void}
+ */
+async function toggleExperienceStatus(experienceid) {
+    try {
+        await toggleStatus(experienceid);
+        changeStatusModal.hide();
+        window.location.reload();
+        return;
+    } catch (error) {
+        Notification.exception(error);
+    }
+}
+
+/**
  * Set event listeners
  * @return {void}
  */
 function setEventListeners() {
     const experienceid = $(SELECTORS.INPUTS.experienceid).val();
 
-    $(document).on('click', SELECTORS.BUTTONS.block, () => {
+    $(document).on('click', `${SELECTORS.BUTTONS.block}, ${SELECTORS.BUTTONS.unblock}`, () => {
         showChangeStatusModal(experienceid);
     });
 
-    $(document).on('click', SELECTORS.BUTTONS.confirmBlock, () => {
-        changeStatusModal.hide();
+    $(document).on('click', SELECTORS.BUTTONS.confirmBlockModal, () => {
+        toggleExperienceStatus(experienceid);
     });
 }
 

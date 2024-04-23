@@ -81,7 +81,15 @@ $functions = [
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
-
+    ],
+    'local_dta_myexperience_toggle_status' => [
+        'classname'   => 'external_myexperience_toggle_status',
+        'methodname'  => 'myexperience_toggle_status',
+        'classpath'   => 'local/dta/classes/webservices/myexperience/external_myexperience_toggle_status.php',
+        'description' => 'Toggle the status of an experience',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
     ],
 
     // OUR CASES

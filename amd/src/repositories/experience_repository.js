@@ -23,3 +23,20 @@ export const experienceUpsert = args => {
     };
     return Ajax.call([request])[0];
 };
+
+/**
+ * Toggle the status of an experience.
+ *
+ * Valid args are:
+ * - experienceid: The experience id
+ * @method toggleStatus
+ * @param {number} experienceid The experience id.
+ * @return {Promise} Resolve with warnings.
+ */
+export const toggleStatus = (experienceid) => {
+    const request = {
+        methodname: 'local_dta_myexperience_toggle_status',
+        args: {id: experienceid}
+    };
+    return Ajax.call([request])[0];
+};

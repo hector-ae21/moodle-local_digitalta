@@ -150,8 +150,8 @@ class Experience
                 'imageurl' => $picture->get_url($PAGE)->__toString(),
                 'profileurl' => new \moodle_url('/user/profile.php', ['id' => $user->id])
             ];
-            $tags = ExperienceTag::getTagsForExperience($experience->id, $DB);
-            $transformedTags = array_map(function($tag) {
+            $tags = ExperienceTag::get_tags_for_experience($experience->id, $DB);
+            $transformedTags = array_map(function ($tag) {
                 return (object)[
                     'name' => $tag->name,
                     'id' => $tag->id
@@ -173,7 +173,8 @@ class Experience
     /**
      * Gets the picture url for the experience.
      */
-    public static function get_picture_url($experience) {
+    public static function get_picture_url($experience)
+    {
 
         $fs = get_file_storage();
         $files = $fs->get_area_files(
@@ -207,14 +208,46 @@ class Experience
      *
      * @param object $experience
      * @return object
+     * @throws Exception
      */
     public static function upsert($experience)
     {
-        global $DB;
-        if (empty($experience->title) || empty($experience->description) || empty($experience->context) || empty($experience->lang) ) {
-            throw new Exception('Error adding experience missing fields');
+        if (self::is_experience_data_incomplete($experience)) {
+            throw new Exception('Error adding experience: missing fields');
         }
 
+        $record = self::prepare_experience_record($experience);
+
+        if (self::experience_exists($experience)) {
+            self::update_experience($record, $experience);
+        } else {
+            $record->id = self::create_experience($record, $experience);
+        }
+
+        $record->reflectionid = Reflection::create_reflection_if_experience_exist($record->id)->id;
+
+        return new Experience($record);
+    }
+
+    /**
+     * Check if experience data is incomplete
+     *
+     * @param object $experience
+     * @return bool
+     */
+    private static function is_experience_data_incomplete($experience)
+    {
+        return empty($experience->title) || empty($experience->description) || empty($experience->context) || empty($experience->lang);
+    }
+
+    /**
+     * Prepare experience record
+     *
+     * @param object $experience
+     * @return object
+     */
+    private static function prepare_experience_record($experience)
+    {
         $record = new \stdClass();
         $record->userid = $experience->userid;
         $record->title = $experience->title;
@@ -225,30 +258,60 @@ class Experience
         $record->status = $experience->status ?? 0;
         $record->timecreated = date('Y-m-d H:i:s', time());
         $record->timemodified = date('Y-m-d H:i:s', time());
+        return $record;
+    }
 
+    /**
+     * Check if experience exists
+     *
+     * @param object $experience
+     * @return bool
+     */
+    private static function experience_exists($experience)
+    {
+        global $DB;
+        return $DB->record_exists(self::$table, ['id' => $experience->id]);
+    }
 
-        if($old_experience = $DB->get_record(self::$table, ['id' => $experience->id])){
-            $record->id = $old_experience->id;
-            $record->userid = $old_experience->userid;
-            $record->timecreated = $old_experience->timecreated;
-            $DB->update_record(self::$table, $record);
-            if ($experience->tags) {
-                ExperienceTag::update_experience_tags($record->id, $experience->tags);
-            }
-        } else {
-            $record->id = $DB->insert_record(self::$table, $record);
-            if ($experience->tags) {
-                foreach ($experience->tags as $tagId) {
-                    if ($tagId !== null) {
-                        ExperienceTag::assignTagToExperience($record->id, $tagId);
-                    }
+    /**
+     * Update an existing experience
+     *
+     * @param object $record
+     * @param object $experience
+     * @return void
+     */
+    private static function update_experience($record, $experience)
+    {
+        global $DB;
+        $old_experience = $DB->get_record(self::$table, ['id' => $experience->id]);
+        $record->id = $old_experience->id;
+        $record->user_id = $old_experience->user_id;
+        $record->time_created = $old_experience->time_created;
+        $DB->update_record(self::$table, $record);
+        if ($experience->tags) {
+            ExperienceTag::update_experience_tags($record->id, $experience->tags);
+        }
+    }
+
+    /**
+     * Create a new experience
+     *
+     * @param object $record
+     * @param object $experience
+     * @return int
+     */
+    private static function create_experience($record, $experience)
+    {
+        global $DB;
+        $record->id = $DB->insert_record(self::$table, $record);
+        if ($experience->tags) {
+            foreach ($experience->tags as $tag_id) {
+                if ($tag_id !== null) {
+                    ExperienceTag::assign_tag_to_experience($record->id, $tag_id);
                 }
             }
         }
-
-        $record->reflectionid = Reflection::create_reflection_if_experience_exist($record->id)->id;
-
-        return new Experience($record);
+        return $record->id;
     }
 
 
@@ -261,7 +324,7 @@ class Experience
     public static function delete_experience($experience)
     {
         global $DB, $USER;
-        if (!self::check_experience($experience->id)) {
+        if (!self::experience_exist($experience->id)) {
             throw new Exception('Error experience not found');
         }
         // Check permissions
@@ -277,27 +340,40 @@ class Experience
      * @param int $id
      * @return bool
      */
-    public static function check_experience($id)
+    public static function experience_exist($id)
     {
         global $DB;
-        return $DB->record_exists(self::$table, ['id' => $id]);
+
+        if ($DB->record_exists(self::$table, ['id' => $id])) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Get my experience url
+     * 
+     * @return \moodle_url
      */
     public function get_url()
     {
         return new \moodle_url('/local/dta/pages/experiences/view.php', ['id' => $this->id]);
     }
 
-    // Get the latest experiences
+    /**
+     * Get latest experiences
+     * 
+     * @param int $limit
+     * @param bool $includePrivates
+     * @return array
+     */
     public static function get_latest_experiences($limit = 3, $includePrivates = true)
     {
         global $DB;
         $latestExperiences = array_values(
             $DB->get_records(
-                self::$table, 
+                self::$table,
                 $includePrivates ? null : ['visible' => 1],
                 'timecreated DESC',
                 '*',
@@ -310,24 +386,30 @@ class Experience
     }
 
     /**
-     * Close the experience
+     * Change the status of an experience (public/private) (0/1)
+     * 
+     * @param int $experienceid
      */
-    public static function close_experience($experience)
+    public static function change_status_experience($experienceid)
     {
         global $DB, $USER;
-        if (!self::check_experience($experience->id)) {
+
+        if (!$experience = self::get_experience($experienceid)) {
             throw new Exception('Error experience not found');
         }
-        // Check permissions
+
         if (!local_dta_check_permissions($experience, $USER)) {
             throw new Exception('Error permissions');
         }
-        $experience->status = 1;
+
+        $newStatus = $experience->status === 1 ? 0 : 1;
         $record = new \stdClass();
         $record->id = $experience->id;
-        $record->status = 1;
-        $DB->update_record(self::$table, $record);
+        $record->status = $newStatus;
+
+        if (!$DB->update_record(self::$table, $record)) {
+            throw new Exception('Error updating experience');
+        };
         return new Experience($record);
     }
-
 }

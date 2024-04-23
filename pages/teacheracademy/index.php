@@ -50,7 +50,7 @@ array_multisort(
     $experiences);
 
 // Get tags
-$tags = Tags::getAllTags();
+$tags = Tags::get_all_tags();
 $tags = array_slice($tags, 0, 8, true);
 $tags = array_map(function($key, $tag) {
     global $OUTPUT;

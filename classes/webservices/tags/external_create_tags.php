@@ -29,7 +29,7 @@ class external_create_tags extends external_api
 
     public static function create_tags($tag)
     {
-        $tagid = Tags::addTag($tag);
+        $tagid = Tags::add_tag($tag);
         return ['id' => $tagid];
     }
 

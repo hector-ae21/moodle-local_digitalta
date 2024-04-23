@@ -27,7 +27,7 @@ class Tags
      *
      * @return array|null
      */
-    public static function getAllTags()
+    public static function get_all_tags()
     {
         global $DB;
         $tags = array_values($DB->get_records('digital_tags'));
@@ -40,7 +40,7 @@ class Tags
      * @param int $id
      * @return stdClass|null
      */
-    public function getTag($id)
+    public function get_tag($id)
     {
         $sql = "SELECT * FROM {digital_tags} WHERE id = ?";
         return $this->db->get_record_sql($sql, array($id));
@@ -52,7 +52,7 @@ class Tags
      * @param string $tag
      * @return bool
      */
-    public static function addTag($tag)
+    public static function add_tag($tag)
     {
         global $DB;
         if (empty($tag)) {
@@ -73,7 +73,7 @@ class Tags
      * @param string $tag
      * @return bool
      */
-    public function updateTag($id, $tag)
+    public function update_tag($id, $tag)
     {
         if (empty($tag)) {
             return false;
@@ -92,7 +92,7 @@ class Tags
      * @param int $id
      * @return bool
      */
-    public function deleteTag($id)
+    public function delete_tag($id)
     {
         return $this->db->delete_records('digital_tags', array('id' => $id));
     }
@@ -104,7 +104,7 @@ class Tags
      * @param string $text
      * @return stdClass|null
      */
-    public static function getTagsByText($text)
+    public static function get_tags_by_text($text)
     {
         global $DB;
         $tags = array_values($DB->get_records_sql('SELECT * FROM {digital_tags} WHERE name LIKE ?', array($text)));

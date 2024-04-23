@@ -4,7 +4,7 @@ import Ajax from 'core/ajax';
  *
  * Valid args are:
  * - tag: The tag to create
- * @method getTags
+ * @method get_tags
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with tags.
  */

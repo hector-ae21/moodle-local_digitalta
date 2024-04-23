@@ -30,7 +30,7 @@ class external_get_tags extends external_api
     public static function get_tags($searchText = '%%')
     {
         $searchText = '%' . $searchText . '%';
-        $tags = Tags::getTagsByText($searchText) ?? [];
+        $tags = Tags::get_tags_by_text($searchText) ?? [];
         
         return $tags;
     }

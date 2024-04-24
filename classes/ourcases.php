@@ -342,7 +342,7 @@ class OurCases
             ];
             $case->pictureurl = self::get_picture_url($case);
             $case->reactions = Reaction::get_reactions_for_render_case($case->id);
-            $tags = CasesTags::getTagsForCase($case->id);
+            $tags = CasesTags::get_tags_for_case($case->id);
             $transformedTags = array_map(function($tag) {
                 return (object)[
                     'name' => $tag->name,

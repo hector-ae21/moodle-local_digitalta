@@ -109,10 +109,11 @@ export async function saveExperience() {
       const response = await experienceUpsert({
         id: experienceid ? experienceid : 0,
         title: experienceTitle,
-        description: experienceIntroduction,
-        context: experienceProblem,
         lang: experienceLang,
         visible: experienceVisibility,
+        description: experienceIntroduction,
+        context: experienceProblem,
+        status: 0,
         tags,
       });
 

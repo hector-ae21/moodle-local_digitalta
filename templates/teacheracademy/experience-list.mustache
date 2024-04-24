@@ -1,0 +1,13 @@
+<div class="mb-3">
+    <div class="d-flex justify-content-start">
+        <h2 class="text-secondary mb-4 dta-title">{{#str}} teacheracademy_title_experiences, local_dta {{/str}}</h2>
+    </div>
+    <div class="experiences row p-0 mx-0">
+        {{#experiences.data}}
+            {{> local_dta/teacheracademy/experience }}
+        {{/experiences.data}}
+    </div>
+    <div class="d-flex justify-content-end mt-3">
+        <a href="{{experiences.allurl}}" class="btn btn-primary">{{#str}} see_more, local_dta {{/str}}</a>
+    </div>
+</div>

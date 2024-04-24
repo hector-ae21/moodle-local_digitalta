@@ -25,19 +25,17 @@ $string['form_experience_tags'] = 'Tags';
 $string['form_experience_tags_placeholder'] = 'Select or create a tag...';
 $string['form_experience_selected_tags'] = 'Selected tags';
 
-
 // Experience delete form
 $string['form_experience_delete_header'] = 'Delete experience';
 $string['form_experience_delete_confirm'] = 'Are you sure you want to delete this experience?';
 $string['form_experience_delete_yes'] = 'Experience deleted successfully'; 
 $string['form_experience_delete_no'] = 'No';
 
-
 // Experiences
 $string['experiences_header'] = 'Experiences'; 
 $string['experiences_title'] = 'Experiences';
-$string['experiences_post_button'] = 'Post';
-$string['experiences_post_placeholder'] = 'Tell us your experience';
+$string['experiences_post_button'] = 'Share';
+$string['experiences_post_placeholder'] = 'Share your teaching experience with the community';
 
 // Profile
 $string['profile_header'] = 'My Experience';
@@ -48,6 +46,7 @@ $string['myexperience_add_new_experience'] = 'Add new experience';
 $string['myexperience_add_comment'] = 'Add a new comment...';
 $string['myexperience_picture_alt'] = 'Experience picture';
 $string['experience_not_found'] = 'Experience not found';
+$string['myexperience_featured'] = 'Featured';
 
 // Experience View
 $string['experience_view_ourcases_title'] = 'Our cases';
@@ -61,6 +60,11 @@ $string['experience_view_reflectionmanager_title'] = 'Reflection';
 $string['experience_view_resrepo_title'] = 'Resources';
 $string['experience_view_resrepo_desc_nores'] = 'There are not resources available.';
 $string['experience_view_resrepo_action_tooltip'] = 'Import resources';
+$string['experience_view_block_modal_title'] = 'Block your experience';
+$string['experience_view_block_modal_confirm'] = 'Close my experience';
+$string['experience_view_block_modal_text'] = 'Are you sure you want to close this experience?';
+
+
 // Experience View Tooltips
 $string['experience_view_tooltip_ourcases'] = 'Link a case to this experience';
 $string['experience_view_tooltip_mytutoring'] = 'Manage your tutoring sessions';
@@ -93,7 +97,6 @@ $string['experience_reflection_import_cases_searchbar_placeholder'] = 'Search a 
 $string['experience_reflection_import_cases_button'] = 'Import';
 $string['experience_reflection_import_cases_nocases'] = 'No cases found.';
 
-
 // Ourcases main
 $string['ourcases_header_title'] = 'Case title';
 $string['ourcases_header_description'] = 'Case description';
@@ -104,13 +107,11 @@ $string['ourcases_button_save'] = 'Save case';
 $string['ourcases_modal_save_title'] = 'Save case';
 $string['ourcases_modal_save_body'] = 'Are you ready to save this case?';
 
-
 // Experience delete form
 $string['form_case_delete_header'] = 'Delete case';
 $string['form_case_delete_confirm'] = 'Are you sure you want to delete this case?';
 $string['form_case_delete_yes'] = 'Case deleted successfully'; 
 $string['form_case_delete_no'] = 'No';
-
 
 // Ourcases repository
 $string['ourcases_repository_placeholder'] = 'Create a new case';
@@ -119,21 +120,21 @@ $string['ourcases_header'] = 'ourcases';
 $string['ourcases_title'] = 'Cases';
 $string['ourcases_add_new_case'] = 'Add new case';
 
-
 // Teacher Academy
 $string['teacheracademy_header'] = 'Teacher Academy';
 $string['teacheracademy_title'] = 'Teacher Academy';
+$string['teacheracademy_description'] = '<p>Welcome to the <span class="dta-highlighted">Teacher Academy</span>, where educators thrive together! Share your classroom experiences, connect with mentors, and explore real-world case studies. Reflect on your teaching methods and collaborate with our dynamic learning community. Let\'s transform education together!</p><p>Begin by sharing your experiences or exploring existing ones below. Refer to the <a href="{$a}" class="dta-highlighted">User Manual</a> for a comprehensive list of what the Learning Academy offers!</p>';
 $string['teacheracademy_featured_exps_title'] = 'Featured Experiences';
-$string['teacheracademy_themes_title'] = 'Themes';
-$string['teacheracademy_latest_exps_title'] = 'Latest Experiences';
-$string['teacheracademy_latest_cases_title'] = 'Latest Cases';
+$string['teacheracademy_title_themes'] = 'Themes';
+$string['teacheracademy_title_experiences'] = 'Experiences';
+$string['teacheracademy_title_cases'] = 'Study Cases';
+$string['teacheracademy_video_not_supported'] = 'Your browser does not support the video tag.';
 
 // Teacher Academy Tooltips
 $string['teacheracademy_tooltip_themes'] = 'Select a theme to filter experiences';
 
 // Reaction Buttons
 $string['reaction_buttons_flag_title'] = 'Report';
-
 
 // General
 $string['avatar_alt'] = 'User avatar';

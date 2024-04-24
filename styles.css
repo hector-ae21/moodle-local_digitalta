@@ -1,0 +1,73 @@
+/* ##### FONTS ##### */
+
+@import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
+@import url('https://fonts.googleapis.com/css?family=Oswald:400,700');
+
+/* ##### GENERAL ##### */
+
+body {
+    background-color: #FFFFFF;
+    font-family: 'Raleway', sans-serif;
+}
+
+.dta-inner {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.dta-highlighted {
+    color: #1382c5;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.dta-subtitle {
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+
+.dta-title {
+    color: #000000 !important;
+    font-family: 'Oswald', sans-serif;
+    line-height: 1em;
+    text-transform: uppercase;
+}
+
+/* ##### MAIN PAGE ##### */
+
+body#page-local-dta-pages-teacheracademy-index {
+    .themes {
+        .theme {            
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            .theme-overlay {
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+        }
+        .theme:hover {
+            transform: scale(1.1);
+            z-index: 1;
+        }
+    }
+
+    .experiences {
+        .experience {
+            .experience-icon {
+                object-fit: cover;
+            }
+            .experience-overlay {
+                left: 3em;
+                top: 1em;
+                transform: translate(-43%, -49%) !important;
+            }
+        }
+    }
+}
+
+/* ##### POST CONTAINER ##### */
+.post-container {
+    input::placeholder {
+        font-size: 0.8em;
+    }
+}

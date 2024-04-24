@@ -144,9 +144,9 @@ class Reflection extends Experience
      */
     public static function create_reflection_if_experience_exist($experienceid)
     {
-        if (!parent::check_experience($experienceid)) return false;
+        if (!parent::experience_exist($experienceid)) return false;
         if ($reflection = self::check_exist_reflection_experience($experienceid)) return $reflection;
-        if (!self::check_experience_own($experienceid)) return false;
+        if (!self::experience_exist_own($experienceid)) return false;
         global $USER;
         return self::create_reflection($USER->id, $experienceid);
     }
@@ -177,7 +177,7 @@ class Reflection extends Experience
      * @param int $experienceid
      * @return bool
      */
-    public static function check_experience_own($experienceid)
+    public static function experience_exist_own($experienceid)
     {
         global $USER;
         $experience = parent::get_experience_header($experienceid);

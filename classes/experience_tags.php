@@ -23,7 +23,7 @@ class ExperienceTag
      * @param int $tagId
      * @return bool
      */
-    public static function assignTagToExperience($experienceId, $tagId)
+    public static function assign_tag_to_experience($experienceId, $tagId)
     {
         global $DB;
         $record = new \stdClass();
@@ -41,20 +41,20 @@ class ExperienceTag
             return (int)$tag;
         }, $tags);
 
-        $currentTags = self::getTagsForExperience($experienceId, $DB);
+        $currentTags = self::get_tags_for_experience($experienceId, $DB);
         $currentTagIds = array_map(function ($tag) {
             return $tag->id;
         }, $currentTags);
 
         foreach ($currentTags as $tag) {
             if (!in_array($tag->id, $tags)) {
-                self::removeTagFromExperience($experienceId, $tag->id, $DB);
+                self::remove_tag_from_experience($experienceId, $tag->id, $DB);
             }
         }
 
         foreach ($tags as $tag) {
             if (!in_array($tag, $currentTagIds)) {
-                self::assignTagToExperience($experienceId, $tag);
+                self::assign_tag_to_experience($experienceId, $tag);
             }
         }
     }
@@ -66,7 +66,7 @@ class ExperienceTag
      * @param int $tagId
      * @return bool
      */
-    public static function removeTagFromExperience($experienceId, $tagId, $db)
+    public static function remove_tag_from_experience($experienceId, $tagId, $db)
     {
         $conditions = array('experienceid' => $experienceId, 'tagid' => $tagId);
         return $db->delete_records(self::$table, $conditions);
@@ -78,7 +78,7 @@ class ExperienceTag
      * @param int $experienceId
      * @return array
      */
-    public static function getTagsForExperience($experienceId, $db)
+    public static function get_tags_for_experience($experienceId, $db)
     {
         $sql = "SELECT t.*
                 FROM {digital_tags} t
@@ -93,7 +93,7 @@ class ExperienceTag
      * @param int $tagId
      * @return array
      */
-    public static function getExperiencesForTag($tagId, $db) {
+    public static function get_experiences_for_tag($tagId, $db) {
         $sql = "SELECT e.*
                 FROM {digital_experience} e
                 JOIN {experience_tag} et ON e.id = et.experienceid

@@ -24,7 +24,7 @@ class CasesTags
      * @param int $tagId
      * @return bool
      */
-    public static function assignTagToCase($caseId, $tagId)
+    public static function assign_tag_to_case($caseId, $tagId)
     {
         global $DB;
         $record = new \stdClass();
@@ -47,20 +47,20 @@ class CasesTags
             return (int)$tag;
         }, $tags);
 
-        $currentTags = self::getTagsForCase($caseId, $DB);
+        $currentTags = self::get_tags_for_case($caseId, $DB);
         $currentTagIds = array_map(function ($tag) {
             return $tag->id;
         }, $currentTags);
 
         foreach ($currentTags as $tag) {
             if (!in_array($tag->id, $tags)) {
-                self::removeTagFromCase($caseId, $tag->id, $DB);
+                self::remove_tag_from_case($caseId, $tag->id, $DB);
             }
         }
 
         foreach ($tags as $tag) {
             if (!in_array($tag, $currentTagIds)) {
-                self::assignTagToCase($caseId, $tag);
+                self::assign_tag_to_case($caseId, $tag);
             }
         }
     }
@@ -71,7 +71,7 @@ class CasesTags
      * @param object $DB
      * @return array
      */
-    public static function getTagsForCase($caseId)
+    public static function get_tags_for_case($caseId)
     {
         global $DB;
         return $DB->get_records_sql('SELECT t.id, t.name FROM {digital_tags} t JOIN {digital_cases_tag} ct ON t.id = ct.tagid WHERE ct.caseid = ?', [$caseId]);
@@ -84,7 +84,7 @@ class CasesTags
      * @param object $db
      * @return bool
      */
-    public static function removeTagFromCase($caseId, $tagId, $db)
+    public static function remove_tag_from_case($caseId, $tagId, $db)
     {
         $conditions = array('caseid' => $caseId, 'tagid' => $tagId);
         return $db->delete_records(self::$table, $conditions);

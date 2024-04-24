@@ -202,6 +202,13 @@ class Reaction
 
         return $DB->get_records_sql($sql, array($caseid)); 
     }
+
+    /**
+     * Get all reports for a specific experience
+     * 
+     * @param int $caseid ID of the case
+     * @return array Returns an array of records
+     */
     public static function get_reports_for_case($caseid)
     {
         global $DB;

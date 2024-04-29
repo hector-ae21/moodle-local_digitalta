@@ -13,9 +13,8 @@ class CONSTANTS{
         "NOW_WHAT_REFLECTION" => 3,
         "EXTRA" => 6 
     ]; 
-    // TYPES OF SECTIONS 
-    // OF REFLECTION 
-    // Right now we are just using TEXT But we can add more types in future
+    // TYPES OF SECTIONS OF REFLECTION 
+    // RIGHT NOW ONLY TEXT IS IMPLEMENTED
     const SECTION_TYPES = [
         "TEXT" => [
             "ID" => 1,
@@ -41,5 +40,12 @@ class CONSTANTS{
             "FOLDER" => "documents"
         ]
     ];
+    // TYPES OF THEMES_CONTEXT
+    const THEMES_CONTEXT = [
+        "EXPERIENCE" => 1,
+        "CASE" => 2,
+        "RESOURCE" => 3
+    ];
+
 
 }

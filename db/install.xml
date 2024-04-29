@@ -213,6 +213,7 @@
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" />
                 <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" />
+                <FIELD NAME="timecreated" TYPE="datetime" NOTNULL="true" SEQUENCE="false" COMMENT="Time created" />      
                 <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" />
             </FIELDS>
             <KEYS>
@@ -225,6 +226,7 @@
                 <FIELD NAME="type" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" />
                 <FIELD NAME="instance" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" />
                 <FIELD NAME="theme" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" />
+                <FIELD NAME="timecreated" TYPE="datetime" NOTNULL="true" SEQUENCE="false" COMMENT="Time created" />
                 <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" />
             </FIELDS>
             <KEYS>

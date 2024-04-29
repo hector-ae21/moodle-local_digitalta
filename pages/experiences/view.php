@@ -111,7 +111,7 @@ $template_context = [
     'isview' => true,
     'isadmin' => is_siteadmin($USER),
     'showcontrols' => $experience->userid == $USER->id,
-    'iconsurl' => $CFG->wwwroot . '/local/dta/pages/icons/',
+    'iconsurl' => $CFG->wwwroot . '/local/dta/icons/',
     'createcaseurl' => $CFG->wwwroot . "/local/dta/pages/cases/manage.php?id=",
     'createreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection.php?id=',
     'viewreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection/view.php?id=',

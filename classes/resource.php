@@ -8,7 +8,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// This file controls DTA files as an instance of the repository and digital_file table in the database
+// This file controls DTA resource as an instance of the repository and digital_resource table in the database
 // NOT TO BE CONFUSED WITH THE FILEMANAGER HANDLER OR MOODLE FILE API
 
 namespace local_dta;

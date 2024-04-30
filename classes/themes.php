@@ -65,7 +65,7 @@ class Themes
     {
         if (empty($theme->name)) {
             return false;
-        }
+        }   
         return true;
     }
 

@@ -16,11 +16,15 @@ defined('MOODLE_INTERNAL') || die();
 
 use Exception;
 
+/**
+ * Class theme_context
+ *
+ * This class handles operations related to theme contexts.
+ */
 class Themes
 {
     /** @var string The name of the database table storing the themes. */
     private static $table = 'digital_themes';
-
 
     /**
      * Get a theme by its ID.
@@ -138,10 +142,117 @@ class Themes
         $DB->delete_records(self::$table, array('id' => $theme_id));
     }
 }
-
-class theme_context{
-    
+/**
+ * Class theme_context
+ *
+ * This class handles operations related to theme contexts.
+ */
+class theme_context
+{
     /** @var string The name of the database table storing the themes context. */
     private static $table_context = 'digital_themes_context';
 
+    /** @var array Possible types of context */
+    private static $types = CONSTANTS::THEMES_CONTEXT;
+
+    /**
+     * Get a theme context by its type and instance.
+     *
+     * @param int $type The type of the theme context.
+     * @param int $instance The instance of the theme context.
+     * @return object The retrieved theme context object.
+     */
+    public static function get_theme_context(int $type, int $instance): object
+    {
+        global $DB;
+
+        if (!self::is_valid_type($type)) {
+            throw new Exception('Invalid theme context, invalid type');
+        }
+
+        $theme_context = $DB->get_record(self::$table_context, array('type' => $type, 'instance' => $instance));
+
+        return $theme_context;
+    }
+
+
+    /**
+     * Adds a theme context to the database.
+     *
+     * @param object $theme_context The theme context object to be added.
+     * @return int The ID of the inserted theme context.
+     * @throws Exception When the theme context is invalid.
+     */
+    public static function add_theme_context(object $theme_context): int
+    {
+        global $DB;
+
+        if (!self::is_valid_context($theme_context)) {
+            throw new Exception('Invalid theme context');
+        }
+
+        $theme_context_id = $DB->insert_record(self::$table_context, $theme_context);
+
+        return $theme_context_id;
+    }
+
+    /**
+     * Updates a theme context in the database.
+     *
+     * @param object $theme_context The theme context object to be updated.
+     * @throws Exception When the theme context is invalid.
+     */
+    public static function update_theme_context(object $theme_context): void
+    {
+        global $DB;
+
+        if (!self::is_valid_context($theme_context)) {
+            throw new Exception('Invalid theme context');
+        }
+
+        $DB->update_record(self::$table_context, $theme_context);
+    }
+
+    /**
+     * Deletes a theme context from the database.
+     *
+     * @param int $theme_context_id The ID of the theme context to be deleted.
+     */
+    public static function delete_theme_context(int $theme_context_id): void
+    {
+        global $DB;
+
+        $DB->delete_records(self::$table_context, array('id' => $theme_context_id));
+    }
+
+    /**
+     * Checks if a theme context is valid.
+     *
+     * @param object $theme_context The theme context object to be validated.
+     * @return bool True if the theme context is valid, false otherwise.
+     * @throws Exception When the theme context is invalid.
+     */
+    private static function is_valid_context(object $theme_context): bool
+    {
+        if (empty($theme_context->type) || empty($theme_context->instance) || empty($theme_context->theme)) {
+            throw new Exception('Invalid theme context, missing fields');
+        }
+
+        if (!self::is_valid_type($theme_context->type)) {
+            throw new Exception('Invalid theme context, invalid type');
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if a given type is valid.
+     *
+     * @param int $type The type to be validated.
+     * @return bool True if the type is valid, false otherwise.
+     */
+    private static function is_valid_type(int $type): bool
+    {
+        return in_array($type, self::$types);
+    }
 }

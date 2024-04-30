@@ -42,9 +42,9 @@ class CONSTANTS{
     ];
     // TYPES OF THEMES_CONTEXT
     const THEMES_CONTEXT = [
-        "EXPERIENCE" => 1,
-        "CASE" => 2,
-        "RESOURCE" => 3
+        "EXPERIENCE",
+        "CASE",
+        "RESOURCE"
     ];
 
 

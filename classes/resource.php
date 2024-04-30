@@ -41,7 +41,7 @@ class Resource {
     private $timemodified;
     
     /** @var string The name of the database table storing the resources. */
-    private static $table = 'digital_resource';
+    private static $table = 'digital_resources';
 
     /** @var string The name of the database table storing the resources. */
     private static $table_tags = 'digital_resource_tags';

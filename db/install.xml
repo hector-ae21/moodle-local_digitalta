@@ -235,5 +235,20 @@
                 <KEY NAME="theme" TYPE="foreign" FIELDS="theme" REFTABLE="digital_themes" REFFIELDS="id" />
             </KEYS>
         </TABLE>
+        <TABLE NAME="digital_resources" COMMENT="Resource Table">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Unique identifier"/>
+                <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Name of the resource"/>
+                <FIELD NAME="description" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Description of the resource"/>
+                <FIELD NAME="type" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Type of the resource"/>
+                <FIELD NAME="path" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Path of the resource"/>
+                <FIELD NAME="lang" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Language of the resource"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Time created"/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Time modified"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key"/>
+            </KEYS>
+        </TABLE>
     </TABLES>
 </XMLDB>

@@ -13,6 +13,9 @@
 
 namespace local_dta;
 
+require_once(__DIR__ . '/constants.php');
+
+use \local_dta\CONSTANTS;
 use Exception;
 
 class Resource {
@@ -49,11 +52,11 @@ class Resource {
     /**
      * Constructor.
      * 
-     * @param $experience array The data to populate the experience with.
+     * @param $resource mixed The resource to construct.
      */
-    public function __construct($experience = null)
+    public function __construct($resource = null)
     {
-        foreach ($experience as $key => $value) {
+        foreach ($resource as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->{$key} = ($key === 'description' && is_array($value))
                     ? $value['text']
@@ -99,13 +102,13 @@ class Resource {
      */
     public static function upsert($resource) : object{
         if (self::is_resource_metadata_incomplete($resource)) {
-            throw new Exception('Error adding experience: missing fields');
+            throw new Exception('Error adding resources: missing fields');
         }
 
         $record = self::prepare_metadata_record($resource);
     
         if (self::resource_exists($resource)) {
-        
+            //TODO update 
         } else {
             // TODO add tags, theme and create file
             // Create file to set path
@@ -126,7 +129,8 @@ class Resource {
     private static function is_resource_metadata_incomplete(object $resource): bool {
         // TODO add tags, theme and path to the validation if needed if not remove this 😁
         if (!self::check_resource_type($resource->type)) {
-            return true;
+            echo $resource->type;
+            throw new Exception('Invalid resource type');
         }
 
         return !isset($resource->name) || !isset($resource->type) || !isset($resource->lang)
@@ -156,11 +160,13 @@ class Resource {
      * @throws Exception If the resource type is invalid.
      */
     private static function prepare_metadata_record(object $resource) : object{
+        global $USER;
         if (!self::check_resource_type($resource->type)) {
             throw new Exception('Invalid resource type');
         }
         $record = new \stdClass();
         $record->name = $resource->name;
+        $record->userid = $USER->id; 
         $record->description = $resource->description;
         $record->type = $resource->type;
         $record->lang = $resource->lang;
@@ -226,7 +232,7 @@ class Resource {
      */
     public static function get_all_resources() : array{
         global $DB;
-        return $DB->get_records(self::$table);
+        return array_values($DB->get_records(self::$table));
     }
 }
 

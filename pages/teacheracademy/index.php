@@ -67,7 +67,7 @@ $cases = array_map(function($case) {
     $case->casetext = array_values($caseText)[0];
     $case->casetext->description = str_replace("<br>",
         " ",
-        StringUtils::truncateHtmlText($case->casetext->description, 100));
+        StringUtils::truncateHtmlText($case->casetext->description, 300));
     return $case;
 }, $cases);
 

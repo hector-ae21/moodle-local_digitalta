@@ -182,12 +182,18 @@ function xmldb_local_dta_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024040302, 'local', 'dta');
     }
 
-    if ($oldversion < 2024041000) {
+    if ($oldversion < 2024042900) {
         // Table for storing resources
-        $table = new xmldb_table('digital_resources_repository');
+        $table = new xmldb_table('digital_resources');
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
-        $table->add_field('path', XMLDB_TYPE_TEXT, null, null, null, null, null, 'id');
-        $table->add_field('source', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'path');
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'id');
+        $table->add_field('description', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null, 'name');
+        $table->add_field('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'description');
+        $table->add_field('path', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'type');
+        $table->add_field('lang', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'path');
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, 'lang');
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, 'timecreated');
+
 
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
 

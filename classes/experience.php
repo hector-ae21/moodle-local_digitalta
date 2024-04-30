@@ -11,6 +11,7 @@
 namespace local_dta;
 
 require_once(__DIR__ . '/../../../config.php');
+require_once(__DIR__ . '/../lib.php');
 require_once(__DIR__ . '/reactions.php');
 require_once(__DIR__ . '/reflection.php');
 require_once(__DIR__ . '/experience_tags.php');
@@ -394,15 +395,14 @@ class Experience
     {
         global $DB, $USER;
 
-        if (!$experience = self::get_experience($experienceid)) {
+        if (!$experience = self::get_experience_header($experienceid)) {
             throw new Exception('Error experience not found');
         }
 
         if (!local_dta_check_permissions($experience, $USER)) {
             throw new Exception('Error permissions');
         }
-
-        $newStatus = $experience->status === 1 ? 0 : 1;
+        $newStatus = $experience->status == 1 ? 0 : 1;
         $record = new \stdClass();
         $record->id = $experience->id;
         $record->status = $newStatus;

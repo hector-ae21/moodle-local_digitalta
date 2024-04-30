@@ -81,7 +81,15 @@ $functions = [
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
-
+    ],
+    'local_dta_myexperience_toggle_status' => [
+        'classname'   => 'external_myexperience_toggle_status',
+        'methodname'  => 'myexperience_toggle_status',
+        'classpath'   => 'local/dta/classes/webservices/myexperience/external_myexperience_toggle_status.php',
+        'description' => 'Toggle the status of an experience',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
     ],
 
     // OUR CASES
@@ -148,6 +156,17 @@ $functions = [
         'methodname'  => 'upload_file_from_draft',
         'classpath'   => 'local/dta/classes/webservices/files/external_upload_file_from_draft.php',
         'description' => 'Upload a file',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
+    // RESOURCES
+    'local_dta_resources_upsert' => [
+        'classname'   => 'external_resources_upsert',
+        'methodname'  => 'resources_upsert',
+        'classpath'   => 'local/dta/classes/webservices/resources/external_resources_upsert.php',
+        'description' => 'upsert a resource',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,

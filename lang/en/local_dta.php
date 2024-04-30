@@ -153,3 +153,8 @@ $string['coming_soon'] = 'Coming soon...';
 
 $string['date_timeago'] = '{$a} ago';
 $string['date_justnow'] = 'Just now';
+
+// Repository 
+
+$string['repository_title'] = 'Repository';
+$string['repository_header'] = 'Repository';

@@ -71,7 +71,6 @@ function xmldb_local_dta_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024031306, 'local', 'dta');
     }
 
-
     if ($oldversion < 2024032001) {
 
         // Define table digital_cases_comments to be created.
@@ -183,21 +182,74 @@ function xmldb_local_dta_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024040302, 'local', 'dta');
     }
 
-    if ($oldversion < 2024041000) {
+    if ($oldversion < 2024043000) {
         // Table for storing resources
-        $table = new xmldb_table('digital_resources_repository');
+        $table = new xmldb_table('digital_resources');
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
-        $table->add_field('path', XMLDB_TYPE_TEXT, null, null, null, null, null, 'id');
-        $table->add_field('source', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'path');
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'id');
+        $table->add_field('description', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null, 'name');
+        $table->add_field('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'description');
+        $table->add_field('path', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'type');
+        $table->add_field('lang', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'path');
+        $table->add_field('timecreated', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
+        $table->add_field('timemodified', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
+
 
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
 
 
         if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
         }
 
-        upgrade_plugin_savepoint(true, 2024041000, 'local', 'dta');
+        upgrade_plugin_savepoint(true, 2024043000, 'local', 'dta');
+    }
+
+    if ($oldversion < 2024042600) {
+
+        // Define table digital_themes to be created.
+        $table = new xmldb_table('digital_themes');
+
+        // Adding fields to table digital_themes.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
+        $table->add_field('timemodified', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
+
+        // Adding keys to table digital_themes.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        // Conditionally launch create table for digital_themes.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Define table digital_themes_context to be created.
+        $table = new xmldb_table('digital_themes_context');
+
+        // Adding fields to table digital_themes_context.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('instance', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('theme', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
+        $table->add_field('timemodified', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
+        
+        // Adding keys to table digital_themes_context.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('theme', XMLDB_KEY_FOREIGN, ['theme'], 'digital_themes', ['id']);
+        $table->add_key('typeinstancetheme', XMLDB_KEY_UNIQUE, ['type', 'instance', 'theme']);
+
+        // Conditionally launch create table for digital_themes_context.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Dta savepoint reached.
+        upgrade_plugin_savepoint(true, 2024042600, 'local', 'dta');
+
     }
 
 

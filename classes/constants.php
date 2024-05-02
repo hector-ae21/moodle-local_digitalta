@@ -23,29 +23,9 @@ class CONSTANTS{
     ];
     // TYPES OF FILES 
     const FILE_TYPES = [
-        "IMAGE" => [
-            "ID" => 1,
-            "FOLDER" => "images"
-        ],
-        "VIDEO" => [
-            "ID" => 2,
-            "FOLDER" => "videos"
-        ],
-        "AUDIO" => [
-            "ID" => 3,
-            "FOLDER" => "audios"
-        ],
-        "DOCUMENT" => [
-            "ID" => 4,
-            "FOLDER" => "documents"
-        ]
+        "IMAGE",
+        "VIDEO",
+        "URL",
+        "DOCUMENT"
     ];
-    // TYPES OF THEMES_CONTEXT
-    const THEMES_CONTEXT = [
-        "EXPERIENCE",
-        "CASE",
-        "RESOURCE"
-    ];
-
-
 }

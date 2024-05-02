@@ -160,5 +160,16 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+
+    // RESOURCES
+    'local_dta_resources_upsert' => [
+        'classname'   => 'external_resources_upsert',
+        'methodname'  => 'resources_upsert',
+        'classpath'   => 'local/dta/classes/webservices/resources/external_resources_upsert.php',
+        'description' => 'upsert a resource',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     
 ];

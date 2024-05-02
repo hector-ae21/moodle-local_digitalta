@@ -1,25 +1,42 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Themes class.
+ * Themes class
  *
  * @package   local_dta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// This class is used to manage the themes of the plugin
-
 namespace local_dta;
+
+require_once(__DIR__ . '/context.php');
+
+use stdClass;
+use Exception;
+use local_dta\Context;
 
 defined('MOODLE_INTERNAL') || die();
 
-use Exception;
-
 /**
- * Class theme_context
+ * This class is used to manage the themes of the plugin
  *
- * This class handles operations related to theme contexts.
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class Themes
 {
@@ -29,15 +46,13 @@ class Themes
     /**
      * Get a theme by its ID.
      *
-     * @param int $theme_id The ID of the theme.
-     * @return object The retrieved theme object.
+     * @param  int         $themeid The ID of the theme.
+     * @return object|bool The retrieved theme object.
      */
-    public static function get_theme(int $theme_id): object
+    public static function get_theme(int $themeid)
     {
         global $DB;
-
-        $theme = $DB->get_record(self::$table, array('id' => $theme_id));
-
+        $theme = $DB->get_record(self::$table, ['id' => $themeid]);
         return $theme;
     }
 
@@ -49,210 +64,155 @@ class Themes
     public static function get_themes(): array
     {
         global $DB;
-
         $themes = $DB->get_records(self::$table);
-
         return $themes;
     }
 
     /**
      * Check if a theme object is valid.
      *
-     * @param object $theme The theme object to validate.
-     * @return bool True if the theme is valid, false otherwise.
+     * @param  string $themename The theme to validate.
+     * @return bool   True if the theme is valid, false otherwise.
      */
-    public static function is_valid(object $theme): bool
+    public static function is_valid(string $themename): bool
     {
-        if (empty($theme->name)) {
+        if (empty($themename)) {
             return false;
-        }
+        }   
         return true;
     }
 
     /**
      * Add a new theme.
      *
-     * @param object $theme The theme object to add.
-     * @return int The ID of the added theme.
+     * @param  string    $themename The theme to add.
+     * @return int       The ID of the added theme.
      * @throws Exception If the theme is invalid.
      */
-    public static function add_theme(object $theme): int
+    public static function add_theme(string $themename): int
     {
         global $DB;
-
-        if (!self::is_valid($theme)) {
-            throw new Exception('Invalid theme');
+        if (!self::is_valid($themename)) {
+            throw new Exception('Invalid theme name');
         }
-
-        $theme_id = $DB->insert_record(self::$table, $theme);
-
-        return $theme_id;
+        $theme = new stdClass();
+        $theme->name = $themename;
+        $theme->timecreated = time();
+        $theme->timemodified = time();
+        $themeid = $DB->insert_record(self::$table, $theme);
+        return $themeid;
     }
 
     /**
      * Update an existing theme.
      *
-     * @param object $theme The theme object to update.
+     * @param  object    $theme The theme object to update.
      * @throws Exception If the theme is invalid.
      */
     public static function update_theme(object $theme): void
     {
         global $DB;
-
-        if (!self::is_valid($theme)) {
-            throw new Exception('Invalid theme');
+        if (!self::is_valid($theme->name)) {
+            throw new Exception('Invalid theme name');
         }
-
+        $theme->timemodefied = time();
         $DB->update_record(self::$table, $theme);
-    }
-
-    /**
-     * Insert or update a theme.
-     *
-     * @param object $theme The theme object to upsert.
-     * @return object The upserted theme object.
-     * @throws Exception If the theme is invalid.
-     */
-    public static function upsert_theme(object $theme): object
-    {
-        global $DB;
-
-        if (!self::is_valid($theme)) {
-            throw new Exception('Invalid theme');
-        }
-
-        if (isset($theme->id)) {
-            $DB->update_record(self::$table, $theme);
-        } else {
-            $theme->id = $DB->insert_record(self::$table, $theme);
-        }
-
-        return $theme;
     }
 
     /**
      * Delete a theme by its ID.
      *
-     * @param int $theme_id The ID of the theme to delete.
+     * @param int $themeid The ID of the theme to delete.
      */
-    public static function delete_theme(int $theme_id): void
+    public static function delete_theme(int $themeid): void
     {
         global $DB;
-
-        $DB->delete_records(self::$table, array('id' => $theme_id));
+        $DB->delete_records(self::$table, ['id' => $themeid]);
     }
-}
-/**
- * Class theme_context
- *
- * This class handles operations related to theme contexts.
- */
-class theme_context
-{
-    /** @var string The name of the database table storing the themes context. */
-    private static $table_context = 'digital_themes_context';
-
-    /** @var array Possible types of context */
-    private static $types = CONSTANTS::THEMES_CONTEXT;
 
     /**
-     * Get a theme context by its type and instance.
+     * Get all themes by text
      *
-     * @param int $type The type of the theme context.
-     * @param int $instance The instance of the theme context.
-     * @return object The retrieved theme context object.
+     * @param string $text
+     * @return array
      */
-    public static function get_theme_context(int $type, int $instance): object
+    public static function get_themes_by_text($text) : array
     {
         global $DB;
-
-        if (!self::is_valid_type($type)) {
-            throw new Exception('Invalid theme context, invalid type');
-        }
-
-        $theme_context = $DB->get_record(self::$table_context, array('type' => $type, 'instance' => $instance));
-
-        return $theme_context;
-    }
-
-
-    /**
-     * Adds a theme context to the database.
-     *
-     * @param object $theme_context The theme context object to be added.
-     * @return int The ID of the inserted theme context.
-     * @throws Exception When the theme context is invalid.
-     */
-    public static function add_theme_context(object $theme_context): int
-    {
-        global $DB;
-
-        if (!self::is_valid_context($theme_context)) {
-            throw new Exception('Invalid theme context');
-        }
-
-        $theme_context_id = $DB->insert_record(self::$table_context, $theme_context);
-
-        return $theme_context_id;
+        $liketheme = $DB->sql_like('name', ':name');
+        $themes = $DB->get_records_sql("SELECT * FROM {" . self::$table . "} WHERE {$liketheme}",
+            ['name' => '%' . $text . '%']);
+        return $themes;
     }
 
     /**
-     * Updates a theme context in the database.
+     * Assign a theme to a component
      *
-     * @param object $theme_context The theme context object to be updated.
-     * @throws Exception When the theme context is invalid.
+     * @param  string $component The component to assign the theme to.
+     * @param  int    $instance The instance of the component.
+     * @param  int    $themeid The ID of the theme to assign.
+     * @return bool
      */
-    public static function update_theme_context(object $theme_context): void
-    {
-        global $DB;
-
-        if (!self::is_valid_context($theme_context)) {
-            throw new Exception('Invalid theme context');
-        }
-
-        $DB->update_record(self::$table_context, $theme_context);
+    public static function assign_theme_to_component(string $component, int $instance, int $themeid) {
+        return Context::upsert_context($component, $instance, 'theme', $themeid);
     }
 
     /**
-     * Deletes a theme context from the database.
+     * Get themes for a component
      *
-     * @param int $theme_context_id The ID of the theme context to be deleted.
+     * @param  string    $component The component to get the themes for.
+     * @param  int       $instance The instance of the component.
+     * @return array
+     * @throws Exception If the theme is invalid.
      */
-    public static function delete_theme_context(int $theme_context_id): void
-    {
-        global $DB;
-
-        $DB->delete_records(self::$table_context, array('id' => $theme_context_id));
+    public static function get_themes_for_component(string $component, int $instance) {
+        if (!$contexts = Context::get_contexts_by_component($component, $instance, 'theme')) {
+            return [];
+        }
+        return array_values(array_map(function ($context) {
+            if (!$theme = self::get_theme($context->modifierinstance)) {
+                throw new Exception('Invalid theme');
+            }
+            return $theme;
+        }, $contexts));
     }
 
     /**
-     * Checks if a theme context is valid.
+     * Remove a theme from a component
      *
-     * @param object $theme_context The theme context object to be validated.
-     * @return bool True if the theme context is valid, false otherwise.
-     * @throws Exception When the theme context is invalid.
+     * @param  string $component The component to remove the theme from.
+     * @param  int    $instance The instance of the component.
+     * @param  int    $themeid The ID of the theme to remove.
+     * @return bool
      */
-    private static function is_valid_context(object $theme_context): bool
-    {
-        if (empty($theme_context->type) || empty($theme_context->instance) || empty($theme_context->theme)) {
-            throw new Exception('Invalid theme context, missing fields');
-        }
-
-        if (!self::is_valid_type($theme_context->type)) {
-            throw new Exception('Invalid theme context, invalid type');
-        }
-
-        return true;
+    public static function remove_theme_from_component(string $component, int $instance, int $themeid) {
+        $context = Context::get_context_by_full_data($component, $instance, 'theme', $themeid);
+        return Context::remove_context($context->id);
     }
 
     /**
-     * Checks if a given type is valid.
+     * Update themes for a component
      *
-     * @param int $type The type to be validated.
-     * @return bool True if the type is valid, false otherwise.
+     * @param  string $component The component to update the themes for.
+     * @param  int    $instance The instance of the component.
+     * @param  array  $themes The themes to update.
+     * @return void
      */
-    private static function is_valid_type(int $type): bool
-    {
-        return in_array($type, self::$types);
+    public static function update_themes(string $component, int $instance, array $themes) {
+        $current_themes = self::get_themes_for_component($component, $instance);
+        $current_themes = array_values(array_map(function ($theme) {
+            return $theme->id;
+        }, $current_themes));
+        foreach ($current_themes as $themeid) {
+            if (!in_array($themeid, $themes)) {
+                self::remove_theme_from_component($component, $instance, $themeid);
+            }
+        }
+        foreach ($themes as $themeid) {
+            if (!in_array($themeid, $current_themes)) {
+                self::assign_theme_to_component($component, $instance, $themeid);
+            }
+        }
     }
+
 }

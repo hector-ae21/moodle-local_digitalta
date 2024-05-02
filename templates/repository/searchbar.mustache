@@ -1,87 +1,92 @@
-<form class="form-inline position-relative">
-  <div class="input-group">
-    <input
-      class="form-control border-secondary"
-      type="search"
-      placeholder="Search resource..."
-      aria-label="Search"
-    />
-    <div class="input-group-append">
-      <button
-        class="btn btn-outline-secondary border-secondary"
-        type="button"
-        id="filterButton"
-      >
-        <div><i class="fa fa-filter"></i> Filter</div>
-      </button>
-      <span id="filterTag" class="badge badge-secondary ml-2 d-none"></span>
-    </div>
-  </div>
-</form>
-<div id="filterOptions" class="dropdown-menu mt-2 d-none">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12 col-md-6">
-        <label for="typeSelect" class="col-form-label">Type</label>
-        <select class="form-control" id="typeSelect">
-          <option disabled selected value="">Select a document type...</option>
-        </select>
-      </div>
-      <div class="col-sm-12 col-md-6">
-        <label for="themeSelect" class="col-form-label">Theme</label>
-        <select class="form-control" id="themeSelect">
-          <option disabled selected value="">Select a theme...</option>
-        </select>
-      </div>
-      <div class="col-sm-12 col-md-6">
-        <label for="tagsSelect" class="col-form-label">Tags</label>
-        <select class="form-control" id="tagsSelect">
-          <option disabled selected value="">Select tags...</option>
-        </select>
-      </div>
-      <div class="col-sm-12 col-md-6">
-        <label for="authorInput" class="col-form-label">Author</label>
-        <input
-          type="text"
-          class="form-control"
-          id="authorInput"
-          placeholder="Search an author..."
-        />
-      </div>
-      <div class="col-sm-12 col-md-6">
-        <label for="languageSelect" class="col-form-label">Language</label>
-        <select class="form-control" id="languageSelect">
-          <option disabled selected value="">Select a language...</option>
-        </select>
+<div class="d-flex justify-content-between bg-light">
+  <form class="form-inline position-relative">
+    <div class="input-group">
+      <input
+        class="form-control border-secondary"
+        type="search"
+        placeholder="Search resource..."
+        aria-label="Search"
+      />
+      <div class="input-group-append">
+        <button
+          class="btn btn-outline-secondary border-secondary"
+          type="button"
+          id="filterButton"
+        >
+          <div><i class="fa fa-filter"></i> Filter</div>
+        </button>
+        <span id="filterTag" class="badge badge-secondary d-none"></span>
       </div>
     </div>
+  </form>
+  <div id="filterOptions" class="dropdown-menu d-none">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <label for="typeSelect" class="col-form-label">Type</label>
+          <select class="form-control" id="typeSelect">
+            <option disabled selected value="">
+              Select a document type...
+            </option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <label for="themeSelect" class="col-form-label">Theme</label>
+          <select class="form-control" id="themeSelect">
+            <option disabled selected value="">Select a theme...</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <label for="tagsSelect" class="col-form-label">Tags</label>
+          <select class="form-control" id="tagsSelect">
+            <option disabled selected value="">Select tags...</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <label for="authorInput" class="col-form-label">Author</label>
+          <input
+            type="text"
+            class="form-control"
+            id="authorInput"
+            placeholder="Search an author..."
+          />
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <label for="languageSelect" class="col-form-label">Language</label>
+          <select class="form-control" id="languageSelect">
+            <option disabled selected value="">Select a language...</option>
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
+  <button
+    class="btn btn-outline-secondary ml-auto"
+    type="button"
+    id="addResourceButton"
+  >
+    <i class="fa fa-plus"></i> Add new resource
+  </button>
+
+  <script>
+    document
+      .getElementById("filterButton")
+      .addEventListener("click", function () {
+        let filterOptions = document.getElementById("filterOptions");
+        if (filterOptions.classList.contains("d-none")) {
+          filterOptions.classList.remove("d-none");
+          filterOptions.classList.add("d-block");
+        } else {
+          filterOptions.classList.remove("d-block");
+          filterOptions.classList.add("d-none");
+        }
+      });
+
+    function applyFilter(type) {
+      var filterTag = document.getElementById("filterTag");
+      filterTag.textContent = type;
+      filterTag.classList.remove("d-none");
+    }
+  </script>
 </div>
-<button
-  class="btn btn-outline-secondary ml-auto"
-  type="button"
-  id="addResourceButton"
->
-  <i class="fa fa-plus"></i> Add new resource
-</button>
 
-<script>
-  document
-    .getElementById("filterButton")
-    .addEventListener("click", function () {
-      let filterOptions = document.getElementById("filterOptions");
-      if (filterOptions.classList.contains("d-none")) {
-        filterOptions.classList.remove("d-none");
-        filterOptions.classList.add("d-block");
-      } else {
-        filterOptions.classList.remove("d-block");
-        filterOptions.classList.add("d-none");
-      }
-    });
-
-  function applyFilter(type) {
-    var filterTag = document.getElementById("filterTag");
-    filterTag.textContent = type;
-    filterTag.classList.remove("d-none");
-  }
-</script>

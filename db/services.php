@@ -185,6 +185,10 @@ $functions = [
         'methodname'  => 'delete_tutor_disponibility',
         'classpath'   => 'local/dta/classes/webservices/tutoring/external_delete_tutor_disponibility.php',
         'description' => 'Delete a tutor disponibility',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     // RESOURCES
     'local_dta_resources_upsert' => [
         'classname'   => 'external_resources_upsert',

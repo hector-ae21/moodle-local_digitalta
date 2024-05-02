@@ -187,7 +187,7 @@ $functions = [
         'methodname'  => 'context_upsert',
         'classpath'   => 'local/dta/classes/webservices/context/external_context_upsert.php',
         'description' => 'upsert a context',
-        'type'        => 'read',
+        'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],

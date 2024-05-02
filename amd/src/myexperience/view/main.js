@@ -10,7 +10,7 @@ import { displaylinkResourcesModal } from './modals';
 let changeStatusModal = null;
 
 // Selectors
-const SELECTORS = {
+export const SELECTORS = {
     BUTTONS: {
         block: '#block-experience-button',
         unblock: '#open-experience-button',

@@ -3,7 +3,10 @@ import ModalRegistry from 'core/modal_registry';
 import {getAllResources} from 'local_dta/repositories/resources_repository';
 import ModalFactory from 'core/modal_factory';
 import ModalEvents from 'core/modal_events';
+import {upsertContext} from 'local_dta/repositories/context_repository';
 import $ from 'jquery';
+import {SELECTORS} from './main';
+import Notification from 'core/notification';
 
 const linkResourcesModal = class extends Modal {
     static TYPE = 'local_dta/linkResourcesModal';
@@ -64,11 +67,30 @@ export const displaylinkResourcesModal = async() => {
  * Handle RESOURCE modal dialogue.
  */
 const handleResourceModal = () => {
+    const experienceid = $(SELECTORS.INPUTS.experienceid).val();
     const seleccionados = [];
     $("#resources-group input[type='checkbox']:checked").each(function() {
         // Agregar el valor del checkbox seleccionado al array
         seleccionados.push($(this).val());
     });
-    // eslint-disable-next-line no-console
-    console.log(seleccionados);
+    const contextid = [];
+    seleccionados.forEach(async(resourceid) => {
+        contextid.push(
+            upsertContext({
+                component: "experience",
+                componentinstance: experienceid,
+                modifier: "resource",
+                modifierinstance: resourceid
+            })
+        );
+    });
+
+    Promise.all(contextid).then((result) => {
+        // eslint-disable-next-line no-console
+        console.log(result);
+        return;
+    }).catch((error) => {
+        Notification.exception(error);
+    });
+
 };

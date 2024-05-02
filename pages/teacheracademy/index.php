@@ -9,18 +9,20 @@
  */
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
-require_once(__DIR__ . './../../classes/tags.php');
 require_once(__DIR__ . './../../classes/ourcases.php');
 require_once(__DIR__ . './../../classes/reactions.php');
+require_once(__DIR__ . './../../classes/context.php');
+require_once(__DIR__ . './../../classes/themes.php');
 require_once(__DIR__ . './../../classes/utils/string_utils.php');
 require_once(__DIR__ . './../../classes/utils/filter_utils.php');
 
 require_login();
 
 use local_dta\Experience;
-use local_dta\Tags;
 use local_dta\OurCases;
 use local_dta\Reaction;
+use local_dta\Context;
+use local_dta\Themes;
 use local_dta\utils\StringUtils;
 use local_dta\utils\filter_utils;
 
@@ -34,6 +36,16 @@ $PAGE->set_title($strings->teacheracademy_title);
 $PAGE->requires->js_call_amd('local_dta/myexperience/reactions', 'init');
 
 echo $OUTPUT->header();
+
+// Get themes
+$themes = Themes::get_themes();
+$themes = array_values($themes);
+$themes = array_slice($themes, 0, 8, true);
+$themes = array_map(function($key, $theme) {
+    global $OUTPUT;
+    $theme->picture = $OUTPUT->image_url('dta-theme' . ($key + 1) . '-colored', 'local_dta');
+    return $theme;
+}, array_keys($themes), $themes);
 
 // Get experiences
 $featuredExperiences = Experience::get_extra_fields(Reaction::get_most_liked_experience(5));
@@ -51,16 +63,7 @@ array_multisort(
     array_column($experiences, 'timecreated'), SORT_DESC,
     $experiences);
 
-// Get tags
-$tags = Tags::get_all_tags();
-$tags = array_slice($tags, 0, 8, true);
-$tags = array_map(function($key, $tag) {
-    global $OUTPUT;
-    $tag->picture = $OUTPUT->image_url('dta-theme' . ($key + 1) . '-colored', 'local_dta');
-    return $tag;
-}, array_keys($tags), $tags);
-
-// Get study cases
+// Get cases
 $cases = array_values(OurCases::get_active_cases());
 $cases = array_map(function($case) {
     $caseText = OurCases::get_sections_text($case->id, true);
@@ -88,11 +91,11 @@ $templateContext = [
         "allurl" => $CFG->wwwroot . "/local/dta/pages/experiences/dashboard.php",
     ],
     "themes" => [
-        "data" => $tags,
-        "allurl" => "#", // TODO: Add URL
+        "data" => $themes,
+        "viewurl" => $CFG->wwwroot . '/local/dta/pages/tags/view.php?type=theme&id=',
+        "allurl" => $CFG->wwwroot . "/local/dta/pages/tags/dashboard.php"
     ],
-    "tags" => array_slice($tags, 0, 15, true),
-    "ourcases" => [
+    "cases" => [
         "data" => array_slice($cases, 0, 4),
         "viewurl" => $CFG->wwwroot . "/local/dta/pages/cases/view.php?id=",
         "allurl" => $CFG->wwwroot . "/local/dta/pages/cases/repository.php"

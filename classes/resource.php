@@ -8,11 +8,14 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// This file controls DTA files as an instance of the repository and digital_file table in the database
+// This file controls DTA resource as an instance of the repository and digital_resource table in the database
 // NOT TO BE CONFUSED WITH THE FILEMANAGER HANDLER OR MOODLE FILE API
 
 namespace local_dta;
 
+require_once(__DIR__ . '/constants.php');
+
+use \local_dta\CONSTANTS;
 use Exception;
 
 class Resource {
@@ -41,7 +44,7 @@ class Resource {
     private $timemodified;
     
     /** @var string The name of the database table storing the resources. */
-    private static $table = 'digital_resource';
+    private static $table = 'digital_resources';
 
     /** @var string The name of the database table storing the resources. */
     private static $table_tags = 'digital_resource_tags';
@@ -49,11 +52,11 @@ class Resource {
     /**
      * Constructor.
      * 
-     * @param $experience array The data to populate the experience with.
+     * @param $resource mixed The resource to construct.
      */
-    public function __construct($experience = null)
+    public function __construct($resource = null)
     {
-        foreach ($experience as $key => $value) {
+        foreach ($resource as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->{$key} = ($key === 'description' && is_array($value))
                     ? $value['text']
@@ -99,13 +102,13 @@ class Resource {
      */
     public static function upsert($resource) : object{
         if (self::is_resource_metadata_incomplete($resource)) {
-            throw new Exception('Error adding experience: missing fields');
+            throw new Exception('Error adding resources: missing fields');
         }
 
         $record = self::prepare_metadata_record($resource);
     
         if (self::resource_exists($resource)) {
-        
+            //TODO update 
         } else {
             // TODO add tags, theme and create file
             // Create file to set path
@@ -126,7 +129,8 @@ class Resource {
     private static function is_resource_metadata_incomplete(object $resource): bool {
         // TODO add tags, theme and path to the validation if needed if not remove this 😁
         if (!self::check_resource_type($resource->type)) {
-            return true;
+            echo $resource->type;
+            throw new Exception('Invalid resource type');
         }
 
         return !isset($resource->name) || !isset($resource->type) || !isset($resource->lang)
@@ -156,11 +160,13 @@ class Resource {
      * @throws Exception If the resource type is invalid.
      */
     private static function prepare_metadata_record(object $resource) : object{
+        global $USER;
         if (!self::check_resource_type($resource->type)) {
             throw new Exception('Invalid resource type');
         }
         $record = new \stdClass();
         $record->name = $resource->name;
+        $record->userid = $USER->id; 
         $record->description = $resource->description;
         $record->type = $resource->type;
         $record->lang = $resource->lang;
@@ -226,6 +232,91 @@ class Resource {
      */
     public static function get_all_resources() : array{
         global $DB;
-        return $DB->get_records(self::$table);
+        return array_values($DB->get_records(self::$table));
+    }
+}
+
+
+
+class ResourceRepository {
+
+    /**
+     * Get resources based on provided filters.
+     *
+     * @param array $filters Array of filters to apply.
+     *                       Accepted filters: 'type', 'language'.
+     * @return array Array of filtered resources.
+     */
+    public static function get_resources(array $filters = []) : array {
+        $resources = array();
+
+        if (empty($filters)) {
+            return self::get_all_resources();
+        }
+
+        foreach ($filters as $filter_key => $filter_value) {
+            switch ($filter_key) {
+                case 'type':
+                    $resources = self::apply_type_filter($filter_value, $resources);
+                    break;
+                case 'language':
+                    $resources = self::apply_language_filter($filter_value, $resources);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $resources;
+    }
+
+    /**
+     * Apply type filter to the resources.
+     *
+     * @param array $types Array of resource types to filter by.
+     * @param array $resources Array of resources to filter.
+     * @return array Array of filtered resources.
+     */
+    private static function apply_type_filter(array $types, array $resources) : array {
+        $filtered_resources = array();
+
+        foreach ($types as $type) {
+
+            $type_resources = Resource::get_resources_by_type($type);
+            if (empty($filtered_resources)) {
+                $filtered_resources = $type_resources;
+            } else {
+                $filtered_resources = array_intersect($filtered_resources, $type_resources);
+            }
+        }
+        return $filtered_resources;
+    }
+
+    /**
+     * Apply language filter to the resources.
+     *
+     * @param array $languages Array of languages to filter by.
+     * @param array $resources Array of resources to filter.
+     * @return array Array of filtered resources.
+     */
+    private static function apply_language_filter(array $languages, array $resources) : array {
+        $filtered_resources = array();
+        foreach ($languages as $language) {
+            foreach ($resources as $resource) {
+                if ($resource->lang == $language) {
+                    $filtered_resources[] = $resource;
+                }
+            }
+        }
+        return $filtered_resources;
+    }
+
+    /**
+     * Get all resources.
+     *
+     * @return array Array of all resources.
+     */
+    private static function get_all_resources() : array {
+        return Resource::get_all_resources();
     }
 }

@@ -22,6 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->dirroot . '/local/dta/locallib.php');
+
 function xmldb_local_dta_upgrade($oldversion)
 {
     global $DB;
@@ -70,7 +74,6 @@ function xmldb_local_dta_upgrade($oldversion)
         // DTA savepoint reached.
         upgrade_plugin_savepoint(true, 2024031306, 'local', 'dta');
     }
-
 
     if ($oldversion < 2024032001) {
 
@@ -183,23 +186,233 @@ function xmldb_local_dta_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024040302, 'local', 'dta');
     }
 
-    if ($oldversion < 2024041000) {
+    if ($oldversion < 2024042600) {
+
+        // Define table digital_themes to be created.
+        $table = new xmldb_table('digital_themes');
+
+        // Adding fields to table digital_themes.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        // Adding keys to table digital_themes.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        // Conditionally launch create table for digital_themes.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Define table digital_themes_context to be created.
+        $table = new xmldb_table('digital_themes_context');
+
+        // Adding fields to table digital_themes_context.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('instance', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('theme', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        
+        // Adding keys to table digital_themes_context.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('theme', XMLDB_KEY_FOREIGN, ['theme'], 'digital_themes', ['id']);
+        $table->add_key('typeinstancetheme', XMLDB_KEY_UNIQUE, ['type', 'instance', 'theme']);
+
+        // Conditionally launch create table for digital_themes_context.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Dta savepoint reached.
+        upgrade_plugin_savepoint(true, 2024042600, 'local', 'dta');
+
+    }
+
+    if ($oldversion < 2024043000) {
         // Table for storing resources
-        $table = new xmldb_table('digital_resources_repository');
+        $table = new xmldb_table('digital_resources');
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
-        $table->add_field('path', XMLDB_TYPE_TEXT, null, null, null, null, null, 'id');
-        $table->add_field('source', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'path');
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '11', ['unsigned' => true, 'notnull' => true]);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'id');
+        $table->add_field('description', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null, 'name');
+        $table->add_field('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'description');
+        $table->add_field('path', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'type');
+        $table->add_field('lang', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'path');
+        $table->add_field('timecreated', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
+        $table->add_field('timemodified', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
+
 
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
 
 
         if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
         }
 
-        upgrade_plugin_savepoint(true, 2024041000, 'local', 'dta');
+        upgrade_plugin_savepoint(true, 2024043000, 'local', 'dta');
     }
 
+    if ($oldversion < 2024050200) {
+
+        // Define table digital_components to be created.
+        $table = new xmldb_table('digital_components');
+
+        // Adding fields to table digital_components.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        // Adding keys to table digital_components.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('name', XMLDB_KEY_UNIQUE, ['name']);
+
+        // Conditionally launch create table for digital_components.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Insert the components
+        foreach (LOCAL_DTA_COMPONENTS as $key => $value) {
+            $component = new stdClass();
+            $component->id = $value;
+            $component->name = $key;
+            $component->timecreated = time();
+            $component->timemodified = time();
+            $DB->insert_record('digital_components', $component);
+        }
+
+        // Define table digital_modifiers to be created.
+        $table = new xmldb_table('digital_modifiers');
+
+        // Adding fields to table digital_modifiers.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        // Adding keys to table digital_modifiers.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('name', XMLDB_KEY_UNIQUE, ['name']);
+
+        // Conditionally launch create table for digital_modifiers.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Insert the modifiers
+        foreach (LOCAL_DTA_MODIFIERS as $key => $value) {
+            $modifier = new stdClass();
+            $modifier->id = $value;
+            $modifier->name = $key;
+            $modifier->timecreated = time();
+            $modifier->timemodified = time();
+            $DB->insert_record('digital_modifiers', $modifier);
+        }
+
+        // Define table digital_context to be created.
+        $table = new xmldb_table('digital_context');
+
+        // Adding fields to table digital_context.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('component', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('componentinstance', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('modifier', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('modifierinstance', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+        // Adding keys to table digital_context.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('componentmodifier', XMLDB_KEY_UNIQUE, ['component', 'componentinstance', 'modifier', 'modifierinstance']);
+        $table->add_key('component', XMLDB_KEY_FOREIGN, ['component'], 'digital_components', ['id']);
+        $table->add_key('modifier', XMLDB_KEY_FOREIGN, ['modifier'], 'digital_modifiers', ['id']);
+
+        // Conditionally launch create table for digital_context.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Migrate content from digital_themes_context to digital_context
+        $table = new xmldb_table('digital_themes_context');
+        if ($dbman->table_exists($table)) {
+            $current_themes_context_records = $DB->get_records('digital_themes_context');
+            foreach ($current_themes_context_records as $current_themes_context_record) {
+                $context = new stdClass();
+                $context->component = LOCAL_DTA_COMPONENTS[strtolower($current_themes_context_record->type)];
+                $context->componentinstance = $current_themes_context_record->instance;
+                $context->modifier = LOCAL_DTA_MODIFIERS['theme'];
+                $context->modifierinstance = $current_themes_context_record->theme;
+                $context->timecreated = time();
+                $context->timemodified = time();
+                $DB->insert_record('digital_context', $context);
+            }
+            unset($current_themes_context_records, $current_themes_context_record);
+            $dbman->drop_table($table);
+        }
+
+        // Migrate content from digital_experience_tag to digital_context
+        $table = new xmldb_table('digital_experience_tag');
+        if ($dbman->table_exists($table)) {
+            $current_experience_tag_records = $DB->get_records('digital_experience_tag');
+            foreach ($current_experience_tag_records as $current_experience_tag_record) {
+                $context = new stdClass();
+                $context->component = LOCAL_DTA_COMPONENTS['experience'];
+                $context->componentinstance = $current_experience_tag_record->experienceid;
+                $context->modifier = LOCAL_DTA_MODIFIERS['tag'];
+                $context->modifierinstance = $current_experience_tag_record->tagid;
+                $context->timecreated = time();
+                $context->timemodified = time();
+                $DB->insert_record('digital_context', $context);
+            }
+            unset($current_experience_tag_records, $current_experience_tag_record);
+            $dbman->drop_table($table);
+        }
+
+        // Migrate content from digital_cases_tag to digital_context
+        $table = new xmldb_table('digital_cases_tag');
+        if ($dbman->table_exists($table)) {
+            $current_cases_tag_records = $DB->get_records('digital_cases_tag');
+            foreach ($current_cases_tag_records as $current_cases_tag_record) {
+                $context = new stdClass();
+                $context->component = LOCAL_DTA_COMPONENTS['case'];
+                $context->componentinstance = $current_cases_tag_record->caseid;
+                $context->modifier = LOCAL_DTA_MODIFIERS['tag'];
+                $context->modifierinstance = $current_cases_tag_record->tagid;
+                $context->timecreated = time();
+                $context->timemodified = time();
+                $DB->insert_record('digital_context', $context);
+            }
+            unset($current_cases_tag_records, $current_cases_tag_record);
+            $dbman->drop_table($table);
+        }
+
+        // Add new fields to digital_tags table
+        $table = new xmldb_table('digital_tags');
+        $field = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        if (!$dbman->field_exists($table, 'timecreated')) {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        if (!$dbman->field_exists($table, 'timemodefied')) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Insert the themes
+        foreach (LOCAL_DTA_THEMES as $key => $value) {
+            $theme = new stdClass();
+            $theme->id = $value;
+            $theme->name = $key;
+            $theme->timecreated = time();
+            $theme->timemodified = time();
+            $DB->insert_record('digital_themes', $theme);
+        }
+
+        // Dta savepoint reached.
+        upgrade_plugin_savepoint(true, 2024050200, 'local', 'dta');
+    }
 
     return true;
 }

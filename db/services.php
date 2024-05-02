@@ -180,5 +180,16 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+
+    // CONTEXT 
+    'local_dta_context_upsert' => [
+        'classname'   => 'external_context_upsert',
+        'methodname'  => 'context_upsert',
+        'classpath'   => 'local/dta/classes/webservices/context/external_context_upsert.php',
+        'description' => 'upsert a context',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     
 ];

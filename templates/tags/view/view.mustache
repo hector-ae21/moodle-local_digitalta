@@ -1,0 +1,36 @@
+<div class="container-fluid col-10 dta-themetags-view">
+    <!--Section: Title-->
+    <section data-section-name="dta-themetags-view-title">
+        <div class="container-fluid d-flex">
+            <div class="row d-flex align-items-justify">
+                <div class="col-12">
+                    <div class="dta-subtitle">{{title}}</div>
+                    <h1 class="dta-title display-3">{{{tag.name}}}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Section: Content-->
+    <section data-section-name="dta-themetags-view-content">
+        <div class="container-fluid d-flex my-4">
+            <div class="row w-100">
+                <div class="col-sm-12 col-md-9">
+                    <!-- Experiences -->
+                    <div class="dta-themetags-view-experiences mb-3">
+                        {{> local_dta/tags/view/experience-list}}
+                    </div>
+                    <!-- Cases -->
+                    <div class="dta-themetags-view-cases">
+                        {{> local_dta/tags/view/case-list}}
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-3">
+                    <!-- Users -->
+                    <div class="dta-themetag-view-users">
+                        {{> local_dta/tags/view/user-list}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

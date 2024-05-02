@@ -28,12 +28,4 @@ class CONSTANTS{
         "URL",
         "DOCUMENT"
     ];
-    // TYPES OF THEMES_CONTEXT
-    const THEMES_CONTEXT = [
-        "EXPERIENCE",
-        "CASE",
-        "RESOURCE"
-    ];
-
-
 }

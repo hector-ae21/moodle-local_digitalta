@@ -1,4 +1,18 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * OurCases class
@@ -10,16 +24,24 @@
 
 namespace local_dta;
 
-require_once(__DIR__ . '/cases_tags.php');
+require_once(__DIR__ . '/reactions.php');
 require_once(__DIR__ . '/experience.php');
+require_once(__DIR__ . '/tags.php');
 require_once(__DIR__ . '/utils/date_utils.php');
 
 use stdClass;
 use Exception;
-use local_dta\CasesTags;
+use local_dta\Reaction;
+use local_dta\Tags;
 use local_dta\Experience;
 use local_dta\utils\date_utils;
 
+/**
+ * This class is used to manage the cases of the plugin
+ *
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class OurCases
 {
     private static $table = 'digital_ourcases';
@@ -222,18 +244,14 @@ class OurCases
     public static function update_case($ourcase)
     {
         global $DB;
-
-
         $ourcase->timemodified = date('Y-m-d H:i:s', time());
         if (!$DB->update_record(self::$table,  $ourcase)) {
             throw new Exception('Error adding ourcase section text to the database.');
             return false;
         }
-
-        if($ourcase->tags){
-            CasesTags::update_case_tags($ourcase->id, $ourcase->tags);
+        if($ourcase->tags) {
+            Tags::update_tags('case', $ourcase->id, $ourcase->tags);
         }
-
         return true;    
 
 
@@ -342,7 +360,7 @@ class OurCases
             ];
             $case->pictureurl = self::get_picture_url($case);
             $case->reactions = Reaction::get_reactions_for_render_case($case->id);
-            $tags = CasesTags::get_tags_for_case($case->id);
+            $tags = Tags::get_tags_for_component('case', $case->id);
             $transformedTags = array_map(function($tag) {
                 return (object)[
                     'name' => $tag->name,

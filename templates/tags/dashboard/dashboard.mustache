@@ -1,0 +1,25 @@
+<div class="container-fluid col-10 dta-themetags">
+    <!--Section: Title-->
+    <section data-section-name="dta-themetags-title">
+        <div class="container-fluid d-flex">
+            <div class="row d-flex align-items-justify">
+                <div class="col-12">
+                    <div class="dta-subtitle">DigitalTA</div>
+                    <h1 class="dta-title display-3">{{{title}}}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--Section: Themes-->
+    <section data-section-name="dta-themetags-themes">
+        <div class="container-fluid d-flex my-4">
+            {{> local_dta/tags/dashboard/theme-list}}
+        </div>
+    </section>
+    <!--Section: Tags-->
+    <section data-section-name="dta-themetags-tags">
+        <div class="container-fluid d-flex my-4">
+            {{> local_dta/tags/dashboard/tag-list}}
+        </div>
+    </section>
+</div>

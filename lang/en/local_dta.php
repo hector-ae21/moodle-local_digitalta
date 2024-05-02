@@ -150,11 +150,22 @@ $string['see_more'] = 'See More';
 $string['coming_soon'] = 'Coming soon...';
 
 // Date format strings
-
 $string['date_timeago'] = '{$a} ago';
 $string['date_justnow'] = 'Just now';
 
 // Repository 
-
 $string['repository_title'] = 'Repository';
 $string['repository_header'] = 'Repository';
+
+// Themes & Tags
+$string['themestags_title'] = 'Themes & Tags';
+$string['themestags_themes'] = 'Themes';
+$string['themestags_theme'] = 'Theme';
+$string['themestags_tags'] = 'Tags';
+$string['themestags_tag'] = 'Tag';
+$string['themestags_experiences'] = 'Experiences';
+$string['themestags_cases'] = 'Cases';
+$string['themestags_users'] = 'Users';
+$string['invalidthemetag'] = 'Invalid tag or theme';
+$string['invalidthemename'] = 'Invalid theme name';
+$string['invalidtagname'] = 'Invalid tag name';

@@ -2,12 +2,12 @@
     <div class="d-flex justify-content-start">
         <h2 class="text-secondary mb-4 dta-title">{{#str}} teacheracademy_title_cases, local_dta {{/str}}</h2>
     </div>
-    <div class="study-cases p-0 mx-0">
-        {{#ourcases.data}}
-            {{> local_dta/teacheracademy/studycase }}
-        {{/ourcases.data}}
+    <div class="cases p-0 mx-0">
+        {{#cases.data}}
+            {{> local_dta/teacheracademy/case }}
+        {{/cases.data}}
     </div>
     <div class="d-flex justify-content-end mt-3">
-        <a href="{{ourcases.allurl}}" class="btn btn-primary">{{#str}} see_more, local_dta {{/str}}</a>
+        <a href="{{cases.allurl}}" class="btn btn-primary">{{#str}} see_more, local_dta {{/str}}</a>
     </div>
 </div>

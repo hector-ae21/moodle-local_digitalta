@@ -15,16 +15,34 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version metadata for the local_dta plugin.
+ * Library of functions and constants for the local_dta plugin.
  *
  * @package   local_dta
- * @copyright 2024 ADSDR-FUNIBER Scepter Team
+ * @copyright Salvador Banderas Rovira
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024050200;
-$plugin->requires = 2021051100;
-$plugin->component = 'local_dta';
-$plugin->maturity = MATURITY_ALPHA;
+const LOCAL_DTA_COMPONENTS = [
+    "experience" => 1,
+    "case" => 2,
+    "resource" => 3,
+    "user" => 4
+];
+
+const LOCAL_DTA_MODIFIERS = [
+    "theme" => 1,
+    "tag" => 2
+];
+
+const LOCAL_DTA_THEMES = [
+    "Digital Technology" => 1,
+    "Classroom Management" => 2,
+    "Communication and Relationship Building" => 3,
+    "Diversity and Inclusion" => 4,
+    "Professional Collaboration and Development" => 5,
+    "School Culture" => 6,
+    "Curriculum Planning and Development" => 7,
+    "Others" => 8
+];

@@ -194,8 +194,8 @@ function xmldb_local_dta_upgrade($oldversion)
         // Adding fields to table digital_themes.
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('timecreated', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
-        $table->add_field('timemodified', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
 
         // Adding keys to table digital_themes.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
@@ -213,8 +213,8 @@ function xmldb_local_dta_upgrade($oldversion)
         $table->add_field('type', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
         $table->add_field('instance', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
         $table->add_field('theme', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('timecreated', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
-        $table->add_field('timemodified', XMLDB_TYPE_DATETIME, null, ['notnull' => true]);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
         
         // Adding keys to table digital_themes_context.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
@@ -264,8 +264,8 @@ function xmldb_local_dta_upgrade($oldversion)
         // Adding fields to table digital_components.
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
 
         // Adding keys to table digital_components.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
@@ -292,8 +292,8 @@ function xmldb_local_dta_upgrade($oldversion)
         // Adding fields to table digital_modifiers.
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
 
         // Adding keys to table digital_modifiers.
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
@@ -391,13 +391,23 @@ function xmldb_local_dta_upgrade($oldversion)
 
         // Add new fields to digital_tags table
         $table = new xmldb_table('digital_tags');
-        $field = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $field = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
         if (!$dbman->field_exists($table, 'timecreated')) {
             $dbman->add_field($table, $field);
         }
-        $field = new xmldb_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $field = new xmldb_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
         if (!$dbman->field_exists($table, 'timemodefied')) {
             $dbman->add_field($table, $field);
+        }
+
+        // Insert the themes
+        foreach (LOCAL_DTA_THEMES as $key => $value) {
+            $theme = new stdClass();
+            $theme->id = $value;
+            $theme->name = $key;
+            $theme->timecreated = time();
+            $theme->timemodified = time();
+            $DB->insert_record('digital_themes', $theme);
         }
 
         // Dta savepoint reached.

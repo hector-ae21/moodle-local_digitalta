@@ -171,5 +171,14 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_dta_resources_get' => [
+        'classname'   => 'external_resources_get',
+        'methodname'  => 'resources_get',
+        'classpath'   => 'local/dta/classes/webservices/resources/external_resources_get.php',
+        'description' => 'get resources',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     
 ];

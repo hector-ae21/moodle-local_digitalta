@@ -1,16 +1,14 @@
-<section data-section-name="dta-resource-repository-title">
-  <div class="container-fluid d-flex">
-    <h1 class="dta-title display-3">
-      {{#str}} repository_title, local_dta {{/str}}
-    </h1>
-  </div>
-</section>
+<div class="title">
+  <h1 class="dta-title">
+    {{#str}} repository_title, local_dta {{/str}}
+  </h1>
+</div>
 
-<section data-section-name="dta-resource-repository-searchbar">
+<div class="searchbar shadow">
   {{> local_dta/repository/searchbar }}
-</section>
-<section data-section-name="dta-resource-repository-content">
+</div>
+<div class="content">
   {{> local_dta/repository/repository-list }}
-</section>
+</div>
 
 

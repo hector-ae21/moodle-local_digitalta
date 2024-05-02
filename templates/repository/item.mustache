@@ -1,14 +1,16 @@
-<div class="col-lg-4 col-md-6 col-12 mt-4">
-  <div class="bg-repository-card p-2">
+<div class="col-lg-4 col-md-6 col-12 resource-card p-2">
     <div class="d-flex align-items-center">
       <div class="m-3 justify-content-start">
         <img src="https://placehold.co/40x40" alt="icon" class="bg-zinc-200" />
       </div>
-      <div class="text-wrap ml-2">
-        <h4 class="font-weight-bold mb-0">{{name}}</h4>
+      <div class="text-wrap ml-2 resource-data">
+        <h4 class="font-weight-bold mb-0 text-secondary">{{name}}</h4>
         <p class="text-muted m-0">{{description}}</p>
-        {{#tags}}<div class="tags">{{> local_dta/repository/tags }}</div>{{/tags}}
+        <div class="d-flex flex-row">
+          {{> local_dta/repository/tags }}
+          {{> local_dta/repository/tags }}
+          {{> local_dta/repository/tags }}
+        </div>
       </div>
-    </div>
   </div>
 </div>

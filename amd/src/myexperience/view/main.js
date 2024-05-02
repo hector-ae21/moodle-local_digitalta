@@ -4,6 +4,7 @@ import ModalFactory from 'core/modal_factory';
 import Templates from 'core/templates';
 import {get_string} from 'core/str';
 import {toggleStatus} from 'local_dta/repositories/experience_repository';
+import { displaylinkResourcesModal } from './modals';
 
 
 let changeStatusModal = null;
@@ -14,6 +15,7 @@ const SELECTORS = {
         block: '#block-experience-button',
         unblock: '#open-experience-button',
         confirmBlockModal: '#confirm-block-experience-button',
+        addResourceBtn: '#add-resource-button',
     },
     INPUTS: {
         experienceid: '#experience-id',
@@ -63,6 +65,11 @@ function setEventListeners() {
     $(document).on('click', SELECTORS.BUTTONS.confirmBlockModal, () => {
         toggleExperienceStatus(experienceid);
     });
+
+    $(document).on('click', SELECTORS.BUTTONS.addResourceBtn, () => {
+        displaylinkResourcesModal();
+    });
+
 }
 
 export const init = () => {

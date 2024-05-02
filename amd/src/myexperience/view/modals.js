@@ -1,10 +1,10 @@
 import Modal from 'core/modal';
 import ModalRegistry from 'core/modal_registry';
-import getAllResources from 'local_dta/repositories/resources_repository';
+import {getAllResources} from 'local_dta/repositories/resources_repository';
 import ModalFactory from 'core/modal_factory';
 import ModalEvents from 'core/modal_events';
 
-export const linkResourcesModal = class extends Modal {
+const linkResourcesModal = class extends Modal {
     static TYPE = 'local_dta/linkResourcesModal';
 
     static TEMPLATE = 'local_dta/experiences/view/modal-resources';
@@ -19,8 +19,10 @@ export const linkResourcesModal = class extends Modal {
     }
 };
 
+ModalRegistry.register(linkResourcesModal.TYPE, linkResourcesModal, linkResourcesModal.TEMPLATE);
 
-export const linkCasesModal = class extends Modal {
+
+const linkCasesModal = class extends Modal {
     static TYPE = 'local_dta/linkCasesModal';
 
     static TEMPLATE = 'local_dta/experiences/view/modal-cases';
@@ -35,14 +37,16 @@ export const linkCasesModal = class extends Modal {
     }
 };
 
+ModalRegistry.register(linkCasesModal.TYPE, linkCasesModal, linkCasesModal.TEMPLATE);
+
 
 /**
  * Display a modal dialogue.
  * @param {Editor} editor
  */
 
-export const displaylinkResourcesModal = async(editor) => {
-    const resources = await getAllResources(editor);
+export const displaylinkResourcesModal = async() => {
+    const resources = await getAllResources();
     // eslint-disable-next-line no-console
     console.log(resources);
 
@@ -59,4 +63,3 @@ export const displaylinkResourcesModal = async(editor) => {
     });
 };
 
-ModalRegistry.register(linkCasesModal.TYPE, linkCasesModal, linkCasesModal.TEMPLATE);

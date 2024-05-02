@@ -7,7 +7,10 @@
     {{#experience}} 
       <div class="d-flex">
           {{#isadmin}}
-            <a href={{createcaseurl}}{{data.id}} class="shadow-none" title="{{#str}}experience_view_resrepo_action_tooltip, local_dta{{/str}}">
+            <a id="add-resource-button" class="shadow-none" title="{{#str}}experience_view_resrepo_action_tooltip, local_dta{{/str}}">
+                <i class="fa fa-plus-circle fa-lg text-info"></i>
+            </a>
+            <a class="shadow-none" title="{{#str}}experience_view_resrepo_action_tooltip, local_dta{{/str}}">
                 <i class="fa fa-plus-circle fa-lg text-info"></i>
             </a>
           {{/isadmin}}

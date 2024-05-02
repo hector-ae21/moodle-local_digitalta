@@ -33,8 +33,6 @@ class external_resources_get extends external_api
 
         $resources = Resource::get_all_resources($USER->id);
 
-        print_object($resources);
-
         return [
             'result' => true,
             'resources' => $resources,
@@ -46,8 +44,22 @@ class external_resources_get extends external_api
         return new external_single_structure(
             [
                 'result' => new external_value(PARAM_BOOL, 'Result'),
-                'resources' => new external_value(PARAM_INT, 'Resources' , VALUE_OPTIONAL),
                 'error' => new external_value(PARAM_RAW, 'Error message' , VALUE_OPTIONAL),
+                'resources' => new external_multiple_structure(
+                    new external_single_structure(
+                        [
+                            'id' => new external_value(PARAM_INT, 'ID'),
+                            'userid' => new external_value(PARAM_INT, 'User ID'),
+                            'name' => new external_value(PARAM_TEXT, 'Name'),
+                            'description' => new external_value(PARAM_TEXT, 'Description'),
+                            'type' => new external_value(PARAM_TEXT, 'Type'),
+                            'path' => new external_value(PARAM_TEXT, 'Path'),
+                            'lang' => new external_value(PARAM_TEXT, 'Language'),
+                            'timecreated' => new external_value(PARAM_TEXT, 'Time created'),
+                            'timemodified' => new external_value(PARAM_TEXT, 'Time modified'),
+                        ]
+                    )
+                ),
             ]
         );
     }

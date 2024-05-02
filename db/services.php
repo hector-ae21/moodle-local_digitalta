@@ -160,5 +160,34 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+
+    //TUTORING
+    'local_dta_create_tutor_disponibility' => [
+        'classname'   => 'external_create_tutor_disponibility',
+        'methodname'  => 'create_tutor_disponibility',
+        'classpath'   => 'local/dta/classes/webservices/tutoring/external_create_tutor_disponibility.php',
+        'description' => 'Create a tutor disponibility',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_update_tutor_disponibility' => [
+        'classname'   => 'external_update_tutor_disponibility',
+        'methodname'  => 'update_tutor_disponibility',
+        'classpath'   => 'local/dta/classes/webservices/tutoring/external_update_tutor_disponibility.php',
+        'description' => 'Update a tutor disponibility',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_delete_tutor_disponibility' => [
+        'classname'   => 'external_delete_tutor_disponibility',
+        'methodname'  => 'delete_tutor_disponibility',
+        'classpath'   => 'local/dta/classes/webservices/tutoring/external_delete_tutor_disponibility.php',
+        'description' => 'Delete a tutor disponibility',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     
 ];

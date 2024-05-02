@@ -1,7 +1,7 @@
 <?php
 
 /**
- * cases tags class
+ * cases tutor_disponibility class
  *
  * @package   local_dta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
@@ -34,7 +34,8 @@ class tutor_disponibility
         if ($tutor_disponibility_exist) {
             throw new \Exception('The tutor already has a disponibility in the same day and hours');
         };
-        $DB->insert_record('digital_tutor_disponibility', $tutor_disponibility);
+        $tutor_disponibility->id = $DB->insert_record('digital_tutor_disponibility', $tutor_disponibility);
+        return $tutor_disponibility;
     }
 
     public static function update($id, $userid, $day, $timefrom, $timeto)
@@ -83,5 +84,6 @@ class tutor_disponibility
     {
         global $DB;
         $DB->delete_records('digital_tutor_disponibility', ['id' => $id]);
+        return true;
     }
 }

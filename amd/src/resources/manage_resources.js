@@ -38,7 +38,7 @@ const handleDialogueSubmission = async (event, modal) => {
   }
 };
 
-const displayDialogue = async (change) => {
+export const displayDialogue = async (change) => {
   const themes = [];
 
   const modal = await ModalFactory.create({
@@ -52,7 +52,7 @@ const displayDialogue = async (change) => {
     const changeElement = $root.find("#changeToImportResource").get(0);
     if (changeElement) {
       changeElement.onclick = () => {
-        displaylinkResourcesModal();
+        displaylinkResourcesModal(true);
         modal.hide();
       };
     }

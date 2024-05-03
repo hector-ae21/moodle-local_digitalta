@@ -3,8 +3,6 @@ import { SELECTORS, deleteRelatedContext } from './main';
 import { showChangeStatusModal, toggleExperienceStatus } from './modals';
 import { displaylinkResourcesModal, displaylinkCoursesModal } from './modals';
 
-
-
 export const setEventListeners = () => {
     const experienceid = $(SELECTORS.INPUTS.experienceid).val();
 
@@ -17,7 +15,7 @@ export const setEventListeners = () => {
     });
 
     $(document).on('click', SELECTORS.BUTTONS.addResourceBtn, () => {
-        displaylinkResourcesModal();
+        displaylinkResourcesModal(true);
     });
 
     $(document).on('click', SELECTORS.BUTTONS.addCasesBtn, () => {

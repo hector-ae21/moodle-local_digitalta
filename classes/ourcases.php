@@ -442,7 +442,7 @@ class OurCases
      * 
      * @return object The resource with the populated context.
      */
-    public static function populate_context(object $unique_context): object {
+    public static function populate_context(object $unique_context): object | null{
         $resource = self::get_case($unique_context->modifierinstance);
         $resource->context = $unique_context;
         $resource->section_header = self::get_section_header($resource->id);
@@ -457,11 +457,7 @@ class OurCases
      * @return array The resources.
      */
     public static function get_cases_by_context_component(string $component, int $componentinstance) : array{
-        $context = Context::get_contexts_by_component($component, $componentinstance, 'resource');
-
-        if(!$context) {
-            return [];
-        }
+        $context = Context::get_contexts_by_component($component, $componentinstance, 'case');
         $resources = array();
         foreach ($context as $unique_context) {
             $resources[] = self::populate_context($unique_context);

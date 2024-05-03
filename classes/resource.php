@@ -243,11 +243,23 @@ class Resource {
      * @param array $ids The IDs of the resources.
      * @return array The resources.
      */
-    public static function get_resouces_by_ids(array $ids) : array{
+    public static function get_resources_by_ids(array $ids) : array {
         global $DB;
-        return $DB->get_records(self::$table, ['id' => $ids]);
+        $resources = array();
+    
+        if (!empty($ids)) {
+            $where_clause = "WHERE ";
+            foreach ($ids as $id) {
+                $where_clause .= "id = " . (int)$id . " OR ";
+            }
+            $where_clause = rtrim($where_clause, " OR ");
+            $sql = "SELECT * FROM {" . self::$table . "} " . $where_clause;    
+            $resources = $DB->get_records_sql($sql);
+        }
+        
+        return $resources;
     }
-
+    
     /**
      * Get resources by context and component.
      * @param string $component The component.
@@ -263,8 +275,8 @@ class Resource {
             $ids[] = $c->id;
         }
 
-
-        return self::get_resouces_by_ids($ids);
+        print_r(self::get_resources_by_ids($ids));
+        return self::get_resources_by_ids($ids);
     }
 }
 

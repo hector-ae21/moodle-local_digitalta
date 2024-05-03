@@ -62,3 +62,14 @@ export const ourcaseEdit = args => {
     return Ajax.call([request])[0];
 };
 
+/**
+ * Get cases.
+ * @return {Promise} Resolve with warnings.
+ */
+export const getCases = () => {
+    const request = {
+        methodname: 'local_dta_ourcases_get',
+        args: {}
+    };
+    return Ajax.call([request])[0];
+};

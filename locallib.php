@@ -31,13 +31,14 @@ const LOCAL_DTA_COMPONENTS = [
     "user" => 4
 ];
 
-// RESOURCES is duplicated as a component and as a modifier bc it can be both
+// RESOURCES AND CASE is duplicated as a component and as a modifier bc it can be both
 // we need to refactor this in the future, but not now it's fine
 
 const LOCAL_DTA_MODIFIERS = [
     "theme" => 1,
     "tag" => 2,
     "resource" => 3,
+    "case" => 4
 ];
 
 const LOCAL_DTA_THEMES = [

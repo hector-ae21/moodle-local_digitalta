@@ -7,6 +7,7 @@ import {upsertContext} from 'local_dta/repositories/context_repository';
 import $ from 'jquery';
 import {SELECTORS} from './main';
 import Notification from 'core/notification';
+import {getCases} from 'local_dta/repositories/ourcases_repository';
 
 const linkResourcesModal = class extends Modal {
     static TYPE = 'local_dta/linkResourcesModal';
@@ -88,6 +89,58 @@ const handleResourceModal = () => {
     Promise.all(contextid).then((result) => {
         // eslint-disable-next-line no-console
         console.log(result);
+        return;
+    }).catch((error) => {
+        Notification.exception(error);
+    });
+
+};
+
+/**
+ * Display a modal dialogue.
+ */
+export const displaylinkCoursesModal = async() => {
+    const {cases} = await getCases();
+
+    const modal = await ModalFactory.create({
+        type: linkCasesModal.TYPE,
+        templateContext: {elementid_: Date.now(), cases},
+        large: true,
+    });
+    modal.show();
+    const $root = modal.getRoot();
+    $root.on(ModalEvents.save, () => {
+        handleCoursesModal();
+    });
+};
+
+
+/**
+ * Handle RESOURCE modal dialogue.
+ */
+const handleCoursesModal = () => {
+    const experienceid = $(SELECTORS.INPUTS.experienceid).val();
+    const seleccionados = [];
+    $("#cases-group input[type='checkbox']:checked").each(function() {
+        // Agregar el valor del checkbox seleccionado al array
+        seleccionados.push($(this).val());
+    });
+    const contextid = [];
+    // eslint-disable-next-line no-console
+    console.log(seleccionados);
+    seleccionados.forEach(async(caseid) => {
+        contextid.push(
+            upsertContext({
+                component: "experience",
+                componentinstance: experienceid,
+                modifier: "case",
+                modifierinstance: caseid
+            })
+        );
+    });
+
+    Promise.all(contextid).then((result) => {
+        // 
         return;
     }).catch((error) => {
         Notification.exception(error);

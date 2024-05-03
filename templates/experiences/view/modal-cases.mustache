@@ -21,20 +21,13 @@
 
     {{$body}}
         <form id="res-import-form">
-            <div class="form-group">
-                <label for="nameInput">{{#str}} label:name, tiny_dta {{/str}}</label>
-                <input type="text" class="form-control" name="nameInput" placeholder="{{#str}} placeholder:name, tiny_dta {{/str}}..." required />
-            </div>
-            <div class="form-group">
-                <label for="urlInput">{{#str}} label:url, tiny_dta {{/str}}</label>
-                <input type="url" class="form-control" name="urlInput" placeholder="{{#str}} placeholder:url, tiny_dta {{/str}}..." pattern="https://.*" required />
-            </div>
-            <div class="form-group">
-                <div class="label-extra d-flex flex-row">
-                    <label for="descriptionInput">{{#str}} label:description, tiny_dta {{/str}}</label>
-                    <p>{{#str}} label:description:max_char, tiny_dta {{/str}}</p>
+            <div id="cases-group">
+            {{#cases}}
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="opcion_{{id}}" value="{{id}}">
+                    <label class="form-check-label" for="opcion_{{id}}">{{title}}</label>
                 </div>
-                <textarea class="form-control" name="descriptionInput" placeholder="{{#str}} placeholder:description, tiny_dta {{/str}}..." maxlength="300" rows="3"></textarea> 
+            {{/cases}}
             </div>
         </form>
     {{/body}}

@@ -25,6 +25,7 @@
             {{#resources}}
                 <div class="form-group form-check">
                     <input type="checkbox" class="form-check-input" id="opcion_{{id}}" value="{{id}}">
+                    <i class="icon fa fa-file-text"></i>
                     <label class="form-check-label" for="opcion_{{id}}">{{name}}</label>
                 </div>
             {{/resources}}
@@ -35,3 +36,24 @@
         <button type="submit" data-action="save" class="btn btn-primary">{{#str}} button:import, tiny_dta {{/str}}</button>
     {{/footer}}
 {{/ core/modal }}
+
+
+<style>
+#res-import-form {
+    .form-check:focus {
+        background-color: #eee;
+    }
+
+    input[type="checkbox"] {
+        display: none;
+    }
+
+    label {
+        background-color: #fff !important;
+        border-radius: 5px !important;
+        border-bottom: 1px solid #062f4a !important;
+        color: #062f4a !important;
+        cursor: pointer;
+    }
+}
+</style>

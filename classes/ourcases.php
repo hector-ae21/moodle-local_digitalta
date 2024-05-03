@@ -76,10 +76,10 @@ class OurCases
      * @param bool $with_extra_fields Indicates whether to get extra fields
      * @return array Returns an array of records
      */
-    public static function get_cases($with_extra_fields = true)
+    public static function get_cases($with_extra_fields = true, $active = 1)
     {
         global $DB;
-        $cases = $DB->get_records(self::$table);
+        $cases = $DB->get_records(self::$table , ['status' => $active]);
         if ($with_extra_fields) {
             $cases = self::get_extra_fields($cases);
         }

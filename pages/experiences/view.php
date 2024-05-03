@@ -125,7 +125,6 @@ $template_context = [
     ],
 ];
 
-print_object($template_context);
 
 $template_context = filter_utils::apply_filter_to_template_object($template_context);
 

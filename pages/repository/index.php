@@ -25,7 +25,7 @@ $strings = get_strings(['repository_header', 'repository_title'], "local_dta");
 $PAGE->set_url(new moodle_url('/local/dta/pages/repository/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->repository_title);
-$PAGE->requires->js_call_amd('local_dta/resources/manage_resources', 'init');
+$PAGE->requires->js_call_amd('local_dta/resources/manage_resources', 'init', array(false));
 
 echo $OUTPUT->header();
 

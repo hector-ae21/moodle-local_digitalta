@@ -89,6 +89,14 @@
         </form>
     {{/body}}
     {{$footer}}
-        <button type="submit" data-action="save" class="btn btn-primary">{{#str}} button:import, tiny_dta {{/str}}</button>
+        {{#change}}
+            <div class="d-flex flex-row justify-content-between w-100">
+                <button class="btn btn-link" id="changeToImportResource">Search for an existing resource</a>
+                <button type="submit" data-action="save" class="btn btn-primary">{{#str}} button:import, tiny_dta {{/str}}</button>
+            </div>
+        {{/change}}
+        {{^change}}
+            <button type="submit" data-action="save" class="btn btn-primary">{{#str}} button:import, tiny_dta {{/str}}</button>
+        {{/change}}
     {{/footer}}
 {{/ core/modal }}

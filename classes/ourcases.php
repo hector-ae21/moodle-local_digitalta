@@ -27,7 +27,9 @@ namespace local_dta;
 require_once(__DIR__ . '/reactions.php');
 require_once(__DIR__ . '/experience.php');
 require_once(__DIR__ . '/tags.php');
+require_once(__DIR__ . '/context.php');
 require_once(__DIR__ . '/utils/date_utils.php');
+
 
 use stdClass;
 use Exception;
@@ -35,6 +37,7 @@ use local_dta\Reaction;
 use local_dta\Tags;
 use local_dta\Experience;
 use local_dta\utils\date_utils;
+use local_dta\Context;
 
 /**
  * This class is used to manage the cases of the plugin
@@ -402,5 +405,67 @@ class OurCases
             $file->get_filename()
         );
         return $pictureurl;
+    }
+
+        /**
+     * Get resources by IDs.
+     * @param array $ids The IDs of the resources.
+     * @return array The resources.
+     */
+    public static function get_cases_by_ids(array $ids) : array {
+        global $DB;
+        $resources = array();
+    
+        if (!empty($ids)) {
+            $where_clause = "WHERE ";
+            foreach ($ids as $id) {
+                $where_clause .= "id = " . (int)$id . " OR ";
+            }
+            $where_clause = rtrim($where_clause, " OR ");
+            $sql = "SELECT * FROM {" . self::$table . "} " . $where_clause;    
+            $resources = $DB->get_records_sql($sql);
+        }
+
+        // get section header and add 
+        foreach ($resources as $resource) {
+            $resource->section_header = self::get_section_header($resource->id);
+        }
+        
+        return $resources;
+    }
+
+    
+    /**
+     * Populate the context of a resource.
+     * 
+     * @param $unique_context object The unique context.
+     * 
+     * @return object The resource with the populated context.
+     */
+    public static function populate_context(object $unique_context): object {
+        $resource = self::get_case($unique_context->modifierinstance);
+        $resource->context = $unique_context;
+        $resource->section_header = self::get_section_header($resource->id);
+        return $resource;
+    }
+
+    
+    /**
+     * Get resources by context and component.
+     * @param string $component The component.
+     * @param int $componentinstance The component instance.
+     * @return array The resources.
+     */
+    public static function get_cases_by_context_component(string $component, int $componentinstance) : array{
+        $context = Context::get_contexts_by_component($component, $componentinstance, 'resource');
+
+        if(!$context) {
+            return [];
+        }
+        $resources = array();
+        foreach ($context as $unique_context) {
+            $resources[] = self::populate_context($unique_context);
+        }
+        return array_values($resources);
     }
 }

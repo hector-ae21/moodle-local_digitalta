@@ -18,3 +18,21 @@ export const upsertContext = args => {
     };
     return Ajax.call([request])[0];
 };
+
+
+/**
+ * Toggle the status of an experience.
+ *
+ * Valid args are:
+ * - id (int): The context id.
+ * @method upsertContext
+ * @param {Object} args Arguments send to the webservice.
+ * @return {Promise} Resolve with warnings.
+ */
+export const deleteContext = args => {
+    const request = {
+        methodname: 'local_dta_context_delete',
+        args
+    };
+    return Ajax.call([request])[0];
+};

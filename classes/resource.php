@@ -239,27 +239,18 @@ class Resource {
     }
 
     /**
-     * Get resources by IDs.
-     * @param array $ids The IDs of the resources.
-     * @return array The resources.
+     * Populate the context of a resource.
+     * 
+     * @param $unique_context object The unique context.
+     * 
+     * @return object The resource with the populated context.
      */
-    public static function get_resources_by_ids(array $ids) : array {
-        global $DB;
-        $resources = array();
-    
-        if (!empty($ids)) {
-            $where_clause = "WHERE ";
-            foreach ($ids as $id) {
-                $where_clause .= "id = " . (int)$id . " OR ";
-            }
-            $where_clause = rtrim($where_clause, " OR ");
-            $sql = "SELECT * FROM {" . self::$table . "} " . $where_clause;    
-            $resources = $DB->get_records_sql($sql);
-        }
-        
-        return $resources;
+    public static function populate_context(object $unique_context): object {
+        $resource = self::get_resource($unique_context->modifierinstance);
+        $resource->context = $unique_context;
+        return $resource;
     }
-    
+
     /**
      * Get resources by context and component.
      * @param string $component The component.
@@ -269,14 +260,11 @@ class Resource {
     public static function get_resources_by_context_component(string $component, int $componentinstance) : array{
         $context = Context::get_contexts_by_component($component, $componentinstance, 'resource');
 
-        $ids = array();
-
-        foreach ($context as $c) {
-            $ids[] = $c->id;
+        $resources = array();
+        foreach ($context as $unique_context) {
+            $resources[] = self::populate_context($unique_context);
         }
-
-        print_r(self::get_resources_by_ids($ids));
-        return self::get_resources_by_ids($ids);
+        return array_values($resources);
     }
 }
 

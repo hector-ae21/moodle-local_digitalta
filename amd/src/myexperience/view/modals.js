@@ -86,9 +86,8 @@ const handleResourceModal = () => {
         );
     });
 
-    Promise.all(contextid).then((result) => {
-        // eslint-disable-next-line no-console
-        console.log(result);
+    Promise.all(contextid).then(() => {
+        window.location.reload();
         return;
     }).catch((error) => {
         Notification.exception(error);
@@ -139,8 +138,8 @@ const handleCoursesModal = () => {
         );
     });
 
-    Promise.all(contextid).then((result) => {
-        // 
+    Promise.all(contextid).then(() => {
+        window.location.reload();
         return;
     }).catch((error) => {
         Notification.exception(error);

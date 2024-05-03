@@ -1,8 +1,7 @@
-    <a href="{{path}}" class="text-decoration-none">
-        <div class="d-flex flex-row  align-items-center">
-            <i class="icon fa fa-clipboard mr-3"></i>
-            <p class="text-primary m-0">{{name}}</p>
-            <i class="icon fa fa-link ml-1"></i>
-            <a id="remove-context-button" data-contextid="{{context.id}}"><i class="icon fa fa-times ml-1 text-danger"></i></a>
-        </div>
-    </a>
+<a href="{{path}}" class="text-decoration-none d-flex flex-row align-items-center">
+    <div class="d-flex flex-row align-items-center justify-content-between">
+        <i class="icon fa fa-folder-open mr-3"></i>
+        <p class="text-primary m-0">{{name}}</p>
+        <a id="remove-context-button" data-contextid="{{context.id}}"><i class="icon fa fa-times ml-1 text-danger"></i></a>
+    </div>
+</a>

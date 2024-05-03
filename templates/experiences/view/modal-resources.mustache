@@ -16,11 +16,11 @@
 }}
 {{< core/modal }}
     {{$title}}
-        {{#str}} modal:title, tiny_dta {{/str}}
+        Import a Resource
     {{/title}}
 
     {{$body}}
-        <form id="res-import-form">
+        <form id="res-import-form" class="import-modal">
             <div id="resources-group">
             {{#resources}}
                 <div class="form-group form-check">
@@ -36,24 +36,3 @@
         <button type="submit" data-action="save" class="btn btn-primary">{{#str}} button:import, tiny_dta {{/str}}</button>
     {{/footer}}
 {{/ core/modal }}
-
-
-<style>
-#res-import-form {
-    .form-check:focus {
-        background-color: #eee;
-    }
-
-    input[type="checkbox"] {
-        display: none;
-    }
-
-    label {
-        background-color: #fff !important;
-        border-radius: 5px !important;
-        border-bottom: 1px solid #062f4a !important;
-        color: #062f4a !important;
-        cursor: pointer;
-    }
-}
-</style>

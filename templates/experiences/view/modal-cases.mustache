@@ -16,15 +16,16 @@
 }}
 {{< core/modal }}
     {{$title}}
-        {{#str}} modal:title, tiny_dta {{/str}}
+        Import a Case
     {{/title}}
 
     {{$body}}
-        <form id="res-import-form">
+        <form id="res-import-form" class="import-modal">
             <div id="cases-group">
             {{#cases}}
                 <div class="form-group form-check">
                     <input type="checkbox" class="form-check-input" id="opcion_{{id}}" value="{{id}}">
+                    <i class="icon fa fa-book"></i>
                     <label class="form-check-label" for="opcion_{{id}}">{{title}}</label>
                 </div>
             {{/cases}}

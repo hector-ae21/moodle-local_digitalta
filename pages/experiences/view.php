@@ -13,12 +13,15 @@ use local_dta\OurCases;
 use local_dta\Reflection;
 use local_dta\CONSTANTS;
 use local_dta\utils\filter_utils;
+use local_dta\Resource;
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experience.php');
 require_once(__DIR__ . './../../classes/ourcases.php');
 require_once(__DIR__ . './../../classes/reflection.php');
+require_once(__DIR__ . './../../classes/resource.php');
 require_once(__DIR__ . './../../classes/utils/filter_utils.php');
+require_once($CFG->dirroot . '/local/dta/locallib.php');
 
 
 require_login();
@@ -117,7 +120,12 @@ $template_context = [
     'viewreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection/view.php?id=',
     'reflection' => $reflection,
     'reflectionsections' => $formattedReflectionSections,
+    'related' => [
+        'resources' => Resource::get_resources_by_context_component('experience', $id)
+    ],
 ];
+
+print_object($template_context);
 
 $template_context = filter_utils::apply_filter_to_template_object($template_context);
 

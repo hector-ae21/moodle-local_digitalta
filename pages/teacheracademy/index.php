@@ -99,7 +99,8 @@ $templateContext = [
         "data" => array_slice($cases, 0, 4),
         "viewurl" => $CFG->wwwroot . "/local/dta/pages/cases/view.php?id=",
         "allurl" => $CFG->wwwroot . "/local/dta/pages/cases/repository.php"
-    ]
+    ],
+    "ismentorcardvertical" => false,
 ];
 
 $templateContext = filter_utils::apply_filter_to_template_object($templateContext);

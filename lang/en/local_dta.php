@@ -154,8 +154,8 @@ $string['date_timeago'] = '{$a} ago';
 $string['date_justnow'] = 'Just now';
 
 // Repository 
-$string['repository_title'] = 'Repository';
-$string['repository_header'] = 'Repository';
+$string['repository_title'] = 'Resource Repository';
+$string['repository_header'] = 'Resource Repository';
 
 // Themes & Tags
 $string['themestags_title'] = 'Themes & Tags';

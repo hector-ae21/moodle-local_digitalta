@@ -25,10 +25,32 @@ $strings = get_strings(['repository_header', 'repository_title'], "local_dta");
 $PAGE->set_url(new moodle_url('/local/dta/pages/repository/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->repository_title);
+$PAGE->requires->js_call_amd('local_dta/resources/manage_resources', 'init', array(false));
 
 echo $OUTPUT->header();
 
+function getResourceType($type)
+{
+    switch ($type) {
+        case 'IMAGE':
+            return ['isImage' => true];
+        case 'VIDEO':
+            return ['isVideo' => true];
+        case 'URL':
+            return ['isUrl' => true];
+        case 'DOCUMENT':
+            return ['isDocument' => true];
+        default:
+            return [];
+    }
+}
+
 $resources = Resource::get_all_resources();
+
+foreach ($resources as &$resource) {
+    $typeData = getResourceType($resource->type);
+    $resource = (object) array_merge((array) $resource, $typeData);
+}
 
 $template_context = [
     'resources' => $resources,

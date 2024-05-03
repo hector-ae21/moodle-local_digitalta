@@ -171,5 +171,34 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_dta_resources_get' => [
+        'classname'   => 'external_resources_get',
+        'methodname'  => 'resources_get',
+        'classpath'   => 'local/dta/classes/webservices/resources/external_resources_get.php',
+        'description' => 'get resources',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
+    // CONTEXT 
+    'local_dta_context_upsert' => [
+        'classname'   => 'external_context_upsert',
+        'methodname'  => 'context_upsert',
+        'classpath'   => 'local/dta/classes/webservices/context/external_context_upsert.php',
+        'description' => 'upsert a context',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_context_delete' => [
+        'classname'   => 'external_context_delete',
+        'methodname'  => 'context_delete',
+        'classpath'   => 'local/dta/classes/webservices/context/external_context_delete.php',
+        'description' => 'upsert a context',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     
 ];

@@ -14,8 +14,11 @@
 namespace local_dta;
 
 require_once(__DIR__ . '/constants.php');
+require_once(__DIR__ . '/context.php');
 
 use \local_dta\CONSTANTS;
+use \local_dta\Context;
+
 use Exception;
 
 class Resource {
@@ -233,6 +236,35 @@ class Resource {
     public static function get_all_resources() : array{
         global $DB;
         return array_values($DB->get_records(self::$table));
+    }
+
+    /**
+     * Populate the context of a resource.
+     * 
+     * @param $unique_context object The unique context.
+     * 
+     * @return object The resource with the populated context.
+     */
+    public static function populate_context(object $unique_context): object {
+        $resource = self::get_resource($unique_context->modifierinstance);
+        $resource->context = $unique_context;
+        return $resource;
+    }
+
+    /**
+     * Get resources by context and component.
+     * @param string $component The component.
+     * @param int $componentinstance The component instance.
+     * @return array The resources.
+     */
+    public static function get_resources_by_context_component(string $component, int $componentinstance) : array{
+        $context = Context::get_contexts_by_component($component, $componentinstance, 'resource');
+
+        $resources = array();
+        foreach ($context as $unique_context) {
+            $resources[] = self::populate_context($unique_context);
+        }
+        return array_values($resources);
     }
 }
 

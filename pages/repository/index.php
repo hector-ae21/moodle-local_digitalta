@@ -29,7 +29,28 @@ $PAGE->requires->js_call_amd('local_dta/resources/manage_resources', 'init');
 
 echo $OUTPUT->header();
 
+function getResourceType($type)
+{
+    switch ($type) {
+        case 'IMAGE':
+            return ['isImage' => true];
+        case 'VIDEO':
+            return ['isVideo' => true];
+        case 'URL':
+            return ['isUrl' => true];
+        case 'DOCUMENT':
+            return ['isDocument' => true];
+        default:
+            return [];
+    }
+}
+
 $resources = Resource::get_all_resources();
+
+foreach ($resources as &$resource) {
+    $typeData = getResourceType($resource->type);
+    $resource = (object) array_merge((array) $resource, $typeData);
+}
 
 $template_context = [
     'resources' => $resources,

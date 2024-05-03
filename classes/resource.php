@@ -272,11 +272,10 @@ class Resource {
         $ids = array();
 
         foreach ($context as $c) {
-            $ids[] = $c->id;
+            $ids[] = $c->modifierinstance;
         }
 
-        print_r(self::get_resources_by_ids($ids));
-        return self::get_resources_by_ids($ids);
+        return array_values(self::get_resources_by_ids($ids));
     }
 }
 

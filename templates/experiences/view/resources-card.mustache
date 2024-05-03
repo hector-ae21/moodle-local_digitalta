@@ -19,12 +19,13 @@
   </div>
   <div class="card-body">
       <h4>Related Cases</h4>
-      {{#cases}}
+      {{#related.cases}}
         {{>local_dta/experiences/view/related-cases-link}}
-      {{/cases}}
-      
+      {{/related.cases}}      
       <br>
       <h4>Related Resources</h4>
-      <h6>Comming soon...</h6>
+      {{#related.resources}}
+        {{>local_dta/experiences/view/related-resources-link}}
+      {{/related.resources}}
   </div>
 </div>

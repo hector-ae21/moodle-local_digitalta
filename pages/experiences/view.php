@@ -121,12 +121,14 @@ $template_context = [
     'reflection' => $reflection,
     'reflectionsections' => $formattedReflectionSections,
     'related' => [
-        'resources' => Resource::get_resources_by_context_component('experience', $id)
+        'resources' => Resource::get_resources_by_context_component('experience', $id),
+        'cases' => OurCases::get_cases_by_context_component('experience', $id)
     ],
 ];
 
 
 $template_context = filter_utils::apply_filter_to_template_object($template_context);
+
 
 echo $OUTPUT->render_from_template('local_dta/experiences/view/view', $template_context);
 

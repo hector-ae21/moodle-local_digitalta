@@ -55,7 +55,7 @@ class Context
         if (!in_array($type, ['component', 'modifier'])) {
             throw new Exception('Invalid type');
         }
-        $table = ($type == 'component') ? 'digital_component' : 'digital_modifier';
+        $table = ($type == 'component') ? 'digital_components' : 'digital_modifiers';
         return $DB->get_field($table, 'id', ['name' => $name]);
     }
 

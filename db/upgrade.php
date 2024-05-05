@@ -464,7 +464,6 @@ function xmldb_local_dta_upgrade($oldversion)
     }
     $local_dta_components = $DB->get_records('digital_components');
     $local_dta_components = array_column($local_dta_components, 'id', 'name');
-    printf("<pre>%s</pre>", print_r($local_dta_components, true));
 
     // Insert the modifiers
     $table = new xmldb_table('digital_modifiers');
@@ -482,7 +481,6 @@ function xmldb_local_dta_upgrade($oldversion)
     }
     $local_dta_modifiers = $DB->get_records('digital_modifiers');
     $local_dta_modifiers = array_column($local_dta_modifiers, 'id', 'name');
-    printf("<pre>%s</pre>", print_r($local_dta_modifiers, true));
 
     // Insert the themes
     $table = new xmldb_table('digital_themes');
@@ -500,7 +498,6 @@ function xmldb_local_dta_upgrade($oldversion)
     }
     $local_dta_themes = $DB->get_records('digital_themes');
     $local_dta_themes = array_column($local_dta_themes, 'id', 'name');
-    printf("<pre>%s</pre>", print_r($local_dta_themes, true));
 
     return true;
 }

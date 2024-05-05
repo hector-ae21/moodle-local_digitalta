@@ -33,30 +33,27 @@ function xmldb_local_dta_install() {
     global $DB;
 
     // Insert the components
-    foreach (LOCAL_DTA_COMPONENTS as $key => $value) {
+    foreach (LOCAL_DTA_COMPONENTS as $value) {
         $component = new stdClass();
-        $component->id = $value;
-        $component->name = $key;
+        $component->name = $value;
         $component->timecreated = time();
         $component->timemodified = time();
         $DB->insert_record('digital_components', $component);
     }
 
     // Insert the modifiers
-    foreach (LOCAL_DTA_MODIFIERS as $key => $value) {
+    foreach (LOCAL_DTA_MODIFIERS as $value) {
         $modifier = new stdClass();
-        $modifier->id = $value;
-        $modifier->name = $key;
+        $modifier->name = $value;
         $modifier->timecreated = time();
         $modifier->timemodified = time();
         $DB->insert_record('digital_modifiers', $modifier);
     }
 
     // Insert the themes
-    foreach (LOCAL_DTA_THEMES as $key => $value) {
+    foreach (LOCAL_DTA_THEMES as $value) {
         $theme = new stdClass();
-        $theme->id = $value;
-        $theme->name = $key;
+        $theme->name = $value;
         $theme->timecreated = time();
         $theme->timemodified = time();
         $DB->insert_record('digital_themes', $theme);

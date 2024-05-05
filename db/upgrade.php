@@ -258,6 +258,17 @@ function xmldb_local_dta_upgrade($oldversion)
 
     if ($oldversion < 2024050200) {
 
+        // Add new fields to digital_tags table
+        $table = new xmldb_table('digital_tags');
+        $field = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        if (!$dbman->field_exists($table, 'timecreated')) {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        if (!$dbman->field_exists($table, 'timemodefied')) {
+            $dbman->add_field($table, $field);
+        }
+
         // Define table digital_components to be created.
         $table = new xmldb_table('digital_components');
 
@@ -277,14 +288,18 @@ function xmldb_local_dta_upgrade($oldversion)
         }
 
         // Insert the components
-        foreach (LOCAL_DTA_COMPONENTS as $key => $value) {
+        foreach (LOCAL_DTA_COMPONENTS as $value) {
+            if ($DB->record_exists('digital_components', ['name' => $value])) {
+                continue;
+            }
             $component = new stdClass();
-            $component->id = $value;
-            $component->name = $key;
+            $component->name = $value;
             $component->timecreated = time();
             $component->timemodified = time();
             $DB->insert_record('digital_components', $component);
         }
+        $local_dta_components = $DB->get_records('digital_components');
+        $local_dta_components = array_column($local_dta_components, 'id', 'name');
 
         // Define table digital_modifiers to be created.
         $table = new xmldb_table('digital_modifiers');
@@ -305,14 +320,32 @@ function xmldb_local_dta_upgrade($oldversion)
         }
 
         // Insert the modifiers
-        foreach (LOCAL_DTA_MODIFIERS as $key => $value) {
+        foreach (LOCAL_DTA_MODIFIERS as $value) {
+            if ($DB->record_exists('digital_modifiers', ['name' => $value])) {
+                continue;
+            }
             $modifier = new stdClass();
-            $modifier->id = $value;
-            $modifier->name = $key;
+            $modifier->name = $value;
             $modifier->timecreated = time();
             $modifier->timemodified = time();
             $DB->insert_record('digital_modifiers', $modifier);
         }
+        $local_dta_modifiers = $DB->get_records('digital_modifiers');
+        $local_dta_modifiers = array_column($local_dta_modifiers, 'id', 'name');
+
+        // Insert the themes
+        foreach (LOCAL_DTA_THEMES as $value) {
+            if ($DB->record_exists('digital_themes', ['name' => $value])) {
+                continue;
+            }
+            $theme = new stdClass();
+            $theme->name = $value;
+            $theme->timecreated = time();
+            $theme->timemodified = time();
+            $DB->insert_record('digital_themes', $theme);
+        }
+        $local_dta_themes = $DB->get_records('digital_themes');
+        $local_dta_themes = array_column($local_dta_themes, 'id', 'name');
 
         // Define table digital_context to be created.
         $table = new xmldb_table('digital_context');
@@ -340,10 +373,17 @@ function xmldb_local_dta_upgrade($oldversion)
         if ($dbman->table_exists($table)) {
             $current_themes_context_records = $DB->get_records('digital_themes_context');
             foreach ($current_themes_context_records as $current_themes_context_record) {
+                if ($DB->record_exists('digital_context', [
+                        'component' => $local_dta_components[strtolower($current_themes_context_record->type)],
+                        'componentinstance' => $current_themes_context_record->instance,
+                        'modifier' => $local_dta_modifiers['theme'],
+                        'modifierinstance' => $current_themes_context_record->theme])) {
+                    continue;
+                }
                 $context = new stdClass();
-                $context->component = LOCAL_DTA_COMPONENTS[strtolower($current_themes_context_record->type)];
+                $context->component = $local_dta_components[strtolower($current_themes_context_record->type)];
                 $context->componentinstance = $current_themes_context_record->instance;
-                $context->modifier = LOCAL_DTA_MODIFIERS['theme'];
+                $context->modifier = $local_dta_modifiers['theme'];
                 $context->modifierinstance = $current_themes_context_record->theme;
                 $context->timecreated = time();
                 $context->timemodified = time();
@@ -358,10 +398,17 @@ function xmldb_local_dta_upgrade($oldversion)
         if ($dbman->table_exists($table)) {
             $current_experience_tag_records = $DB->get_records('digital_experience_tag');
             foreach ($current_experience_tag_records as $current_experience_tag_record) {
+                if ($DB->record_exists('digital_context', [
+                        'component' => $local_dta_components['experience'],
+                        'componentinstance' => $current_experience_tag_record->experienceid,
+                        'modifier' => $local_dta_modifiers['tag'],
+                        'modifierinstance' => $current_experience_tag_record->tagid])) {
+                    continue;
+                }
                 $context = new stdClass();
-                $context->component = LOCAL_DTA_COMPONENTS['experience'];
+                $context->component = $local_dta_components['experience'];
                 $context->componentinstance = $current_experience_tag_record->experienceid;
-                $context->modifier = LOCAL_DTA_MODIFIERS['tag'];
+                $context->modifier = $local_dta_modifiers['tag'];
                 $context->modifierinstance = $current_experience_tag_record->tagid;
                 $context->timecreated = time();
                 $context->timemodified = time();
@@ -376,10 +423,17 @@ function xmldb_local_dta_upgrade($oldversion)
         if ($dbman->table_exists($table)) {
             $current_cases_tag_records = $DB->get_records('digital_cases_tag');
             foreach ($current_cases_tag_records as $current_cases_tag_record) {
+                if ($DB->record_exists('digital_context', [
+                        'component' => $local_dta_components['case'], 
+                        'componentinstance' => $current_cases_tag_record->caseid,
+                        'modifier' => $local_dta_modifiers['tag'],
+                        'modifierinstance' => $current_cases_tag_record->tagid])) {
+                    continue;
+                }
                 $context = new stdClass();
-                $context->component = LOCAL_DTA_COMPONENTS['case'];
+                $context->component = $local_dta_components['case'];
                 $context->componentinstance = $current_cases_tag_record->caseid;
-                $context->modifier = LOCAL_DTA_MODIFIERS['tag'];
+                $context->modifier = $local_dta_modifiers['tag'];
                 $context->modifierinstance = $current_cases_tag_record->tagid;
                 $context->timecreated = time();
                 $context->timemodified = time();
@@ -389,30 +443,64 @@ function xmldb_local_dta_upgrade($oldversion)
             $dbman->drop_table($table);
         }
 
-        // Add new fields to digital_tags table
-        $table = new xmldb_table('digital_tags');
-        $field = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
-        if (!$dbman->field_exists($table, 'timecreated')) {
-            $dbman->add_field($table, $field);
-        }
-        $field = new xmldb_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
-        if (!$dbman->field_exists($table, 'timemodefied')) {
-            $dbman->add_field($table, $field);
-        }
+        // Dta savepoint reached.
+        upgrade_plugin_savepoint(true, 2024050200, 'local', 'dta');
+    }
 
-        // Insert the themes
-        foreach (LOCAL_DTA_THEMES as $key => $value) {
+    // Try all insertions regardless of the version
+    // Insert the components
+    $table = new xmldb_table('digital_components');
+    if ($dbman->table_exists($table)) {
+        foreach (LOCAL_DTA_COMPONENTS as $value) {
+            if ($DB->record_exists('digital_components', ['name' => $value])) {
+                continue;
+            }
+            $component = new stdClass();
+            $component->name = $value;
+            $component->timecreated = time();
+            $component->timemodified = time();
+            $DB->insert_record('digital_components', $component);
+        }
+    }
+    $local_dta_components = $DB->get_records('digital_components');
+    $local_dta_components = array_column($local_dta_components, 'id', 'name');
+    printf("<pre>%s</pre>", print_r($local_dta_components, true));
+
+    // Insert the modifiers
+    $table = new xmldb_table('digital_modifiers');
+    if ($dbman->table_exists($table)) {
+        foreach (LOCAL_DTA_MODIFIERS as $value) {
+            if ($DB->record_exists('digital_modifiers', ['name' => $value])) {
+                continue;
+            }
+            $modifier = new stdClass();
+            $modifier->name = $value;
+            $modifier->timecreated = time();
+            $modifier->timemodified = time();
+            $DB->insert_record('digital_modifiers', $modifier);
+        }
+    }
+    $local_dta_modifiers = $DB->get_records('digital_modifiers');
+    $local_dta_modifiers = array_column($local_dta_modifiers, 'id', 'name');
+    printf("<pre>%s</pre>", print_r($local_dta_modifiers, true));
+
+    // Insert the themes
+    $table = new xmldb_table('digital_themes');
+    if ($dbman->table_exists($table)) {
+        foreach (LOCAL_DTA_THEMES as $value) {
+            if ($DB->record_exists('digital_themes', ['name' => $value])) {
+                continue;
+            }
             $theme = new stdClass();
-            $theme->id = $value;
-            $theme->name = $key;
+            $theme->name = $value;
             $theme->timecreated = time();
             $theme->timemodified = time();
             $DB->insert_record('digital_themes', $theme);
         }
-
-        // Dta savepoint reached.
-        upgrade_plugin_savepoint(true, 2024050200, 'local', 'dta');
     }
+    $local_dta_themes = $DB->get_records('digital_themes');
+    $local_dta_themes = array_column($local_dta_themes, 'id', 'name');
+    printf("<pre>%s</pre>", print_r($local_dta_themes, true));
 
     return true;
 }

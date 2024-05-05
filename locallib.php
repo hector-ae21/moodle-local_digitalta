@@ -25,29 +25,29 @@
 defined('MOODLE_INTERNAL') || die();
 
 const LOCAL_DTA_COMPONENTS = [
-    "experience" => 1,
-    "case" => 2,
-    "resource" => 3,
-    "user" => 4
+    "experience",
+    "case",
+    "resource",
+    "user"
 ];
 
 // RESOURCES AND CASE is duplicated as a component and as a modifier bc it can be both
 // we need to refactor this in the future, but not now it's fine
 
 const LOCAL_DTA_MODIFIERS = [
-    "theme" => 1,
-    "tag" => 2,
-    "resource" => 3,
-    "case" => 4
+    "theme",
+    "tag",
+    "resource",
+    "case"
 ];
 
 const LOCAL_DTA_THEMES = [
-    "Digital Technology" => 1,
-    "Classroom Management" => 2,
-    "Communication and Relationship Building" => 3,
-    "Diversity and Inclusion" => 4,
-    "Professional Collaboration and Development" => 5,
-    "School Culture" => 6,
-    "Curriculum Planning and Development" => 7,
-    "Others" => 8
+    "Digital Technology",
+    "Classroom Management",
+    "Communication and Relationship Building",
+    "Diversity and Inclusion",
+    "Professional Collaboration and Development",
+    "School Culture",
+    "Curriculum Planning and Development",
+    "Others"
 ];

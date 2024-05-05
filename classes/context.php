@@ -51,11 +51,12 @@ class Context
      */
     public static function is_valid(string $type, string $name)
     {
+        global $DB;
         if (!in_array($type, ['component', 'modifier'])) {
             throw new Exception('Invalid type');
         }
-        $list = ($type == 'component') ? LOCAL_DTA_COMPONENTS : LOCAL_DTA_MODIFIERS;
-        return $list[$name] ?? false;
+        $table = ($type == 'component') ? 'digital_component' : 'digital_modifier';
+        return $DB->get_field($table, 'id', ['name' => $name]);
     }
 
     /**

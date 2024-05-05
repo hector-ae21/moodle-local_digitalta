@@ -21,11 +21,4 @@ class CONSTANTS{
             "TABLE" => "digital_refl_sec_text",
         ]
     ];
-    // TYPES OF FILES 
-    const FILE_TYPES = [
-        "IMAGE",
-        "VIDEO",
-        "URL",
-        "DOCUMENT"
-    ];
 }

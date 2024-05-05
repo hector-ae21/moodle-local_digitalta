@@ -8,13 +8,18 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once (__DIR__ . '/../../../../config.php');
-require_once (__DIR__ . './../../classes/resource.php');
-require_once (__DIR__ . './../../classes/utils/string_utils.php');
-require_once (__DIR__ . './../../classes/utils/filter_utils.php');
+require_once($CFG->dirroot . '/local/dta/classes/resources.php');
+require_once($CFG->dirroot . '/local/dta/classes/themes.php');
+require_once($CFG->dirroot . '/local/dta/classes/tags.php');
+require_once($CFG->dirroot . '/local/dta/classes/utils/string_utils.php');
+require_once($CFG->dirroot . '/local/dta/classes/utils/filter_utils.php');
+require_once($CFG->dirroot . '/local/dta/locallib.php');
 
 require_login();
 
-use local_dta\Resource;
+use local_dta\Resources;
+use local_dta\Themes;
+use local_dta\Tags;
 use local_dta\utils\filter_utils;
 
 global $CFG, $PAGE, $OUTPUT;
@@ -25,7 +30,43 @@ $strings = get_strings(['repository_header', 'repository_title'], "local_dta");
 $PAGE->set_url(new moodle_url('/local/dta/pages/repository/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->repository_title);
-$PAGE->requires->js_call_amd('local_dta/resources/manage_resources', 'init', array(false));
+
+// Get all types
+$type_options = Resources::get_types();
+$type_options = array_values(array_map(function ($type) {
+    return [
+        'value' => $type->id,
+        'text' => local_dta_get_element_translation('resource_type', $type->name)
+    ];
+}, $type_options));
+
+// Get all themes
+$theme_options = Themes::get_themes();
+$theme_options = array_values(array_map(function ($theme) {
+    return [
+        'value' => $theme->id,
+        'text' => local_dta_get_element_translation('theme', $theme->name)
+    ];
+}, $theme_options));
+
+// Get all tags
+$tag_options = Tags::get_tags();
+$tag_options = array_values(array_map(function ($tag) {
+    return [
+        'value' => $tag->id,
+        'text' => local_dta_get_element_translation('tag', $tag->name)
+    ];
+}, $tag_options));
+
+// Load the JS
+$options = [
+    'change' => false,
+    'types' => $type_options,
+    'format_id' => Resources::get_format_by_name('Link')->id,
+    'themes' => $theme_options,
+    'tags' => $tag_options
+];
+$PAGE->requires->js_call_amd('local_dta/resources/manage_resources', 'init', [$options]);
 
 echo $OUTPUT->header();
 
@@ -45,7 +86,7 @@ function getResourceType($type)
     }
 }
 
-$resources = Resource::get_all_resources();
+$resources = Resources::get_all_resources();
 
 foreach ($resources as &$resource) {
     $typeData = getResourceType($resource->type);

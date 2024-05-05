@@ -59,4 +59,22 @@ function xmldb_local_dta_install() {
         $DB->insert_record('digital_themes', $theme);
     }
 
+    // Insert the resource types
+    foreach (LOCAL_DTA_RESOURCE_TYPES as $value) {
+        $resource = new stdClass();
+        $resource->name = $value;
+        $resource->timecreated = time();
+        $resource->timemodified = time();
+        $DB->insert_record('digital_resource_types', $resource);
+    }
+
+    // Insert the resource formats
+    foreach (LOCAL_DTA_RESOURCE_FORMATS as $value) {
+        $resource = new stdClass();
+        $resource->name = $value;
+        $resource->timecreated = time();
+        $resource->timemodified = time();
+        $DB->insert_record('digital_resource_formats', $resource);
+    }
+
 }

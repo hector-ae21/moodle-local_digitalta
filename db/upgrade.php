@@ -447,6 +447,154 @@ function xmldb_local_dta_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024050200, 'local', 'dta');
     }
 
+    if ($oldversion < 2024050501) {
+
+        // Define table digital_resources_types to be created.
+        $table = new xmldb_table('digital_resources_types');
+
+        // Adding fields to table digital_resources_types.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        // Adding keys to table digital_resources_types.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('name', XMLDB_KEY_UNIQUE, ['name']);
+
+        // Conditionally launch create table for digital_resources_types.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Insert the resource types
+        foreach (LOCAL_DTA_RESOURCE_TYPES as $value) {
+            if ($DB->record_exists('digital_resources_types', ['name' => $value])) {
+                continue;
+            }
+            $resource_type = new stdClass();
+            $resource_type->name = $value;
+            $resource_type->timecreated = time();
+            $resource_type->timemodified = time();
+            $DB->insert_record('digital_resources_types', $resource_type);
+        }
+        $local_dta_resource_types = $DB->get_records('digital_resources_types');
+        $local_dta_resource_types = array_column($local_dta_resource_types, 'id', 'name');
+
+        // Define table digital_resources_formats to be created.
+        $table = new xmldb_table('digital_resources_formats');
+
+        // Adding fields to table digital_resources_formats.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        // Adding keys to table digital_resources_formats.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('name', XMLDB_KEY_UNIQUE, ['name']);
+
+        // Conditionally launch create table for digital_resources_formats.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Insert the resource formats
+        foreach (LOCAL_DTA_RESOURCE_FORMATS as $value) {
+            if ($DB->record_exists('digital_resources_formats', ['name' => $value])) {
+                continue;
+            }
+            $resource_format = new stdClass();
+            $resource_format->name = $value;
+            $resource_format->timecreated = time();
+            $resource_format->timemodified = time();
+            $DB->insert_record('digital_resources_formats', $resource_format);
+        }
+        $local_dta_resource_formats = $DB->get_records('digital_resources_formats');
+        $local_dta_resource_formats = array_column($local_dta_resource_formats, 'id', 'name');
+
+        // Store the current resource types
+        if ($current_resources = $DB->get_records('digital_resources')) {
+            $current_resources_formats = array_column($current_resources, 'type', 'id');
+            // Set the resource types to empty
+            $DB->set_field('digital_resources', 'type', '');
+        }
+
+        // Changing type of field type on table digital_resources to int.
+        $table = new xmldb_table('digital_resources');
+        $field = new xmldb_field('type',
+            XMLDB_TYPE_INTEGER,
+            '10',
+            null,
+            XMLDB_NOTNULL,
+            null,
+            $local_dta_resource_types['Other'],
+            'description');
+
+        // Launch change of type for field type.
+        $dbman->change_field_type($table, $field);
+
+        // Define key type (foreign) to be added to digital_resources.
+        $table = new xmldb_table('digital_resources');
+        $key = new xmldb_key('type', XMLDB_KEY_FOREIGN, ['type'], 'digital_resources_types', ['id']);
+
+        // Launch add key type.
+        $dbman->add_key($table, $key);
+
+        // Define field format to be added to digital_resources.
+        $table = new xmldb_table('digital_resources');
+        $field = new xmldb_field(
+            'format',
+            XMLDB_TYPE_INTEGER,
+            '10',
+            null,
+            XMLDB_NOTNULL,
+            null,
+            $local_dta_resource_formats['None'],
+            'type');
+
+        // Conditionally launch add field format.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define key format (foreign) to be added to digital_resources.
+        $table = new xmldb_table('digital_resources');
+        $key = new xmldb_key('format', XMLDB_KEY_FOREIGN, ['format'], 'digital_resources_formats', ['id']);
+
+        // Launch add key format.
+        $dbman->add_key($table, $key);
+
+        // Update the resource formats
+        if (isset($current_resources_formats)) {
+            foreach ($current_resources_formats as $id => $type) {
+                switch ($type) {
+                    case "IMAGE":
+                        $type = $local_dta_resource_formats['Image'];
+                        break;
+                    case "VIDEO":
+                        $type = $local_dta_resource_formats['Video'];
+                        break;
+                    case "URL":
+                        $type = $local_dta_resource_formats['Link'];
+                        break;
+                    case "DOCUMENT":
+                        $type = $local_dta_resource_formats['Document'];
+                        break;
+                    default:
+                        throw new Exception('Unknown resource type: ' . $type);
+                }
+                $DB->update_record('digital_resources', (object) [
+                    'id' => $id,
+                    'format' => $type
+                ]);
+            }
+        }
+
+        // Dta savepoint reached.
+        upgrade_plugin_savepoint(true, 2024050501, 'local', 'dta');
+    }
+
     // Try all insertions regardless of the version
     // Insert the components
     $table = new xmldb_table('digital_components');
@@ -479,8 +627,6 @@ function xmldb_local_dta_upgrade($oldversion)
             $DB->insert_record('digital_modifiers', $modifier);
         }
     }
-    $local_dta_modifiers = $DB->get_records('digital_modifiers');
-    $local_dta_modifiers = array_column($local_dta_modifiers, 'id', 'name');
 
     // Insert the themes
     $table = new xmldb_table('digital_themes');
@@ -496,8 +642,36 @@ function xmldb_local_dta_upgrade($oldversion)
             $DB->insert_record('digital_themes', $theme);
         }
     }
-    $local_dta_themes = $DB->get_records('digital_themes');
-    $local_dta_themes = array_column($local_dta_themes, 'id', 'name');
+
+    // Insert the resource types
+    $table = new xmldb_table('digital_resources_types');
+    if ($dbman->table_exists($table)) {
+        foreach (LOCAL_DTA_RESOURCE_TYPES as $value) {
+            if ($DB->record_exists('digital_resources_types', ['name' => $value])) {
+                continue;
+            }
+            $resource_type = new stdClass();
+            $resource_type->name = $value;
+            $resource_type->timecreated = time();
+            $resource_type->timemodified = time();
+            $DB->insert_record('digital_resources_types', $resource_type);
+        }
+    }
+
+    // Insert the resource formats
+    $table = new xmldb_table('digital_resources_formats');
+    if ($dbman->table_exists($table)) {
+        foreach (LOCAL_DTA_RESOURCE_FORMATS as $value) {
+            if ($DB->record_exists('digital_resources_formats', ['name' => $value])) {
+                continue;
+            }
+            $resource_format = new stdClass();
+            $resource_format->name = $value;
+            $resource_format->timecreated = time();
+            $resource_format->timemodified = time();
+            $DB->insert_record('digital_resources_formats', $resource_format);
+        }
+    }
 
     return true;
 }

@@ -29,6 +29,7 @@
             <div class="form-group">
                 <label for="urlInput">{{#str}} label:url, tiny_dta {{/str}}</label>
                 <input type="url" class="form-control" name="urlInput" placeholder="{{#str}} placeholder:url, tiny_dta {{/str}}..." pattern="https://.*" required />
+                <input type="hidden" name="formatInput" value="{{format_input_id}}" />
             </div>
             <div class="form-group">
                 <div class="label-extra d-flex flex-row">
@@ -41,21 +42,19 @@
                 <div class="mr-5">
                     <div class="form-group">
                         <label for="themeSelect">{{#str}} label:themes, tiny_dta {{/str}}</label>
-                        <select class="form-control" name="themeSelect" required>
-                        {{#themes}}
-                            <option value="{{value}}">{{text}}</option>
-                        {{/themes}}
+                        <select multiple class="form-control" name="themeSelect" required>
+                            {{#themes}}
+                                <option value="{{value}}">{{text}}</option>
+                            {{/themes}}
                         </select>
                     </div>
                     <div class="tags-input d-flex flex-column justify-content-start">
                         <div class="form-group w-100">
                             <label for="tagSelect">{{#str}} label:tags, tiny_dta {{/str}}</label>
-                            <select class="form-control" name="tagSelect" required>
-                                <option>Tag 1</option>
-                                <option>Tag 2</option>
-                                <option>Tag 3</option>
-                                <option>Tag 4</option>
-                                <option>Tag 5</option>
+                            <select multiple class="form-control" name="tagSelect" required>
+                                {{#tags}}
+                                    <option value="{{value}}">{{text}}</option>
+                                {{/tags}}
                             </select>
                         </div>
                         <div class="tags-container d-flex flex-row flex-wrap w-100">
@@ -67,21 +66,19 @@
                 </div>
                 <div>
                     <div class="form-group">
-                        <label for="fileTypeSelect">{{#str}} label:file_type, tiny_dta {{/str}}</label>
-                        <select class="form-control" name="fileTypeSelect" required>
-                            <option value="DOCUMENT">File</option>
-                            <option value="IMAGE">Image</option>
-                            <option value="VIDEO">Video</option>
-                            <option value="URL">Url</option>
+                        <label for="typeSelect">{{#str}} label:file_type, tiny_dta {{/str}}</label>
+                        <select class="form-control" name="typeSelect" required>
+                            {{#types}}
+                                <option value="{{value}}">{{text}}</option>
+                            {{/types}}
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="languageSelect">{{#str}} label:language, tiny_dta {{/str}}</label>
                         <select class="form-control" name="languageSelect" required>
-                            <option value="en">English (en)</option>
-                            <option value="es">Spanish (es)</option>
-                            <option value="fr">French (fr)</option>
-                            <option value="it">Italian (it)</option>
+                            {{#languages}}
+                                <option value="{{value}}">{{text}}</option>
+                            {{/languages}}
                         </select>
                     </div>
                 </div>

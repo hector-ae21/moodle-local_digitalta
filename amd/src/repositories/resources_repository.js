@@ -21,6 +21,9 @@ export const getAllResources = () => {
  * - id: The resource id
  * - name: The resource name
  * - description: The resource description
+ * - themes: The resource themes
+ * - tags: The resource tags
+ * - format: The resource format
  * - type: The resource type
  * - path: The resource path
  * - lang: The resource language

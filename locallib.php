@@ -51,3 +51,68 @@ const LOCAL_DTA_THEMES = [
     "Curriculum Planning and Development",
     "Others"
 ];
+
+const LOCAL_DTA_RESOURCE_TYPES = [
+    "Other",
+    "Book",
+    "Chart",
+    "Comic",
+    "Diary",
+    "Field Notes",
+    "Image",
+    "Interview",
+    "Journal",
+    "Magazine",
+    "Map",
+    "Music",
+    "Newspaper",
+    "Photograph",
+    "Podcast",
+    "Report",
+    "Video",
+    "Website"
+];
+
+const LOCAL_DTA_RESOURCE_FORMATS = [
+    "None",
+    "Link",
+    "Image",
+    "Video",
+    "Document"
+];
+
+/**
+ * Get the translation of an element.
+ *
+ * @param string $element The element to translate.
+ * @param string $string The string to translate.
+ * @return string The translated string.
+ *
+ * @todo This function should be moved to a helper class.
+ * @todo This function should use the values from the database.
+ */
+function local_dta_get_element_translation(string $element, string $string) : string {
+    switch ($element) {
+        case "component":
+            $elements = LOCAL_DTA_COMPONENTS;
+            break;
+        case "modifier":
+            $elements = LOCAL_DTA_MODIFIERS;
+            break;
+        case "theme":
+            $elements = LOCAL_DTA_THEMES;
+            break;
+        case "resource_type":
+            $elements = LOCAL_DTA_RESOURCE_TYPES;
+            break;
+        case "resource_format":
+            $elements = LOCAL_DTA_RESOURCE_FORMATS;
+            break;
+        default:
+            return $string;
+    }
+    if (!in_array($string, $elements)) {
+        return $string;
+    }
+    return get_string($element . ":" . strtolower(str_replace(" ", "_", $string)), 'local_dta');
+}

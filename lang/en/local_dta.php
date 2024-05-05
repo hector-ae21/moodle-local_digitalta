@@ -1,4 +1,3 @@
-
 <?php
 
 /**
@@ -9,10 +8,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// PLUGIN CORE STRINGS
+// General
 $string['pluginname'] = 'Digital Teaching Assistant';
 
-// Experience form
+// Experience add form
 $string['form_experience_header'] = 'Add new experience'; 
 $string['form_experience_title'] = 'Title'; 
 $string['form_experience_description'] = 'Description';
@@ -31,7 +30,7 @@ $string['form_experience_delete_confirm'] = 'Are you sure you want to delete thi
 $string['form_experience_delete_yes'] = 'Experience deleted successfully'; 
 $string['form_experience_delete_no'] = 'No';
 
-// Experiences
+// Experiences view
 $string['experiences_header'] = 'Experiences'; 
 $string['experiences_title'] = 'Experiences';
 $string['experiences_post_button'] = 'Share';
@@ -63,7 +62,6 @@ $string['experience_view_resrepo_action_tooltip'] = 'Import resources';
 $string['experience_view_block_modal_title'] = 'Block your experience';
 $string['experience_view_block_modal_confirm'] = 'Close my experience';
 $string['experience_view_block_modal_text'] = 'Are you sure you want to close this experience?';
-
 
 // Experience View Tooltips
 $string['experience_view_tooltip_ourcases'] = 'Link a case to this experience';
@@ -169,3 +167,42 @@ $string['themestags_users'] = 'Users';
 $string['invalidthemetag'] = 'Invalid tag or theme';
 $string['invalidthemename'] = 'Invalid theme name';
 $string['invalidtagname'] = 'Invalid tag name';
+
+// Elements
+$string['component:experience'] = 'Experience';
+$string['component:case'] = 'Case';
+$string['component:resource'] = 'Resource';
+$string['component:user'] = 'User';
+$string['modifier:theme'] = 'Theme';
+$string['modifier:tag'] = 'Tag';
+$string['theme:digital_technology'] = 'Digital Technology';
+$string['theme:classroom_management'] = 'Classroom Management';
+$string['theme:communication_and_relationship_building'] = 'Communication and Relationship Building';
+$string['theme:diversity_and_inclusion'] = 'Diversity and Inclusion';
+$string['theme:professional_collaboration_and_development'] = 'Professional Collaboration and Development';
+$string['theme:school_culture'] = 'School Culture';
+$string['theme:curriculum_planning_and_development'] = 'Curriculum Planning and Development';
+$string['theme:others'] = 'Others';
+$string['resource_type:other'] = 'Other';
+$string['resource_type:book'] = 'Book';
+$string['resource_type:chart'] = 'Chart';
+$string['resource_type:comic'] = 'Comic';
+$string['resource_type:diary'] = 'Diary';
+$string['resource_type:field_notes'] = 'Field Notes';
+$string['resource_type:image'] = 'Image';
+$string['resource_type:interview'] = 'Interview';
+$string['resource_type:journal'] = 'Journal';
+$string['resource_type:magazine'] = 'Magazine';
+$string['resource_type:map'] = 'Map';
+$string['resource_type:music'] = 'Music';
+$string['resource_type:newspaper'] = 'Newspaper';
+$string['resource_type:photograph'] = 'Photograph';
+$string['resource_type:podcast'] = 'Podcast';
+$string['resource_type:report'] = 'Report';
+$string['resource_type:video'] = 'Video';
+$string['resource_type:website'] = 'Website';
+$string['resource_format:none'] = 'None';
+$string['resource_format:link'] = 'Link';
+$string['resource_format:image'] = 'Image';
+$string['resource_format:video'] = 'Video';
+$string['resource_format:document'] = 'Document';

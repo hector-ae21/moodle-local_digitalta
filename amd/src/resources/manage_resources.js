@@ -13,59 +13,83 @@ import Notification from "core/notification";
  * @param {Modal} modal
  */
 const handleDialogueSubmission = async (event, modal) => {
-  const form = getList(modal.getRoot())[0].querySelector("form");
+    const form = getList(modal.getRoot())[0].querySelector("form");
 
-  if (!form) {
-    return;
-  }
-  const formData = {
-    id: 0,
-    name: form.querySelector('input[name="nameInput"]').value,
-    path: form.querySelector('input[name="urlInput"]').value,
-    description: form.querySelector('textarea[name="descriptionInput"]').value,
-    // theme: form.querySelector('select[name="themeSelect"] option:checked').textContent,
-    // tags: Array.from(form.querySelector('select[name="tagSelect"]').selectedOptions).map(option => option.value),
-    type: form.querySelector('select[name="fileTypeSelect"]').value,
-    lang: form.querySelector('select[name="languageSelect"]').value,
-  };
-
-  try {
-    const response = await resourcesUpsert(formData);
-    // eslint-disable-next-line no-console
-    console.log(response);
-  } catch (error) {
-    Notification.exception(error);
-  }
-};
-
-export const displayDialogue = async (change) => {
-  const themes = [];
-
-  const modal = await ModalFactory.create({
-    type: addResourceModal.TYPE,
-    templateContext: { elementid_: Date.now(), themes: themes, change: change },
-    large: true,
-  });
-  modal.show();
-  const $root = modal.getRoot();
-  if (change) {
-    const changeElement = $root.find("#changeToImportResource").get(0);
-    if (changeElement) {
-      changeElement.onclick = () => {
-        displaylinkResourcesModal(true);
-        modal.hide();
-      };
+    if (!form) {
+        return;
     }
-  }
+    const formData = {
+        id: 0,
+        name: form.querySelector('input[name="nameInput"]').value,
+        path: form.querySelector('input[name="urlInput"]').value,
+        description: form.querySelector('textarea[name="descriptionInput"]').value,
+        themes: Array.from(
+            form.querySelectorAll('select[name="themeSelect"] option:checked'),
+            option => option.value),
+        tags: Array.from(
+            form.querySelectorAll('select[name="tagSelect"] option:checked'),
+            option => option.value),
+        type: form.querySelector('select[name="typeSelect"]').value,
+        format: form.querySelector('input[name="formatInput"]').value,
+        lang: form.querySelector('select[name="languageSelect"]').value,
+    };
 
-  $root.on(ModalEvents.save, (event, modal) => {
-    handleDialogueSubmission(event, modal);
-  });
+    try {
+        await resourcesUpsert(formData);
+    } catch (error) {
+        Notification.exception(error);
+    }
 };
 
-export const init = (change) => {
-  if (!change) {
-    change = false;
-  }
-  document.getElementById("addResourceButton").addEventListener("click", () => displayDialogue(change));
+/**
+ * Display the dialogue.
+ *
+ * @param {Object} options
+ */
+export const displayDialogue = async (options) => {
+    const languages = [
+        { value: 'es', text: 'Spanish' },
+        { value: 'en', text: 'English' }
+    ];
+
+    const modal = await ModalFactory.create({
+        type: addResourceModal.TYPE,
+        templateContext: {
+            elementid_: Date.now(),
+            themes: options.themes,
+            tags: options.tags,
+            types: options.types,
+            format_input_id: options.format_id,
+            languages: languages,
+            change: options.change
+        },
+        large: true,
+    });
+    modal.show();
+    const $root = modal.getRoot();
+    if (options.change) {
+        const changeElement = $root.find("#changeToImportResource").get(0);
+        if (changeElement) {
+            changeElement.onclick = () => {
+                displaylinkResourcesModal(true);
+                modal.hide();
+            };
+        }
+    }
+
+    $root.on(ModalEvents.save, (event, modal) => {
+        handleDialogueSubmission(event, modal);
+    });
+};
+
+/**
+ * Initialise the module.
+ *
+ * @param {Object} options
+ */
+export const init = (options) => {
+    if (typeof options.change === 'undefined') {
+        options.change = false;
+    }
+    document.getElementById("addResourceButton").addEventListener("click", () => displayDialogue(options));
 };

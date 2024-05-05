@@ -11,10 +11,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(__DIR__ . './../../resource.php');
+require_once($CFG->dirroot . '/local/dta/classes/resources.php');
 
-
-use local_dta\Resource;
+use local_dta\Resources;
 
 class external_resources_get extends external_api
 {
@@ -22,17 +21,13 @@ class external_resources_get extends external_api
     public static function resources_get_parameters()
     {
         return new external_function_parameters(
-            array(
-            )
+            []
         );
     }
 
     public static function resources_get()
     {
-        global $USER;
-
-        $resources = Resource::get_all_resources($USER->id);
-
+        $resources = Resources::get_all_resources();
         return [
             'result' => true,
             'resources' => $resources,
@@ -52,7 +47,14 @@ class external_resources_get extends external_api
                             'userid' => new external_value(PARAM_INT, 'User ID'),
                             'name' => new external_value(PARAM_TEXT, 'Name'),
                             'description' => new external_value(PARAM_TEXT, 'Description'),
-                            'type' => new external_value(PARAM_TEXT, 'Type'),
+                            'themes' => new external_multiple_structure(
+                                new external_value(PARAM_TEXT, 'Themes')
+                            ),
+                            'tags' => new external_multiple_structure(
+                                new external_value(PARAM_TEXT, 'Tags')
+                            ),
+                            'type' => new external_value(PARAM_INT, 'Type'),
+                            'format' => new external_value(PARAM_INT, 'Format'),
                             'path' => new external_value(PARAM_TEXT, 'Path'),
                             'lang' => new external_value(PARAM_TEXT, 'Language'),
                             'timecreated' => new external_value(PARAM_TEXT, 'Time created'),

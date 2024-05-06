@@ -2,22 +2,26 @@
 <div class="mentor-card-vertical shadow-sm">
     <h3>{{name}}</h3>
     <div class="text-tertiary">{{position}}</div>
-    <img src="https://via.placeholder.com/100" class="rounded-circle" alt="{{name}}" width="100px" height="100px">
+    {{#imageurl}}
+        <img src="{{imageurl}}" class="rounded-circle" alt="{{name}}" width="100px" height="100px">
+    {{/imageurl}}
+    {{^imageurl}}
+        <img src="https://via.placeholder.com/100" class="rounded-circle" alt="{{name}}" width="100px" height="100px">
+    {{/imageurl}}
     <div class="theme-container w-100 d-flex flex-wrap justify-content-center">
         {{#themes}}
             {{> local_dta/themes/theme-tag}}
         {{/themes}}
     </div>
-    <div class="interests-container">
-        Interested in 
+    <div class="interests-container w-100 d-flex flex-wrap justify-content-center">
         {{#tags}}
-        <span class="tag-normal m-1">{{name}}</span>
+            <span class="tag-normal m-1">{{name}}</span>
         {{/tags}}
     </div>
     <div class="button-container">
-        <a class="btn-connect" href="{{addcontacturl}}"><i class="fa fa-user-plus"></i></a>
-        <a class="btn-email" href="{{sendemailurl}}"><i class="fa fa-envelope"></i></a>
-        <a class="btn-profile" href="{{viewprofileurl}}"><i class="fa fa-user"></i></a>
+        <a class="btn-connect" href="{{addcontacturl}}" title="{{#str}}mentor_card_action_add_contact, local_dta{{/str}}"><i class="fa fa-user-plus"></i></a>
+        <a class="btn-email" href="{{sendemailurl}}" title="{{#str}}mentor_card_action_send_email, local_dta{{/str}}"><i class="fa fa-envelope"></i></a>
+        <a class="btn-profile" href="{{viewprofileurl}}" title="{{#str}}mentor_card_action_view_profile, local_dta{{/str}}"><i class="fa fa-user"></i></a>
     </div>
 </div>
 {{/ismentorcardvertical}}

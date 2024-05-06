@@ -27,19 +27,26 @@ $PAGE->set_title("Mentors");
 echo $OUTPUT->header();
 
 // get all mentors (now all users)
-$mentors = array_values(Mentor::get_all_mentors());
+$mentors = Mentor::get_all_mentors();
 
-$formattedMentors = (object)[];
+$formattedMentors = [];
+
+
 
 foreach ($mentors as $mentor) {
-    $formattedMentors->id = $mentor->id;
-    $formattedMentors->name = $mentor->firstname . " " . $mentor->lastname;
-    $formattedMentors->position = "Teacher at University of Salamanca";
-    $formattedMentors->imageurl = $CFG->wwwroot . "/local/dta/pages/profile/index.php?id=" . $mentor->id;
-    $formattedMentors->viewprofileurl = $CFG->wwwroot . "/local/dta/pages/profile/index.php?id=" . $mentor->id;
-    $formattedMentors->addcontacturl = "#";
-    $formattedMentors->sendemailurl = "#";
-    $formattedMentors->tags = [
+    $newMentor = new stdClass();
+    $newMentor->id = $mentor->id;
+    $newMentor->name = $mentor->firstname . " " . $mentor->lastname;
+    $newMentor->position = "Teacher at University of Salamanca";
+
+    $mentor_picture = new user_picture($mentor);
+    $mentor_picture->size = 101;
+    $newMentor->imageurl = $mentor_picture->get_url($PAGE)->__toString();
+
+    $newMentor->viewprofileurl = $CFG->wwwroot . "/local/dta/pages/profile/index.php?id=" . $mentor->id;
+    $newMentor->addcontacturl = "#";
+    $newMentor->sendemailurl = "#";
+    $newMentor->tags = [
         [
             "id" => 1,
             "name" => "Tag 1",
@@ -53,7 +60,7 @@ foreach ($mentors as $mentor) {
             "name" => "Tag 3",
         ],
     ];
-    $formattedMentors->themes = [
+    $newMentor->themes = [
         [
             "id" => 1,
             "name" => "Theme 1",
@@ -67,14 +74,14 @@ foreach ($mentors as $mentor) {
             "name" => "Theme 3",
         ],
     ];
+
+    array_push($formattedMentors, $newMentor);
 }
 
 $templatecontext = [
     "mentors"=> $formattedMentors,
     "ismentorcardvertical" => true,
 ];
-
-print_object($templatecontext);
 
 // $templatecontext = filter_utils::apply_filter_to_template_object($templatecontext);
 

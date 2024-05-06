@@ -1,14 +1,14 @@
 <section data-section-name="dta-mentor-repository-title">
-  <div class="container-fluid d-flex">
+  <div class="container-fluid d-flex col-10">
     <h1 class="dta-title display-3">
-      Mentors
+      {{#str}}mentor_page_title, local_dta{{/str}}
     </h1>
   </div>
 </section>
 
-<section data-section-name="dta-mentor-repository-navbar">
+<div class="searchbar shadow d-flex flex-row align-items-center">
   {{> local_dta/mentors/searchbar }}
-</section>
-<section data-section-name="dta-resource-repository-content">
+</div>
+<div class="content">
   {{> local_dta/mentors/mentors-list }}
-</section>
+</div>

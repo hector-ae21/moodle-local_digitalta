@@ -25,16 +25,16 @@
 namespace local_dta;
 
 require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
-require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
 require_once($CFG->dirroot . '/local/dta/classes/tags.php');
 require_once($CFG->dirroot . '/local/dta/classes/context.php');
+require_once($CFG->dirroot . '/local/dta/classes/components.php');
 require_once($CFG->dirroot . '/local/dta/classes/sections.php');
 require_once($CFG->dirroot . '/local/dta/classes/utils/date_utils.php');
 
 use local_dta\Reaction;
-use local_dta\Experiences;
 use local_dta\Tags;
 use local_dta\Context;
+use local_dta\Components;
 use local_dta\Sections;
 use local_dta\utils\date_utils;
 
@@ -87,8 +87,8 @@ class Cases
         if (!$extra_fields) {
             return array_values($cases);
         }
-        $cases = array_values(array_map(function ($experience) {
-            return self::get_extra_fields($experience);
+        $cases = array_values(array_map(function ($case) {
+            return self::get_extra_fields($case);
         }, $cases));
         return $cases;
     }
@@ -221,7 +221,7 @@ class Cases
         $DB->update_record(self::$table, $record);
         // Create default section
         $section = new stdClass();
-        $section->component         = $DB->get_field('digital_components', 'id', ['name' => 'case']);
+        $section->component         = Components::get_component_by_name('case')->id;
         $section->componentinstance = $record->id;
         $section->groupid           = Sections::get_group_by_name('General')->id;
         $section->sequence          = 1;
@@ -327,7 +327,7 @@ class Cases
         }
         // Delete the sections
         $sections = Sections::get_sections([
-            'componentname' => 'case',
+            'component' => Components::get_component_by_name('case')->id,
             'componentinstance' => $case->id
         ]);
         foreach ($sections as $section) {

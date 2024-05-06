@@ -24,6 +24,10 @@
 
 namespace local_dta;
 
+require_once($CFG->dirroot . '/local/dta/classes/components.php');
+
+use local_dta\Components;
+
 use stdClass;
 use Exception;
 
@@ -70,7 +74,7 @@ class Sections
     /**
      * Get sections based on provided filters.
      *
-     * @param  array $filters Array of filters to apply. Accepted: component, componentname, componentinstance, groupname, groupid, sequence.
+     * @param  array $filters Array of filters to apply. Accepted: component, componentinstance, groupname, groupid, sequence.
      * @return array Array of filtered sections.
      */
     public static function get_sections(array $filters = []) : array {
@@ -80,7 +84,7 @@ class Sections
             return $sections;
         }
 
-        $allowed_filters = ['component', 'componentname', 'componentinstance', 'groupid', 'groupname', 'sequence'];
+        $allowed_filters = ['component', 'componentinstance', 'groupid', 'groupname', 'sequence'];
 
         foreach ($filters as $filter_key => $filter_value) {
             if (!in_array($filter_key, $allowed_filters)) {
@@ -105,12 +109,6 @@ class Sections
         $filtered_sections = [];
         foreach ($filter_value as $value) {
             switch ($filter_key) {
-                case 'componentname':
-                    $filter_key = 'component';
-                    if (!$value = $DB->get_field('digital_components', 'id', ['name' => $value])) {
-                        return $filtered_sections;
-                    }
-                    break;
                 case 'groupname':
                     $filter_key = 'groupid';
                     if (!$value = self::get_group_by_name($value)->id) {

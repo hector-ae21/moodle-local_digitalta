@@ -11,11 +11,13 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experiences.php');
 require_once(__DIR__ . './../../classes/cases.php');
 require_once(__DIR__ . './../../classes/sections.php');
+require_once(__DIR__ . './../../classes/components.php');
 require_once(__DIR__ . './../../classes/tiny_editor_handler.php');
 
 use local_dta\Experiences;
 use local_dta\Cases;
 use local_dta\Sections;
+use local_dta\Components;
 use local_dta\tiny_editor_handler;
 
 use Exception;
@@ -70,8 +72,8 @@ if ($experienceid) {
 }
 
 $sections = Sections::get_sections([
-    'componentname' => 'case',
-    'componentinstance' => $case->id
+    'component' => [Components::get_component_by_name('case')->id],
+    'componentinstance' => [$case->id]
 ]);
 
 $sectionheader = [

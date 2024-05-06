@@ -9,16 +9,16 @@
  */
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/cases.php');
-require_once(__DIR__ . './../../classes/utils/string_utils.php');
+require_once(__DIR__ . './../../classes/components.php');
 require_once(__DIR__ . './../../classes/reactions.php');
-require_once(__DIR__ . './../../classes/constants.php');
 require_once($CFG->dirroot . '/local/dta/classes/utils/filter_utils.php');
+require_once($CFG->dirroot . '/local/dta/classes/utils/string_utils.php');
 
 require_login();
 
 use local_dta\Cases;
+use local_dta\Components;
 use local_dta\utils\StringUtils;
-use local_dta\CONSTANTS;
 use local_dta\utils\filter_utils;
 
 global $CFG, $PAGE, $OUTPUT;
@@ -44,7 +44,7 @@ $user->imageurl = $picture->get_url($PAGE)->__toString();
 
 $templateContext = [
     "user" => $user,
-    "instance" => CONSTANTS::REACTIONS_INSTANCES['CASE'],
+    "instance" => Components::get_component_by_name('case')->id,
     "cases" => array_values($cases),
     "url_create_case" => $CFG->wwwroot . '/local/dta/pages/cases/manage.php',
     "url_case" => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id=',

@@ -65,7 +65,7 @@ function xmldb_local_dta_install() {
         $resource->name = $value;
         $resource->timecreated = time();
         $resource->timemodified = time();
-        $DB->insert_record('digital_resource_types', $resource);
+        $DB->insert_record('digital_resources_types', $resource);
     }
 
     // Insert the resource formats
@@ -74,7 +74,25 @@ function xmldb_local_dta_install() {
         $resource->name = $value;
         $resource->timecreated = time();
         $resource->timemodified = time();
-        $DB->insert_record('digital_resource_formats', $resource);
+        $DB->insert_record('digital_resources_formats', $resource);
+    }
+
+    // Insert the section types
+    foreach (LOCAL_DTA_SECTION_TYPES as $value) {
+        $section = new stdClass();
+        $section->name = $value;
+        $section->timecreated = time();
+        $section->timemodified = time();
+        $DB->insert_record('digital_sections_types', $section);
+    }
+
+    // Insert the section groups
+    foreach (LOCAL_DTA_SECTION_GROUPS as $value) {
+        $section = new stdClass();
+        $section->name = $value;
+        $section->timecreated = time();
+        $section->timemodified = time();
+        $DB->insert_record('digital_sections_groups', $section);
     }
 
 }

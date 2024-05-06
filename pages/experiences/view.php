@@ -13,7 +13,7 @@ require_once(__DIR__ . './../../classes/experiences.php');
 require_once(__DIR__ . './../../classes/cases.php');
 require_once(__DIR__ . './../../classes/resources.php');
 require_once(__DIR__ . './../../classes/sections.php');
-require_once(__DIR__ . './../../classes/constants.php');
+require_once(__DIR__ . './../../classes/components.php');
 require_once(__DIR__ . './../../classes/utils/filter_utils.php');
 require_once($CFG->dirroot . '/local/dta/locallib.php');
 
@@ -21,7 +21,7 @@ use local_dta\Experiences;
 use local_dta\Cases;
 use local_dta\Resources;
 use local_dta\Sections;
-use local_dta\CONSTANTS;
+use local_dta\Components;
 use local_dta\utils\filter_utils;
 
 require_login();
@@ -54,7 +54,7 @@ foreach ($experience_case as $case) {
 // Get sections
 $formated_sections = array();
 $sections = Sections::get_sections([
-    'componentname' => ['experience'],
+    'component' => [Components::get_component_by_name('experience')->name],
     'contextid' => [$experience->id]
 ]);
 foreach ($sections as $section) {
@@ -68,7 +68,7 @@ foreach ($sections as $section) {
 echo $OUTPUT->header();
 
 $template_context = [
-    "instance" => CONSTANTS::REACTIONS_INSTANCES['EXPERIENCE'],
+    "instance" => Components::get_component_by_name('experience')->id,
     'cases' => [
         'data' => $experience_case_info,
         'viewurl' => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id='

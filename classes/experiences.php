@@ -26,10 +26,12 @@ namespace local_dta;
 
 require_once(__DIR__ . '/reactions.php');
 require_once(__DIR__ . '/tags.php');
+require_once(__DIR__ . '/components.php');
 require_once(__DIR__ . '/utils/date_utils.php');
 
 use local_dta\Reaction;
 use local_dta\Tags;
+use local_dta\Components;
 use local_dta\utils\date_utils;
 
 use stdClass;
@@ -288,8 +290,8 @@ class Experiences
         }
         // Delete the sections
         $sections = Sections::get_sections([
-            'componentname' => 'experience',
-            'componentinstance' => $experience->id
+            'component' => [Components::get_component_by_name('experience')->id],
+            'componentinstance' => [$experience->id]
         ]);
         foreach ($sections as $section) {
             Sections::delete_section($section->id);

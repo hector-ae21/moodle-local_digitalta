@@ -9,13 +9,14 @@
  */
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../classes/experiences.php');
+require_once(__DIR__ . './../../classes/components.php');
 require_once(__DIR__ . './../../classes/utils/string_utils.php');
 require_once(__DIR__ . './../../classes/utils/filter_utils.php');
 
 require_login();
 
-use local_dta\CONSTANTS;
 use local_dta\Experiences;
+use local_dta\Components;
 use local_dta\utils\StringUtils;
 use local_dta\utils\filter_utils;
 
@@ -44,7 +45,7 @@ $user->imageurl = $picture->get_url($PAGE)->__toString();
 
 $template_context = [
     "user" => $user,
-    "instance" => CONSTANTS::REACTIONS_INSTANCES['EXPERIENCE'],
+    "instance" => Components::get_component_by_name('experience')->id,
     "experiences" => [
         "data" => $experiences,
         "showcontrolsadmin" => is_siteadmin($USER),

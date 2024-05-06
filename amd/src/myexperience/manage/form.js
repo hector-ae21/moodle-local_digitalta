@@ -4,7 +4,6 @@ import { createTinyMCE, getTinyMCEContent } from "./../../tiny/manage";
 import { setEventListeners } from "./listeners";
 import { activateStep } from "./steps";
 import { experienceUpsert } from "local_dta/repositories/experience_repository";
-import { sectionTextUpsert } from "local_dta/repositories/reflection_repository";
 import { autocompleteTags } from "local_dta/tags/autocomplete";
 import { saveFiles, init as fileManagerInit } from "../../files/filemanager";
 
@@ -49,19 +48,19 @@ export function saveTextSection(btn, step) {
   const reflectionid = $("#reflectionid").val();
   const content = getTinyMCEContent(target);
 
-  sectionTextUpsert({ reflectionid, group, content })
-    .then(() => {
-      Notification.addNotification({
-        message: "Section saved successfully.",
-        type: "success",
-      });
-      if (step === 3) {
-        window.location.href = "./view.php?id=" + $("#experience_id").val();
-      }
-      activateStep(step + 1);
-      return;
-    })
-    .fail(Notification.exception);
+  //sectionTextUpsert({ reflectionid, group, content })
+  //  .then(() => {
+  //    Notification.addNotification({
+  //      message: "Section saved successfully.",
+  //      type: "success",
+  //    });
+  //    if (step === 3) {
+  //      window.location.href = "./view.php?id=" + $("#experience_id").val();
+  //    }
+  //    activateStep(step + 1);
+  //    return;
+  //  })
+  //  .fail(Notification.exception);
 }
 
 /**
@@ -100,8 +99,6 @@ export async function saveExperience() {
   const experienceTitle = $("#experience_title").val(),
     experienceVisibility = $("#experience_visibility").val(),
     experienceLang = $("#experience_lang").val(),
-    experienceIntroduction = window.tinyMCE.get("experience_introduction").getContent(),
-    experienceProblem = window.tinyMCE.get("experience_problem").getContent(),
     experienceid = $("#experience_id").val(),
     tags = $("#autocomplete_tags").val();
 
@@ -111,8 +108,6 @@ export async function saveExperience() {
         title: experienceTitle,
         lang: experienceLang,
         visible: experienceVisibility,
-        description: experienceIntroduction,
-        context: experienceProblem,
         status: 0,
         tags,
       });

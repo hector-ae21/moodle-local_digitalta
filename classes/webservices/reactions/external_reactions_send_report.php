@@ -56,7 +56,7 @@ class external_reactions_send_report extends external_api
         }
 
         if ($type == 0) {
-            return $DB->get_record('digital_ourcases', array('id' => $instanceid));
+            return $DB->get_record('digital_cases', array('id' => $instanceid));
         } else {
             return $DB->get_record('digital_experiences', array('id' => $instanceid));
         }
@@ -66,9 +66,9 @@ class external_reactions_send_report extends external_api
     {
         switch ($type) {
             case 0:
-                return 'digital_case_report';
+                return 'digital_cases_report';
             case 1:
-                return 'digital_experience_report';
+                return 'digital_experiences_reports';
             default:
                 return null;
         }

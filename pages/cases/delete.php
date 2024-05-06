@@ -11,9 +11,9 @@
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../lib.php');
-require_once(__DIR__ . './../../classes/ourcases.php');
+require_once(__DIR__ . './../../classes/cases.php');
 
-use local_dta\OurCases;
+use local_dta\Cases;
 
 require_login();
 
@@ -29,7 +29,7 @@ $PAGE->set_url(new moodle_url('/local/dta/pages/cases/delete.php', ['id' => $id]
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->form_case_delete_header);
 
-if (!$ourcase = OurCases::get_case($id)) {
+if (!$ourcase = Cases::get_case($id)) {
     print_error('invalidcases', 'local_dta');
 }
 
@@ -40,7 +40,7 @@ if (local_dta_check_permissions_case($ourcase, $USER) == false) {
 
 // Check if the delete hash is correct
 if ($delete === md5($ourcase->timecreated)) {
-    if (!OurCases::delete_case($id)) {
+    if (!Cases::delete_case($id)) {
         print_error('errordeletecase', 'local_dta');
     }
     redirect(new moodle_url('/local/dta/pages/cases/repository.php'), get_string('form_case_delete_yes', 'local_dta'));

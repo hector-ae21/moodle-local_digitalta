@@ -23,8 +23,8 @@
  */
 
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/experience.php');
-require_once(__DIR__ . './../../classes/ourcases.php');
+require_once(__DIR__ . './../../classes/experiences.php');
+require_once(__DIR__ . './../../classes/cases.php');
 require_once(__DIR__ . './../../classes/context.php');
 require_once(__DIR__ . './../../classes/themes.php');
 require_once(__DIR__ . './../../classes/tags.php');
@@ -37,8 +37,8 @@ $tagid = required_param('id', PARAM_INT);
 require_login();
 
 use local_dta\Context;
-use local_dta\Experience;
-use local_dta\OurCases;
+use local_dta\Experiences;
+use local_dta\Cases;
 use local_dta\Themes;
 use local_dta\Tags;
 use local_dta\utils\StringUtils;
@@ -65,8 +65,8 @@ $PAGE->set_title($pagetitle . ': ' . $tagtheme->name);
 $experiences = Context::get_contexts_by_modifier($tagtype, $tagid, 'experience');
 $experiences = array_values($experiences);
 $experiences = array_map(function($key, $context) {
-    $experience = Experience::get_experience($context->componentinstance);
-    $experience->description = StringUtils::truncateHtmlText($experience->description);
+    $experience = Experiences::get_experience($context->componentinstance);
+    $experience->description = ""; // TODO SECTIONS
     return $experience;
 }, array_keys($experiences), $experiences);
 
@@ -74,12 +74,8 @@ $experiences = array_map(function($key, $context) {
 $cases = Context::get_contexts_by_modifier($tagtype, $tagid, 'case');
 $cases = array_values($cases);
 $cases = array_map(function($key, $context) {
-    $case = OurCases::get_case($context->componentinstance);
-    $caseText = OurCases::get_sections_text($case->id, true);
-    $case->casetext = array_values($caseText)[0];
-    $case->casetext->description = str_replace("<br>",
-        " ",
-        StringUtils::truncateHtmlText($case->casetext->description, 100));
+    $case = Cases::get_case($context->componentinstance);
+    $case->description = ""; // TODO SECTIONS
     return $case;
 }, array_keys($cases), $cases);
 

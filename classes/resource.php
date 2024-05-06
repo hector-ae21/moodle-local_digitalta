@@ -24,8 +24,6 @@
 
 namespace local_dta;
 
-require_once(__DIR__ . '/context.php');
-
 /**
  * This class is used to represent the resource entity.
  *

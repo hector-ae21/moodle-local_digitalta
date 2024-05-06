@@ -11,13 +11,13 @@ namespace local_dta;
 
 class Reaction
 {
-    private static $table_experience_likes = 'digital_experience_likes';
-    private static $table_experience_comments = 'digital_experience_comments';
-    private static $table_experience_reports = 'digital_experience_report';
+    private static $table_experience_likes = 'digital_experiences_likes';
+    private static $table_experience_comments = 'digital_experiences_comments';
+    private static $table_experience_reports = 'digital_experiences_reports';
     
-    private static $table_cases_likes = 'digital_case_likes';
-    private static $table_cases_comments = 'digital_case_comments';
-    private static $table_cases_reports = 'digital_case_report';
+    private static $table_cases_likes = 'digital_cases_likes';
+    private static $table_cases_comments = 'digital_cases_comments';
+    private static $table_cases_reports = 'digital_cases_reports';
 
     public function __construct()
     {
@@ -226,9 +226,9 @@ class Reaction
     public static function get_most_liked_experience($limit = 5)
     {
         global $DB;
-        $sql = "SELECT e.id, e.userid, e.title, e.description, e.timecreated, e.lang, e.visible, e.status, COUNT(l.id) as likes
+        $sql = "SELECT e.id, e.userid, e.title, e.lang, e.visible, e.status, e.timecreated, COUNT(l.id) as likes
                 FROM {digital_experiences} e
-                LEFT JOIN {digital_experience_likes} l ON e.id = l.experienceid
+                LEFT JOIN {digital_experiences_likes} l ON e.id = l.experienceid
                 WHERE l.reactiontype = 1 AND e.visible = 1
                 GROUP BY e.id
                 ORDER BY likes DESC

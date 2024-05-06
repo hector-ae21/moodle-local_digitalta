@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Experience class
+ * StudyCase class
  *
  * @package   local_dta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
@@ -25,48 +25,48 @@
 namespace local_dta;
 
 /**
- * This class is used to manage the experiences of the plugin
+ * This class is used to represent the case entity.
  *
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class Experience
+class StudyCase
 {
-    /** @var int The identifier of the experience. */
+    /** @var int The ID of the case. */
     public $id;
 
-    /** @var int The identifier of the user. */
+    /** @var int The ID of the experience. */
+    public $experienceid;
+
+    /** @var string The ID of the resource. */
+    public $resourceid;
+
+    /** @var int The ID of the user. */
     public $userid;
 
-    /** @var string The title of the experience. */
+    /** @var string The title of the case. */
     public $title;
 
-    /** @var string The language of the experience. */
+    /** @var string The language of the case. */
     public $lang;
 
-    /** @var string The video of the experience. */
-    public $visible;
-
-    /** @var int The status of the experience. */
+    /** @var int The status of the case. */
     public $status;
 
-    /** @var string The date the experience was created. */
+    /** @var string The date the case was created. */
     public $timecreated;
 
-    /** @var string The date the experience was modified. */
+    /** @var string The date the case was modified. */
     public $timemodified;
-
-    /** @var string The picture of the experience. */
-    public $picture;
 
     /**
      * Constructor.
      * 
-     * @param $data array The data to populate the experience with.
+     * @param $case mixed The case to construct.
      */
-    public function __construct($experience = null)
+    public function __construct($case = [])
     {
-        foreach ($experience as $key => $value) {
+        foreach ($case as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->{$key} = $value;
             }

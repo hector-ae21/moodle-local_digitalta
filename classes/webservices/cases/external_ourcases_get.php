@@ -11,9 +11,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/classes/ourcases.php');
+require_once($CFG->dirroot . '/local/dta/classes/cases.php');
 
-use local_dta\OurCases;
+use local_dta\Cases;
 
 class external_ourcases_get extends external_api
 {
@@ -27,17 +27,7 @@ class external_ourcases_get extends external_api
 
     public static function ourcases_get()
     {
-        $cases = OurCases::get_cases(false);
-        foreach ($cases as $case) {
-            $headerSection = OurCases::get_section_header($case->id);
-            if ($headerSection) {
-                $case->title = $headerSection->title;
-                $case->description = $headerSection->description;
-            } else {
-                $case->title = null;
-                $case->description = null;
-            }
-        }
+        $cases = Cases::get_all_cases(false);
         return [
             'status' => true,
             'cases' => $cases
@@ -54,12 +44,13 @@ class external_ourcases_get extends external_api
                         [
                             'id' => new external_value(PARAM_INT, 'id'),
                             'experienceid' => new external_value(PARAM_INT, 'experienceid'),
+                            'resourceid' => new external_value(PARAM_INT, 'resourceid'),
                             'userid' => new external_value(PARAM_INT, 'userid'),
+                            'title' => new external_value(PARAM_TEXT, 'title'),
+                            'lang' => new external_value(PARAM_TEXT, 'lang'),
                             'status' => new external_value(PARAM_INT, 'status'),
                             'timecreated' => new external_value(PARAM_TEXT, 'timecreated'),
-                            'timemodified' => new external_value(PARAM_TEXT, 'timemodified'),
-                            'title' => new external_value(PARAM_TEXT, 'title'),
-                            'description' => new external_value(PARAM_RAW, 'description')
+                            'timemodified' => new external_value(PARAM_TEXT, 'timemodified')
                         ]
                     )
                 )

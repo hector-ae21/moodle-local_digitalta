@@ -39,7 +39,7 @@ defined('MOODLE_INTERNAL') || die();
  */
 class Context
 {
-    /** @var string The name of the database table storing the themes. */
+    /** @var string The table name for the contexts. */
     private static $table = 'digital_context';
 
     /**

@@ -50,7 +50,7 @@ class external_reactions_save_comment extends external_api
         global $DB;
         switch ($type) {
             case 0:
-                return $DB->get_record('digital_ourcases', array('id' => $instanceid));
+                return $DB->get_record('digital_cases', array('id' => $instanceid));
             case 1:
                 return $DB->get_record('digital_experiences', array('id' => $instanceid));
             default:
@@ -62,9 +62,9 @@ class external_reactions_save_comment extends external_api
     {
         switch ($type) {
             case 0:
-                return 'digital_case_comments';
+                return 'digital_cases_comments';
             case 1:
-                return 'digital_experience_comments';
+                return 'digital_experiences_comments';
             default:
                 return false;
         }

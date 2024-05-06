@@ -7,8 +7,6 @@ import Ajax from 'core/ajax';
  * - experienceid: The experience id (optional)
  * - userid: The user id
  * - title: The title of the experience
- * - description: The description of the experience
- * - context: The context of the experience
  * - lang : The language of the experience
  * - visible: The visibility of the experience
  * - tags: The tags of the experience

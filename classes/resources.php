@@ -137,7 +137,6 @@ class Resources
      * 
      * @param  object    $resource The resource to upsert.
      * @return object    The upserted resource.
-     * @throws Exception If metadata fields are missing.
      */
     public static function upsert_resource($resource) : object {
         global $DB;
@@ -198,6 +197,17 @@ class Resources
             }
         }
         return true;
+    }
+
+    /**
+     * Delete a resource.
+     * 
+     * @param  int $id The ID of the resource to delete.
+     * @return bool True if the resource was deleted, false otherwise.
+     */
+    public static function delete_resource(int $id) : bool {
+        global $DB;
+        return $DB->delete_records(self::$table, ['id' => $id]);
     }
 
     /**

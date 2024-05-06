@@ -31,14 +31,9 @@ const LOCAL_DTA_COMPONENTS = [
     "user"
 ];
 
-// RESOURCES AND CASE is duplicated as a component and as a modifier bc it can be both
-// we need to refactor this in the future, but not now it's fine
-
 const LOCAL_DTA_MODIFIERS = [
     "theme",
-    "tag",
-    "resource",
-    "case"
+    "tag"
 ];
 
 const LOCAL_DTA_THEMES = [
@@ -69,8 +64,9 @@ const LOCAL_DTA_RESOURCE_TYPES = [
     "Photograph",
     "Podcast",
     "Report",
+    "Study Case",
     "Video",
-    "Website"
+    "Website",
 ];
 
 const LOCAL_DTA_RESOURCE_FORMATS = [
@@ -79,6 +75,18 @@ const LOCAL_DTA_RESOURCE_FORMATS = [
     "Image",
     "Video",
     "Document"
+];
+
+const LOCAL_DTA_SECTION_GROUPS = [
+    "General",
+    "What?",
+    "So What?",
+    "Now What?",
+    "Extra"
+];
+
+const LOCAL_DTA_SECTION_TYPES = [
+    "Text"
 ];
 
 /**
@@ -108,11 +116,17 @@ function local_dta_get_element_translation(string $element, string $string) : st
         case "resource_format":
             $elements = LOCAL_DTA_RESOURCE_FORMATS;
             break;
+        case "section_group":
+            $elements = LOCAL_DTA_SECTION_GROUPS;
+            break;
+        case "section_type":
+            $elements = LOCAL_DTA_SECTION_TYPES;
+            break;
         default:
             return $string;
     }
     if (!in_array($string, $elements)) {
         return $string;
     }
-    return get_string($element . ":" . strtolower(str_replace(" ", "_", $string)), 'local_dta');
+    return get_string($element . ":" . strtolower(str_replace("?", "", str_replace(" ", "_", $string))), 'local_dta');
 }

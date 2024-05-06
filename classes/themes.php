@@ -24,11 +24,12 @@
 
 namespace local_dta;
 
-require_once(__DIR__ . '/context.php');
+require_once($CFG->dirroot . '/local/dta/classes/context.php');
+
+use local_dta\Context;
 
 use stdClass;
 use Exception;
-use local_dta\Context;
 
 defined('MOODLE_INTERNAL') || die();
 

@@ -11,10 +11,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(__DIR__ . './../../experience.php');
+require_once(__DIR__ . './../../experiences.php');
 
 
-use local_dta\Experience;
+use local_dta\Experiences;
 
 class external_myexperience_toggle_status extends external_api
 {
@@ -32,7 +32,7 @@ class external_myexperience_toggle_status extends external_api
     {
         return [
             'result' => true,
-            'status' => Experience::change_status_experience($id)->status,
+            'status' => Experiences::change_status_experience($id)->status,
         ];
     }
 

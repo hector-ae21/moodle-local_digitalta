@@ -61,17 +61,6 @@ $functions = [
         'ajax'        => true,
     ],
 
-    // REFLECTIONS
-    'local_dta_reflection_upsert_text_section' => [
-        'classname'   => 'external_reflection_upsert_text_section',
-        'methodname'  => 'reflection_upsert_text_section',
-        'classpath'   => 'local/dta/classes/webservices/reflection/external_reflection_upsert_text_section.php',
-        'description' => 'Upsert the text of a section of a reflection',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
     // EXPERIENCES
     'local_dta_myexperience_upsert' => [
         'classname'   => 'external_myexperience_upsert',

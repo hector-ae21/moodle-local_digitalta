@@ -11,10 +11,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(__DIR__ . './../../experience.php');
+require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
 
-
-use local_dta\Experience;
+use local_dta\Experiences;
 
 class external_myexperience_upsert extends external_api
 {
@@ -27,9 +26,10 @@ class external_myexperience_upsert extends external_api
                 'title' => new external_value(PARAM_RAW, 'Title'),
                 'lang' => new external_value(PARAM_RAW, 'Lang'),
                 'visible' => new external_value(PARAM_BOOL, 'Visible', VALUE_DEFAULT, 1),
-                'description' => new external_value(PARAM_RAW, 'Description' , VALUE_DEFAULT, " "),
-                'context' => new external_value(PARAM_RAW, 'Context' , VALUE_DEFAULT, " "),
                 'status' => new external_value(PARAM_INT, 'Status' , VALUE_DEFAULT, 0),
+                'themes' => new external_multiple_structure(
+                    new external_value(PARAM_INT, 'ID del elemento')  , 'Themes' , VALUE_DEFAULT, []
+                ),
                 'tags' => new external_multiple_structure(
                     new external_value(PARAM_INT, 'ID del elemento')  , 'Tags' , VALUE_DEFAULT, []
                 )
@@ -37,22 +37,18 @@ class external_myexperience_upsert extends external_api
         );
     }
 
-    public static function myexperience_upsert($id, $title, $lang, $visible = 1, $description = " ", $context = " ", $status = 0 , $tags = [])
+    public static function myexperience_upsert($id, $title, $lang, $visible = 1, $status = 0 , $themes = [], $tags = [])
     {
-        global $USER;
-        $experience = new stdClass();
-        $experience->userid = $USER->id;
-        $experience->title = $title;
-        $experience->description = $description;
-        $experience->context = $context;
-        $experience->lang = $lang;
+        $experience          = new stdClass();
+        $experience->id      = $id ?? null;
+        $experience->title   = $title;
+        $experience->lang    = $lang;
         $experience->visible = $visible;
-        $experience->status = $status;
-        $experience->id  = $id ?? null;
-        $experience->tags = $tags;
+        $experience->status  = $status;
+        $experience->themes  = $themes;
+        $experience->tags    = $tags;
 
-
-        if(!$experience = Experience::upsert($experience)){
+        if(!$experience = Experiences::upsert_experience($experience)){
             return [
                 'result' => false,
                 'error' => 'Error saving experience'
@@ -61,8 +57,7 @@ class external_myexperience_upsert extends external_api
 
         return [
             'result' => true,
-            'experienceid' => $experience->id,
-            'reflectionid' => $experience->reflectionid
+            'experienceid' => $experience->id
         ];
     }
 
@@ -72,7 +67,6 @@ class external_myexperience_upsert extends external_api
             [
                 'result' => new external_value(PARAM_BOOL, 'Result'),
                 'experienceid' => new external_value(PARAM_INT, 'Section ID' , VALUE_OPTIONAL),
-                'reflectionid' => new external_value(PARAM_RAW, 'Reflection ID' , VALUE_OPTIONAL),
                 'error' => new external_value(PARAM_RAW, 'Error message' , VALUE_OPTIONAL),
             ]
         );

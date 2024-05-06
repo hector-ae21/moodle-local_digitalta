@@ -12,12 +12,12 @@
 require_once(__DIR__ . './../../../../config.php');
 require_once(__DIR__ . './../../classes/tiny_editor_handler.php');
 require_once(__DIR__ . './../../classes/files/filemanager_handler.php');
-require_once($CFG->dirroot . '/local/dta/classes/experience.php');
+require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
 
 
 use local_dta\tiny_editor_handler;
 use local_dta\file\filemanager_handler;
-use local_dta\Experience;
+use local_dta\Experiences;
 
 require_login();
 
@@ -45,7 +45,7 @@ if (!$id) {
         ]
     ];
 } else {
-    $experience = Experience::get_experience($id);
+    $experience = Experiences::get_experience($id);
 
     if (!$experience) {
         throw new moodle_exception('Experience not found');

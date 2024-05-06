@@ -8,8 +8,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/experience.php');
-require_once(__DIR__ . './../../classes/ourcases.php');
+require_once(__DIR__ . './../../classes/experiences.php');
+require_once(__DIR__ . './../../classes/cases.php');
 require_once(__DIR__ . './../../classes/reactions.php');
 require_once(__DIR__ . './../../classes/context.php');
 require_once(__DIR__ . './../../classes/themes.php');
@@ -18,8 +18,8 @@ require_once(__DIR__ . './../../classes/utils/filter_utils.php');
 
 require_login();
 
-use local_dta\Experience;
-use local_dta\OurCases;
+use local_dta\Experiences;
+use local_dta\Cases;
 use local_dta\Reaction;
 use local_dta\Context;
 use local_dta\Themes;
@@ -48,13 +48,14 @@ $themes = array_map(function($key, $theme) {
 }, array_keys($themes), $themes);
 
 // Get experiences
-$featuredExperiences = Experience::get_extra_fields(Reaction::get_most_liked_experience(5));
+$featuredExperiences = Reaction::get_most_liked_experience(5);
 $featuredExperiences = array_map(function($experience) {
+    $experience = Experiences::get_extra_fields($experience);
     return $experience->id;
 }, $featuredExperiences);
-$experiences = Experience::get_latest_experiences(9, false);
+$experiences = Experiences::get_latest_experiences(9, false);
 $experiences = array_map(function($experience) use ($featuredExperiences) {
-    $experience->description = StringUtils::truncateHtmlText($experience->description);
+    $experience->description = ""; // TODO SECTIONS
     $experience->featured = (in_array($experience->id, $featuredExperiences)) ? true : false;
     return $experience;
 }, $experiences);
@@ -64,13 +65,9 @@ array_multisort(
     $experiences);
 
 // Get cases
-$cases = array_values(OurCases::get_active_cases());
+$cases = array_values(Cases::get_all_cases(true, 1));
 $cases = array_map(function($case) {
-    $caseText = OurCases::get_sections_text($case->id, true);
-    $case->casetext = array_values($caseText)[0];
-    $case->casetext->description = str_replace("<br>",
-        " ",
-        StringUtils::truncateHtmlText($case->casetext->description, 300));
+    $case->description = ""; // TODO SECTIONS
     return $case;
 }, $cases);
 

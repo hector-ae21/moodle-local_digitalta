@@ -29,7 +29,7 @@ class external_ourcases_section_text_delete extends external_api
     {
         global $DB;
 
-        if (!$DB->get_record('digital_ourcases', array('id' => $ourcaseid))) {
+        if (!$DB->get_record('digital_cases', array('id' => $ourcaseid))) {
             return array('result' => false, 'error' => 'Our case not found');
         }
 

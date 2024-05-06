@@ -11,7 +11,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(__DIR__ . './../../ourcases.php');
+require_once($CFG->dirroot . '/local/dta/classes/cases.php');
 
 use local_dta\OurCases;
 class external_ourcases_edit extends external_api

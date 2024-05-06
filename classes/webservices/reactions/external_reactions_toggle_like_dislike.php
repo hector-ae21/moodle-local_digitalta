@@ -69,7 +69,7 @@ class external_reactions_toggle_like_dislike extends external_api
 
         switch ($type) {
             case 0:
-                return $DB->get_record('digital_ourcases', array('id' => $instanceid));
+                return $DB->get_record('digital_cases', array('id' => $instanceid));
             case 1:
                 return $DB->get_record('digital_experiences', array('id' => $instanceid));
             default:
@@ -81,9 +81,9 @@ class external_reactions_toggle_like_dislike extends external_api
     {
         switch ($type) {
             case 0:
-                return 'digital_case_likes';
+                return 'digital_cases_likes';
             case 1:
-                return 'digital_experience_likes';
+                return 'digital_experiences_likes';
             default:
                 return null;
         }
@@ -105,7 +105,7 @@ class external_reactions_toggle_like_dislike extends external_api
     {
         switch ($type) {
             case 0:
-                return 'digital_ourcases';
+                return 'digital_cases';
             case 1:
                 return 'digital_experiences';
             default:

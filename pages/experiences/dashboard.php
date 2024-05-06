@@ -8,14 +8,15 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/experience.php');
+require_once(__DIR__ . './../../classes/constants.php');
+require_once(__DIR__ . './../../classes/experiences.php');
 require_once(__DIR__ . './../../classes/utils/string_utils.php');
 require_once(__DIR__ . './../../classes/utils/filter_utils.php');
 
 require_login();
 
 use local_dta\CONSTANTS;
-use local_dta\Experience;
+use local_dta\Experiences;
 use local_dta\utils\StringUtils;
 use local_dta\utils\filter_utils;
 
@@ -31,9 +32,9 @@ $PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
 
 echo $OUTPUT->header();
 
-$experiences = Experience::get_all_experiences(false);
+$experiences = Experiences::get_all_experiences(false);
 $experiences = array_map(function ($experience) {
-    $experience->description = StringUtils::truncateHtmlText($experience->description, 1000);
+    $experience->description = ""; // TODO SECTIONS
     return $experience;
 }, $experiences);
 

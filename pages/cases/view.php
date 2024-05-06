@@ -8,13 +8,15 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/ourcases.php');
+require_once(__DIR__ . './../../classes/cases.php');
 require_once(__DIR__ . './../../classes/reactions.php');
+require_once(__DIR__ . './../../classes/sections.php');
 require_once(__DIR__ . './../../classes/constants.php');
 require_once($CFG->dirroot . '/local/dta/classes/utils/filter_utils.php');
 
-use local_dta\OurCases;
+use local_dta\Cases;
 use local_dta\Reaction;
+use local_dta\Sections;
 use local_dta\CONSTANTS;
 use local_dta\utils\filter_utils;
 
@@ -34,19 +36,23 @@ $PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
 
 echo $OUTPUT->header();
 
-if (!$ourcase = OurCases::get_case($id)) {
+if (!$case = Cases::get_case($id)) {
     throw new moodle_exception('invalidcases', 'local_dta');
 }
 
-$ourcase->reactions = Reaction::get_reactions_for_render_case($ourcase->id);
+$case->reactions = Reaction::get_reactions_for_render_case($case->id);
 
-$sections = array_values(OurCases::get_sections_text($ourcase->id));
+$sections = Sections::get_sections([
+    'componentname' => ['case'],
+    'componentinstance' => [$case->id]
+]);
 
-if (!$section_header = OurCases::get_section_header($ourcase->id)) {
-    throw new moodle_exception('invalidcasessection', 'local_dta');
-}
+$sectionheader = [
+    'title' => $case->title,
+    'description' => '' // TODO SECTIONS
+];
 
-$user = get_complete_user_data("id", $ourcase->userid);
+$user = get_complete_user_data("id", $case->userid);
 $picture = new user_picture($user);
 $picture->size = 101;
 $user->imageurl = $picture->get_url($PAGE)->__toString();
@@ -54,10 +60,10 @@ $user->imageurl = $picture->get_url($PAGE)->__toString();
 $templateContext = [
     'instance' => CONSTANTS::REACTIONS_INSTANCES['CASE'],
     'sections' => $sections,
-    'sectionheader' => $section_header,
-    'ourcase' => $ourcase,
-    'editurl' => new moodle_url('/local/dta/pages/cases/manage.php', ['caseid' => $ourcase->id]),
-    'deleteurl' => new moodle_url('/local/dta/pages/cases/delete.php', ['id' => $ourcase->id]),
+    'sectionheader' => $sectionheader,
+    'case' => $case,
+    'editurl' => new moodle_url('/local/dta/pages/cases/manage.php', ['caseid' => $case->id]),
+    'deleteurl' => new moodle_url('/local/dta/pages/cases/delete.php', ['id' => $case->id]),
     'user' => $user,
 ];
 

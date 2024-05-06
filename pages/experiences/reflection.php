@@ -11,10 +11,10 @@
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once(__DIR__ . './../../../classes/reflection.php');
-require_once($CFG->dirroot . '/local/dta/classes/experience.php');
+require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
 require_once($CFG->dirroot . '/local/dta/classes/utils/filter_utils.php');
 
-use local_dta\Experience;
+use local_dta\Experiences;
 use local_dta\Reflection;
 use local_dta\utils\filter_utils;
 
@@ -29,7 +29,7 @@ $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/reflection/view.php'
 $PAGE->set_context(context_system::instance());
 
 // Get the experience
-if(!$experience = Experience::get_experience($id)) {
+if(!$experience = Experiences::get_experience($id)) {
     throw new moodle_exception('invalidexperience', 'local_dta');
 }
 

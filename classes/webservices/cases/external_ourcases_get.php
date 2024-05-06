@@ -38,23 +38,32 @@ class external_ourcases_get extends external_api
                 $case->description = null;
             }
         }
-        return $cases;
+        return [
+            'status' => true,
+            'cases' => $cases
+        ];
     }
-
     public static function ourcases_get_returns()
     {
-        return new external_multiple_structure(
-            new external_single_structure(
-                array(
-                    'id' => new external_value(PARAM_INT, 'ID of the ourcase'),
-                    'experienceid' => new external_value(PARAM_INT, 'ID of the experience', VALUE_OPTIONAL),
-                    'userid' => new external_value(PARAM_INT, 'ID of the user'),
-                    'date' => new external_value(PARAM_TEXT, 'Experience date'),
-                    'status' => new external_value(PARAM_INT, 'Status of the ourcase'),
-                    'title' => new external_value(PARAM_RAW, 'Title of the header section', VALUE_OPTIONAL),
-                    'description' => new external_value(PARAM_RAW, 'Description of the header section', VALUE_OPTIONAL)
+        return new external_single_structure(
+            [
+                'status' => new external_value(PARAM_BOOL, 'status'),
+                'error' => new external_value(PARAM_TEXT, 'error' , VALUE_OPTIONAL),
+                'cases' => new external_multiple_structure(
+                    new external_single_structure(
+                        [
+                            'id' => new external_value(PARAM_INT, 'id'),
+                            'experienceid' => new external_value(PARAM_INT, 'experienceid'),
+                            'userid' => new external_value(PARAM_INT, 'userid'),
+                            'status' => new external_value(PARAM_INT, 'status'),
+                            'timecreated' => new external_value(PARAM_TEXT, 'timecreated'),
+                            'timemodified' => new external_value(PARAM_TEXT, 'timemodified'),
+                            'title' => new external_value(PARAM_TEXT, 'title'),
+                            'description' => new external_value(PARAM_RAW, 'description')
+                        ]
+                    )
                 )
-            )
+            ]
         );
     }
 }

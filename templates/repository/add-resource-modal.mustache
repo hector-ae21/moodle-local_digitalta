@@ -1,0 +1,102 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{! TODO! TRADUCCIONES EN ARCHIVO Y NO QUEMADOS @Miguelito }}
+{{< core/modal }}
+    {{$title}}
+        {{#str}} modal:title, tiny_dta {{/str}}
+    {{/title}}
+
+    {{$body}}
+        <form id="res-import-form">
+            <div class="form-group">
+                <label for="nameInput">{{#str}} label:name, tiny_dta {{/str}}</label>
+                <input type="text" class="form-control" name="nameInput" placeholder="{{#str}} placeholder:name, tiny_dta {{/str}}..." required />
+            </div>
+            <div class="form-group">
+                <label for="urlInput">{{#str}} label:url, tiny_dta {{/str}}</label>
+                <input type="url" class="form-control" name="urlInput" placeholder="{{#str}} placeholder:url, tiny_dta {{/str}}..." pattern="https://.*" required />
+            </div>
+            <div class="form-group">
+                <div class="label-extra d-flex flex-row">
+                    <label for="descriptionInput">{{#str}} label:description, tiny_dta {{/str}}</label>
+                    <p>{{#str}} label:description:max_char, tiny_dta {{/str}}</p>
+                </div>
+                <textarea class="form-control" name="descriptionInput" placeholder="{{#str}} placeholder:description, tiny_dta {{/str}}..." maxlength="300" rows="3"></textarea> 
+            </div>
+            <div class="d-flex flex-row justify-content-between">
+                <div class="mr-5">
+                    <div class="form-group">
+                        <label for="themeSelect">{{#str}} label:themes, tiny_dta {{/str}}</label>
+                        <select class="form-control" name="themeSelect" required>
+                        {{#themes}}
+                            <option value="{{value}}">{{text}}</option>
+                        {{/themes}}
+                        </select>
+                    </div>
+                    <div class="tags-input d-flex flex-column justify-content-start">
+                        <div class="form-group w-100">
+                            <label for="tagSelect">{{#str}} label:tags, tiny_dta {{/str}}</label>
+                            <select class="form-control" name="tagSelect" required>
+                                <option>Tag 1</option>
+                                <option>Tag 2</option>
+                                <option>Tag 3</option>
+                                <option>Tag 4</option>
+                                <option>Tag 5</option>
+                            </select>
+                        </div>
+                        <div class="tags-container d-flex flex-row flex-wrap w-100">
+                            <div class="tag-normal">Tag 1</div>
+                            <div class="tag-normal">Tag 2</div>
+                            <div class="tag-normal">Tag 3</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label for="fileTypeSelect">{{#str}} label:file_type, tiny_dta {{/str}}</label>
+                        <select class="form-control" name="fileTypeSelect" required>
+                            <option value="DOCUMENT">File</option>
+                            <option value="IMAGE">Image</option>
+                            <option value="VIDEO">Video</option>
+                            <option value="URL">Url</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="languageSelect">{{#str}} label:language, tiny_dta {{/str}}</label>
+                        <select class="form-control" name="languageSelect" required>
+                            <option value="en">English (en)</option>
+                            <option value="es">Spanish (es)</option>
+                            <option value="fr">French (fr)</option>
+                            <option value="it">Italian (it)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    {{/body}}
+    {{$footer}}
+        {{#change}}
+            <div class="d-flex flex-row justify-content-between w-100">
+                <button class="btn btn-link" id="changeToImportResource">Search for an existing resource</a>
+                <button type="submit" data-action="save" class="btn btn-primary">{{#str}} button:import, tiny_dta {{/str}}</button>
+            </div>
+        {{/change}}
+        {{^change}}
+            <button type="submit" data-action="save" class="btn btn-primary">{{#str}} button:import, tiny_dta {{/str}}</button>
+        {{/change}}
+    {{/footer}}
+{{/ core/modal }}

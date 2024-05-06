@@ -1,9 +1,7 @@
-{{#data}}
-    <a href="{{viewurl}}{{id}}" class="text-decoration-none">
-        <div class="d-flex flex-row  align-items-center">
-            <i class="icon fa fa-clipboard mr-3"></i>
-            <p class="text-primary m-0">{{title}}</p>
-            <i class="icon fa fa-link ml-1"></i>
+    <a href="{{path}}" class="text-decoration-none d-flex flex-row align-items-center">
+        <div class="d-flex flex-row align-items-center justify-content-between">
+            <i class="icon fa fa-book mr-3"></i>
+            <p class="text-primary m-0">{{section_header.title}}</p>
+            <a id="remove-context-button" data-contextid="{{context.id}}"><i class="icon fa fa-times ml-1 text-danger"></i></a>
         </div>
     </a>
-{{/data}}

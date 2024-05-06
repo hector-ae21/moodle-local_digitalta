@@ -70,7 +70,7 @@ $cases = array_map(function($case) {
     $case->casetext = array_values($caseText)[0];
     $case->casetext->description = str_replace("<br>",
         " ",
-        StringUtils::truncateHtmlText($case->casetext->description, 100));
+        StringUtils::truncateHtmlText($case->casetext->description, 300));
     return $case;
 }, $cases);
 
@@ -99,7 +99,8 @@ $templateContext = [
         "data" => array_slice($cases, 0, 4),
         "viewurl" => $CFG->wwwroot . "/local/dta/pages/cases/view.php?id=",
         "allurl" => $CFG->wwwroot . "/local/dta/pages/cases/repository.php"
-    ]
+    ],
+    "ismentorcardvertical" => false,
 ];
 
 $templateContext = filter_utils::apply_filter_to_template_object($templateContext);

@@ -7,8 +7,11 @@
     {{#experience}} 
       <div class="d-flex">
           {{#isadmin}}
-            <a href={{createcaseurl}}{{data.id}} class="shadow-none" title="{{#str}}experience_view_resrepo_action_tooltip, local_dta{{/str}}">
-                <i class="fa fa-plus-circle fa-lg text-info"></i>
+            <a id="add-resource-button" class="shadow-none" title="{{#str}}experience_view_resrepo_action_tooltip, local_dta{{/str}}">
+                <i class="fa fa-folder-open fa-lg text-info"></i>
+            </a>
+            <a id="add-cases-button"  class="shadow-none" title="{{#str}}experience_view_resrepo_action_tooltip, local_dta{{/str}}">
+                <i class="fa fa-book fa-lg text-info"></i>
             </a>
           {{/isadmin}}
       </div>
@@ -16,12 +19,13 @@
   </div>
   <div class="card-body">
       <h4>Related Cases</h4>
-      {{#cases}}
+      {{#related.cases}}
         {{>local_dta/experiences/view/related-cases-link}}
-      {{/cases}}
-      
+      {{/related.cases}}      
       <br>
       <h4>Related Resources</h4>
-      <h6>Comming soon...</h6>
+      {{#related.resources}}
+        {{>local_dta/experiences/view/related-resources-link}}
+      {{/related.resources}}
   </div>
 </div>

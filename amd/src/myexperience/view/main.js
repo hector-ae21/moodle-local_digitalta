@@ -1,19 +1,23 @@
-import $ from 'jquery';
 import Notification from "core/notification";
 import ModalFactory from 'core/modal_factory';
 import Templates from 'core/templates';
 import {get_string} from 'core/str';
 import {toggleStatus} from 'local_dta/repositories/experience_repository';
+import {setEventListeners} from './listeners';
+import {deleteContext} from 'local_dta/repositories/context_repository';
 
 
 let changeStatusModal = null;
 
 // Selectors
-const SELECTORS = {
+export const SELECTORS = {
     BUTTONS: {
         block: '#block-experience-button',
         unblock: '#open-experience-button',
         confirmBlockModal: '#confirm-block-experience-button',
+        addResourceBtn: '#add-resource-button',
+        addCasesBtn: "#add-cases-button",
+        removeContextButton: "#remove-context-button",
     },
     INPUTS: {
         experienceid: '#experience-id',
@@ -25,7 +29,7 @@ const SELECTORS = {
  * @param {int} experienceid
  * @return {void}
  */
-async function showChangeStatusModal(experienceid) {
+export async function showChangeStatusModal(experienceid) {
     changeStatusModal = await ModalFactory.create({
         title: get_string("experience_view_block_modal_title", "local_dta"),
         body: Templates.render('local_dta/experiences/view/open-close-modal', {experienceid}),
@@ -38,7 +42,7 @@ async function showChangeStatusModal(experienceid) {
  * @param {int} experienceid
  * @return {void}
  */
-async function toggleExperienceStatus(experienceid) {
+export async function toggleExperienceStatus(experienceid) {
     try {
         await toggleStatus(experienceid);
         changeStatusModal.hide();
@@ -50,19 +54,16 @@ async function toggleExperienceStatus(experienceid) {
 }
 
 /**
- * Set event listeners
- * @return {void}
+ * Display the link resources modal
+ * @param {int} contextid  The context id.
  */
-function setEventListeners() {
-    const experienceid = $(SELECTORS.INPUTS.experienceid).val();
-
-    $(document).on('click', `${SELECTORS.BUTTONS.block}, ${SELECTORS.BUTTONS.unblock}`, () => {
-        showChangeStatusModal(experienceid);
-    });
-
-    $(document).on('click', SELECTORS.BUTTONS.confirmBlockModal, () => {
-        toggleExperienceStatus(experienceid);
-    });
+export async function deleteRelatedContext(contextid) {
+    try {
+        await deleteContext({id: contextid});
+        window.location.reload();
+    } catch (error) {
+        Notification.exception(error);
+    }
 }
 
 export const init = () => {

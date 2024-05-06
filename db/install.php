@@ -52,4 +52,14 @@ function xmldb_local_dta_install() {
         $DB->insert_record('digital_modifiers', $modifier);
     }
 
+    // Insert the themes
+    foreach (LOCAL_DTA_THEMES as $key => $value) {
+        $theme = new stdClass();
+        $theme->id = $value;
+        $theme->name = $key;
+        $theme->timecreated = time();
+        $theme->timemodified = time();
+        $DB->insert_record('digital_themes', $theme);
+    }
+
 }

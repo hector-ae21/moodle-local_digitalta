@@ -5,6 +5,7 @@ import {get_string} from 'core/str';
 import {toggleStatus} from 'local_dta/repositories/experience_repository';
 import {setEventListeners} from './listeners';
 import {deleteContext} from 'local_dta/repositories/context_repository';
+import { loadMentors } from "local_dta/mentors/pagination";
 
 
 let changeStatusModal = null;
@@ -18,6 +19,7 @@ export const SELECTORS = {
         addResourceBtn: '#add-resource-button',
         addCasesBtn: "#add-cases-button",
         removeContextButton: "#remove-context-button",
+        loadMoreButton: "#load-more-button",
     },
     INPUTS: {
         experienceid: '#experience-id',
@@ -60,6 +62,16 @@ export async function toggleExperienceStatus(experienceid) {
 export async function deleteRelatedContext(contextid) {
     try {
         await deleteContext({id: contextid});
+        window.location.reload();
+    } catch (error) {
+        Notification.exception(error);
+    }
+}
+
+
+export async function loadMore(numLoaded, numToLoad) {
+    try {
+        await loadMentors({numLoaded: numLoaded, numToLoad: numToLoad});
         window.location.reload();
     } catch (error) {
         Notification.exception(error);

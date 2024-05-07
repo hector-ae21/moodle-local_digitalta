@@ -180,6 +180,18 @@ $functions = [
         'ajax'        => true,
     ],
 
+    // MENTORS
+    'local_dta_mentors_load' => [
+        'classname'   => 'external_mentors_load',
+        'methodname'  => 'load_mentors',
+        'classpath'   => 'local/dta/classes/webservices/mentors/external_mentors_load.php',
+        'description' => 'load mentors',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
+
     // CONTEXT 
     'local_dta_context_insert' => [
         'classname'   => 'external_context_insert',

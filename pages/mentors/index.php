@@ -9,7 +9,7 @@
  */
 
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/mentor.php');
+require_once(__DIR__ . './../../classes/mentors.php');
 
 require_login();
 
@@ -17,18 +17,17 @@ use local_dta\Mentor;
 
 global $CFG, $PAGE, $OUTPUT , $USER;
 
-// $strings = get_strings(['profile_header' , 'profile_title'], "local_dta");
+$strings = get_strings(['mentor_page_title'], "local_dta");
 
 $PAGE->set_url(new moodle_url('/local/dta/pages/mentors/index.php'));
 $PAGE->set_context(context_system::instance()) ;
-$PAGE->set_title("Mentors");
-// $PAGE->requires->js_call_amd('local_dta/myexperience/reactions', 'init');
+$PAGE->set_title($strings->mentor_page_title);
+$PAGE->requires->js_call_amd('local_dta/mentors/pagination', 'init');
 
 echo $OUTPUT->header();
 
 // get all mentors (now all users)
-$mentors = Mentor::get_all_mentors();
-
+$mentors = Mentor::get_mentor_chunk(0, 10);
 $formattedMentors = [];
 
 

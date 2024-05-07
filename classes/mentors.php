@@ -13,8 +13,6 @@
 
 namespace local_dta;
 
-require_once(__DIR__ . '/constants.php');
-
 class Mentor {
     /** @var int The ID of the mentor. */
     private $id;
@@ -40,6 +38,20 @@ class Mentor {
     public static function get_all_mentors() : array{
         global $DB;
         return array_values($DB->get_records(self::$table));
+    }
+
+    /**
+     * Get a chunk of mentors.
+     * 
+     * @param $numLoaded int The number of mentors already loaded.
+     * @param $numToLoad int The number of mentors to load.
+     * 
+     * @return object The mentors.
+     * 
+     */
+    public static function get_mentor_chunk(int $numLoaded, int $numToLoad) : array{
+        global $DB;
+        return $DB->get_records_sql("SELECT * FROM " . "mdl_" .self::$table . " LIMIT $numToLoad OFFSET $numLoaded");
     }
 }
 

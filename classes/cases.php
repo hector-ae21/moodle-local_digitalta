@@ -24,7 +24,7 @@
 
 namespace local_dta;
 
-require_once($CFG->dirroot . '/local/dta/classes/case.php');
+require_once($CFG->dirroot . '/local/dta/classes/cases.php');
 require_once($CFG->dirroot . '/local/dta/classes/components.php');
 require_once($CFG->dirroot . '/local/dta/classes/context.php');
 require_once($CFG->dirroot . '/local/dta/classes/reactions.php');

@@ -73,4 +73,28 @@ class Components
         global $DB;
         return $DB->get_record(self::$table, ['name' => $name]);
     }
+
+    /**
+     * Get the database record of an instance of a component
+     *
+     * @param  string      $component   The component name
+     * @param  int         $instanceid  The instance identifier
+     * @return object|null The instance record
+     */
+    public static function get_instance_record(string $component, int $instanceid)
+    {
+        global $DB;
+
+        $dbman = $DB->get_manager();
+
+        if ($dbman->table_exists('digital_' . $component)) {
+            return $DB->get_record('digital_' . $component, ['id' => $instanceid]);
+        } elseif ($dbman->table_exists('digital_' . $component . 's')) {
+            return $DB->get_record('digital_' . $component . 's', ['id' => $instanceid]);
+        } elseif ($dbman->table_exists('mdl_' . $component)) {
+            return $DB->get_record('mdl_' . $component, ['id' => $instanceid]);
+        } else {
+            return null;
+        }
+    }
 }

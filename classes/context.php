@@ -165,7 +165,7 @@ class Context
      * @return int       The ID of the added context.
      * @throws Exception If the component or modifier is invalid.
      */
-    public static function upsert_context(string $component, int $componentinstance, string $modifier, int $modifierinstance)
+    public static function insert_context(string $component, int $componentinstance, string $modifier, int $modifierinstance)
     {
         global $DB;
         if ($context = self::get_context_by_full_data($component, $componentinstance, $modifier, $modifierinstance)) {
@@ -185,12 +185,12 @@ class Context
     }
 
     /**
-     * Remove a context
+     * Delete a context
      *
      * @param  int  $id The ID of the context.
      * @return bool
      */
-    public static function remove_context(int $id)
+    public static function delete_context(int $id)
     {
         global $DB;
         return $DB->delete_records(self::$table, ['id' => $id]);

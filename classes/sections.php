@@ -126,17 +126,22 @@ class Sections
     /**
      * Upsert a section
      * 
-     * @param  object $section The section to upsert.
-     * @return object The section
+     * @param  object      $section The section to upsert.
+     * @return object|null The section
      */
     public static function upsert_section(object $section) : object
     {
         global $DB;
+        $record = new stdClass();
         $record = self::prepare_metadata_record($section);
         if (property_exists($section, 'id')
                 and !empty($section->id)
                 and $section->id > 0) {
-            $record->id = $section->id;
+            if (!$current_section = self::get_section($section->id)) {
+                return null;
+            }
+            $record->id          = $section->id;
+            $record->timecreated = $current_section->timecreated;
             $DB->update_record(self::$table, $section);
         } else {
             $record->id = $DB->insert_record(self::$table, $section);
@@ -152,9 +157,7 @@ class Sections
     * @throws Exception If the section type is invalid.
     */
     private static function prepare_metadata_record(object $section) : object {
-        if (!self::validate_metadata($section)) {
-            throw new Exception('Error adding sections: missing fields');
-        }
+        self::validate_metadata($section);
         $record                    = new stdClass();
         $record->component         = $section->component;
         $record->componentinstance = $section->componentinstance;
@@ -171,16 +174,18 @@ class Sections
      * Validate the metadata of a section.
      * 
      * @param  object $section The section object to check.
-     * @return bool   False if the metadata is invalid, true otherwise.
      */
-    private static function validate_metadata(object $section): bool {
-        $keys = ['component', 'componentinstance', 'groupid', 'sequence', 'sectiontype', 'content'];
+    private static function validate_metadata(object $section) {
+        $keys = ['component', 'componentinstance', 'groupid', 'sequence', 'sectiontype'];
+        $missing_keys = [];
         foreach ($keys as $key) {
             if (!property_exists($section, $key) || empty($section->{$key}) || is_null($section->{$key})) {
-                return false;
+                $missing_keys[] = $key;
             }
         }
-        return true;
+        if (!empty($missing_keys)) {
+            throw new Exception('Error adding section. Missing fields: ' . implode(', ', $missing_keys));
+        }
     }
 
     /**

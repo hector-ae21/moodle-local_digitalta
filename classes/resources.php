@@ -144,7 +144,11 @@ class Resources
         if (property_exists($resource, 'id')
                 and !empty($resource->id)
                 and $resource->id > 0) {
-            $record->id = $resource->id;
+            if (!$current_resource = self::get_resource($resource->id)) {
+                return null;
+            }
+            $record->id          = $current_resource->id;
+            $record->timecreated = $current_resource->timecreated;
             $DB->update_record(self::$table, $record);
         } else {
             $record->id = $DB->insert_record(self::$table, $record);
@@ -167,9 +171,7 @@ class Resources
     */
     private static function prepare_metadata_record(object $resource) : object {
         global $USER;
-        if (!self::validate_metadata($resource)) {
-            throw new Exception('Error adding resources: missing fields');
-        }
+        self::validate_metadata($resource);
         $record               = new Resource();
         $record->name         = $resource->name;
         $record->userid       = $USER->id; 
@@ -187,16 +189,18 @@ class Resources
      * Validate the metadata of a resource.
      * 
      * @param  object $resource The resource object to check.
-     * @return bool   False if the metadata is invalid, true otherwise.
      */
-    private static function validate_metadata(object $resource): bool {
+    private static function validate_metadata(object $resource) {
         $keys = ['name', 'type', 'format', 'lang'];
+        $missing_keys = [];
         foreach ($keys as $key) {
             if (!property_exists($resource, $key) || empty($resource->{$key}) || is_null($resource->{$key})) {
-                return false;
+                $missing_keys[] = $key;
             }
         }
-        return true;
+        if (!empty($missing_keys)) {
+            throw new Exception('Error adding resource. Missing fields: ' . implode(', ', $missing_keys));
+        }
     }
 
     /**

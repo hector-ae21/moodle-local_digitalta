@@ -153,7 +153,7 @@ class Tags
      * @return bool
      */
     public static function assign_tag_to_component(string $component, int $instance, int $tagid) {
-        return Context::upsert_context($component, $instance, 'tag', $tagid);
+        return Context::insert_context($component, $instance, 'tag', $tagid);
     }
 
     /**
@@ -186,7 +186,7 @@ class Tags
      */
     public static function remove_tag_from_component(string $component, int $instance, int $tagid) {
         $context = Context::get_context_by_full_data($component, $instance, 'tag', $tagid);
-        return Context::remove_context($context->id);
+        return Context::delete_context($context->id);
     }
 
     /**

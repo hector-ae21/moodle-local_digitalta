@@ -63,7 +63,7 @@ $sections = Sections::get_sections([
 
 $sectionheader = [
     'title' => $case->title,
-    'description' => '' // TODO SECTIONS
+    'description' => '' // SECTIONS TODO
 ];
 
 $user = get_complete_user_data("id", $case->userid);

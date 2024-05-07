@@ -47,6 +47,9 @@ class StudyCase
     /** @var string The title of the case. */
     public $title;
 
+    /** @var string The description of the case. */
+    public $description;
+
     /** @var string The language of the case. */
     public $lang;
 

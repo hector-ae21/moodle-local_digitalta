@@ -49,7 +49,7 @@ echo $OUTPUT->header();
 
 $experiences = Experiences::get_all_experiences(false);
 $experiences = array_map(function ($experience) {
-    $experience->description = ""; // TODO SECTIONS
+    $experience->description = ""; // SECTIONS TODO
     return $experience;
 }, $experiences);
 

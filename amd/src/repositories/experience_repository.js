@@ -1,7 +1,7 @@
 import Ajax from 'core/ajax';
 
 /**
- * Set the favourite state on a list of courses.
+ * Upsert an experience.
  *
  * Valid args are:
  * - experienceid: The experience id (optional)
@@ -10,7 +10,7 @@ import Ajax from 'core/ajax';
  * - lang : The language of the experience
  * - visible: The visibility of the experience
  * - tags: The tags of the experience
- * @method sectionTextUpsert
+ * @method experienceUpsert
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.
  */

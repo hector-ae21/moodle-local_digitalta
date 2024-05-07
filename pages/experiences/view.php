@@ -61,7 +61,7 @@ $user_picture->size = 101;
 $experience_case = Cases::get_cases_by_experience($id);
 $experience_case_info = [];
 foreach ($experience_case as $case) {
-    $case->description = ""; // TODO SECTIONS
+    $case->description = ""; // SECTIONS TODO
     array_push($experience_case_info, $case);
 }
 
@@ -107,7 +107,7 @@ $template_context = [
     'createcaseurl' => $CFG->wwwroot . "/local/dta/pages/cases/manage.php?id=",
     'createreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection.php?id=',
     'viewreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection/view.php?id=',
-    'reflection' => [], // TODO SECTIONS
+    'reflection' => [], // SECTIONS TODO
     'reflectionsections' => $formated_sections,
     //'related' => [
     //    'resources' => Resources::get_resources_by_context_component('experience', $id),

@@ -11,6 +11,7 @@
         <FIELD NAME="resourceid" TYPE="int" LENGTH="11" NOTNULL="false" SEQUENCE="false" COMMENT="ID of the resource"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user"/>
         <FIELD NAME="title" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Case title"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Case description"/>
         <FIELD NAME="lang" TYPE="char" LENGTH="5" NOTNULL="true" SEQUENCE="false" COMMENT="Language"/>
         <FIELD NAME="status" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="status 0 until finished 1)"/>
         <FIELD NAME="timecreated" TYPE="datetime" NOTNULL="true" SEQUENCE="false" COMMENT="Time created"/>

@@ -36,50 +36,73 @@ use local_dta\Cases;
  */
 class external_cases_edit extends external_api
 {
-
+ 
+    /**
+     * Returns the description of the external function parameters
+     *
+     * @return external_function_parameters The external function parameters
+     */
     public static function cases_edit_parameters()
     {
         return new external_function_parameters(
             array(
-                'caseid' => new external_value(PARAM_INT, 'Case ID'),
+                'id' => new external_value(PARAM_INT, 'Case ID'),
+                'title' => new external_value(PARAM_TEXT, 'Title'),
+                'description' => new external_value(PARAM_RAW, 'Description'),
+                'lang' => new external_value(PARAM_TEXT, 'Language'),
                 'status' => new external_value(PARAM_INT, 'Status', VALUE_DEFAULT, 0),
+                'themes' => new external_multiple_structure(
+                    new external_value(PARAM_INT, 'ID del elemento'), 'Themes' , VALUE_DEFAULT, []
+                ),
                 'tags' => new external_multiple_structure(
-                    new external_value(PARAM_INT, 'ID del elemento')  , 'Tags' , VALUE_DEFAULT, []
+                    new external_value(PARAM_INT, 'ID del elemento'), 'Tags' , VALUE_DEFAULT, []
                 )
             )
         );
     }
 
-    public static function cases_edit($caseid, $status = 0, $tags = [])
+    /**
+     * Edit a case
+     *
+     * @param  int    $id The case identifier
+     * @param  string $title The case title
+     * @param  string $description The case description
+     * @param  string $lang The case language
+     * @param  int    $status The case status
+     * @param  array  $themes The case themes
+     * @param  array  $tags The case tags
+     * @return array  The result of the operation
+     */
+    public static function cases_edit($id, $title, $description = "", $lang, $status = 0, $themes = [], $tags = [])
     {
-        
-        if (!$case = Cases::get_case($caseid, false)) {
-            return array('result' => false, 'error' => 'Case not found');
+        if (!$case = Cases::get_case($id, false)) {
+            return ['result' => false, 'error' => 'Case not found'];
         }
-
-        if (empty($caseid) || empty($status) ) {
-            return array('result' => false, 'error' => 'Empty Values');
-        }
-
         $newcase = new stdClass();
-        $newcase->id = $caseid;
-        $newcase->status = $status;
-        $newcase->tags = $tags;
-
-
+        $newcase->id          = $id;
+        $newcase->title       = $title;
+        $newcase->description = $description;
+        $newcase->lang        = $lang;
+        $newcase->status      = $status;
+        $newcase->themes      = $themes;
+        $newcase->tags        = $tags;
         if (!Cases::update_case($newcase)) {
-            return array('result' => false, 'error' => 'Failed to update case');
+            return ['result' => false, 'error' => 'Failed to update case'];
         }
-
-        return array('result' => true);
+        return ['result' => true];
     }
 
+    /**
+     * Returns the description of the external function returns
+     *
+     * @return external_single_structure The external function returns
+     */
     public static function cases_edit_returns()
     {
         return new external_single_structure(
             array(
-                'error' => new external_value(PARAM_TEXT, 'Error message if any' , VALUE_OPTIONAL),
-                'result' => new external_value(PARAM_BOOL, 'True if success, false otherwise' , VALUE_OPTIONAL)
+                'result' => new external_value(PARAM_BOOL, 'True if success, false otherwise' , VALUE_OPTIONAL),
+                'error' => new external_value(PARAM_TEXT, 'Error message if any' , VALUE_OPTIONAL)
             )
         );
     }

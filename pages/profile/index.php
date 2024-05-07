@@ -56,7 +56,7 @@ $picture->size = 101;
 // Get the user experiences
 $experiences = Experiences::get_experiences_by_user($user->id);
 $experiences = array_map(function ($experience) {
-    $experience->description = ""; // TODO SECTIONS
+    $experience->description = ""; // SECTIONS TODO
     $experience->reactions = false;
     return $experience;
 }, $experiences);
@@ -64,7 +64,7 @@ $experiences = array_map(function ($experience) {
 // Get the user cases
 $cases = Cases::get_cases_by_user($user->id);
 $cases = array_values(array_map(function ($case) {
-    $case->description = ""; // TODO SECTIONS
+    $case->description = ""; // SECTIONS TODO
     $case->reactions = false;
     return $case;
 }, $cases));

@@ -61,17 +61,20 @@ $PAGE->requires->js_call_amd(
 
 echo $OUTPUT->header();
 
-(new TinyEditorHandler)->get_config_editor(['maxfiles' =>1]);
+(new TinyEditorHandler)->get_config_editor(['maxfiles' => 1]);
 
+
+print_r("EXPERIENCIA: " . $experienceid);
 
 if ($experienceid) {
     $template = 'local_dta/cases/manage/with-experience';
     if (!$experience = Experiences::get_experience($experienceid)) {
-        throw new moodle_exception('invalidexperience', 'local_dta');
+        throw new Exception('Invalid experience');
     }
     $case               = new stdClass();
     $case->experienceid = $experienceid;
     $case->title        = $experience->title;
+    $case->description  = ""; // SECTIONS TODO
     $case->lang         = $experience->lang;
     $case = Cases::add_case($case);
 } elseif ($caseid or $casetitle) {
@@ -79,7 +82,8 @@ if ($experienceid) {
     if (!$case = Cases::get_case($caseid)) {
         $case               = new stdClass();
         $case->title        = $casetitle;
-        $case->lang         = 'en'; // HARDCODED
+        $case->description  = "";
+        $case->lang         = 'en'; // HARDCODED TODO: LANGUAGES
         $case = Cases::add_case($case);
     };
 } else {
@@ -93,7 +97,7 @@ $sections = Sections::get_sections([
 
 $sectionheader = [
     'title' => $case->title,
-    'description' => '' // TODO SECTIONS
+    'description' => '' // SECTIONS TODO
 ];
 
 $template_context = [

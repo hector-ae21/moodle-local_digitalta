@@ -66,7 +66,7 @@ $featuredExperiences = array_map(function($experience) {
 }, $featuredExperiences);
 $experiences = Experiences::get_latest_experiences(9, false);
 $experiences = array_map(function($experience) use ($featuredExperiences) {
-    $experience->description = ""; // TODO SECTIONS
+    $experience->description = ""; // SECTIONS TODO
     $experience->featured = (in_array($experience->id, $featuredExperiences)) ? true : false;
     return $experience;
 }, $experiences);
@@ -78,7 +78,7 @@ array_multisort(
 // Get cases
 $cases = array_values(Cases::get_all_cases(true, 1));
 $cases = array_map(function($case) {
-    $case->description = ""; // TODO SECTIONS
+    $case->description = ""; // SECTIONS TODO
     return $case;
 }, $cases);
 

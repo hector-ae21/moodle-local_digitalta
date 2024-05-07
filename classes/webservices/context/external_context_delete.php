@@ -48,7 +48,7 @@ class external_context_delete extends external_api
 
     public static function context_delete($id)
     {
-        Context::remove_context($id);
+        Context::delete_context($id);
         return [
             'result' => true,
         ];

@@ -1,7 +1,14 @@
 import Ajax from "core/ajax";
 
 /**
- * Get unused draft item id.
+ * Upload file from draft.
+ *
+ * Valid args are:
+ * - draftid: The id of the draft.
+ * - fileid: The id of the file.
+ * - filearea: The file area.
+ * - contextid: The context id.
+ *
  * @method getUnusedDraftItemId
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.

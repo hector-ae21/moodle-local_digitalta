@@ -213,16 +213,21 @@ class Experiences
     public static function upsert_experience($experience) : object
     {
         global $DB;
+        $record = new stdClass;
         $record = self::prepare_metadata_record($experience);
         if (property_exists($experience, 'id')
                 and !empty($experience->id)
                 and $experience->id > 0) {
-            $record->id = $experience->id;
+            if (!$current_experience = self::get_experience($experience->id)) {
+                return null;
+            }
+            $record->id          = $current_experience->id;
+            $record->timecreated = $current_experience->timecreated;
             $DB->update_record(self::$table, $record);
         } else {
             $record->id = $DB->insert_record(self::$table, $record);
         }
-        // TODO SECTIONS: Description to section
+        // SECTIONS TODO: Description to section
         if (!empty($experience->themes)) {
             Themes::update_themes('experience', $record->id, $experience->themes);
         }
@@ -242,9 +247,7 @@ class Experiences
     private static function prepare_metadata_record($experience)
     {
         global $USER;
-        if (!self::validate_metadata($experience)) {
-            throw new Exception('Error adding experiences: missing fields');
-        }
+        self::validate_metadata($experience);
         $record               = new stdClass();
         $record->userid       = $USER->id;
         $record->title        = $experience->title;
@@ -260,16 +263,18 @@ class Experiences
      * Validate the metadata of an experience.
      * 
      * @param  object $experience The experience object to check.
-     * @return bool   False if the metadata is invalid, true otherwise.
      */
-    private static function validate_metadata(object $experience): bool {
+    private static function validate_metadata(object $experience) {
         $keys = ['title', 'lang'];
+        $missing_keys = [];
         foreach ($keys as $key) {
             if (!property_exists($experience, $key) || empty($experience->{$key}) || is_null($experience->{$key})) {
-                return false;
+                $missing_keys[] = $key;
             }
         }
-        return true;
+        if (!empty($missing_keys)) {
+            throw new Exception('Error adding experience. Missing fields: ' . implode(', ', $missing_keys));
+        }
     }
 
     /**

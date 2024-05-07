@@ -24,18 +24,24 @@
 
 namespace local_dta;
 
+require_once($CFG->dirroot . '/local/dta/classes/case.php');
 require_once($CFG->dirroot . '/local/dta/classes/components.php');
 require_once($CFG->dirroot . '/local/dta/classes/context.php');
 require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
+require_once($CFG->dirroot . '/local/dta/classes/resources.php');
 require_once($CFG->dirroot . '/local/dta/classes/sections.php');
 require_once($CFG->dirroot . '/local/dta/classes/tags.php');
+require_once($CFG->dirroot . '/local/dta/classes/themes.php');
 require_once($CFG->dirroot . '/local/dta/classes/utils/dateutils.php');
 
 use local_dta\Components;
 use local_dta\Context;
 use local_dta\Reactions;
+use local_dta\Resources;
 use local_dta\Sections;
+use local_dta\StudyCase;
 use local_dta\Tags;
+use local_dta\Themes;
 use local_dta\utils\DateUtils;
 
 use Exception;
@@ -141,6 +147,14 @@ class Cases
             'imageurl' => $picture->get_url($PAGE)->__toString(),
             'profileurl' => new \moodle_url('/user/profile.php', ['id' => $user->id])
         ];
+        // Get the themes for the case
+        $themes = Themes::get_themes_for_component('case', $case->id);
+        $case->themes = array_values(array_map(function($theme) {
+            return (object) [
+                'name' => $theme->name,
+                'id' => $theme->id
+            ];
+        }, $themes));
         // Get the tags for the case
         $tags = Tags::get_tags_for_component('case', $case->id);
         $case->tags = array_values(array_map(function($tag) {
@@ -211,7 +225,7 @@ class Cases
         // Create default resource
         $resource               = new stdClass();
         $resource->name         = $record->title;
-        $resource->description  = ""; // TODO SECTIONS
+        $resource->description  = $record->description;
         $resource->type         = Resources::get_type_by_name('Study Case')->id;
         $resource->format       = Resources::get_format_by_name('Link')->id;
         $resource->lang         = $record->lang;
@@ -225,8 +239,8 @@ class Cases
         $section->componentinstance = $record->id;
         $section->groupid           = Sections::get_group_by_name('General')->id;
         $section->sequence          = 1;
-        $section->sectiontype       = Sections::get_type_by_name('Text')->id;
-        $section->content           = ""; // TODO SECTIONS
+        $section->sectiontype       = Sections::get_type_by_name('text')->id;
+        $section->content           = "";
         $section = Sections::upsert_section($section);
         // Update theme and tags
         if (!empty($case->themes)) {
@@ -248,9 +262,24 @@ class Cases
     public static function update_case($case)
     {
         global $DB;
+        // Get the current case
+        if (!$current_case = $DB->get_record(self::$table, ['id' => $case->id])) {
+            throw new Exception('Error case not found');
+        }
+        // Validate the metadata
+        self::prepare_metadata_record($case, $current_case);
+        // Update the time modified
+        $case->timemodified = date('Y-m-d H:i:s', time());
+        // Update the case
+        if (!$DB->update_record(self::$table,  $case)) {
+            throw new Exception('Error adding case section text to the database.');
+            return false;
+        }
+        $case = self::get_case($case->id, false);
         // Update the default resource
-        $resource = Resources::get_resource($case->resourceid);
-        $resource->name = $case->title;
+        $resource              = Resources::get_resource($case->resourceid);
+        $resource->name        = $case->title;
+        $resource->description = $case->description;
         Resources::upsert_resource($resource);
         // Update the themes and tags
         if ($case->themes) {
@@ -259,13 +288,6 @@ class Cases
         if ($case->tags) {
             Tags::update_tags('case', $case->id, $case->tags);
         }
-        // Update the time modified
-        $case->timemodified = date('Y-m-d H:i:s', time());
-        // Update the case
-        if (!$DB->update_record(self::$table,  $case)) {
-            throw new Exception('Error adding case section text to the database.');
-            return false;
-        }
         return new StudyCase($case);    
     }
 
@@ -273,22 +295,22 @@ class Cases
     * Prepare metadata record for database insertion.
     * 
     * @param  object    $case The case object.
+    * @param  object    $current_case The current case object.
     * @return object    The prepared metadata record.
     * @throws Exception If the case type is invalid.
     */
-    private static function prepare_metadata_record($case)
+    private static function prepare_metadata_record($case, $current_case = null)
     {
         global $USER;
-        if (!self::validate_metadata($case)) {
-            throw new Exception('Error adding cases: missing fields');
-        }
+        self::validate_metadata($case);
         $record               = new stdClass();
-        $record->experienceid = $case->experienceid;
-        $record->userid       = $USER->id;
+        $record->experienceid = $case->experienceid ?? $current_case->experienceid ?? 0;
+        $record->userid       = $case->userid ?? $current_case->userid ?? $USER->id;
         $record->title        = $case->title;
+        $record->description  = $case->description ?? $current_case->description ?? '';
         $record->lang         = $case->lang;
-        $record->status       = $case->status ?? 0;
-        $record->timecreated  = date('Y-m-d H:i:s', time());
+        $record->status       = $case->status ?? $current_case->status ?? 0;
+        $record->timecreated  = $case->timecreated ?? $current_case->timecreated ?? date('Y-m-d H:i:s', time());
         $record->timemodified = date('Y-m-d H:i:s', time());
         return $record;
     }
@@ -297,16 +319,18 @@ class Cases
      * Validate the metadata of an case.
      * 
      * @param  object $case The case object to check.
-     * @return bool   False if the metadata is invalid, true otherwise.
      */
-    private static function validate_metadata(object $case): bool {
+    private static function validate_metadata(object $case) {
         $keys = ['title', 'lang'];
+        $missing_keys = [];
         foreach ($keys as $key) {
             if (!property_exists($case, $key) || empty($case->{$key}) || is_null($case->{$key})) {
-                return false;
+                $missing_keys[] = $key;
             }
         }
-        return true;
+        if (!empty($missing_keys)) {
+            throw new Exception('Error adding case. Missing fields: ' . implode(', ', $missing_keys));
+        }
     }
 
     /**

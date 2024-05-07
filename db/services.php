@@ -82,24 +82,6 @@ $functions = [
     ],
 
     // CASES
-    'local_dta_cases_section_text_upsert' => [
-        'classname'   => 'external_cases_section_text_upsert',
-        'methodname'  => 'cases_section_text_upsert',
-        'classpath'   => 'local/dta/classes/webservices/cases/external_cases_section_text_upsert.php',
-        'description' => 'Upsert the text of a section of the Cases page.',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_cases_section_text_delete' => [
-        'classname'   => 'external_cases_section_text_delete',
-        'methodname'  => 'cases_section_text_delete',
-        'classpath'   => 'local/dta/classes/webservices/cases/external_cases_section_text_delete.php',
-        'description' => 'Delete the text of a section of the Cases page.',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
     'local_dta_cases_edit' => [
         'classname'   => 'external_cases_edit',
         'methodname'  => 'cases_edit',
@@ -171,10 +153,10 @@ $functions = [
     ],
 
     // CONTEXT 
-    'local_dta_context_upsert' => [
-        'classname'   => 'external_context_upsert',
-        'methodname'  => 'context_upsert',
-        'classpath'   => 'local/dta/classes/webservices/context/external_context_upsert.php',
+    'local_dta_context_insert' => [
+        'classname'   => 'external_context_insert',
+        'methodname'  => 'context_insert',
+        'classpath'   => 'local/dta/classes/webservices/context/external_context_insert.php',
         'description' => 'upsert a context',
         'type'        => 'write',
         'requirelogin' => true,
@@ -188,5 +170,25 @@ $functions = [
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
+    ],
+
+    // SECTIONS
+    'local_dta_sections_upsert' => [
+        'classname'    => 'external_sections_upsert',
+        'methodname'   => 'sections_upsert',
+        'classpath'    => 'local/dta/classes/webservices/sections/external_sections_upsert.php',
+        'description'  => 'upsert a section',
+        'type'         => 'write',
+        'requirelogin' => true,
+        'ajax'         => true,
+    ],
+    'local_dta_sections_delete' => [
+        'classname'    => 'external_sections_delete',
+        'methodname'   => 'sections_delete',
+        'classpath'    => 'local/dta/classes/webservices/sections/external_sections_delete.php',
+        'description'  => 'delete a section',
+        'type'         => 'write',
+        'requirelogin' => true,
+        'ajax'         => true,
     ],
 ];

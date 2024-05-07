@@ -37,7 +37,12 @@ use local_dta\Cases;
  */
 class external_cases_get extends external_api
 {
-
+ 
+    /**
+     * Returns the description of the external function parameters
+     *
+     * @return external_function_parameters The external function parameters
+     */
     public static function cases_get_parameters()
     {
         return new external_function_parameters(
@@ -45,6 +50,11 @@ class external_cases_get extends external_api
         );
     }
 
+    /**
+     * Get all the cases
+     *
+     * @return array The cases
+     */
     public static function cases_get()
     {
         $cases = Cases::get_all_cases(false);
@@ -53,6 +63,12 @@ class external_cases_get extends external_api
             'cases' => $cases
         ];
     }
+
+    /**
+     * Returns the description of the external function return value
+     *
+     * @return external_single_structure The external function return value
+     */
     public static function cases_get_returns()
     {
         return new external_single_structure(
@@ -67,6 +83,7 @@ class external_cases_get extends external_api
                             'resourceid' => new external_value(PARAM_INT, 'resourceid'),
                             'userid' => new external_value(PARAM_INT, 'userid'),
                             'title' => new external_value(PARAM_TEXT, 'title'),
+                            'description' => new external_value(PARAM_TEXT, 'description'),
                             'lang' => new external_value(PARAM_TEXT, 'lang'),
                             'status' => new external_value(PARAM_INT, 'status'),
                             'timecreated' => new external_value(PARAM_TEXT, 'timecreated'),

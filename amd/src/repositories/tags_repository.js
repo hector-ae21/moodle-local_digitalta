@@ -1,4 +1,5 @@
 import Ajax from 'core/ajax';
+
 /**
  * Create tags.
  *

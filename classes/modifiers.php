@@ -73,4 +73,28 @@ class Modifiers
         global $DB;
         return $DB->get_record(self::$table, ['name' => $name]);
     }
+
+    /**
+     * Get the database record of an instance of a modifier
+     *
+     * @param  string      $modifier   The modifier name
+     * @param  int         $instanceid  The instance identifier
+     * @return object|null The instance record
+     */
+    public static function get_instance_record(string $modifier, int $instanceid)
+    {
+        global $DB;
+
+        $dbman = $DB->get_manager();
+
+        if ($dbman->table_exists('digital_' . $modifier)) {
+            return $DB->get_record('digital_' . $modifier, ['id' => $instanceid]);
+        } elseif ($dbman->table_exists('digital_' . $modifier . 's')) {
+            return $DB->get_record('digital_' . $modifier . 's', ['id' => $instanceid]);
+        } elseif ($dbman->table_exists('mdl_' . $modifier)) {
+            return $DB->get_record('mdl_' . $modifier, ['id' => $instanceid]);
+        } else {
+            return null;
+        }
+    }
 }

@@ -38,6 +38,25 @@ function xmldb_local_dta_upgrade($oldversion)
 
     $dbman = $DB->get_manager();
 
+    if ($oldversion < 2024050700) {
+        throw new Exception('The version is too old. Continuing the upgrade process is not possible. Please, reinstall the plugin. Keep in mind that you will lose all the data.');
+    }
+
+    if ($oldversion < 2024050701) {
+
+        // Define field description to be added to digital_cases.
+        $table = new xmldb_table('digital_cases');
+        $field = new xmldb_field('description', XMLDB_TYPE_TEXT, null, null, null, null, null, 'title');
+
+        // Conditionally launch add field description.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Dta savepoint reached.
+        upgrade_plugin_savepoint(true, 2024050701, 'local', 'dta');
+    }
+
     // Try all insertions regardless of the version
     // Insert the components
     $table = new xmldb_table('digital_components');

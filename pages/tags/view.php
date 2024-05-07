@@ -64,7 +64,7 @@ $experiences = Context::get_contexts_by_modifier($tagtype, $tagid, 'experience')
 $experiences = array_values($experiences);
 $experiences = array_map(function($key, $context) {
     $experience = Experiences::get_experience($context->componentinstance);
-    $experience->description = ""; // TODO SECTIONS
+    $experience->description = ""; // SECTIONS TODO
     return $experience;
 }, array_keys($experiences), $experiences);
 
@@ -73,7 +73,7 @@ $cases = Context::get_contexts_by_modifier($tagtype, $tagid, 'case');
 $cases = array_values($cases);
 $cases = array_map(function($key, $context) {
     $case = Cases::get_case($context->componentinstance);
-    $case->description = ""; // TODO SECTIONS
+    $case->description = ""; // SECTIONS TODO
     return $case;
 }, array_keys($cases), $cases);
 

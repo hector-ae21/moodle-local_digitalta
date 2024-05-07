@@ -86,7 +86,7 @@ const LOCAL_DTA_SECTION_GROUPS = [
 ];
 
 const LOCAL_DTA_SECTION_TYPES = [
-    "Text"
+    "text"
 ];
 
 const LOCAL_DTA_LANGUAGES = [

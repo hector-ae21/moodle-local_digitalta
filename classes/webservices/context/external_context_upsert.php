@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * WebService to upsert a context
+ * WebService to insert a context
  *
  * @package   local_dta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
@@ -29,15 +29,15 @@ require_once($CFG->dirroot . '/local/dta/classes/context.php');
 use local_dta\Context;
 
 /**
- * This class is used to upsert a context
+ * This class is used to insert a context
  *
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class external_context_upsert extends external_api
+class external_context_insert extends external_api
 {
 
-    public static function context_upsert_parameters()
+    public static function context_insert_parameters()
     {
         return new external_function_parameters(
             array(
@@ -49,11 +49,11 @@ class external_context_upsert extends external_api
         );
     }
 
-    public static function context_upsert($component, $componentinstance, $modifier, $modifierinstance)
+    public static function context_insert($component, $componentinstance, $modifier, $modifierinstance)
     {
         global $USER;
 
-        if(!$contextId = Context::upsert_context($component, $componentinstance, $modifier, $modifierinstance)){
+        if(!$contextId = Context::insert_context($component, $componentinstance, $modifier, $modifierinstance)){
             return [
                 'result' => false,
                 'error' => 'Error saving context'
@@ -66,7 +66,7 @@ class external_context_upsert extends external_api
         ];
     }
 
-    public static function context_upsert_returns()
+    public static function context_insert_returns()
     {
         return new external_single_structure(
             [

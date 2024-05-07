@@ -14,17 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Version metadata for the local_dta plugin.
- *
- * @package   local_dta
- * @copyright 2024 ADSDR-FUNIBER Scepter Team
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+define('AJAX_SCRIPT', true);
 
-defined('MOODLE_INTERNAL') || die();
+require_once(__DIR__ . './../../../../config.php');
+require_once($CFG->dirroot . '/local/dta/classes/chat/chat.php');
 
-$plugin->version = 2024050703;
-$plugin->requires = 2021051100;
-$plugin->component = 'local_dta';
-$plugin->maturity = MATURITY_ALPHA;
+use local_dta\Chat;
+
+
+$action       = optional_param('action', '', PARAM_ALPHANUM);
+
+if (!isloggedin()) {
+    throw new moodle_exception('notlogged', 'chat');
+}
+
+switch ($action) {
+    case 'get_chat_rooms':
+        $chat_rooms = Chat::get_chat_rooms();
+        echo json_encode($chat_rooms);
+        break;
+    default:
+        echo json_encode(array('error' => 'Invalid action'));
+        break;
+}

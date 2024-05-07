@@ -2,16 +2,16 @@ import $ from 'jquery';
 import Templates from 'core/templates';
 import Notification from 'core/notification';
 import {
-    sectionTextUpsert,
-    sectionTextDelete,
-    ourcaseEdit
-} from 'local_dta/repositories/ourcases_repository';
+    caseEdit
+} from 'local_dta/repositories/cases_repository';
+import {
+    sectionUpsert,
+    sectionDelete
+} from 'local_dta/repositories/sections_repository';
 import ModalFactory from 'core/modal_factory';
 import {get_string} from 'core/str';
 import setEventListeners from './listeners';
-import {createTinyMCE,
-    getTinyMCEContent
-} from 'local_dta/tiny/manage';
+import {createTinyMCE} from 'local_dta/tiny/manage';
 import {autocompleteTags} from "local_dta/tags/autocomplete";
 
 let sectionTextModal;
@@ -32,7 +32,6 @@ export function addTextSection() {
         return;
     }).fail(Notification.exception);
 }
-
 
 /**
  * Change the section to edit mode.
@@ -56,9 +55,8 @@ export function changeSectionToEdit(toView = false, id) {
     });
 }
 
-
 /**
- * Change the section to edit mode.
+ * Change the section id to a new one.
  * @param {number} id - The id of the section to change.
  * @param {number} toId - The id of the section to change to.
  * @return {void}
@@ -71,7 +69,6 @@ function changeSectionToNewId(id, toId) {
     }).fail(Notification.exception);
 }
 
-
 /**
  * Set event listeners for the module.
  * @param {number} id - The id of the section to remove.
@@ -80,12 +77,14 @@ function changeSectionToNewId(id, toId) {
  */
 export function upsertSection(id) {
     const sectionid = $(`#not_exist_${id}`).val() ? null : $(`#sectionid_${id}`).val();
-    const ourcaseid = $('#ourcases-id').val();
-    const title = null;
-    const text = $(`#content_${id}`).val();
+    const sectiontype = 'text';
+    const component = 'case';
+    const componentinstance = $('#cases-id').val();
+    const group = 'General';
     const sequence = -1;
+    const content = $(`#content_${id}`).val();
 
-    return sectionTextUpsert({ourcaseid, sectionid, title, text, sequence})
+    return sectionUpsert({sectionid, sectiontype, component, componentinstance, group, sequence, content})
         .then((data) => {
             if (data && data.result) {
                 changeSectionToNewId(id, data.sectionid);
@@ -98,34 +97,6 @@ export function upsertSection(id) {
             throw new Error('Hubo un error al realizar la solicitud: ');
         });
 }
-
-/**
- * Set event listeners for the module.
- * @return {Promise<boolean>} - Resolves to true if the operation was successful, otherwise resolves to false.
- */
-function upsertHeaderSection() {
-    return new Promise((resolve, reject) => {
-        const sectionid = $('#section-header-id').val();
-        const ourcaseid = $('#ourcases-id').val();
-        const title = $('#section-header-title').val();
-        const text = getTinyMCEContent('section-header-description');
-        const sequence = 0;
-
-        sectionTextUpsert({ourcaseid, sectionid, title, text, sequence})
-            .then((data) => {
-                if (data && data.result) {
-                    return resolve(true);
-                } else {
-                    return resolve(false);
-                }
-            })
-            .fail((error) => {
-                reject(error);
-                Notification.exception(error);
-            });
-    });
-}
-
 
 /**
  * Remove a section from the page.
@@ -149,7 +120,7 @@ export function removeSection(sectionid) {
  */
 export async function showDeleteSectionModal(sectionid) {
     sectionTextModal = await ModalFactory.create({
-        title: get_string("ourcases_section_text_delete_modal_title", "local_dta"),
+        title: get_string("cases_section_text_delete_modal_title", "local_dta"),
         body: Templates.render('local_dta/cases/manage/section-text-modal', {modalDeleteId: sectionid}),
     });
     sectionTextModal.show().then(() => {
@@ -165,12 +136,11 @@ export async function showDeleteSectionModal(sectionid) {
  */
 export async function showSaveCase() {
     const saveModal = await ModalFactory.create({
-        title: get_string("ourcases_modal_save_title", "local_dta"),
+        title: get_string("cases_modal_save_title", "local_dta"),
         body: Templates.render('local_dta/cases/manage/save-modal', {})
     });
     await saveModal.show();
 }
-
 
 /**
  * Delete text section
@@ -178,9 +148,7 @@ export async function showSaveCase() {
  */
 export function deleteSection() {
     const sectionid = $("#modal_delete_id").val();
-    const ourcaseid = $('#ourcases-id').val();
-
-    sectionTextDelete({ourcaseid, sectionid}).then((data) => {
+    sectionDelete({sectionid}).then((data) => {
         if (data.result) {
             sectionTextModal.hide();
             sectionTextModal = null;
@@ -191,17 +159,20 @@ export function deleteSection() {
 }
 
 /**
- * Edit a case.
+ * Change the status of the case to complete.
  * @return {void}
  */
 export async function changeStatusToComplete() {
-    const ourcaseid = $('#ourcases-id').val();
-    const status = 1;
+    const id = parseInt($('#cases-id').val());
+    const title = $('#section-header-title').val();
+    const description = $('#section-header-description').val();
+    const lang = 'en'; // LANGUAGES TODO: Hardcoded
+    const status = parseInt(1);
+    const themes = []; // THEMES TODO: Implement
     const tags = $("#autocomplete_tags").val();
-    await upsertHeaderSection();
-    ourcaseEdit({ourcaseid, status, tags}).then((data) => {
+    caseEdit({id, title, description, lang, status, themes, tags}).then((data) => {
         if (data.result) {
-            window.location.href = urlView + ourcaseid;
+            window.location.href = urlView + id;
         }
         return;
     }).fail(Notification.exception);

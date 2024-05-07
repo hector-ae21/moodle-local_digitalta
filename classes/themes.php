@@ -24,11 +24,12 @@
 
 namespace local_dta;
 
-require_once(__DIR__ . '/context.php');
+require_once($CFG->dirroot . '/local/dta/classes/context.php');
 
-use stdClass;
-use Exception;
 use local_dta\Context;
+
+use Exception;
+use stdClass;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -154,7 +155,7 @@ class Themes
      * @return bool
      */
     public static function assign_theme_to_component(string $component, int $instance, int $themeid) {
-        return Context::upsert_context($component, $instance, 'theme', $themeid);
+        return Context::insert_context($component, $instance, 'theme', $themeid);
     }
 
     /**
@@ -187,7 +188,7 @@ class Themes
      */
     public static function remove_theme_from_component(string $component, int $instance, int $themeid) {
         $context = Context::get_context_by_full_data($component, $instance, 'theme', $themeid);
-        return Context::remove_context($context->id);
+        return Context::delete_context($context->id);
     }
 
     /**

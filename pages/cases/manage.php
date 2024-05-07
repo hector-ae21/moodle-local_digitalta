@@ -1,34 +1,56 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * ourcases manage page
+ * Case manage page
  *
  * @package   local_dta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/experience.php');
-require_once(__DIR__ . './../../classes/ourcases.php');
-require_once(__DIR__ . './../../classes/tiny_editor_handler.php');
 
-use local_dta\Experience;
-use local_dta\OurCases;
-use local_dta\tiny_editor_handler;
+require_once(__DIR__ . '/../../../../config.php');
+require_once($CFG->dirroot . '/local/dta/classes/cases.php');
+require_once($CFG->dirroot . '/local/dta/classes/components.php');
+require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
+require_once($CFG->dirroot . '/local/dta/classes/sections.php');
+require_once($CFG->dirroot . '/local/dta/classes/tinyeditorhandler.php');
+
+use local_dta\Cases;
+use local_dta\Components;
+use local_dta\Experiences;
+use local_dta\Sections;
+use local_dta\TinyEditorHandler;
+
+use Exception;
+use stdClass;
 
 require_login();
 
 global $CFG, $PAGE, $OUTPUT, $USER;
 
 $experienceid = optional_param('id', 0, PARAM_INT);
-$case = optional_param('caseid', 0, PARAM_INT);
-$case_title = optional_param('casetitle', 0, PARAM_RAW);
+$caseid       = optional_param('caseid', 0, PARAM_INT);
+$casetitle    = optional_param('casetitle', 0, PARAM_RAW);
 
-$strings = get_strings(['ourcases_header', 'ourcases_title'], "local_dta");
+$strings = get_strings(['cases_header', 'cases_title'], "local_dta");
 
 $PAGE->set_url(new moodle_url('/local/dta/pages/cases/manage.php', ['id' => $experienceid]));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->ourcases_title);
+$PAGE->set_title($strings->cases_title);
 $PAGE->requires->js_call_amd(
     'local_dta/cases/manage/form',
     'init',
@@ -39,70 +61,52 @@ $PAGE->requires->js_call_amd(
 
 echo $OUTPUT->header();
 
-(new tiny_editor_handler)->get_config_editor(['maxfiles' =>1]);
+(new TinyEditorHandler)->get_config_editor(['maxfiles' => 1]);
 
+
+print_r("EXPERIENCIA: " . $experienceid);
 
 if ($experienceid) {
-    // IF EXPERIENCE EXISTS
-    if (!$experience = Experience::get_experience($experienceid)) {
-        throw new moodle_exception('invalidexperience', 'local_dta');
+    $template = 'local_dta/cases/manage/with-experience';
+    if (!$experience = Experiences::get_experience($experienceid)) {
+        throw new Exception('Invalid experience');
     }
-
-    if (!$ourcase = OurCases::get_case_by_experience($experienceid)) {
-        $ourcase = OurCases::add_with_experience($experienceid, $USER->id);
-    }
-    
-    $sections = array_values(OurCases::get_sections_text($ourcase->id));
-
-    if (!$section_header = OurCases::get_section_header($ourcase->id)) {
-        throw new moodle_exception('invalidcasessection', 'local_dta');
-    }
-
-    $templateContext = [
-        'experience' => $experience,
-        'sectionheader' => $section_header,
-        'sections' => $sections,
-        'ourcase' => $ourcase,
-    ];
-
-    echo $OUTPUT->render_from_template('local_dta/cases/manage/with-experience', $templateContext);
-} elseif ($case) {
-    // IF CASE EXISTS
-    if (!$ourcase = OurCases::get_case($case)) {
-        throw new moodle_exception('invalidcases', 'local_dta');
+    $case               = new stdClass();
+    $case->experienceid = $experienceid;
+    $case->title        = $experience->title;
+    $case->description  = ""; // SECTIONS TODO
+    $case->lang         = $experience->lang;
+    $case = Cases::add_case($case);
+} elseif ($caseid or $casetitle) {
+    $template = 'local_dta/cases/manage/without-experience';
+    if (!$case = Cases::get_case($caseid)) {
+        $case               = new stdClass();
+        $case->title        = $casetitle;
+        $case->description  = "";
+        $case->lang         = 'en'; // HARDCODED TODO: LANGUAGES
+        $case = Cases::add_case($case);
     };
-    if ($case_title) $section_header->title = $case_title;
-
-    $sections = array_values(OurCases::get_sections_text($ourcase->id));
-    $section_header = OurCases::get_section_header($ourcase->id);
-    $templateContext = [
-        'sectionheader' => $section_header,
-        'sections' => $sections,
-        'ourcase' => $ourcase,
-    ];
-
-
-    echo $OUTPUT->render_from_template('local_dta/cases/manage/without-experience', $templateContext);
 } else {
-    // IF NO EXPERIENCE OR CASE
-    $ourcase = OurCases::add_without_experience(date("Y-m-d H:i:s"), $USER->id);
-
-    if (!$section_header = OurCases::get_section_header($ourcase->id)) {
-        throw new moodle_exception('invalidcasessection', 'local_dta');
-    }
-    if ($case_title) $section_header->title = $case_title;
-
-    $sections = array_values(OurCases::get_sections_text($ourcase->id));
-    $section_header->title = format_text($section_header->title, FORMAT_HTML, ['filter' => true]);
-    $templateContext = [
-        'sectionheader' => $section_header,
-        'sections' => $sections,
-        'ourcase' => $ourcase,
-    ];
-
-    echo $OUTPUT->render_from_template('local_dta/cases/manage/without-experience', $templateContext);
+    throw new Exception('Invalid parameters');
 }
 
+$sections = Sections::get_sections([
+    'component' => [Components::get_component_by_name('case')->id],
+    'componentinstance' => [$case->id]
+]);
 
+$sectionheader = [
+    'title' => $case->title,
+    'description' => '' // SECTIONS TODO
+];
+
+$template_context = [
+    'experience' => $experience ?? null,
+    'sectionheader' => $sectionheader,
+    'sections' => $sections,
+    'case' => $case,
+];
+
+echo $OUTPUT->render_from_template($template, $template_context);
 
 echo $OUTPUT->footer();

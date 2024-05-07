@@ -1,7 +1,21 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Experience class
+ * WebService to toggle like/dislike reactions
  *
  * @package   local_dta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
@@ -10,6 +24,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * This class is used to toggle like/dislike reactions
+ *
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class external_reactions_toggle_like_dislike extends external_api
 {
 
@@ -69,7 +89,7 @@ class external_reactions_toggle_like_dislike extends external_api
 
         switch ($type) {
             case 0:
-                return $DB->get_record('digital_ourcases', array('id' => $instanceid));
+                return $DB->get_record('digital_cases', array('id' => $instanceid));
             case 1:
                 return $DB->get_record('digital_experiences', array('id' => $instanceid));
             default:
@@ -81,9 +101,9 @@ class external_reactions_toggle_like_dislike extends external_api
     {
         switch ($type) {
             case 0:
-                return 'digital_case_likes';
+                return 'digital_cases_likes';
             case 1:
-                return 'digital_experience_likes';
+                return 'digital_experiences_likes';
             default:
                 return null;
         }
@@ -105,7 +125,7 @@ class external_reactions_toggle_like_dislike extends external_api
     {
         switch ($type) {
             case 0:
-                return 'digital_ourcases';
+                return 'digital_cases';
             case 1:
                 return 'digital_experiences';
             default:

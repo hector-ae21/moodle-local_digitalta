@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Experience class
+ * Privacy provider
  *
  * @package   local_dta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
@@ -26,6 +26,12 @@ namespace local_dta\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * This class is used to define the privacy implementation of the plugin
+ *
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class provider implements \core_privacy\local\metadata\null_provider {
     
     /**

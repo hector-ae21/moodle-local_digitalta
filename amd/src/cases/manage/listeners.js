@@ -1,15 +1,18 @@
 import $ from "jquery";
 import {
-addTextSection,
-changeSectionToEdit,
-deleteSection,
-removeSection,
-upsertSection,
-showDeleteSectionModal,
-showSaveCase,
-changeStatusToComplete} from "./form";
-import { createTinyMCE, removeTinyMCEFromArea } from 'local_dta/tiny/manage';
-
+    addTextSection,
+    changeSectionToEdit,
+    deleteSection,
+    removeSection,
+    upsertSection,
+    showDeleteSectionModal,
+    showSaveCase,
+    changeStatusToComplete
+} from "./form";
+import {
+    createTinyMCE,
+    removeTinyMCEFromArea
+} from 'local_dta/tiny/manage';
 
 /**
  * Set event listeners for the page.
@@ -38,7 +41,7 @@ export default function setEventListeners() {
         await changeSectionToEdit(true, id);
         createTinyMCE(`content_${id}`);
     });
-    // Showt section delete modal
+    // Show section delete modal
     $(document).on('click', '.section-delete-button', function() {
         showDeleteSectionModal($(this).data('id'));
     });

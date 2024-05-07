@@ -1,8 +1,8 @@
 import Ajax from 'core/ajax';
+
 /**
- * Toggle the status of an experience.
+ * Get all resources.
  *
- * Valid args are:
  * @method getAllResources
  * @return {Promise} Resolve with warnings.
  */
@@ -15,12 +15,15 @@ export const getAllResources = () => {
 };
 
 /**
- * Set the favourite state on a list of courses.
+ * Upsert a resource.
  *
  * Valid args are:
  * - id: The resource id
  * - name: The resource name
  * - description: The resource description
+ * - themes: The resource themes
+ * - tags: The resource tags
+ * - format: The resource format
  * - type: The resource type
  * - path: The resource path
  * - lang: The resource language

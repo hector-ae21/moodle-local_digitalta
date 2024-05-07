@@ -18,7 +18,7 @@
  * Context class
  *
  * @package   local_dta
- * @copyright 2024 Salvador Banderas Rovira
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,20 +26,20 @@ namespace local_dta;
 
 require_once($CFG->dirroot . '/local/dta/locallib.php');
 
-use stdClass;
 use Exception;
+use stdClass;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * This class is used to manage the contexts of the plugin
  *
- * @copyright 2024 Salvador Banderas Rovira
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class Context
 {
-    /** @var string The name of the database table storing the themes. */
+    /** @var string The table name for the contexts. */
     private static $table = 'digital_context';
 
     /**
@@ -51,11 +51,12 @@ class Context
      */
     public static function is_valid(string $type, string $name)
     {
+        global $DB;
         if (!in_array($type, ['component', 'modifier'])) {
             throw new Exception('Invalid type');
         }
-        $list = ($type == 'component') ? LOCAL_DTA_COMPONENTS : LOCAL_DTA_MODIFIERS;
-        return $list[$name] ?? false;
+        $table = ($type == 'component') ? 'digital_components' : 'digital_modifiers';
+        return $DB->get_field($table, 'id', ['name' => $name]);
     }
 
     /**
@@ -164,7 +165,7 @@ class Context
      * @return int       The ID of the added context.
      * @throws Exception If the component or modifier is invalid.
      */
-    public static function upsert_context(string $component, int $componentinstance, string $modifier, int $modifierinstance)
+    public static function insert_context(string $component, int $componentinstance, string $modifier, int $modifierinstance)
     {
         global $DB;
         if ($context = self::get_context_by_full_data($component, $componentinstance, $modifier, $modifierinstance)) {
@@ -184,12 +185,12 @@ class Context
     }
 
     /**
-     * Remove a context
+     * Delete a context
      *
      * @param  int  $id The ID of the context.
      * @return bool
      */
-    public static function remove_context(int $id)
+    public static function delete_context(int $id)
     {
         global $DB;
         return $DB->delete_records(self::$table, ['id' => $id]);

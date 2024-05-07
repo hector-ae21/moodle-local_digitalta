@@ -1,24 +1,22 @@
 import Ajax from 'core/ajax';
 
 /**
- * Set the favourite state on a list of courses.
+ * Upsert an experience.
  *
  * Valid args are:
  * - experienceid: The experience id (optional)
  * - userid: The user id
  * - title: The title of the experience
- * - description: The description of the experience
- * - context: The context of the experience
  * - lang : The language of the experience
  * - visible: The visibility of the experience
  * - tags: The tags of the experience
- * @method sectionTextUpsert
+ * @method experienceUpsert
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.
  */
 export const experienceUpsert = args => {
     const request = {
-        methodname: 'local_dta_myexperience_upsert',
+        methodname: 'local_dta_experiences_upsert',
         args: args
     };
     return Ajax.call([request])[0];
@@ -35,7 +33,7 @@ export const experienceUpsert = args => {
  */
 export const toggleStatus = (experienceid) => {
     const request = {
-        methodname: 'local_dta_myexperience_toggle_status',
+        methodname: 'local_dta_experiences_toggle_status',
         args: {id: experienceid}
     };
     return Ajax.call([request])[0];

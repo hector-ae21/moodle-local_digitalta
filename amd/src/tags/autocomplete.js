@@ -1,7 +1,6 @@
 import Autocomplete from "theme_dta/form-autocomplete";
-import {createTags} from "local_dta/repositories/autocomplete_repository";
+import {createTags} from "local_dta/repositories/tags_repository";
 import Notification from "core/notification";
-
 
 /**
  * Autocomplete tags.

@@ -44,7 +44,6 @@ define(['core/ajax'], function(Ajax) {
                     },
                     fail: failure
                 }]);
-
             }
         }
     };

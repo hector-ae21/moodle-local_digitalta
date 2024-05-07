@@ -1,6 +1,7 @@
 import Ajax from 'core/ajax';
+
 /**
- * Toggle the status of an experience.
+ * Upsert a context.
  *
  * Valid args are:
  * - component: The component name.
@@ -13,7 +14,7 @@ import Ajax from 'core/ajax';
  */
 export const upsertContext = args => {
     const request = {
-        methodname: 'local_dta_context_upsert',
+        methodname: 'local_dta_context_insert',
         args
     };
     return Ajax.call([request])[0];
@@ -21,11 +22,11 @@ export const upsertContext = args => {
 
 
 /**
- * Toggle the status of an experience.
+ * Delete a context.
  *
  * Valid args are:
  * - id (int): The context id.
- * @method upsertContext
+ * @method deleteContext
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.
  */

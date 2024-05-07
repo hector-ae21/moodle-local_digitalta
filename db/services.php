@@ -61,69 +61,40 @@ $functions = [
         'ajax'        => true,
     ],
 
-    // REFLECTIONS
-    'local_dta_reflection_upsert_text_section' => [
-        'classname'   => 'external_reflection_upsert_text_section',
-        'methodname'  => 'reflection_upsert_text_section',
-        'classpath'   => 'local/dta/classes/webservices/reflection/external_reflection_upsert_text_section.php',
-        'description' => 'Upsert the text of a section of a reflection',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
     // EXPERIENCES
-    'local_dta_myexperience_upsert' => [
-        'classname'   => 'external_myexperience_upsert',
-        'methodname'  => 'myexperience_upsert',
-        'classpath'   => 'local/dta/classes/webservices/myexperience/external_myexperience_upsert.php',
+    'local_dta_experiences_upsert' => [
+        'classname'   => 'external_experiences_upsert',
+        'methodname'  => 'experiences_upsert',
+        'classpath'   => 'local/dta/classes/webservices/experiences/external_experiences_upsert.php',
         'description' => 'upsert an experience',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_myexperience_toggle_status' => [
-        'classname'   => 'external_myexperience_toggle_status',
-        'methodname'  => 'myexperience_toggle_status',
-        'classpath'   => 'local/dta/classes/webservices/myexperience/external_myexperience_toggle_status.php',
+    'local_dta_experiences_toggle_status' => [
+        'classname'   => 'external_experiences_toggle_status',
+        'methodname'  => 'experiences_toggle_status',
+        'classpath'   => 'local/dta/classes/webservices/experiences/external_experiences_toggle_status.php',
         'description' => 'Toggle the status of an experience',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
 
-    // OUR CASES
-    'local_dta_ourcases_section_text_upsert' => [
-        'classname'   => 'external_ourcases_section_text_upsert',
-        'methodname'  => 'ourcases_section_text_upsert',
-        'classpath'   => 'local/dta/classes/webservices/cases/external_ourcases_section_text_upsert.php',
-        'description' => 'Upsert the text of a section of the Our Cases page.',
+    // CASES
+    'local_dta_cases_edit' => [
+        'classname'   => 'external_cases_edit',
+        'methodname'  => 'cases_edit',
+        'classpath'   => 'local/dta/classes/webservices/cases/external_cases_edit.php',
+        'description' => 'Edit a Case',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_ourcases_section_text_delete' => [
-        'classname'   => 'external_ourcases_section_text_delete',
-        'methodname'  => 'ourcases_section_text_delete',
-        'classpath'   => 'local/dta/classes/webservices/cases/external_ourcases_section_text_delete.php',
-        'description' => 'Delete the text of a section of the Our Cases page.',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_ourcases_edit' => [
-        'classname'   => 'external_ourcases_edit',
-        'methodname'  => 'ourcases_edit',
-        'classpath'   => 'local/dta/classes/webservices/cases/external_ourcases_edit.php',
-        'description' => 'Edit an Our Case',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_ourcases_get' => [
-        'classname'   => 'external_ourcases_get',
-        'methodname'  => 'ourcases_get',
-        'classpath'   => 'local/dta/classes/webservices/cases/external_ourcases_get.php',
+    'local_dta_cases_get' => [
+        'classname'   => 'external_cases_get',
+        'methodname'  => 'cases_get',
+        'classpath'   => 'local/dta/classes/webservices/cases/external_cases_get.php',
         'description' => 'Get all cases',
         'type'        => 'read',
         'requirelogin' => true,
@@ -210,10 +181,10 @@ $functions = [
     ],
 
     // CONTEXT 
-    'local_dta_context_upsert' => [
-        'classname'   => 'external_context_upsert',
-        'methodname'  => 'context_upsert',
-        'classpath'   => 'local/dta/classes/webservices/context/external_context_upsert.php',
+    'local_dta_context_insert' => [
+        'classname'   => 'external_context_insert',
+        'methodname'  => 'context_insert',
+        'classpath'   => 'local/dta/classes/webservices/context/external_context_insert.php',
         'description' => 'upsert a context',
         'type'        => 'write',
         'requirelogin' => true,
@@ -228,5 +199,24 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    
+
+    // SECTIONS
+    'local_dta_sections_upsert' => [
+        'classname'    => 'external_sections_upsert',
+        'methodname'   => 'sections_upsert',
+        'classpath'    => 'local/dta/classes/webservices/sections/external_sections_upsert.php',
+        'description'  => 'upsert a section',
+        'type'         => 'write',
+        'requirelogin' => true,
+        'ajax'         => true,
+    ],
+    'local_dta_sections_delete' => [
+        'classname'    => 'external_sections_delete',
+        'methodname'   => 'sections_delete',
+        'classpath'    => 'local/dta/classes/webservices/sections/external_sections_delete.php',
+        'description'  => 'delete a section',
+        'type'         => 'write',
+        'requirelogin' => true,
+        'ajax'         => true,
+    ],
 ];

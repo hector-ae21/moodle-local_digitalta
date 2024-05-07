@@ -1,28 +1,42 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * community page
+ * Experience view page
  *
  * @package   local_dta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_dta\Experience;
-use local_dta\OurCases;
-use local_dta\Reflection;
-use local_dta\CONSTANTS;
-use local_dta\utils\filter_utils;
-use local_dta\Resource;
-
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/experience.php');
-require_once(__DIR__ . './../../classes/ourcases.php');
-require_once(__DIR__ . './../../classes/reflection.php');
-require_once(__DIR__ . './../../classes/resource.php');
-require_once(__DIR__ . './../../classes/utils/filter_utils.php');
+require_once($CFG->dirroot . '/local/dta/classes/cases.php');
+require_once($CFG->dirroot . '/local/dta/classes/components.php');
+require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
+require_once($CFG->dirroot . '/local/dta/classes/resources.php');
+require_once($CFG->dirroot . '/local/dta/classes/sections.php');
+require_once($CFG->dirroot . '/local/dta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/local/dta/locallib.php');
 
+use local_dta\Cases;
+use local_dta\Components;
+use local_dta\Experiences;
+use local_dta\Resources;
+use local_dta\Sections;
+use local_dta\utils\FilterUtils;
 
 require_login();
 
@@ -33,10 +47,10 @@ $id = required_param('id', PARAM_INT);
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
 $PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
-$PAGE->requires->js_call_amd('local_dta/myexperience/view/main', 'init');
+$PAGE->requires->js_call_amd('local_dta/experiences/view/main', 'init');
 
 // Get the experience
-if(!$experience = Experience::get_experience($id)) {
+if(!$experience = Experiences::get_experience($id)) {
     throw new moodle_exception('invalidexperience', 'local_dta');
 }
 
@@ -44,63 +58,38 @@ if(!$experience = Experience::get_experience($id)) {
 $user = get_complete_user_data("id", $experience->userid);
 $user_picture = new user_picture($user);
 $user_picture->size = 101;
-$experience_case = OurCases::get_cases_by_experience($id);
+$experience_case = Cases::get_cases_by_experience($id);
 $experience_case_info = [];
 foreach ($experience_case as $case) {
-    $case = OurCases::get_section_header($case->id);
-    $case->id = $case->ourcaseid;
+    $case->description = ""; // SECTIONS TODO
     array_push($experience_case_info, $case);
 }
 
-// Get reflection if exist
-$reflection = Reflection::check_exist_reflection_experience($id);
-$formattedReflectionSections = array();
-
-if ($reflection !== null && $reflection !== false) {
-    $reflection->sections = Reflection::get_sections_by_groups($reflection->id, "ALL");
-
-    foreach ($reflection->sections as $key => $section) {
-
-        switch ($key) {
-            case 'WHAT_INTRO':
-                $key = get_string("experience_reflection_section_what_question_1_title", "local_dta");
-                break;
-            case 'WHAT_CONTEXT':
-                $key = get_string("experience_reflection_section_what_question_2_title", "local_dta");
-                break;
-            case 'SO_WHAT_HOW':
-                $key = get_string("experience_reflection_section_sowhat_question_1_title", "local_dta");
-                break;
-            case 'NOW_WHAT_ACTION':
-                $key = get_string("experience_reflection_section_nowwhat_question_1_title", "local_dta");
-                break;
-            case 'NOW_WHAT_REFLECTION':
-                $key = get_string("experience_reflection_section_nowwhat_question_2_title", "local_dta");
-                break;
-            case 'EXTRA':
-                $key = get_string("experience_reflection_section_extra_question_1_title", "local_dta");
-                break;
-        }
-
-        array_push($formattedReflectionSections, [
-            'header' => $key,
-            'content' => $section[0]->content ?? '',
-        ]);
-    }
-
+// Get sections
+$formated_sections = array();
+$sections = Sections::get_sections([
+    'component' => [Components::get_component_by_name('experience')->name],
+    'contextid' => [$experience->id]
+]);
+foreach ($sections as $section) {
+    $sectiongroupname = Sections::get_group($section->groupid)->name;
+    array_push($formated_sections, [
+        'header' => local_dta_get_element_translation('section_group', $sectiongroupname),
+        'content' => $section->content ?? ''
+    ]);
 }
 
 echo $OUTPUT->header();
 
 $template_context = [
-    "instance" => CONSTANTS::REACTIONS_INSTANCES['EXPERIENCE'],
+    "instance" => Components::get_component_by_name('experience')->id,
     'cases' => [
         'data' => $experience_case_info,
         'viewurl' => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id='
     ],
     'experience' => [
         'data' => $experience,
-        'pictureurl' => Experience::get_picture_url($experience),
+        'pictureurl' => Experiences::get_picture_url($experience),
         'deleteurl' => $CFG->wwwroot . "/local/dta/pages/experiences/delete.php?id=",
         'editurl' => $CFG->wwwroot . "/local/dta/pages/experiences/manage.php?id=",
     ],
@@ -118,17 +107,15 @@ $template_context = [
     'createcaseurl' => $CFG->wwwroot . "/local/dta/pages/cases/manage.php?id=",
     'createreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection.php?id=',
     'viewreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection/view.php?id=',
-    'reflection' => $reflection,
-    'reflectionsections' => $formattedReflectionSections,
-    'related' => [
-        'resources' => Resource::get_resources_by_context_component('experience', $id),
-        'cases' => OurCases::get_cases_by_context_component('experience', $id)
-    ],
+    'reflection' => [], // SECTIONS TODO
+    'reflectionsections' => $formated_sections,
+    //'related' => [
+    //    'resources' => Resources::get_resources_by_context_component('experience', $id),
+    //    'cases' => Cases::get_cases_by_context_component('experience', $id)
+    //],
 ];
 
-
-$template_context = filter_utils::apply_filter_to_template_object($template_context);
-
+$template_context = FilterUtils::apply_filter_to_template_object($template_context);
 
 echo $OUTPUT->render_from_template('local_dta/experiences/view/view', $template_context);
 

@@ -1,39 +1,50 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * community page
+ * Teacher Academy dashboard page
  *
  * @package   local_dta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/experience.php');
-require_once(__DIR__ . './../../classes/ourcases.php');
-require_once(__DIR__ . './../../classes/reactions.php');
-require_once(__DIR__ . './../../classes/context.php');
-require_once(__DIR__ . './../../classes/themes.php');
-require_once(__DIR__ . './../../classes/utils/string_utils.php');
-require_once(__DIR__ . './../../classes/utils/filter_utils.php');
+require_once($CFG->dirroot . '/local/dta/classes/cases.php');
+require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
+require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
+require_once($CFG->dirroot . '/local/dta/classes/themes.php');
+require_once($CFG->dirroot . '/local/dta/classes/utils/filterutils.php');
+require_once($CFG->dirroot . '/local/dta/classes/utils/stringutils.php');
 
 require_login();
 
-use local_dta\Experience;
-use local_dta\OurCases;
-use local_dta\Reaction;
-use local_dta\Context;
+use local_dta\Cases;
+use local_dta\Experiences;
+use local_dta\Reactions;
 use local_dta\Themes;
+use local_dta\utils\FilterUtils;
 use local_dta\utils\StringUtils;
-use local_dta\utils\filter_utils;
-
-global $CFG, $PAGE, $OUTPUT;
 
 $strings = get_strings(['teacheracademy_header', 'teacheracademy_title'], "local_dta");
 
 $PAGE->set_url(new moodle_url('/local/dta/pages/teacheracademy/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->teacheracademy_title);
-$PAGE->requires->js_call_amd('local_dta/myexperience/reactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/experiences/reactions', 'init');
 
 echo $OUTPUT->header();
 
@@ -48,13 +59,14 @@ $themes = array_map(function($key, $theme) {
 }, array_keys($themes), $themes);
 
 // Get experiences
-$featuredExperiences = Experience::get_extra_fields(Reaction::get_most_liked_experience(5));
+$featuredExperiences = Reactions::get_most_liked_experience(5);
 $featuredExperiences = array_map(function($experience) {
+    $experience = Experiences::get_extra_fields($experience);
     return $experience->id;
 }, $featuredExperiences);
-$experiences = Experience::get_latest_experiences(9, false);
+$experiences = Experiences::get_latest_experiences(9, false);
 $experiences = array_map(function($experience) use ($featuredExperiences) {
-    $experience->description = StringUtils::truncateHtmlText($experience->description);
+    $experience->description = ""; // SECTIONS TODO
     $experience->featured = (in_array($experience->id, $featuredExperiences)) ? true : false;
     return $experience;
 }, $experiences);
@@ -64,13 +76,9 @@ array_multisort(
     $experiences);
 
 // Get cases
-$cases = array_values(OurCases::get_active_cases());
+$cases = array_values(Cases::get_all_cases(true, 1));
 $cases = array_map(function($case) {
-    $caseText = OurCases::get_sections_text($case->id, true);
-    $case->casetext = array_values($caseText)[0];
-    $case->casetext->description = str_replace("<br>",
-        " ",
-        StringUtils::truncateHtmlText($case->casetext->description, 300));
+    $case->description = ""; // SECTIONS TODO
     return $case;
 }, $cases);
 
@@ -103,7 +111,7 @@ $templateContext = [
     "ismentorcardvertical" => false,
 ];
 
-$templateContext = filter_utils::apply_filter_to_template_object($templateContext);
+$templateContext = FilterUtils::apply_filter_to_template_object($templateContext);
 
 echo $OUTPUT->render_from_template('local_dta/teacheracademy/dashboard', $templateContext);
 

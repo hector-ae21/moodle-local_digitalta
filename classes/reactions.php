@@ -1,23 +1,44 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Reaction class
+ * Reactions class
  *
  * @package   local_dta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_dta;
 
-class Reaction
+/**
+ * This class is used to manage reactions
+ *
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class Reactions
 {
-    private static $table_experience_likes = 'digital_experience_likes';
-    private static $table_experience_comments = 'digital_experience_comments';
-    private static $table_experience_reports = 'digital_experience_report';
+    private static $table_experience_likes = 'digital_experiences_likes';
+    private static $table_experience_comments = 'digital_experiences_comments';
+    private static $table_experience_reports = 'digital_experiences_reports';
     
-    private static $table_cases_likes = 'digital_case_likes';
-    private static $table_cases_comments = 'digital_case_comments';
-    private static $table_cases_reports = 'digital_case_report';
+    private static $table_cases_likes = 'digital_cases_likes';
+    private static $table_cases_comments = 'digital_cases_comments';
+    private static $table_cases_reports = 'digital_cases_reports';
 
     public function __construct()
     {
@@ -104,18 +125,17 @@ class Reaction
      * @return bool Returns true if the user has reacted to the experience
      */
     public static function user_reacted($reactionsData)
-{
-    global $USER;
+    {
+        global $USER;
 
-    foreach ($reactionsData as $reaction) {
-        if ($reaction->userid == $USER->id) {
-            return true;
+        foreach ($reactionsData as $reaction) {
+            if ($reaction->userid == $USER->id) {
+                return true;
+            }
         }
+
+        return false;
     }
-
-    return false;
-}
-
 
     /**
      * Get all 'like' reactions for a specific experience
@@ -226,9 +246,9 @@ class Reaction
     public static function get_most_liked_experience($limit = 5)
     {
         global $DB;
-        $sql = "SELECT e.id, e.userid, e.title, e.description, e.timecreated, e.lang, e.visible, e.status, COUNT(l.id) as likes
+        $sql = "SELECT e.id, e.userid, e.title, e.lang, e.visible, e.status, e.timecreated, COUNT(l.id) as likes
                 FROM {digital_experiences} e
-                LEFT JOIN {digital_experience_likes} l ON e.id = l.experienceid
+                LEFT JOIN {digital_experiences_likes} l ON e.id = l.experienceid
                 WHERE l.reactiontype = 1 AND e.visible = 1
                 GROUP BY e.id
                 ORDER BY likes DESC

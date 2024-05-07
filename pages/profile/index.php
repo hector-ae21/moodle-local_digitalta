@@ -44,7 +44,7 @@ $strings = get_strings(['profile_header' , 'profile_title'], "local_dta");
 $PAGE->set_url(new moodle_url('/local/dta/pages/profile/index.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance()) ;
 $PAGE->set_title($strings->profile_title);
-$PAGE->requires->js_call_amd('local_dta/myexperience/reactions', 'init');
+$PAGE->requires->js_call_amd('local_dta/experiences/reactions', 'init');
 
 echo $OUTPUT->header();
 

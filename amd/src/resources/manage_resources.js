@@ -1,6 +1,6 @@
 import ModalFactory from "core/modal_factory";
 import addResourceModal from "local_dta/resources/add_resource_modal";
-import { displaylinkResourcesModal } from "local_dta/myexperience/view/modals";
+import { displaylinkResourcesModal } from "local_dta/experiences/view/modals";
 import ModalEvents from "core/modal_events";
 import { getList } from "core/normalise";
 import { resourcesUpsert } from "local_dta/repositories/resources_repository";

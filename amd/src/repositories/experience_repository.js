@@ -16,7 +16,7 @@ import Ajax from 'core/ajax';
  */
 export const experienceUpsert = args => {
     const request = {
-        methodname: 'local_dta_myexperience_upsert',
+        methodname: 'local_dta_experiences_upsert',
         args: args
     };
     return Ajax.call([request])[0];
@@ -33,7 +33,7 @@ export const experienceUpsert = args => {
  */
 export const toggleStatus = (experienceid) => {
     const request = {
-        methodname: 'local_dta_myexperience_toggle_status',
+        methodname: 'local_dta_experiences_toggle_status',
         args: {id: experienceid}
     };
     return Ajax.call([request])[0];

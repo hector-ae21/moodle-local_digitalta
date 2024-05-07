@@ -4,7 +4,7 @@ import Ajax from 'core/ajax';
  * Set the favourite state on a list of courses.
  *
  * Valid args are:
- * - ourcaseid: The id of ourcase. (required)
+ * - caseid: The id of the case. (required)
  * - sectionid: The id of the section.
  * - title: The title of the section.
  * - text: The content of the section.
@@ -15,7 +15,7 @@ import Ajax from 'core/ajax';
  */
 export const sectionTextUpsert = args => {
     const request = {
-        methodname: 'local_dta_ourcases_section_text_upsert',
+        methodname: 'local_dta_cases_section_text_upsert',
         args: args
     };
     return Ajax.call([request])[0];
@@ -26,7 +26,7 @@ export const sectionTextUpsert = args => {
  * Set the favourite state on a list of courses.
  *
  * Valid args are:
- * - ourcaseid: The id of ourcase. (required)
+ * - caseid: The id of the case. (required)
  * - sectionid: The id of the section.
  * @method sectionTextDelete
  * @param {Object} args Arguments send to the webservice.
@@ -34,7 +34,7 @@ export const sectionTextUpsert = args => {
  */
 export const sectionTextDelete = args => {
     const request = {
-        methodname: 'local_dta_ourcases_section_text_delete',
+        methodname: 'local_dta_cases_section_text_delete',
         args: args
     };
     return Ajax.call([request])[0];
@@ -42,21 +42,21 @@ export const sectionTextDelete = args => {
 
 
 /**
- * Edit a ourcase.
+ * Edit a case.
  *
  * Valid args are:
- * - ourcaseid: The id of ourcase. (required)
+ * - caseid: The id of the case. (required)
  * - experienceid: The id of the experience.
  * - userid: The id of the user.
  * - date: The date of the case.
  * - status: The status of the case
- * @method ourcaseEdit
+ * @method caseEdit
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.
  */
-export const ourcaseEdit = args => {
+export const caseEdit = args => {
     const request = {
-        methodname: 'local_dta_ourcases_edit',
+        methodname: 'local_dta_cases_edit',
         args: args
     };
     return Ajax.call([request])[0];
@@ -68,7 +68,7 @@ export const ourcaseEdit = args => {
  */
 export const getCases = () => {
     const request = {
-        methodname: 'local_dta_ourcases_get',
+        methodname: 'local_dta_cases_get',
         args: {}
     };
     return Ajax.call([request])[0];

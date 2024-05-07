@@ -37,19 +37,19 @@ $string['experiences_post_button'] = 'Share';
 $string['experiences_post_placeholder'] = 'Share your teaching experience with the community';
 
 // Profile
-$string['profile_header'] = 'My Experience';
-$string['profile_title'] = 'My Experience';
+$string['profile_header'] = 'Profile';
+$string['profile_title'] = 'Profile';
 
-// My Experience 
-$string['myexperience_add_new_experience'] = 'Add new experience';
-$string['myexperience_add_comment'] = 'Add a new comment...';
-$string['myexperience_picture_alt'] = 'Experience picture';
+// Experience manage
+$string['experience_add_new_experience'] = 'Add new experience';
+$string['experience_add_comment'] = 'Add a new comment...';
+$string['experience_picture_alt'] = 'Experience picture';
 $string['experience_not_found'] = 'Experience not found';
-$string['myexperience_featured'] = 'Featured';
+$string['experience_featured'] = 'Featured';
 
-// Experience View
-$string['experience_view_ourcases_title'] = 'Our cases';
-$string['experience_view_ourcases_desc_nocases'] = 'There are not cases available.';
+// Experience view
+$string['experience_view_cases_title'] = 'Cases';
+$string['experience_view_cases_desc_nocases'] = 'There are not cases available.';
 $string['experience_view_mytutoring_title'] = 'My Tutoring';
 $string['experience_view_mytutoring_request_title'] = 'Tutoring requests';
 $string['experience_view_mytutoring_desc_noreq'] = 'Waiting request...';
@@ -60,11 +60,11 @@ $string['experience_view_resrepo_title'] = 'Resources';
 $string['experience_view_resrepo_desc_nores'] = 'There are not resources available.';
 $string['experience_view_resrepo_action_tooltip'] = 'Import resources';
 $string['experience_view_block_modal_title'] = 'Block your experience';
-$string['experience_view_block_modal_confirm'] = 'Close my experience';
+$string['experience_view_block_modal_confirm'] = 'Close experience';
 $string['experience_view_block_modal_text'] = 'Are you sure you want to close this experience?';
 
 // Experience View Tooltips
-$string['experience_view_tooltip_ourcases'] = 'Link a case to this experience';
+$string['experience_view_tooltip_cases'] = 'Link a case to this experience';
 $string['experience_view_tooltip_mytutoring'] = 'Manage your tutoring sessions';
 $string['experience_view_tooltip_reflectionmanager'] = 'Manage your reflections for this experience';
 $string['experience_view_tooltip_resrepo'] = 'Link resources to this experience';
@@ -95,15 +95,15 @@ $string['experience_reflection_import_cases_searchbar_placeholder'] = 'Search a 
 $string['experience_reflection_import_cases_button'] = 'Import';
 $string['experience_reflection_import_cases_nocases'] = 'No cases found.';
 
-// Ourcases main
-$string['ourcases_header_title'] = 'Case title';
-$string['ourcases_header_description'] = 'Case description';
-$string['ourcases_header_action_button'] = 'Edit case';
-$string['ourcases_section_text_delete_modal_title'] = 'Delete selected section';
-$string['ourcases_section_text_delete_modal_body'] = 'Are you sure you want to delete this section?';
-$string['ourcases_button_save'] = 'Save case';
-$string['ourcases_modal_save_title'] = 'Save case';
-$string['ourcases_modal_save_body'] = 'Are you ready to save this case?';
+// Cases main
+$string['cases_header_title'] = 'Case title';
+$string['cases_header_description'] = 'Case description';
+$string['cases_header_action_button'] = 'Edit case';
+$string['cases_section_text_delete_modal_title'] = 'Delete selected section';
+$string['cases_section_text_delete_modal_body'] = 'Are you sure you want to delete this section?';
+$string['cases_button_save'] = 'Save case';
+$string['cases_modal_save_title'] = 'Save case';
+$string['cases_modal_save_body'] = 'Are you ready to save this case?';
 
 // Experience delete form
 $string['form_case_delete_header'] = 'Delete case';
@@ -111,12 +111,12 @@ $string['form_case_delete_confirm'] = 'Are you sure you want to delete this case
 $string['form_case_delete_yes'] = 'Case deleted successfully'; 
 $string['form_case_delete_no'] = 'No';
 
-// Ourcases repository
-$string['ourcases_repository_placeholder'] = 'Create a new case';
-$string['ourcases_repository_title'] = 'Study Cases';
-$string['ourcases_header'] = 'ourcases'; 
-$string['ourcases_title'] = 'Cases';
-$string['ourcases_add_new_case'] = 'Add new case';
+// Cases repository
+$string['cases_repository_placeholder'] = 'Create a new case';
+$string['cases_repository_title'] = 'Study Cases';
+$string['cases_header'] = 'Cases'; 
+$string['cases_title'] = 'Cases';
+$string['cases_add_new_case'] = 'Add new case';
 
 // Teacher Academy
 $string['teacheracademy_header'] = 'Teacher Academy';

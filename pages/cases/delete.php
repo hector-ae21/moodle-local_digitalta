@@ -32,7 +32,6 @@ require_login();
 
 $strings = get_strings(['form_case_delete_header', 'form_case_delete_confirm', 'form_case_delete_yes', 'form_case_delete_no'], "local_dta");
 
-// Get the ourcases id
 $id = required_param('id', PARAM_INT);
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
 
@@ -40,17 +39,17 @@ $PAGE->set_url(new moodle_url('/local/dta/pages/cases/delete.php', ['id' => $id]
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->form_case_delete_header);
 
-if (!$ourcase = Cases::get_case($id)) {
+if (!$case = Cases::get_case($id)) {
     print_error('invalidcases', 'local_dta');
 }
 
 // Check permissions
-if (local_dta_check_permissions_case($ourcase, $USER) == false) {
+if (local_dta_check_permissions_case($case, $USER) == false) {
     print_error('errorpermissions', 'local_dta');
 }
 
 // Check if the delete hash is correct
-if ($delete === md5($ourcase->timecreated)) {
+if ($delete === md5($case->timecreated)) {
     if (!Cases::delete_case($id)) {
         print_error('errordeletecase', 'local_dta');
     }
@@ -58,8 +57,8 @@ if ($delete === md5($ourcase->timecreated)) {
     exit;
 }
 
-$continueurl = new moodle_url('/local/dta/pages/cases/delete.php', array('id' => $ourcase->id, 'delete' => md5($ourcase->timecreated)));
-$backurl = new moodle_url('/local/dta/pages/cases/view.php', ['id' => $ourcase->id]);
+$continueurl = new moodle_url('/local/dta/pages/cases/delete.php', array('id' => $case->id, 'delete' => md5($case->timecreated)));
+$backurl = new moodle_url('/local/dta/pages/cases/view.php', ['id' => $case->id]);
 $continuebutton = new single_button(
     $continueurl,
     get_string('delete'),

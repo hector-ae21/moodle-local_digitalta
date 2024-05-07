@@ -47,7 +47,7 @@ $id = required_param('id', PARAM_INT);
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
 $PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
-$PAGE->requires->js_call_amd('local_dta/myexperience/view/main', 'init');
+$PAGE->requires->js_call_amd('local_dta/experiences/view/main', 'init');
 
 // Get the experience
 if(!$experience = Experiences::get_experience($id)) {

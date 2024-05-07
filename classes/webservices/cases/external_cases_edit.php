@@ -34,14 +34,14 @@ use local_dta\Cases;
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class external_ourcases_edit extends external_api
+class external_cases_edit extends external_api
 {
 
-    public static function ourcases_edit_parameters()
+    public static function cases_edit_parameters()
     {
         return new external_function_parameters(
             array(
-                'ourcaseid' => new external_value(PARAM_INT, 'Our Case ID'),
+                'caseid' => new external_value(PARAM_INT, 'Case ID'),
                 'status' => new external_value(PARAM_INT, 'Status', VALUE_DEFAULT, 0),
                 'tags' => new external_multiple_structure(
                     new external_value(PARAM_INT, 'ID del elemento')  , 'Tags' , VALUE_DEFAULT, []
@@ -50,31 +50,31 @@ class external_ourcases_edit extends external_api
         );
     }
 
-    public static function ourcases_edit($ourcaseid, $status = 0, $tags = [])
+    public static function cases_edit($caseid, $status = 0, $tags = [])
     {
         
-        if (!$ourcase = Cases::get_case($ourcaseid, false)) {
-            return array('result' => false, 'error' => 'Our case not found');
+        if (!$case = Cases::get_case($caseid, false)) {
+            return array('result' => false, 'error' => 'Case not found');
         }
 
-        if (empty($ourcaseid) || empty($status) ) {
+        if (empty($caseid) || empty($status) ) {
             return array('result' => false, 'error' => 'Empty Values');
         }
 
         $newcase = new stdClass();
-        $newcase->id = $ourcaseid;
+        $newcase->id = $caseid;
         $newcase->status = $status;
         $newcase->tags = $tags;
 
 
         if (!Cases::update_case($newcase)) {
-            return array('result' => false, 'error' => 'Failed to update our case');
+            return array('result' => false, 'error' => 'Failed to update case');
         }
 
         return array('result' => true);
     }
 
-    public static function ourcases_edit_returns()
+    public static function cases_edit_returns()
     {
         return new external_single_structure(
             array(

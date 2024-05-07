@@ -34,10 +34,10 @@ use local_dta\Experiences;
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class external_myexperience_toggle_status extends external_api
+class external_experiences_toggle_status extends external_api
 {
 
-    public static function myexperience_toggle_status_parameters()
+    public static function experiences_toggle_status_parameters()
     {
         return new external_function_parameters(
             array(
@@ -46,7 +46,7 @@ class external_myexperience_toggle_status extends external_api
         );
     }
 
-    public static function myexperience_toggle_status($id)
+    public static function experiences_toggle_status($id)
     {
         return [
             'result' => true,
@@ -54,7 +54,7 @@ class external_myexperience_toggle_status extends external_api
         ];
     }
 
-    public static function myexperience_toggle_status_returns()
+    public static function experiences_toggle_status_returns()
     {
         return new external_single_structure(
             [

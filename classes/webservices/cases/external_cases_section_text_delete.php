@@ -30,25 +30,25 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class external_ourcases_section_text_delete extends external_api
+class external_cases_section_text_delete extends external_api
 {
 
-    public static function ourcases_section_text_delete_parameters()
+    public static function cases_section_text_delete_parameters()
     {
         return new external_function_parameters(
             array(
-                'ourcaseid' => new external_value(PARAM_INT, 'Our Case ID'),
+                'caseid' => new external_value(PARAM_INT, 'Case ID'),
                 'sectionid' => new external_value(PARAM_INT, 'Section ID')
             )
         );
     }
 
-    public static function ourcases_section_text_delete($ourcaseid, $sectionid)
+    public static function cases_section_text_delete($caseid, $sectionid)
     {
         global $DB;
 
-        if (!$DB->get_record('digital_cases', array('id' => $ourcaseid))) {
-            return array('result' => false, 'error' => 'Our case not found');
+        if (!$DB->get_record('digital_cases', array('id' => $caseid))) {
+            return array('result' => false, 'error' => 'Case not found');
         }
 
         if (!$DB->get_record('digital_oc_sec_text', array('id' => $sectionid))) {
@@ -61,7 +61,7 @@ class external_ourcases_section_text_delete extends external_api
 
     }
 
-    public static function ourcases_section_text_delete_returns()
+    public static function cases_section_text_delete_returns()
     {
         return new external_single_structure(
             [

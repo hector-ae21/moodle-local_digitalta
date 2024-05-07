@@ -4,8 +4,8 @@ import Notification from 'core/notification';
 import {
     sectionTextUpsert,
     sectionTextDelete,
-    ourcaseEdit
-} from 'local_dta/repositories/ourcases_repository';
+    caseEdit
+} from 'local_dta/repositories/cases_repository';
 import ModalFactory from 'core/modal_factory';
 import {get_string} from 'core/str';
 import setEventListeners from './listeners';
@@ -80,12 +80,12 @@ function changeSectionToNewId(id, toId) {
  */
 export function upsertSection(id) {
     const sectionid = $(`#not_exist_${id}`).val() ? null : $(`#sectionid_${id}`).val();
-    const ourcaseid = $('#ourcases-id').val();
+    const caseid = $('#cases-id').val();
     const title = null;
     const text = $(`#content_${id}`).val();
     const sequence = -1;
 
-    return sectionTextUpsert({ourcaseid, sectionid, title, text, sequence})
+    return sectionTextUpsert({caseid, sectionid, title, text, sequence})
         .then((data) => {
             if (data && data.result) {
                 changeSectionToNewId(id, data.sectionid);
@@ -106,12 +106,12 @@ export function upsertSection(id) {
 function upsertHeaderSection() {
     return new Promise((resolve, reject) => {
         const sectionid = $('#section-header-id').val();
-        const ourcaseid = $('#ourcases-id').val();
+        const caseid = $('#cases-id').val();
         const title = $('#section-header-title').val();
         const text = getTinyMCEContent('section-header-description');
         const sequence = 0;
 
-        sectionTextUpsert({ourcaseid, sectionid, title, text, sequence})
+        sectionTextUpsert({caseid, sectionid, title, text, sequence})
             .then((data) => {
                 if (data && data.result) {
                     return resolve(true);
@@ -149,7 +149,7 @@ export function removeSection(sectionid) {
  */
 export async function showDeleteSectionModal(sectionid) {
     sectionTextModal = await ModalFactory.create({
-        title: get_string("ourcases_section_text_delete_modal_title", "local_dta"),
+        title: get_string("cases_section_text_delete_modal_title", "local_dta"),
         body: Templates.render('local_dta/cases/manage/section-text-modal', {modalDeleteId: sectionid}),
     });
     sectionTextModal.show().then(() => {
@@ -165,7 +165,7 @@ export async function showDeleteSectionModal(sectionid) {
  */
 export async function showSaveCase() {
     const saveModal = await ModalFactory.create({
-        title: get_string("ourcases_modal_save_title", "local_dta"),
+        title: get_string("cases_modal_save_title", "local_dta"),
         body: Templates.render('local_dta/cases/manage/save-modal', {})
     });
     await saveModal.show();
@@ -178,9 +178,9 @@ export async function showSaveCase() {
  */
 export function deleteSection() {
     const sectionid = $("#modal_delete_id").val();
-    const ourcaseid = $('#ourcases-id').val();
+    const caseid = $('#cases-id').val();
 
-    sectionTextDelete({ourcaseid, sectionid}).then((data) => {
+    sectionTextDelete({caseid, sectionid}).then((data) => {
         if (data.result) {
             sectionTextModal.hide();
             sectionTextModal = null;
@@ -195,13 +195,13 @@ export function deleteSection() {
  * @return {void}
  */
 export async function changeStatusToComplete() {
-    const ourcaseid = $('#ourcases-id').val();
+    const caseid = $('#cases-id').val();
     const status = 1;
     const tags = $("#autocomplete_tags").val();
     await upsertHeaderSection();
-    ourcaseEdit({ourcaseid, status, tags}).then((data) => {
+    caseEdit({caseid, status, tags}).then((data) => {
         if (data.result) {
-            window.location.href = urlView + ourcaseid;
+            window.location.href = urlView + caseid;
         }
         return;
     }).fail(Notification.exception);

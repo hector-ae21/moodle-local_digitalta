@@ -41,7 +41,7 @@ $id = optional_param('id', 0, PARAM_INT);
 // Seting the page url and context
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/manage.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
-$PAGE->requires->js_call_amd('local_dta/myexperience/manage/form', 'init');
+$PAGE->requires->js_call_amd('local_dta/experiences/manage/form', 'init');
 
 echo $OUTPUT->header();
 

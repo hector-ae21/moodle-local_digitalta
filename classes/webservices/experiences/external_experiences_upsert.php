@@ -34,10 +34,10 @@ use local_dta\Experiences;
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class external_myexperience_upsert extends external_api
+class external_experiences_upsert extends external_api
 {
 
-    public static function myexperience_upsert_parameters()
+    public static function experiences_upsert_parameters()
     {
         return new external_function_parameters(
             array(
@@ -56,7 +56,7 @@ class external_myexperience_upsert extends external_api
         );
     }
 
-    public static function myexperience_upsert($id, $title, $lang, $visible = 1, $status = 0 , $themes = [], $tags = [])
+    public static function experiences_upsert($id, $title, $lang, $visible = 1, $status = 0 , $themes = [], $tags = [])
     {
         $experience          = new stdClass();
         $experience->id      = $id ?? null;
@@ -80,7 +80,7 @@ class external_myexperience_upsert extends external_api
         ];
     }
 
-    public static function myexperience_upsert_returns()
+    public static function experiences_upsert_returns()
     {
         return new external_single_structure(
             [

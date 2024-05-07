@@ -7,7 +7,7 @@ import { upsertContext } from "local_dta/repositories/context_repository";
 import $ from "jquery";
 import { SELECTORS } from "./main";
 import Notification from "core/notification";
-import { getCases } from "local_dta/repositories/ourcases_repository";
+import { getCases } from "local_dta/repositories/cases_repository";
 import {displayDialogue} from "local_dta/resources/manage_resources";
 
 const linkResourcesModal = class extends Modal {

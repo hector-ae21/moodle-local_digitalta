@@ -62,57 +62,57 @@ $functions = [
     ],
 
     // EXPERIENCES
-    'local_dta_myexperience_upsert' => [
-        'classname'   => 'external_myexperience_upsert',
-        'methodname'  => 'myexperience_upsert',
-        'classpath'   => 'local/dta/classes/webservices/myexperience/external_myexperience_upsert.php',
+    'local_dta_experiences_upsert' => [
+        'classname'   => 'external_experiences_upsert',
+        'methodname'  => 'experiences_upsert',
+        'classpath'   => 'local/dta/classes/webservices/experiences/external_experiences_upsert.php',
         'description' => 'upsert an experience',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_myexperience_toggle_status' => [
-        'classname'   => 'external_myexperience_toggle_status',
-        'methodname'  => 'myexperience_toggle_status',
-        'classpath'   => 'local/dta/classes/webservices/myexperience/external_myexperience_toggle_status.php',
+    'local_dta_experiences_toggle_status' => [
+        'classname'   => 'external_experiences_toggle_status',
+        'methodname'  => 'experiences_toggle_status',
+        'classpath'   => 'local/dta/classes/webservices/experiences/external_experiences_toggle_status.php',
         'description' => 'Toggle the status of an experience',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
 
-    // OUR CASES
-    'local_dta_ourcases_section_text_upsert' => [
-        'classname'   => 'external_ourcases_section_text_upsert',
-        'methodname'  => 'ourcases_section_text_upsert',
-        'classpath'   => 'local/dta/classes/webservices/cases/external_ourcases_section_text_upsert.php',
-        'description' => 'Upsert the text of a section of the Our Cases page.',
+    // CASES
+    'local_dta_cases_section_text_upsert' => [
+        'classname'   => 'external_cases_section_text_upsert',
+        'methodname'  => 'cases_section_text_upsert',
+        'classpath'   => 'local/dta/classes/webservices/cases/external_cases_section_text_upsert.php',
+        'description' => 'Upsert the text of a section of the Cases page.',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_ourcases_section_text_delete' => [
-        'classname'   => 'external_ourcases_section_text_delete',
-        'methodname'  => 'ourcases_section_text_delete',
-        'classpath'   => 'local/dta/classes/webservices/cases/external_ourcases_section_text_delete.php',
-        'description' => 'Delete the text of a section of the Our Cases page.',
+    'local_dta_cases_section_text_delete' => [
+        'classname'   => 'external_cases_section_text_delete',
+        'methodname'  => 'cases_section_text_delete',
+        'classpath'   => 'local/dta/classes/webservices/cases/external_cases_section_text_delete.php',
+        'description' => 'Delete the text of a section of the Cases page.',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_ourcases_edit' => [
-        'classname'   => 'external_ourcases_edit',
-        'methodname'  => 'ourcases_edit',
-        'classpath'   => 'local/dta/classes/webservices/cases/external_ourcases_edit.php',
-        'description' => 'Edit an Our Case',
+    'local_dta_cases_edit' => [
+        'classname'   => 'external_cases_edit',
+        'methodname'  => 'cases_edit',
+        'classpath'   => 'local/dta/classes/webservices/cases/external_cases_edit.php',
+        'description' => 'Edit a Case',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_ourcases_get' => [
-        'classname'   => 'external_ourcases_get',
-        'methodname'  => 'ourcases_get',
-        'classpath'   => 'local/dta/classes/webservices/cases/external_ourcases_get.php',
+    'local_dta_cases_get' => [
+        'classname'   => 'external_cases_get',
+        'methodname'  => 'cases_get',
+        'classpath'   => 'local/dta/classes/webservices/cases/external_cases_get.php',
         'description' => 'Get all cases',
         'type'        => 'read',
         'requirelogin' => true,

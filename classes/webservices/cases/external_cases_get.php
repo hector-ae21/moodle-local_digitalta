@@ -35,17 +35,17 @@ use local_dta\Cases;
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class external_ourcases_get extends external_api
+class external_cases_get extends external_api
 {
 
-    public static function ourcases_get_parameters()
+    public static function cases_get_parameters()
     {
         return new external_function_parameters(
             []
         );
     }
 
-    public static function ourcases_get()
+    public static function cases_get()
     {
         $cases = Cases::get_all_cases(false);
         return [
@@ -53,7 +53,7 @@ class external_ourcases_get extends external_api
             'cases' => $cases
         ];
     }
-    public static function ourcases_get_returns()
+    public static function cases_get_returns()
     {
         return new external_single_structure(
             [

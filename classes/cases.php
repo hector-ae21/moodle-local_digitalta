@@ -24,22 +24,22 @@
 
 namespace local_dta;
 
-require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
-require_once($CFG->dirroot . '/local/dta/classes/tags.php');
-require_once($CFG->dirroot . '/local/dta/classes/context.php');
 require_once($CFG->dirroot . '/local/dta/classes/components.php');
+require_once($CFG->dirroot . '/local/dta/classes/context.php');
+require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
 require_once($CFG->dirroot . '/local/dta/classes/sections.php');
-require_once($CFG->dirroot . '/local/dta/classes/utils/date_utils.php');
+require_once($CFG->dirroot . '/local/dta/classes/tags.php');
+require_once($CFG->dirroot . '/local/dta/classes/utils/dateutils.php');
 
-use local_dta\Reaction;
-use local_dta\Tags;
-use local_dta\Context;
 use local_dta\Components;
+use local_dta\Context;
+use local_dta\Reactions;
 use local_dta\Sections;
-use local_dta\utils\date_utils;
+use local_dta\Tags;
+use local_dta\utils\DateUtils;
 
-use stdClass;
 use Exception;
+use stdClass;
 
 /**
  * This class is used to manage the cases of the plugin
@@ -155,9 +155,9 @@ class Cases
         // Get the case picture
         $case->pictureurl = self::get_picture_url($case);
         // Get the case reactions
-        $case->reactions = Reaction::get_reactions_for_render_case($case->id);
+        $case->reactions = Reactions::get_reactions_for_render_case($case->id);
         // Get the case creation date
-        $case->timecreated = date_utils::time_elapsed_string($case->timecreated);
+        $case->timecreated = DateUtils::time_elapsed_string($case->timecreated);
         return $case;
     }
 

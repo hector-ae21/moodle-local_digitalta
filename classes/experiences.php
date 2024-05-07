@@ -24,18 +24,18 @@
 
 namespace local_dta;
 
-require_once(__DIR__ . '/reactions.php');
-require_once(__DIR__ . '/tags.php');
-require_once(__DIR__ . '/components.php');
-require_once(__DIR__ . '/utils/date_utils.php');
+require_once($CFG->dirroot . '/local/dta/classes/components.php');
+require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
+require_once($CFG->dirroot . '/local/dta/classes/tags.php');
+require_once($CFG->dirroot . '/local/dta/classes/utils/dateutils.php');
 
-use local_dta\Reaction;
-use local_dta\Tags;
 use local_dta\Components;
-use local_dta\utils\date_utils;
+use local_dta\Reactions;
+use local_dta\Tags;
+use local_dta\utils\DateUtils;
 
-use stdClass;
 use Exception;
+use stdClass;
 
 /**
  * This class is used to manage the experiences of the plugin
@@ -163,9 +163,9 @@ class Experiences
         // Get the experience picture
         $experience->pictureurl = self::get_picture_url($experience);
         // Get the experience reactions
-        $experience->reactions = Reaction::get_reactions_for_render_experience($experience->id);
+        $experience->reactions = Reactions::get_reactions_for_render_experience($experience->id);
         // Get the experience creation date
-        $experience->timecreated = date_utils::time_elapsed_string($experience->timecreated);
+        $experience->timecreated = DateUtils::time_elapsed_string($experience->timecreated);
         return $experience;
     }
 

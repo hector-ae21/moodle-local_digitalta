@@ -189,5 +189,4 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    
 ];

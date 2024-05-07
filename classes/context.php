@@ -18,7 +18,7 @@
  * Context class
  *
  * @package   local_dta
- * @copyright 2024 Salvador Banderas Rovira
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,15 +26,15 @@ namespace local_dta;
 
 require_once($CFG->dirroot . '/local/dta/locallib.php');
 
-use stdClass;
 use Exception;
+use stdClass;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * This class is used to manage the contexts of the plugin
  *
- * @copyright 2024 Salvador Banderas Rovira
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class Context

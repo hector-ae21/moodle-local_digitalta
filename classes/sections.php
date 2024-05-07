@@ -24,12 +24,8 @@
 
 namespace local_dta;
 
-require_once($CFG->dirroot . '/local/dta/classes/components.php');
-
-use local_dta\Components;
-
-use stdClass;
 use Exception;
+use stdClass;
 
 /**
  * This class is used to manage the sections of the plugin

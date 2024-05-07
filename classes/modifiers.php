@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * modifiers class
+ * Modifiers class
  *
  * @package   local_dta
- * @copyright 2024 Salvador Banderas Rovira
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,18 +26,15 @@ namespace local_dta;
 
 require_once($CFG->dirroot . '/local/dta/locallib.php');
 
-use stdClass;
-use Exception;
-
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * This class is used to manage the modifiers of the plugin
  *
- * @copyright 2024 Salvador Banderas Rovira
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class modifiers
+class Modifiers
 {
     /** @var string The table name for the modifiers. */
     private static $table = 'digital_modifiers';

@@ -15,36 +15,34 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version metadata for the local_dta plugin.
+ * Tags view page
  *
  * @package   local_dta
- * @copyright 2024 Salvador Banderas Rovira
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/experiences.php');
-require_once(__DIR__ . './../../classes/cases.php');
-require_once(__DIR__ . './../../classes/context.php');
-require_once(__DIR__ . './../../classes/themes.php');
-require_once(__DIR__ . './../../classes/tags.php');
-require_once(__DIR__ . './../../classes/utils/string_utils.php');
-require_once(__DIR__ . './../../classes/utils/filter_utils.php');
-
-$tagtype = required_param('type', PARAM_TEXT);
-$tagid = required_param('id', PARAM_INT);
+require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
+require_once($CFG->dirroot . '/local/dta/classes/cases.php');
+require_once($CFG->dirroot . '/local/dta/classes/context.php');
+require_once($CFG->dirroot . '/local/dta/classes/themes.php');
+require_once($CFG->dirroot . '/local/dta/classes/tags.php');
+require_once($CFG->dirroot . '/local/dta/classes/utils/stringutils.php');
+require_once($CFG->dirroot . '/local/dta/classes/utils/filterutils.php');
 
 require_login();
 
+use local_dta\Cases;
 use local_dta\Context;
 use local_dta\Experiences;
-use local_dta\Cases;
-use local_dta\Themes;
 use local_dta\Tags;
+use local_dta\Themes;
+use local_dta\utils\FilterUtils;
 use local_dta\utils\StringUtils;
-use local_dta\utils\filter_utils;
 
-global $CFG, $PAGE, $OUTPUT;
+$tagtype = required_param('type', PARAM_TEXT);
+$tagid = required_param('id', PARAM_INT);
 
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url(new moodle_url('/local/dta/pages/tags/index.php', ['type' => $tagtype, 'id' => $tagid]));
@@ -107,7 +105,7 @@ $template_context = [
     ]
 ];
 
-$template_context = filter_utils::apply_filter_to_template_object($template_context);
+$template_context = FilterUtils::apply_filter_to_template_object($template_context);
 
 echo $OUTPUT->render_from_template('local_dta/tags/view/view', $template_context);
 

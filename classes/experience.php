@@ -25,7 +25,7 @@
 namespace local_dta;
 
 /**
- * This class is used to manage the experiences of the plugin
+ * This class is used to represent the experience entity
  *
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

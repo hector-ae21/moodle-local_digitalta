@@ -18,7 +18,7 @@
  * Library of functions and constants for the local_dta plugin.
  *
  * @package   local_dta
- * @copyright Salvador Banderas Rovira
+ * @copyright ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -89,7 +89,7 @@ const LOCAL_DTA_SECTION_TYPES = [
     "Text"
 ];
 
-const LOCAL_DTA_LANGUAGES = $codes = [
+const LOCAL_DTA_LANGUAGES = [
     'ab' => 'Abkhazian',
     'aa' => 'Afar',
     'af' => 'Afrikaans',
@@ -308,6 +308,9 @@ function local_dta_get_element_translation(string $element, string $string) : st
             break;
         case "section_type":
             $elements = LOCAL_DTA_SECTION_TYPES;
+            break;
+        case "lang":
+            $elements = LOCAL_DTA_LANGUAGES;
             break;
         default:
             return $string;

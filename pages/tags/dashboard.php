@@ -15,27 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version metadata for the local_dta plugin.
+ * Tags dashboard page
  *
  * @package   local_dta
- * @copyright 2024 Salvador Banderas Rovira
+ * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . './../../classes/themes.php');
-require_once(__DIR__ . './../../classes/tags.php');
-require_once(__DIR__ . './../../classes/utils/string_utils.php');
-require_once(__DIR__ . './../../classes/utils/filter_utils.php');
+require_once($CFG->dirroot . '/local/dta/classes/tags.php');
+require_once($CFG->dirroot . '/local/dta/classes/themes.php');
+require_once($CFG->dirroot . '/local/dta/classes/utils/filterutils.php');
+require_once($CFG->dirroot . '/local/dta/classes/utils/stringutils.php');
 
 require_login();
 
-use local_dta\Themes;
 use local_dta\Tags;
+use local_dta\Themes;
+use local_dta\utils\FilterUtils;
 use local_dta\utils\StringUtils;
-use local_dta\utils\filter_utils;
-
-global $CFG, $PAGE, $OUTPUT;
 
 $pagetitle = get_string('themestags_title', 'local_dta');
     
@@ -74,7 +72,7 @@ $template_context = [
     ],
 ];
 
-$template_context = filter_utils::apply_filter_to_template_object($template_context);
+$template_context = FilterUtils::apply_filter_to_template_object($template_context);
 
 echo $OUTPUT->render_from_template('local_dta/tags/dashboard/dashboard', $template_context);
 

@@ -26,6 +26,12 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/local/dta/locallib.php');
 
+/**
+ * Upgrade the local_dta plugin.
+ *
+ * @param int $oldversion The version we are upgrading from.
+ * @return bool
+ */
 function xmldb_local_dta_upgrade($oldversion)
 {
     global $DB;

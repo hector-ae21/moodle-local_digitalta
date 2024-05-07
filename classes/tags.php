@@ -28,8 +28,8 @@ require_once($CFG->dirroot . '/local/dta/classes/context.php');
 
 use local_dta\Context;
 
-use stdClass;
 use Exception;
+use stdClass;
 
 /**
  * This class is used to manage the tags of the plugin

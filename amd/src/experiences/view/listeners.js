@@ -2,7 +2,6 @@ import $ from 'jquery';
 import { SELECTORS, deleteRelatedContext } from './main';
 import { showChangeStatusModal, toggleExperienceStatus } from './modals';
 import { displaylinkResourcesModal, displaylinkCoursesModal } from './modals';
-import { loadMentors } from '../../mentors/pagination';
 
 export const setEventListeners = () => {
     const experienceid = $(SELECTORS.INPUTS.experienceid).val();
@@ -25,9 +24,5 @@ export const setEventListeners = () => {
 
     $(document).on('click', SELECTORS.BUTTONS.removeContextButton, (event) => {
         deleteRelatedContext(event.currentTarget.dataset.contextid);
-    });
-
-    $(document).on('click', SELECTORS.BUTTONS.loadMoreButton, (numLoaded, numToLoad) => {
-        loadMentors(numLoaded, numToLoad);
     });
 };

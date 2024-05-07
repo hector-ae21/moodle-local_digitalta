@@ -234,7 +234,7 @@ class Experiences
         if (!empty($experience->tags)) {
             Tags::update_tags('experience', $record->id, $experience->tags);
         }
-        return new Experience($record);
+        return new Experiences($record);
     }
 
     /**
@@ -330,7 +330,7 @@ class Experiences
         if (!$DB->update_record(self::$table, $record)) {
             throw new Exception('Error updating experience');
         };
-        return new Experience($record);
+        return new Experiences($record);
     }
 
 }

@@ -25,6 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/local/dta/classes/context.php');
+require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
 
 use local_dta\Experiences;
 

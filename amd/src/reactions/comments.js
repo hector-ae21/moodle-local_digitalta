@@ -11,7 +11,7 @@ import { addComment, getComments } from "../repositories/reactions_repository";
 export function sendComment() {
     const component = $(SELECTORS.BUTTONS.comment).data("component");
     const componentinstance = $(SELECTORS.ACTIONS.sendComment).data("id");
-    const comment = $(SELECTORS.COMMENT_INPUT).val().trim();
+    const comment = $(SELECTORS.COMMENTS.input).val().trim();
 
     if (comment) {
         addComment({ component, componentinstance, comment })
@@ -22,7 +22,7 @@ export function sendComment() {
                 return Notification.exception(response);
             })
             .fail(Notification.exception);
-        $(SELECTORS.COMMENT_INPUT).val("");
+        $(SELECTORS.COMMENTS.input).val("");
     }
 }
 
@@ -47,7 +47,9 @@ export async function updateUI() {
             }));
         }
         const html = await Template.render("local_dta/reactions/comments", { comments });
-        $(SELECTORS.COMMENTS_LIST).html(html);
+        $(SELECTORS.COMMENTS.list).html(html);
+        const button = $(SELECTORS.ACTIONS.viewComment + SELECTORS.DATA.id(componentinstance));
+              button.toggleClass("active", button.hasClass("show"));
         $(SELECTORS.ACTIONS.viewComment + SELECTORS.DATA.id(componentinstance) + " span").text(
             comments.length ? comments.length : ""
         );

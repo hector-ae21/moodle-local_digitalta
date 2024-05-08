@@ -1,14 +1,18 @@
 <!-- Tutoring one component -->
 
-{{> local_dta/test/menu_messages/index}}
+{{> local_dta/test/menu_message/index}}
 
 <!-- Tutoring second component -->
 
 {{> local_dta/test/menu_mentor/index}}
 
-<!-- Calendar compoment -->
+<!-- Tutoring chat compoment -->
 
 {{> local_dta/test/chat/index}}
+
+<!-- Tutoring chat menu compoment -->
+
+{{> local_dta/test/menu_chat/index}}
 
 <!-- Calendar compoment -->
 
@@ -112,6 +116,38 @@ button.btn.btn-tutoring-mentor-calendar:active {
 .chat-tutor-img {
   width: 40px;
   height: 40px;
+}
+
+.chat-reply-box {
+    border: 2px solid #ccc; /* Example border */
+    background-color: #f9f9f9; /* Example background color */
+    width: 100%; /* Example width */
+    border-radius: 10px; /* Example border radius */
+}
+
+.custom-input {
+    border: none;
+    box-shadow: none;
+    background-color: transparent; /* Make the input background transparent */
+    padding: 0.375rem 0.75rem; /* Keep Bootstrap's default padding or adjust as needed */
+    color: #495057; /* Default text color, adjust as needed */
+}
+
+.custom-input:focus {
+    border-color: inherit; /* Inherits the border color, can adjust if needed */
+    box-shadow: none; /* Removes focus shadow */
+    background-color: transparent; /* Change background color on focus */
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: inherit; /* Inherits color from parent, adjust as needed */
+}
+
+.icon-button:focus, .icon-button:active {
+    outline: none;
+    box-shadow: none;
 }
 
 

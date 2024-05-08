@@ -2,7 +2,6 @@
  * @module reactions/selectors
  */
 
-
 export const SELECTORS = {
     ACTIONS: {
         addLike: '[data-action="like"]',
@@ -12,8 +11,11 @@ export const SELECTORS = {
         toggleComments: '[data-target="#commentsCollapse"]',
         sendReport: '[data-action="flag"]',
     },
-    COMMENTS_LIST: '#commentsList',
-    COMMENT_INPUT: '#commentInput',
+    COMMENTS: {
+        collapse: '#commentsCollapse',
+        list: '#commentsList',
+        input: '#commentInput',
+    },
     BUTTONS: {
         likes: '#like-button',
         dislikes: '#dislike-button',

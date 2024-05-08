@@ -136,5 +136,11 @@ class Chat {
         return $DB->record_exists(self::$table_chat_users, array('chat_room_id' => $chat_room_id, 'user_id' => $user_id));
     }
 
+    public static function get_chat_rooms() : array  {
+        // return all chat rooms that the user exist inner join 
+        global $DB, $USER;
+        
+    }
+
 
 }

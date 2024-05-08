@@ -9,7 +9,7 @@ import { toggleReport } from "../repositories/reactions_repository";
  */
 export function sendReport(componentinstance) {
     const component = $(SELECTORS.BUTTONS.report).data("component");
-    toggleReport({ instancetype, componentinstance })
+    toggleReport({ component, componentinstance })
         .then((response) => {
             return updateUI(componentinstance, response.reactiontype);
         })

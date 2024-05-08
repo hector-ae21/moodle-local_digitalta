@@ -169,7 +169,10 @@ class Cases
         // Get the case picture
         $case->pictureurl = self::get_picture_url($case);
         // Get the case reactions
-        $case->reactions = Reactions::get_reactions_for_render_case($case->id);
+        $case->reactions = Reactions::get_reactions_for_render_component(
+            Components::get_component_by_name('case')->id,
+            $case->id
+        );
         // Get the case creation date
         $case->timecreated = DateUtils::time_elapsed_string($case->timecreated);
         return $case;

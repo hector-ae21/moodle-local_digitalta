@@ -23,43 +23,6 @@
  */
 
 $functions = [
-    // REACTIONS
-    'local_dta_reactions_get_comments' => [
-        'classname'   => 'external_reactions_get_comments',
-        'methodname'  => 'reactions_get_comments',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_get_comments.php',
-        'description' => 'Get comments for an instance of an experience or a case',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_reactions_save_comment' => [
-        'classname'   => 'external_reactions_save_comment',
-        'methodname'  => 'reactions_save_comment',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_save_comment.php',
-        'description' => 'Save a comment for an instance of an experience or a case',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_reactions_toggle_like_dislike' => [
-        'classname'   => 'external_reactions_toggle_like_dislike',
-        'methodname'  => 'reactions_toggle_like_dislike',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_toggle_like_dislike.php',
-        'description' => 'Toggle like or dislike for an instance of an experience or a case',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_reactions_send_report' => [
-        'classname'   => 'external_reactions_send_report',
-        'methodname'  => 'reactions_send_report',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_send_report.php',
-        'description' => 'Send a report for an experience or a case',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
 
     // EXPERIENCES
     'local_dta_experiences_upsert' => [
@@ -101,37 +64,6 @@ $functions = [
         'ajax'        => true,
     ],
 
-    // TAGS
-    'local_dta_get_tags' => [
-        'classname'   => 'external_get_tags',
-        'methodname'  => 'get_tags',
-        'classpath'   => 'local/dta/classes/webservices/tags/external_get_tags.php',
-        'description' => 'Get all tags by text',
-        'type'        => 'read',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_create_tags' => [
-        'classname'   => 'external_create_tags',
-        'methodname'  => 'create_tags',
-        'classpath'   => 'local/dta/classes/webservices/tags/external_create_tags.php',
-        'description' => 'Create tags',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ], 
-
-    //FILES
-    'local_dta_upload_file_from_draft' => [
-        'classname'   => 'external_upload_file_from_draft',
-        'methodname'  => 'upload_file_from_draft',
-        'classpath'   => 'local/dta/classes/webservices/files/external_upload_file_from_draft.php',
-        'description' => 'Upload a file',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
     // RESOURCES
     'local_dta_resources_upsert' => [
         'classname'   => 'external_resources_upsert',
@@ -148,26 +80,6 @@ $functions = [
         'classpath'   => 'local/dta/classes/webservices/resources/external_resources_get.php',
         'description' => 'get resources',
         'type'        => 'read',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
-    // CONTEXT 
-    'local_dta_context_insert' => [
-        'classname'   => 'external_context_insert',
-        'methodname'  => 'context_insert',
-        'classpath'   => 'local/dta/classes/webservices/context/external_context_insert.php',
-        'description' => 'upsert a context',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_context_delete' => [
-        'classname'   => 'external_context_delete',
-        'methodname'  => 'context_delete',
-        'classpath'   => 'local/dta/classes/webservices/context/external_context_delete.php',
-        'description' => 'upsert a context',
-        'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
@@ -190,5 +102,94 @@ $functions = [
         'type'         => 'write',
         'requirelogin' => true,
         'ajax'         => true,
+    ],
+
+    // CONTEXT 
+    'local_dta_context_insert' => [
+        'classname'   => 'external_context_insert',
+        'methodname'  => 'context_insert',
+        'classpath'   => 'local/dta/classes/webservices/context/external_context_insert.php',
+        'description' => 'upsert a context',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_context_delete' => [
+        'classname'   => 'external_context_delete',
+        'methodname'  => 'context_delete',
+        'classpath'   => 'local/dta/classes/webservices/context/external_context_delete.php',
+        'description' => 'upsert a context',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
+    // REACTIONS
+    'local_dta_reactions_get_comments' => [
+        'classname'   => 'external_reactions_get_comments',
+        'methodname'  => 'reactions_get_comments',
+        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_get_comments.php',
+        'description' => 'Get comments for an instance of a component',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_reactions_add_comment' => [
+        'classname'   => 'external_reactions_add_comment',
+        'methodname'  => 'reactions_add_comment',
+        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_add_comment.php',
+        'description' => 'Add a comment for an instance of a component',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_reactions_toggle_like_dislike' => [
+        'classname'   => 'external_reactions_toggle_like_dislike',
+        'methodname'  => 'reactions_toggle_like_dislike',
+        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_toggle_like_dislike.php',
+        'description' => 'Toggle like or dislike for an instance of a a component',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_reactions_toggle_report' => [
+        'classname'   => 'external_reactions_toggle_report',
+        'methodname'  => 'reactions_toggle_report',
+        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_toggle_report.php',
+        'description' => 'toggle a report for an experience or a case',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
+    // TAGS
+    'local_dta_get_tags' => [
+        'classname'   => 'external_get_tags',
+        'methodname'  => 'get_tags',
+        'classpath'   => 'local/dta/classes/webservices/tags/external_get_tags.php',
+        'description' => 'Get all tags by text',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_create_tags' => [
+        'classname'   => 'external_create_tags',
+        'methodname'  => 'create_tags',
+        'classpath'   => 'local/dta/classes/webservices/tags/external_create_tags.php',
+        'description' => 'Create tags',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ], 
+
+    // FILES
+    'local_dta_upload_file_from_draft' => [
+        'classname'   => 'external_upload_file_from_draft',
+        'methodname'  => 'upload_file_from_draft',
+        'classpath'   => 'local/dta/classes/webservices/files/external_upload_file_from_draft.php',
+        'description' => 'Upload a file',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
     ],
 ];

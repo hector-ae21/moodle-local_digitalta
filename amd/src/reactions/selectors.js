@@ -2,7 +2,6 @@
  * @module reactions/selectors
  */
 
-
 export const SELECTORS = {
     ACTIONS: {
         addLike: '[data-action="like"]',

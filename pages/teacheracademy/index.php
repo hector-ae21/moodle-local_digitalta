@@ -24,6 +24,7 @@
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/local/dta/classes/cases.php');
+require_once($CFG->dirroot . '/local/dta/classes/components.php');
 require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
 require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
 require_once($CFG->dirroot . '/local/dta/classes/themes.php');
@@ -33,6 +34,7 @@ require_once($CFG->dirroot . '/local/dta/classes/utils/stringutils.php');
 require_login();
 
 use local_dta\Cases;
+use local_dta\Components;
 use local_dta\Experiences;
 use local_dta\Reactions;
 use local_dta\Themes;
@@ -59,7 +61,10 @@ $themes = array_map(function($key, $theme) {
 }, array_keys($themes), $themes);
 
 // Get experiences
-$featuredExperiences = Reactions::get_most_liked_experience(5);
+$featuredExperiences = Reactions::get_most_liked_component(
+    Components::get_component_by_name('experience')->id,
+    5
+);
 $featuredExperiences = array_map(function($experience) {
     $experience = Experiences::get_extra_fields($experience);
     return $experience->id;

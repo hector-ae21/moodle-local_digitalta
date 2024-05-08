@@ -37,7 +37,7 @@ use local_dta\utils\StringUtils;
 
 global $CFG, $PAGE, $OUTPUT;
 
-$strings = get_strings(['experiences_header', 'experiences_title'], "local_dta");
+$strings = get_strings(['experiences_header', 'experiences_title'], 'local_dta');
 
 // Setea el título de la página
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/dashboard.php'));
@@ -53,19 +53,19 @@ $experiences = array_map(function ($experience) {
     return $experience;
 }, $experiences);
 
-$user = get_complete_user_data("id", $USER->id);
+$user = get_complete_user_data('id', $USER->id);
 $picture = new user_picture($user);
 $picture->size = 101;
 $user->imageurl = $picture->get_url($PAGE)->__toString();
 
 $template_context = [
-    "user" => $user,
-    "instance" => Components::get_component_by_name('experience')->id,
-    "experiences" => [
-        "data" => $experiences,
-        "showcontrolsadmin" => is_siteadmin($USER),
-        "addurl" => $CFG->wwwroot . "/local/dta/pages/experiences/manage.php",
-        "viewurl" => $CFG->wwwroot . '/local/dta/pages/experiences/view.php?id='
+    'user' => $user,
+    'component' => 'experience',
+    'experiences' => [
+        'data' => $experiences,
+        'showcontrolsadmin' => is_siteadmin($USER),
+        'addurl' => $CFG->wwwroot . '/local/dta/pages/experiences/manage.php',
+        'viewurl' => $CFG->wwwroot . '/local/dta/pages/experiences/view.php?id='
     ],
 ];
 

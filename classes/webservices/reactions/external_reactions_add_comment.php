@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * WebService to toggle like/dislike reactions
+ * WebService to save a comment
  *
  * @package   local_dta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
@@ -31,56 +31,49 @@ use local_dta\Components;
 use local_dta\Reactions;
 
 /**
- * This class is used to toggle like/dislike reactions
+ * This class is used to add a comment
  *
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class external_reactions_toggle_like_dislike extends external_api
+class external_reactions_add_comment extends external_api
 {
-
     /**
      * Returns the description of the external function parameters
      *
      * @return external_function_parameters The external function parameters
      */
-    public static function reactions_toggle_like_dislike_parameters()
+    public static function reactions_add_comment_parameters()
     {
         return new external_function_parameters(
             [
                 'component' => new external_value(PARAM_TEXT, 'Component'),
                 'componentinstance' => new external_value(PARAM_INT, 'Component instance'),
-                'reactiontype' => new external_value(PARAM_INT, '1 for like, 0 for dislike')
+                'comment' => new external_value(PARAM_RAW, 'Comment')
             ]
         );
     }
 
     /**
-     * Toggle like/dislike reactions
+     * Adds a comment
      *
      * @param  string $component Component
      * @param  int    $componentinstance Component instance
-     * @param  int    $reactiontype 1 for like, 0 for dislike
-     * @return array
+     * @param  string $comment Comment
+     * @return array  The result of the operation
      */
-    public static function reactions_toggle_like_dislike($component, $componentinstance, $reactiontype)
+    public static function reactions_add_comment($component, $componentinstance, $comment)
     {
-        global $USER, $DB;
+        global $USER;
 
         $component = Components::get_component_by_name($component);
-        $reaction = Reactions::toggle_like_dislike($component->id, $componentinstance, $reactiontype, $USER->id);
-        if ($reaction === false) {
-            return ['result' => false, 'error' => 'Could not toggle like/dislike'];
+        if (!Reactions::add_comment($component->id, $componentinstance, $comment, $USER->id)) {
+            return ['result' => false, 'error' => 'Error adding comment'];
         }
 
-        $likes = Reactions::get_likes_for_component($component->id, $componentinstance);
-        $dislikes = Reactions::get_dislikes_for_component($component->id, $componentinstance);
-
-        $reactiontype = ($reaction == -1)
-            ? $reaction
-            : $reactiontype;
-
-        return ['result' => true, 'likes' => $likes, 'dislikes' => $dislikes, 'reactiontype' => $reactiontype];
+        return ['result' => true, 'comment' => $comment, 'user' =>[
+            'id' => $USER->id,
+            'fullname' => $USER->fullname]];
     }
 
     /**
@@ -88,14 +81,18 @@ class external_reactions_toggle_like_dislike extends external_api
      *
      * @return external_single_structure The external function return value
      */
-    public static function reactions_toggle_like_dislike_returns()
+    public static function reactions_add_comment_returns()
     {
         return new external_single_structure(
             [
                 'result' => new external_value(PARAM_BOOL, 'Result of the operation'),
-                'likes' => new external_value(PARAM_INT, 'Number of likes'),
-                'dislikes' => new external_value(PARAM_INT, 'Number of dislikes'),
-                'reactiontype' => new external_value(PARAM_INT, 'Reaction type'),
+                'comment' => new external_value(PARAM_RAW, 'Comment', VALUE_OPTIONAL),
+                'user' => new external_single_structure(
+                    [
+                        'id' => new external_value(PARAM_INT, 'User ID', VALUE_OPTIONAL),
+                        'fullname' => new external_value(PARAM_TEXT, 'User Fullname', VALUE_OPTIONAL)
+                    ]
+                ),
                 'error' => new external_value(PARAM_TEXT, 'Error message', VALUE_OPTIONAL)
             ]
         );

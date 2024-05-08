@@ -24,6 +24,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . '/local/dta/classes/components.php');
+require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
+
+use local_dta\Components;
+use local_dta\Reactions;
+
 /**
  * This class is used to get comments
  *
@@ -32,108 +38,81 @@ defined('MOODLE_INTERNAL') || die();
  */
 class external_reactions_get_comments extends external_api
 {
-
+    /**
+     * Returns the description of the external function parameters
+     *
+     * @return external_function_parameters The external function parameters
+     */
     public static function reactions_get_comments_parameters()
     {
         return new external_function_parameters(
-            array(
-                'instancetype' => new external_value(PARAM_INT, 'Type of instance 1 for experiences, 0 for cases', VALUE_REQUIRED),
-                'instanceid' => new external_value(PARAM_INT, 'ID of the instance', VALUE_REQUIRED),
-            )
+            [
+                'component' => new external_value(PARAM_TEXT, 'Component'),
+                'componentinstance' => new external_value(PARAM_INT, 'Component instance')
+            ]
         );
     }
 
-    public static function reactions_get_comments($instancetype, $instanceid)
+    /**
+     * Gets comments
+     *
+     * @param  string $component Component
+     * @param  int    $componentinstance Component instance
+     * @return array  Array with the result and the comments
+     */
+    public static function reactions_get_comments($component, $componentinstance)
     {
         global $DB;
 
-        if (!self::validate_instance_id($instancetype, $instanceid)) {
-            return array('result' => false, 'error' => 'Invalid instance id');
+        $component = Components::get_component_by_name($component);
+        if (!$comments = Reactions::get_comments_for_component($component->id, $componentinstance)) {
+            return ['result' => false, 'error' => 'Error getting comments'];
         }
 
-        $table = self::get_table($instancetype);
-        $column = self::get_column($instancetype);
-
-        $comments = $DB->get_records($table, array($column => $instanceid));
         foreach ($comments as $comment) {
-            $user = $DB->get_record('user', array('id' => $comment->userid));
-            
-            $comment->instanceid = $instanceid;
-            
-            $comment->user = new \stdClass();
-            $comment->user->id = $user->id;
-            $comment->user->username = $user->username;
+            $user = $DB->get_record('user', ['id' => $comment->userid]);
+            $comment->user            = new \stdClass();
+            $comment->user->id        = $user->id;
+            $comment->user->username  = $user->username;
             $comment->user->firstname = $user->firstname;
-            $comment->user->lastname = $user->lastname;
-            $comment->user->fullname = $user->firstname . ' ' . $user->lastname;
-            $comment->user->email = $user->email;
+            $comment->user->lastname  = $user->lastname;
+            $comment->user->fullname  = fullname($user);
+            $comment->user->email     = $user->email;
         }
 
         return ['result' => true, 'comments' => $comments];
     }
 
-    protected static function validate_instance_id($type, $instanceid)
-    {
-        global $DB;
-        switch ($type) {
-            case 0:
-                return $DB->get_record('digital_cases', array('id' => $instanceid));
-            case 1:
-                return $DB->get_record('digital_experiences', array('id' => $instanceid));
-            default:
-                return false;
-        }
-    }
 
-    protected static function get_table($type)
-    {
-        switch ($type) {
-            case 0:
-                return 'digital_cases_comments';
-            case 1:
-                return 'digital_experiences_comments';
-            default:
-                return false;
-        }
-    }
-
-    protected static function get_column($type)
-    {
-        switch ($type) {
-            case 0:
-                return 'caseid';
-            case 1:
-                return 'experienceid';
-            default:
-                return false;
-        }
-    }
-
+    /**
+     * Returns the description of the external function return value
+     *
+     * @return external_single_structure The external function return value
+     */
     public static function reactions_get_comments_returns()
     {
         return new external_single_structure(
-            array(
+            [
                 'result' => new external_value(PARAM_BOOL, 'Result'),
                 'comments' => new external_multiple_structure(
                     new external_single_structure(
-                        array(
+                        [
                             'id' => new external_value(PARAM_INT, 'ID'),
-                            'instanceid' => new external_value(PARAM_INT, 'Instance ID'),
                             'user' => new external_single_structure(
-                                array(
+                                [
                                     'id' => new external_value(PARAM_INT, 'ID'),
                                     'username' => new external_value(PARAM_RAW, 'Username'),
                                     'firstname' => new external_value(PARAM_RAW, 'First Name'),
                                     'lastname' => new external_value(PARAM_RAW, 'Last Name'),
                                     'fullname' => new external_value(PARAM_RAW, 'Full Name'),
                                     'email' => new external_value(PARAM_RAW, 'Email'),
-                                )
+                                ]
                             ),
                             'comment' => new external_value(PARAM_RAW, 'Comment'),
-                        )
+                        ]
                     )
                 )
-            )
+            ]
         );
     }
 }

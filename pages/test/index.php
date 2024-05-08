@@ -9,8 +9,6 @@
  */
 require_once (__DIR__ . '/../../../../config.php');
 require_once (__DIR__ . './../../classes/resource.php');
-require_once (__DIR__ . './../../classes/utils/string_utils.php');
-require_once (__DIR__ . './../../classes/utils/filter_utils.php');
 
 require_login();
 
@@ -18,7 +16,6 @@ require_login();
 
 global $CFG, $PAGE, $OUTPUT;
 
-$strings = get_strings(['test_header', 'test_title'], "local_dta");
 
 // Setea el título de la página
 $PAGE->set_url(new moodle_url('/local/dta/pages/test/index.php'));
@@ -28,10 +25,20 @@ $PAGE->set_title($strings->test_title);
 echo $OUTPUT->header();
 
 
-$template_context = [
+$user_list = [
+  [
+    'profile_img' => 'https://www.w3schools.com/howto/img_avatar.png',
+    'name' => 'Elias',
+    'university' => 'UNEATLANTICO',
+  ],
+  [
+    'profile_img' => 'https://www.w3schools.com/howto/img_avatar2.png',
+    'name' => 'Maria',
+    'university' => 'FUNIBER',
+  ],
 ];
 
 
-echo $OUTPUT->render_from_template('local_dta/test/index', $template_context);
+echo $OUTPUT->render_from_template('local_dta/test/index', ['user_list' => $user_list]);
 
 echo $OUTPUT->footer();

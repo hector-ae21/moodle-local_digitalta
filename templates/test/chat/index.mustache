@@ -1,0 +1,60 @@
+<div class="container mt-5 card">
+  <div class="d-flex flex-row align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <div
+        class="data-tooltip"
+        data-tooltip-content="{{#str}}tutoring_view_tooltip, local_dta{{/str}}"
+      >
+        <i class="fa fa-question"></i>
+      </div>
+      <h2>{{#str}}tutoring_title, local_dta{{/str}}</h2>
+    </div>
+    <span class="badge badge-pill badge-danger">2 Tutoring Requests</span>
+  </div>
+  <div class="d-flex align-items-center">
+    <button class="btn btn-light">
+      <i class="fa fa-arrow-left"></i>
+    </button>
+  </div>
+  <div class="d-flex align-items-center group-users">
+    {{#user_list}} {{> local_dta/test/chat/users}} {{/user_list}}
+  </div>
+
+  <div class="chat-container rounded border border-primary p-3 mt-2">
+    <div class="messages">
+      <div class="tutor-message-container d-flex">
+        <img
+          class="chat-tutor-img rounded-circle align-self-end mr-1"
+          src="https://www.w3schools.com/howto/img_avatar.png"
+          alt="tutor"
+        />
+        <div class="tutor-message-box bg-secondary text-white rounded-right rounded-top p-3">
+          <p>Lorem ipsum 1 vugvugkjk kugvukgvkugv ukvkvkgv ukvkvq</p>
+          <div>
+            <p class="time text-right m-0">18:00</p>
+          </div>
+        </div>
+      </div>
+      <div class="user-message-container d-flex justify-content-end">
+        <div class="user-message-box bg-primary text-white rounded-left rounded-top p-3">
+          <p class="text-left">Lorem ipsum 2</p>
+          <p class="time m-0 text-right">18:00</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="message-input-container d-flex align-items-center mt-2">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Write your message..." aria-label="Recipient's username" aria-describedby="button-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button"><i class="fa fa-paperclip"></i></button>
+            <button class="btn btn-outline-secondary" type="button"><i class="fa fa-camera"></i></button>
+            <button class="btn btn-primary" type="button" id="button-addon2">Send <i class="fa fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+</div>
+
+</div>
+

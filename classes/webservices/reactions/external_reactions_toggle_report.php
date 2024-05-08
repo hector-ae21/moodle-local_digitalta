@@ -87,7 +87,7 @@ class external_reactions_toggle_report extends external_api
         return new external_single_structure(
             [
                 'result' => new external_value(PARAM_BOOL, 'Result of the operation'),
-                'reactiontype' => new external_value(PARAM_INT, '1 for report, -1 for unreport'),
+                'reactiontype' => new external_value(PARAM_INT, '1 for report, -1 for unreport', VALUE_OPTIONAL),
                 'error' => new external_value(PARAM_TEXT, 'Error message', VALUE_OPTIONAL)
             ]
         );

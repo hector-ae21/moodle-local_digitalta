@@ -26,9 +26,11 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/local/dta/classes/components.php');
 require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
+require_once($CFG->dirroot . '/local/dta/classes/utils/dateutils.php');
 
 use local_dta\Components;
 use local_dta\Reactions;
+use local_dta\utils\DateUtils;
 
 /**
  * This class is used to get comments
@@ -68,21 +70,29 @@ class external_reactions_get_comments extends external_api
         if (!$comments = Reactions::get_comments_for_component($component->id, $componentinstance)) {
             return ['result' => false, 'error' => 'Error getting comments'];
         }
+        $comments = array_map(function ($comment) use ($DB) {
+            $return          = new \stdClass();
+            $return->id      = $comment->id;
+            $return->comment = $comment->comment;
 
-        foreach ($comments as $comment) {
+            $return->created = DateUtils::format_unix_timestamp($comment->timecreated, 'Y-m-d H:i:s');
+            $return->created = DateUtils::time_elapsed_string($return->created);
+
             $user = $DB->get_record('user', ['id' => $comment->userid]);
-            $comment->user            = new \stdClass();
-            $comment->user->id        = $user->id;
-            $comment->user->username  = $user->username;
-            $comment->user->firstname = $user->firstname;
-            $comment->user->lastname  = $user->lastname;
-            $comment->user->fullname  = fullname($user);
-            $comment->user->email     = $user->email;
-        }
+
+            $return->user            = new \stdClass();
+            $return->user->id        = $user->id;
+            $return->user->username  = $user->username;
+            $return->user->firstname = $user->firstname;
+            $return->user->lastname  = $user->lastname;
+            $return->user->fullname  = fullname($user);
+            $return->user->email     = $user->email;
+
+            return $return;
+        }, $comments);
 
         return ['result' => true, 'comments' => $comments];
     }
-
 
     /**
      * Returns the description of the external function return value
@@ -101,17 +111,19 @@ class external_reactions_get_comments extends external_api
                             'user' => new external_single_structure(
                                 [
                                     'id' => new external_value(PARAM_INT, 'ID'),
-                                    'username' => new external_value(PARAM_RAW, 'Username'),
-                                    'firstname' => new external_value(PARAM_RAW, 'First Name'),
-                                    'lastname' => new external_value(PARAM_RAW, 'Last Name'),
-                                    'fullname' => new external_value(PARAM_RAW, 'Full Name'),
-                                    'email' => new external_value(PARAM_RAW, 'Email'),
+                                    'username' => new external_value(PARAM_TEXT, 'Username'),
+                                    'firstname' => new external_value(PARAM_TEXT, 'First Name'),
+                                    'lastname' => new external_value(PARAM_TEXT, 'Last Name'),
+                                    'fullname' => new external_value(PARAM_TEXT, 'Full Name'),
+                                    'email' => new external_value(PARAM_TEXT, 'Email'),
                                 ]
                             ),
                             'comment' => new external_value(PARAM_RAW, 'Comment'),
+                            'created' => new external_value(PARAM_TEXT, 'Time created'),
                         ]
-                    )
-                )
+                    ), 'Comments', VALUE_OPTIONAL
+                ),
+                'error' => new external_value(PARAM_TEXT, 'Error message', VALUE_OPTIONAL)
             ]
         );
     }

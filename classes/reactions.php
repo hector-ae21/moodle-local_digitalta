@@ -276,17 +276,18 @@ class Reactions
     public static function add_comment(int $component, int $componentinstance, string $comment, int $userid)
     {
         global $DB;
-        $comment                    = new stdClass();
-        $comment->component         = $component;
-        $comment->componentinstance = $componentinstance;
-        $comment->userid            = $userid;
-        $comment->comment           = $comment;
-        $comment->timecreated       = time();
-        $comment->timemodified      = time();
-        if (!$comment->id = $DB->insert_record(self::$table_comments, $comment)) {
+        $record                    = new stdClass();
+        $record->component         = $component;
+        $record->componentinstance = $componentinstance;
+        $record->userid            = $userid;
+        $record->comment           = $comment;
+        $record->timecreated       = time();
+        $record->timemodified      = time();
+
+        if (!$record->id = $DB->insert_record(self::$table_comments, $record)) {
             return false;
         }
-        return $comment->id;
+        return $record->id;
     }
 
     /**

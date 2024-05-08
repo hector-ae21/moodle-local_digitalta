@@ -73,8 +73,10 @@ class external_reactions_toggle_like_dislike extends external_api
             return ['result' => false, 'error' => 'Could not toggle like/dislike'];
         }
 
-        $likes = Reactions::get_likes_for_component($component->id, $componentinstance);
+        $likes    = Reactions::get_likes_for_component($component->id, $componentinstance);
+        $likes    = count($likes);
         $dislikes = Reactions::get_dislikes_for_component($component->id, $componentinstance);
+        $dislikes = count($dislikes);
 
         $reactiontype = ($reaction == -1)
             ? $reaction
@@ -93,9 +95,9 @@ class external_reactions_toggle_like_dislike extends external_api
         return new external_single_structure(
             [
                 'result' => new external_value(PARAM_BOOL, 'Result of the operation'),
-                'likes' => new external_value(PARAM_INT, 'Number of likes'),
-                'dislikes' => new external_value(PARAM_INT, 'Number of dislikes'),
-                'reactiontype' => new external_value(PARAM_INT, 'Reaction type'),
+                'likes' => new external_value(PARAM_INT, 'Number of likes', VALUE_OPTIONAL),
+                'dislikes' => new external_value(PARAM_INT, 'Number of dislikes', VALUE_OPTIONAL),
+                'reactiontype' => new external_value(PARAM_INT, 'Reaction type', VALUE_OPTIONAL),
                 'error' => new external_value(PARAM_TEXT, 'Error message', VALUE_OPTIONAL)
             ]
         );

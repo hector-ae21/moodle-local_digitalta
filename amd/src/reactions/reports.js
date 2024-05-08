@@ -24,9 +24,8 @@ export function sendReport(componentinstance) {
  */
 function updateUI(componentinstance, reactiontype) {
     const element = $(SELECTORS.BUTTONS.report + SELECTORS.DATA.id(componentinstance));
-    if (reactiontype === 1 && !element.hasClass("active")) {
+          element.removeClass("active");
+    if (reactiontype === 1) {
         element.addClass("active");
-    } else if (reactiontype === -1 && element.hasClass("active")) {
-        element.removeClass("active");
     }
 }

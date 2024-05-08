@@ -89,9 +89,9 @@ class external_reactions_add_comment extends external_api
                 'comment' => new external_value(PARAM_RAW, 'Comment', VALUE_OPTIONAL),
                 'user' => new external_single_structure(
                     [
-                        'id' => new external_value(PARAM_INT, 'User ID', VALUE_OPTIONAL),
-                        'fullname' => new external_value(PARAM_TEXT, 'User Fullname', VALUE_OPTIONAL)
-                    ]
+                        'id' => new external_value(PARAM_INT, 'User ID'),
+                        'fullname' => new external_value(PARAM_TEXT, 'User Fullname')
+                    ], 'User', VALUE_OPTIONAL
                 ),
                 'error' => new external_value(PARAM_TEXT, 'Error message', VALUE_OPTIONAL)
             ]

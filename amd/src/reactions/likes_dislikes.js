@@ -8,14 +8,8 @@ import Notification from "core/notification";
  * @param {number} componentinstance - The id of the component.
  * @param {number} reactiontype - The reaction to add. 1 for like, 0 for dislike.
  */
-export function toggle(componentinstance, reactiontype = null) {
-    const component = $(SELECTORS.BUTTONS.likes).data("instance");
-    const reactionSelectors = {
-        1: SELECTORS.BUTTONS.likes,
-        0: SELECTORS.BUTTONS.dislikes,
-    };
-    const isActive = $(reactionSelectors[reactiontype] + SELECTORS.DATA.id(componentinstance)).hasClass("active");
-    reactiontype = isActive ? null : reactiontype;
+export function toggle(componentinstance, reactiontype) {
+    const component = $(SELECTORS.BUTTONS.likes).data("component");
     toogleLikeAndDislike({component, componentinstance, reactiontype})
         .then((response) => {
             return updateUI(componentinstance, response.likes, response.dislikes, response.reactiontype);

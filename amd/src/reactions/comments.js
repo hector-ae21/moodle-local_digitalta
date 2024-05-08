@@ -36,20 +36,20 @@ export async function updateUI() {
     if (!componentinstance) {
         return;
     }
-
     try {
         const response = await getComments({ component, componentinstance });
-        const comments = response.comments.map((comment) => ({
-            comment: comment.comment,
-            userfullname: comment.user.fullname,
-            userprofileurl: M.cfg.wwwroot + "/user/profile.php?id=" + comment.user.id,
-        }));
-
+        let comments = [];
+        if (response.result && response.comments) {
+            comments = response.comments.map((comment) => ({
+                comment: comment.comment,
+                userfullname: comment.user.fullname,
+                userprofileurl: M.cfg.wwwroot + "/user/profile.php?id=" + comment.user.id,
+            }));
+        }
         const html = await Template.render("local_dta/reactions/comments", { comments });
         $(SELECTORS.COMMENTS_LIST).html(html);
-
         $(SELECTORS.ACTIONS.viewComment + SELECTORS.DATA.id(componentinstance) + " span").text(
-            response.comments.length ? response.comments.length : ""
+            comments.length ? comments.length : ""
         );
     } catch (error) {
         Notification.exception(error);

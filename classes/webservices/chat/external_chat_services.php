@@ -145,6 +145,55 @@ class external_chat_services extends external_api
         );
     }
 
+    
+    // SERVICE : local_dta_get_messages
+    public static function get_messages_parameters()
+    {
+        return new external_function_parameters(
+            array(
+                'chatid' => new external_value(PARAM_INT, 'ID'),
+                'userid' => new external_value(PARAM_INT, 'User ID' , VALUE_DEFAULT, null),
+            )
+        );
+    }
+
+    public static function get_messages($chatid, $userid = null)
+    {
+        if (is_null($userid)) {
+            global $USER;
+            $userid = $USER->id;
+        }
+        $messages = Chat::get_chat_messages($chatid, $userid);
+        
+        return [
+            'result' => true,
+            'messages' => $messages
+        ];
+    }
+
+    public static function get_messages_returns()
+    {
+        return new external_single_structure(
+            [
+                'result' => new external_value(PARAM_BOOL, 'Result'),
+                'error' => new external_value(PARAM_RAW, 'Error message', VALUE_OPTIONAL),
+                'messages' => new external_multiple_structure(
+                    new external_single_structure(
+                        [
+                            'id' => new external_value(PARAM_INT, 'ID'),
+                            'chatid' => new external_value(PARAM_INT, 'Chat ID'),
+                            'userid' => new external_value(PARAM_INT, 'User ID'),
+                            'message' => new external_value(PARAM_TEXT, 'Message'),
+                            'timecreated' => new external_value(PARAM_TEXT, 'Time Created'),
+                            'timemodified' => new external_value(PARAM_TEXT, 'Time Modified'),
+                            'is_mine' => new external_value(PARAM_BOOL, 'Is Mine'),
+                        ]
+                    )
+                ),
+            ]
+        );
+    }
+
 
 
     

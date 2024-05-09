@@ -35,3 +35,22 @@ export const sendMessage = args => {
     };
     return Ajax.call([request])[0];
 };
+
+
+/**
+ * Get Messages
+ *
+ * Valid args are:
+ * chatid (int) - The chat id
+ * userid (int) - The user id (optional)
+ * @method getMessages
+ * @param {Object} args
+ * @return {Promise}
+ */
+export const getMessages = args => {
+    const request = {
+        methodname: 'local_dta_get_messages',
+        args
+    };
+    return Ajax.call([request])[0];
+};

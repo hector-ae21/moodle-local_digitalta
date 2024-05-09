@@ -101,8 +101,8 @@ class Chat
         }
 
         $chat_message = new stdClass();
-        $chat_message->chat_room_id = $chat_room_id;
-        $chat_message->user_id = $user_id;
+        $chat_message->chatid = $chat_room_id;
+        $chat_message->userid = $user_id;
         $chat_message->message = $message;
         $chat_message->timecreated = date('Y-m-d H:i:s', time());
         $chat_message->timemodified = date('Y-m-d H:i:s', time());
@@ -121,20 +121,51 @@ class Chat
      * @param int $offset Offset for pagination
      * @return array
      */
-    public static function get_chat_messages($chat_room_id, ?int $limit = null, int $offset = 0): array
+    public static function get_chat_messages(int $chat_room_id, int $userid = 0, ?int $limit = null, int $offset = 0): array
     {
         global $DB, $USER;
 
-        if (!self::is_user_in_chat_room($chat_room_id, $USER->id)) {
+        if($userid == 0){
+            $userid = $USER->id;
+        }
+
+        if (!self::is_user_in_chat_room($chat_room_id, $userid)) {
             throw new Exception('User is not in chat room');
         }
 
-        $sql = "SELECT * FROM {" . self::$table_chat_messages . "} WHERE chat_room_id = ?";
+        $sql = "SELECT * FROM {" . self::$table_chat_messages . "} WHERE chatid = ?";
         if (!is_null($limit)) {
             $sql .= " LIMIT $limit OFFSET $offset";
         }
-        return $DB->get_records_sql($sql, array($chat_room_id));
+        $messages = array_values($DB->get_records_sql($sql, array($chat_room_id)));
+
+        return self::prepare_messages_output($messages);
     }
+
+    /**
+     * Prepare messages output
+     * @param array $messages Messages as it comes from the database
+     * @return array
+     */
+    public static function prepare_messages_output($messages): array
+    {
+        global $USER;
+        $output = [];
+        foreach ($messages as $message) {
+            $is_mine = $message->userid == $USER->id ? true : false;
+            $output[] = [
+                'id' => $message->id,
+                'chatid' => $message->chatid,
+                'userid' => $message->userid,
+                'message' => $message->message,
+                'timecreated' => date("H:i", strtotime($message->timecreated)),
+                'timemodified' => $message->timemodified,
+                'is_mine' => $is_mine
+            ];
+        }
+        return $output;
+    }
+
 
     /**
      * Get messages in a chat room by user
@@ -159,7 +190,7 @@ class Chat
     public static function is_user_in_chat_room($chat_room_id, $user_id): bool
     {
         global $DB;
-        return $DB->record_exists(self::$table_chat_users, array('chat_room_id' => $chat_room_id, 'user_id' => $user_id));
+        return $DB->record_exists(self::$table_chat_users, array('chatid' => $chat_room_id, 'userid' => $user_id));
     }
 
     /**

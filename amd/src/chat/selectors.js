@@ -7,7 +7,9 @@ const SELECTORS = {
     OPEN_CHAT_ID: 0,
     TEMPLATES: {
         "MENU_CHAT": "local_dta/test/menu_chat/index",
-        "CHAT": "local_dta/test/chat/index"
+        "CHAT": "local_dta/test/chat/index",
+        "MY_MESSAGE": "local_dta/test/chat/message_my",
+        "OTHER_MESSAGE": "local_dta/test/chat/message_other"
     },
     BUTTONS: {
         "OPEN_CHAT": ".open-chat",
@@ -16,6 +18,9 @@ const SELECTORS = {
     },
     INPUTS: {
         "CHAT_REPLY": "#chat-reply-input",
+    },
+    CONTAINERS: {
+        "MESSAGES": "#message-list"
     }
 };
 

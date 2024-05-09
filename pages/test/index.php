@@ -8,7 +8,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once (__DIR__ . '/../../../../config.php');
-require_once (__DIR__ . './../../classes/resource.php');
 
 require_login();
 
@@ -20,7 +19,6 @@ global $CFG, $PAGE, $OUTPUT;
 // Setea el título de la página
 $PAGE->set_url(new moodle_url('/local/dta/pages/test/index.php'));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->test_title);
 
 echo $OUTPUT->header();
 
@@ -39,6 +37,6 @@ $user_list = [
 ];
 
 
-echo $OUTPUT->render_from_template('local_dta/test/index', ['user_list' => $user_list]);
+echo $OUTPUT->render_from_template('local_dta/test/index', $user_list);
 
 echo $OUTPUT->footer();

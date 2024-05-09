@@ -29,8 +29,6 @@ require_once($CFG->dirroot . '/lib/editor/tiny/classes/manager.php');
 use editor_tiny\manager;
 use stdClass;
 
-use stdClass;
-
 /**
  * This class is used to handle the TinyMCE editor
  *

@@ -427,3 +427,15 @@ $string['lang:yi'] = 'Yiddish';
 $string['lang:yo'] = 'Yoruba';
 $string['lang:za'] = 'Zhuang, Chuang';
 $string['lang:zu'] = 'Zulu';
+
+
+//Tutoring
+
+$string['tutoring:request'] = 'Tutoring Request';
+$string['tutoring:title'] = 'MY TUTORING';
+$string['tutoring:back_to_chat'] = 'Back to chat';
+$string['tutoring:mentor_comments'] = 'Mentor comments';
+$string['tutoring:see_all_mentors'] = 'See all mentors';
+$string['tutoring:open_chats'] = 'Open chats';
+
+$string['tutoring:view_tooltip'] = 'View tooltip';

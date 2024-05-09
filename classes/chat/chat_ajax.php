@@ -17,7 +17,7 @@
 define('AJAX_SCRIPT', true);
 
 require_once(__DIR__ . './../../../../config.php');
-require_once($CFG->dirroot . '/local/dta/classes/chat/chat.php');
+require_once('./chat.php');
 
 use local_dta\Chat;
 
@@ -29,10 +29,11 @@ if (!isloggedin()) {
 }
 
 switch ($action) {
-    case 'get_chat_rooms':
+    case 'getchatrooms':
         $chat_rooms = Chat::get_chat_rooms();
         echo json_encode($chat_rooms);
         break;
+    
     default:
         echo json_encode(array('error' => 'Invalid action'));
         break;

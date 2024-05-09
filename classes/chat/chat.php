@@ -1,4 +1,5 @@
-<? 
+<?php
+
 /**
  * Chat class
  *
@@ -6,13 +7,20 @@
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_dta;
-class Chat {
+
+defined('MOODLE_INTERNAL') || die();
+
+use stdClass;
+
+class Chat
+{
 
     private static $table_chat_room = 'digital_chat';
     private static $table_chat_messages = 'digital_chat_messages';
     private static $table_chat_users = 'digital_chat_users';
-    
+
 
     /**
      * Create a chat room
@@ -20,7 +28,8 @@ class Chat {
      * @param int $experience Experience level
      * @return stdClass
      */
-    public static function create_chat_room($experience = 0): stdClass {
+    public static function create_chat_room($experience = 0): stdClass
+    {
         global $DB;
         $chat_room = new stdClass();
         $chat_room->experience = $experience;
@@ -36,7 +45,8 @@ class Chat {
      * @param int $id Chat room ID
      * @return stdClass|null
      */
-    public static function get_chat_room($id): ?stdClass {
+    public static function get_chat_room($id): ?stdClass
+    {
         global $DB;
         return $DB->get_record(self::$table_chat_room, array('id' => $id));
     }
@@ -48,15 +58,18 @@ class Chat {
      * @param int $user_id User ID
      * @return stdClass
      */
-    public static function add_user_to_chat_room($chat_room_id, $user_id): stdClass {
+    public static function add_user_to_chat_room($chat_room_id, $user_id): bool
+    {
         global $DB;
         $chat_user = new stdClass();
         $chat_user->chat_room_id = $chat_room_id;
         $chat_user->user_id = $user_id;
         $chat_user->timecreated = date('Y-m-d H:i:s', time());
         $chat_user->timemodified = date('Y-m-d H:i:s', time());
-        $chat_user->id = $DB->insert_record(self::$table_chat_users, $chat_user);
-        return $chat_user;
+        if(!$chat_user->id = $DB->insert_record(self::$table_chat_users, $chat_user)){
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -65,7 +78,8 @@ class Chat {
      * @param int $chat_room_id Chat room ID
      * @return array
      */
-    public static function get_chat_users($chat_room_id): array {
+    public static function get_chat_users($chat_room_id): array
+    {
         global $DB;
         return $DB->get_records(self::$table_chat_users, array('chat_room_id' => $chat_room_id));
     }
@@ -78,7 +92,8 @@ class Chat {
      * @param string $message Message content
      * @return stdClass
      */
-    public static function add_message_to_chat_room($chat_room_id, $user_id, $message): stdClass {
+    public static function add_message_to_chat_room($chat_room_id, $user_id, $message): stdClass
+    {
         global $DB;
         $chat_message = new stdClass();
         $chat_message->chat_room_id = $chat_room_id;
@@ -98,10 +113,11 @@ class Chat {
      * @param int $offset Offset for pagination
      * @return array
      */
-    public static function get_chat_messages($chat_room_id, ?int $limit = null, int $offset = 0): array {
+    public static function get_chat_messages($chat_room_id, ?int $limit = null, int $offset = 0): array
+    {
         global $DB, $USER;
 
-        if(!self::is_user_in_chat_room($chat_room_id, $USER->id)){
+        if (!self::is_user_in_chat_room($chat_room_id, $USER->id)) {
             throw new Exception('User is not in chat room');
         }
 
@@ -119,7 +135,8 @@ class Chat {
      * @param int $user_id User ID
      * @return array
      */
-    public static function get_chat_messages_by_user($chat_room_id, $user_id): array {
+    public static function get_chat_messages_by_user($chat_room_id, $user_id): array
+    {
         global $DB;
         return $DB->get_records(self::$table_chat_messages, array('chat_room_id' => $chat_room_id, 'user_id' => $user_id));
     }
@@ -131,16 +148,36 @@ class Chat {
      * @param int $user_id User ID
      * @return bool
      */
-    public static function is_user_in_chat_room($chat_room_id, $user_id): bool {
+    public static function is_user_in_chat_room($chat_room_id, $user_id): bool
+    {
         global $DB;
         return $DB->record_exists(self::$table_chat_users, array('chat_room_id' => $chat_room_id, 'user_id' => $user_id));
     }
 
-    public static function get_chat_rooms() : array  {
-        // return all chat rooms that the user exist inner join 
+    /**
+     * Get all chat rooms for a user
+     *
+     * @return array
+     */
+    public static function get_chat_rooms($userid = null): array
+    {
         global $DB, $USER;
-        
-    }
 
+        $user_id = $userid ?? $USER->id;
+
+        $sql = "SELECT
+        *
+        FROM
+             {digital_chat_users}  cu
+        INNER JOIN  {digital_chat}  cr
+        ON
+            cu.chatid = cr.id
+        WHERE
+        cu.userid = 2;";
+
+        $chat_rooms = array_values($DB->get_records_sql($sql, array($user_id)));
+        
+        return $chat_rooms;
+    }
 
 }

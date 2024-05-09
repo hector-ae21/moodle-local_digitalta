@@ -15,7 +15,7 @@
   </div>
   <div class="card-body">
     <div class="d-flex align-items-center">
-      <button class="btn btn-light">
+      <button class="btn btn-light" id="back-menu">
         <i class="fa fa-arrow-left"></i>
       </button>
     </div>
@@ -54,29 +54,6 @@
         </div>
       </div>
     </div>
-    <div class="message-input-container d-flex align-items-center mt-2">
-      <div class="chat-reply-box mb-3">
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control custom-input"
-            placeholder="Write your message..."
-            aria-label="Recipient's username"
-            aria-describedby="button-addon2"
-          />
-          <div class="input-group-append">
-            <button class="btn icon-button" type="button">
-              <i class="fa fa-paperclip"></i>
-            </button>
-            <button class="btn icon-button" type="button">
-              <i class="fa fa-camera"></i>
-            </button>
-            <button class="btn btn-primary" type="button" id="button-addon2">
-              Send <i class="fa fa-paper-plane"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    {{> local_dta/test/chat/input}}
   </div>
 </div>

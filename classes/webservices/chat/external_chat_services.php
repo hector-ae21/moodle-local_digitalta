@@ -116,14 +116,18 @@ class external_chat_services extends external_api
         return new external_function_parameters(
             array(
                 'chatid' => new external_value(PARAM_INT, 'ID'),
-                'userid' => new external_value(PARAM_INT, 'User ID'),
+                'userid' => new external_value(PARAM_INT, 'User ID' , VALUE_DEFAULT, null),
                 'message' => new external_value(PARAM_TEXT, 'Message')
             )
         );
     }
 
-    public static function add_message($chatid, $userid, $message)
+    public static function add_message($chatid, $userid = null, $message)
     {
+        if (is_null($userid)) {
+            global $USER;
+            $userid = $USER->id;
+        }
         $is = Chat::add_message_to_chat_room($chatid, $userid, $message);
         
         return [

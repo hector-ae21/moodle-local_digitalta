@@ -13,6 +13,7 @@ namespace local_dta;
 defined('MOODLE_INTERNAL') || die();
 
 use stdClass;
+use Exception;
 
 class Chat
 {
@@ -92,9 +93,13 @@ class Chat
      * @param string $message Message content
      * @return stdClass
      */
-    public static function add_message_to_chat_room($chat_room_id, $user_id, $message): stdClass
+    public static function add_message_to_chat_room($chat_room_id, $user_id, $message): bool
     {
         global $DB;
+        if(!self::is_user_in_chat_room($chat_room_id, $user_id)){ // Check if user is in chat room (throws exception if not
+            throw new Exception('User is not in chat room');
+        }
+
         $chat_message = new stdClass();
         $chat_message->chat_room_id = $chat_room_id;
         $chat_message->user_id = $user_id;
@@ -102,7 +107,10 @@ class Chat
         $chat_message->timecreated = date('Y-m-d H:i:s', time());
         $chat_message->timemodified = date('Y-m-d H:i:s', time());
         $chat_message->id = $DB->insert_record(self::$table_chat_messages, $chat_message);
-        return $chat_message;
+        if(!$chat_message->id){
+            throw new Exception('Error inserting chat message');
+        }
+        return true;
     }
 
     /**

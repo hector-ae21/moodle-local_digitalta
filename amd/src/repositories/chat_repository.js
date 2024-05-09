@@ -15,3 +15,23 @@ export const getChatRooms = () => {
     };
     return Ajax.call([request])[0];
 };
+
+
+/**
+ * Send chat message
+ *
+ * Valid args are:
+ * chatid (int) - The chat id
+ * message (string) - The message
+ * userid (int) - The user id
+ * @method sendMessage
+ * @param {Object} args
+ * @return {Promise}
+ */
+export const sendMessage = args => {
+    const request = {
+        methodname: 'local_dta_add_message',
+        args
+    };
+    return Ajax.call([request])[0];
+};

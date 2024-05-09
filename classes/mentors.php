@@ -51,7 +51,7 @@ class Mentor {
      */
     public static function get_mentor_chunk(int $numLoaded, int $numToLoad) : array{
         global $DB;
-        return $DB->get_records_sql("SELECT * FROM " . "mdl_" .self::$table . " LIMIT $numToLoad OFFSET $numLoaded");
+        return $DB->get_records_sql("SELECT * FROM {" . self::$table . "} LIMIT $numToLoad OFFSET $numLoaded");
     }
 }
 

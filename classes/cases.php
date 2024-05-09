@@ -39,7 +39,6 @@ use local_dta\Context;
 use local_dta\Reactions;
 use local_dta\Resources;
 use local_dta\Sections;
-use local_dta\StudyCase;
 use local_dta\Tags;
 use local_dta\Themes;
 use local_dta\utils\DateUtils;
@@ -252,7 +251,7 @@ class Cases
         if (!empty($case->tags)) {
             Tags::update_tags('case', $record->id, $case->tags);
         }
-        return new StudyCase($record);
+        return new Cases($record);
 
     }
 
@@ -291,7 +290,7 @@ class Cases
         if (!empty($case->tags)) {
             Tags::update_tags('case', $case->id, $case->tags);
         }
-        return new StudyCase($case);    
+        return new Cases($case);    
     }
 
     /**

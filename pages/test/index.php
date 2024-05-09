@@ -36,41 +36,7 @@ $user_list = [
   ],
 ];
 
-$data = '{
-  "days": [
-    {
-      "day": "Monday",
-      "times": [
-        {"start": "09:00", "end": "10:00"},
-        {"start": "10:30", "end": "12:00"},
-        {"start": "16:00", "end": "17:00"}
-      ]
-    },
-    {
-      "day": "Tuesday",
-      "times": [
-        {"start": "09:00", "end": "14:00"}
-      ]
-    },
-    {
-      "day": "Wednesday",
-      "times": [
-        {"start": "09:00", "end": "14:00"}
-      ]
-    },
-    {
-      "day": "Thursday",
-      "times": [
-        {"start": "09:00", "end": "14:00"}
-      ]
-    }
-  ]
-}
-';
 
-$data = json_decode($data);
-
-
-echo $OUTPUT->render_from_template('local_dta/test/index', $data);
+echo $OUTPUT->render_from_template('local_dta/test/index', $user_list);
 
 echo $OUTPUT->footer();

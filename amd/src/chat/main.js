@@ -7,8 +7,7 @@ import Notification from 'core/notification';
  * @param {string} target
  */
 export default function createChatInTarget(target) {
-    getChatRooms();
-    Template.render('local_dta/chat/main', {target}).then((html) => {
+    Template.render('local_dta/test/menu_messages/index', {target}).then((html) => {
         $(target).append(html);
         return;
     }).fail(Notification.exception);
@@ -18,6 +17,7 @@ export default function createChatInTarget(target) {
  * Get chat rooms from the specified URL
  * @returns {Promise}
  */
+// eslint-disable-next-line no-unused-vars
 const getChatRooms = () => {
     const url = 'http://localhost/moodle/local/dta/classes/chat/chat_ajax.php?action=get_chat_rooms';
     return fetch(url)

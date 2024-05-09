@@ -20,7 +20,6 @@ global $CFG, $PAGE, $OUTPUT;
 // Setea el título de la página
 $PAGE->set_url(new moodle_url('/local/dta/pages/test/index.php'));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->test_title);
 
 echo $OUTPUT->header();
 

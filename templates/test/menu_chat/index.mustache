@@ -19,11 +19,9 @@
         <h5 class="mb-1">{{#str}}open_chats, local_dta{{/str}}</h5>
       </div>
       <div class="list-group">
+      {{#chatrooms}}
         {{> local_dta/test/menu_chat/item}}
-        {{> local_dta/test/menu_chat/item}}
-        {{> local_dta/test/menu_chat/item}}
-        {{> local_dta/test/menu_chat/item}}
-        {{> local_dta/test/menu_chat/item}}
+      {{/chatrooms}}
       </div>
     </div>
   </div>

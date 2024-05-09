@@ -176,8 +176,35 @@ class Chat
         cu.userid = 2;";
 
         $chat_rooms = array_values($DB->get_records_sql($sql, array($user_id)));
+        $chat_rooms = self::set_chat_names($chat_rooms);
         
         return $chat_rooms;
+    }
+
+    /**
+     * Set chat names
+     */
+    public static function set_chat_names($chat_rooms): array
+    {
+        global $DB;
+        $chat_rooms_with_names = [];
+        foreach ($chat_rooms as $chat_room) {
+            $chat_room->name = '';
+            if($chat_room->experienceid){
+                $experience = $DB->get_record('digital_experiences', array('id' => $chat_room->experienceid));   
+                $chat_room->name = $experience->title;
+            }else{
+                $chat_users = $DB->get_records(self::$table_chat_users, array('chatid' => $chat_room->id));
+                $text = 'Chat with';
+                foreach ($chat_users as $chat_user) {
+                    $user = $DB->get_record('user', array('id' => $chat_user->userid));
+                    $text .= ' ' . $user->firstname . ' ' . $user->lastname. ',';
+                }
+                $chat_room->name = $text;
+            }
+            $chat_rooms_with_names[] = $chat_room;
+        }
+        return $chat_rooms_with_names;
     }
 
 }

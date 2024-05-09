@@ -51,7 +51,7 @@ class external_chat_services extends external_api
 
         return [
             'result' => true,
-            'chat_rooms' => $rooms
+            'chatrooms' => $rooms
         ];
     }
 
@@ -60,7 +60,7 @@ class external_chat_services extends external_api
         return new external_single_structure(
             [
                 'result' => new external_value(PARAM_BOOL, 'Result'),
-                'chat_rooms' => new external_multiple_structure(
+                'chatrooms' => new external_multiple_structure(
                     new external_single_structure(
                         [
                             'id' => new external_value(PARAM_INT, 'ID'),
@@ -68,7 +68,8 @@ class external_chat_services extends external_api
                             'userid' => new external_value(PARAM_INT, 'User ID'),
                             'timecreated' => new external_value(PARAM_TEXT, 'Time Created'),
                             'timemodified' => new external_value(PARAM_TEXT, 'Time Modified'),
-                            'experienceid' => new external_value(PARAM_INT, 'Experience ID')
+                            'experienceid' => new external_value(PARAM_INT, 'Experience ID'),
+                            'name' => new external_value(PARAM_TEXT, 'Name'),
                         ]
                     )
                 ),

@@ -27,6 +27,7 @@ require_once($CFG->dirroot . '/lib/editor/tiny/classes/editor.php');
 require_once($CFG->dirroot . '/lib/editor/tiny/classes/manager.php');
 
 use editor_tiny\manager;
+use stdClass;
 
 use stdClass;
 
@@ -41,18 +42,9 @@ class TinyEditorHandler extends \editor_tiny\editor
 
     /** @var array options provided to initalize filepicker */
     protected $_options = array(
-        'subdirs' => 0,
-        'maxbytes' => 0,
-        'maxfiles' => 0,
-        'changeformat' => 0,
-        'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED,
-        'context' => null,
-        'noclean' => 0,
-        'trusttext' => 0,
-        'return_types' => 15,
-        'enable_filemanagement' => true,
-        'removeorphaneddrafts' => false,
-        'autosave' => true
+        'subdirs' => 0, 'maxbytes' => 0, 'maxfiles' => 0, 'changeformat' => 0,
+        'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED, 'context' => null, 'noclean' => 0, 'trusttext' => 0,
+        'return_types' => 15, 'enable_filemanagement' => true, 'removeorphaneddrafts' => false, 'autosave' => true
     );
 
     public function __construct()
@@ -117,6 +109,11 @@ class TinyEditorHandler extends \editor_tiny\editor
         $context = $PAGE->context;
 
         $fpoptions = $this->get_filepicker_options($context, file_get_unused_draft_itemid());
+
+
+        $context = $PAGE->context;
+
+        $fpoptions = $this->get_filepicker_options($context,  file_get_unused_draft_itemid());
 
 
         $manager = new manager();

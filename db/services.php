@@ -63,7 +63,6 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
-
     // TAGS
     'local_dta_get_tags' => [
         'classname'   => 'external_get_tags',
@@ -283,4 +282,34 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+
+    // CHAT
+    'local_dta_get_chat_rooms' => [
+        'classname'   => 'external_chat_services',
+        'methodname'  => 'get_chat_rooms',
+        'classpath'   => 'local/dta/classes/webservices/chat/external_chat_services.php',
+        'description' => 'Get chat rooms',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_add_user_to_chat_room' => [
+        'classname'   => 'external_chat_services',
+        'methodname'  => 'add_user_to_chat_room',
+        'classpath'   => 'local/dta/classes/webservices/chat/external_chat_services.php',
+        'description' => 'Add a user to a chat room',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_add_message' => [
+        'classname'   => 'external_chat_services',
+        'methodname'  => 'add_message',
+        'classpath'   => 'local/dta/classes/webservices/chat/external_chat_services.php',
+        'description' => 'Add a message to a chat room',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
 ];

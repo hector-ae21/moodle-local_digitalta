@@ -288,5 +288,70 @@ function xmldb_local_dta_upgrade($oldversion)
         }
     }
 
+    if ($oldversion < 2024050702) {
+
+        // Define table digital_chat to be created.
+        $table = new xmldb_table('digital_chat');
+
+        // Adding fields to table digital_chat.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('experienceid', XMLDB_TYPE_INTEGER, '11', null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        // Adding keys to table digital_chat.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('experienceid', XMLDB_KEY_FOREIGN, ['experienceid'], 'digital_experiences', ['id']);
+
+        // Create the table if it doesn't exist.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Define table digital_chat_messages to be created.
+        $table = new xmldb_table('digital_chat_messages');
+
+        // Adding fields to table digital_chat_messages.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('chatid', XMLDB_TYPE_INTEGER, '11', null, null, null, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '11', null, null, null, null);
+        $table->add_field('message', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        // Adding keys to table digital_chat_messages.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('chatid', XMLDB_KEY_FOREIGN, ['chatid'], 'digital_chat', ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+
+        // Create the table if it doesn't exist.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Define table digital_chat_users to be created.
+        $table = new xmldb_table('digital_chat_users');
+
+        // Adding fields to table digital_chat_users.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('chatid', XMLDB_TYPE_INTEGER, '11', null, null, null, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '11', null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        // Adding keys to table digital_chat_users.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('chatid', XMLDB_KEY_FOREIGN, ['chatid'], 'digital_chat', ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+
+        // Create the table if it doesn't exist.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Set the new plugin version.
+        upgrade_plugin_savepoint(true, 2024050702, 'local', 'dta');
+    }
+
     return true;
 }

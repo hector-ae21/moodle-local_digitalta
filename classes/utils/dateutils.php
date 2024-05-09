@@ -72,4 +72,9 @@ class DateUtils
 
         return get_string('date_timeago', 'local_dta', implode(', ', $parts));
     }
+
+    public static function format_unix_timestamp($timestamp, $format = 'Y-m-d H:i:s')
+    {
+        return date($format, $timestamp);
+    }
 }

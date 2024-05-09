@@ -24,6 +24,8 @@
 
 namespace local_dta;
 
+use stdClass;
+
 /**
  * This class is used to manage reactions
  *
@@ -32,228 +34,314 @@ namespace local_dta;
  */
 class Reactions
 {
-    private static $table_experience_likes = 'digital_experiences_likes';
-    private static $table_experience_comments = 'digital_experiences_comments';
-    private static $table_experience_reports = 'digital_experiences_reports';
-    
-    private static $table_cases_likes = 'digital_cases_likes';
-    private static $table_cases_comments = 'digital_cases_comments';
-    private static $table_cases_reports = 'digital_cases_reports';
+    /** @var string The table name for the comments. */
+    private static $table_comments = 'digital_comments';
 
-    public function __construct()
-    {
-    }
+    /** @var string The table name for the likes. */
+    private static $table_likes = 'digital_likes';
+
+    /** @var string The table name for the reports. */
+    private static $table_reports = 'digital_reports';
 
     /**
-     * Get all reactions for a specific experience
+     * Get all reactions for a specific component
      *
-     * @param int $experienceid ID of the experience
-     * @return array Returns an array of records
+     * @param  int   $component Component identifier
+     * @param  int   $componentinstance Component instance identifier
+     * @return array An array of records
      */
-    public static function get_reactions_for_render_experience($experienceid)
-    {
-        $likes = self::get_likes_for_experience($experienceid);
-        $unlikes = self::get_unlikes_for_experience($experienceid);
-        $comments = self::get_comments_for_experience($experienceid);
-        $reports = self::get_reports_for_experience($experienceid);
-
-        return [
-            'likes' => [
-                'count' => count($likes),
-                'isactive' => self::user_reacted($likes),
-                'data' => $likes
-            ],
-            'dislikes' => [
-                'count' => count($unlikes),
-                'data' => $unlikes,
-                'isactive' => self::user_reacted($unlikes)
-            ],
-            'comments' => [
-                'count' => count($comments),
-                'data' => $comments
-            ],
-            'reports' => [
-                'count' => count($reports),
-                'data' => $reports,
-                'isactive' => self::user_reacted($reports)
-            ]
-        ];
-    }
-
-    /**
-     * Get all reactions for a specific case
-     *
-     * @param int $caseid ID of the case
-     * @return array Returns an array of records
-     */
-    public static function get_reactions_for_render_case($caseid)
-    {
-        $likes = self::get_likes_for_case($caseid);
-        $unlikes = self::get_unlikes_for_case($caseid);
-        $comments = self::get_comments_for_case($caseid);
-        $reports = self::get_reports_for_case($caseid);
-        
-        return [
-            'likes' => [
-                'count' => count($likes),
-                'isactive' => self::user_reacted($likes),
-                'data' => $likes
-            ],
-            'dislikes' => [
-                'count' => count($unlikes),
-                'data' => $unlikes,
-                'isactive' => self::user_reacted($unlikes)
-            ],
-            'comments' => [
-                'count' => count($comments),
-                'data' => $comments
-            ],
-            'reports' => [
-                'count' => count($reports),
-                'data' => $reports,
-                'isactive' => self::user_reacted($reports)
-            ]
-        ];
-    }
-
-    
-
-    /**
-     * Check if the current user has reacted to a specific experience
-     * 
-     * @param array $reactionData The reaction data
-     * @return bool Returns true if the user has reacted to the experience
-     */
-    public static function user_reacted($reactionsData)
+    public static function get_reactions_for_render_component(int $component, int $componentinstance) : array
     {
         global $USER;
+        $likes = self::get_likes_for_component($component, $componentinstance);
+        $dislikes = self::get_dislikes_for_component($component, $componentinstance);
+        $comments = self::get_comments_for_component($component, $componentinstance);
+        $reports = self::get_reports_for_component($component, $componentinstance);
 
-        foreach ($reactionsData as $reaction) {
-            if ($reaction->userid == $USER->id) {
+        return [
+            'likes' => [
+                'count' => count($likes),
+                'data' => $likes,
+                'isactive' => self::user_reacted($likes, $USER->id),
+            ],
+            'dislikes' => [
+                'count' => count($dislikes),
+                'data' => $dislikes,
+                'isactive' => self::user_reacted($dislikes, $USER->id)
+            ],
+            'comments' => [
+                'count' => count($comments),
+                'data' => $comments
+            ],
+            'reports' => [
+                'count' => count($reports),
+                'data' => $reports,
+                'isactive' => self::user_reacted($reports, $USER->id)
+            ]
+        ];
+    }
+
+    /**
+     * Check if the current user has reacted to a specific component
+     * 
+     * @param  array $reactions The reaction data
+     * @param  int   $userid The user identifier
+     * @return bool  True if the user has reacted to the experience
+     */
+    public static function user_reacted(array $reactions, int $userid) : bool
+    {
+        foreach ($reactions as $reaction) {
+            if ($reaction->userid == $userid) {
                 return true;
             }
         }
-
         return false;
     }
 
     /**
-     * Get all 'like' reactions for a specific experience
+     * Get all 'like' reactions for a specific component
      *
-     * @param int $experienceid ID of the experience
+     * @param  int   $component ID of the component
+     * @param  int   $componentinstance ID of the component instance
+     * @param  int   $userid The user identifier
      * @return array Returns an array of records
      */
-    public static function get_likes_for_experience($experienceid)
+    public static function get_likes_for_component(int $component, int $componentinstance, int $userid = null) : array
     {
         global $DB;
-        $sql = "SELECT * FROM {" . self::$table_experience_likes . "} WHERE experienceid = ? AND reactiontype = '1'";
-        return $DB->get_records_sql($sql, array($experienceid));
+        $conditions = [
+            'component' => $component,
+            'componentinstance' => $componentinstance,
+            'reactiontype' => 1
+        ];
+        if ($userid) {
+            $conditions['userid'] = $userid;
+        }
+        return $DB->get_records(self::$table_likes, $conditions);
     }
 
     /**
-     * Get all 'unlike' reactions for a specific experience
+     * Get all 'dislike' reactions for a specific component
      *
-     * @param int $experienceid ID of the experience
+     * @param  int   $component ID of the component
+     * @param  int   $componentinstance ID of the component instance
+     * @param  int   $userid The user identifier
      * @return array Returns an array of records
      */
-    public static function get_unlikes_for_experience($experienceid)
+    public static function get_dislikes_for_component(int $component, int $componentinstance, int $userid = null) : array
     {
         global $DB;
-        $sql = "SELECT * FROM {" . self::$table_experience_likes . "} WHERE experienceid = ? AND reactiontype = '0'";
-        return $DB->get_records_sql($sql, array($experienceid));
+        $conditions = [
+            'component' => $component,
+            'componentinstance' => $componentinstance,
+            'reactiontype' => 0
+        ];
+        if ($userid) {
+            $conditions['userid'] = $userid;
+        }
+        return $DB->get_records(self::$table_likes, $conditions);
     }
 
     /**
-     * Get all comments for a specific experience
+     * Get all comments for a specific component
      *
-     * @param int $experienceid ID of the experience
+     * @param  int   $component ID of the component
+     * @param  int   $componentinstance ID of the component instance
+     * @param  int   $userid The user identifier
      * @return array Returns an array of records
      */
-    public static function get_comments_for_experience($experienceid)
+    public static function get_comments_for_component(int $component, int $componentinstance, int $userid = null) : array
     {
         global $DB;
-        $sql = "SELECT * FROM {" . self::$table_experience_comments . "} WHERE experienceid = ?";
-        return $DB->get_records_sql($sql, array($experienceid));
-    }
-
-    public static function get_reports_for_experience($experienceid)
-    {
-        global $DB;
-        $sql = "SELECT * FROM {" . self::$table_experience_reports . "} WHERE experienceid = ?";
-        return $DB->get_records_sql($sql, array($experienceid));
+        $conditions = [
+            'component' => $component,
+            'componentinstance' => $componentinstance
+        ];
+        if ($userid) {
+            $conditions['userid'] = $userid;
+        }
+        return $DB->get_records(self::$table_comments, $conditions);
     }
 
     /**
-     * Get all 'like' reactions for a specific experience
+     * Get all reports for a specific component
      *
-     * @param int $experienceid ID of the experience
+     * @param  int   $component ID of the component
+     * @param  int   $componentinstance ID of the component instance
+     * @param  int   $userid The user identifier
      * @return array Returns an array of records
      */
-    public static function get_likes_for_case($caseid)
+    public static function get_reports_for_component(int $component, int $componentinstance, int $userid = null) : array
     {
         global $DB;
-        $sql = "SELECT * FROM {" . self::$table_cases_likes . "} WHERE caseid = ? AND reactiontype = '1'";
-        return $DB->get_records_sql($sql, array($caseid));
+        $conditions = [
+            'component' => $component,
+            'componentinstance' => $componentinstance
+        ];
+        if ($userid) {
+            $conditions['userid'] = $userid;
+        }
+        return $DB->get_records(self::$table_reports, $conditions);
     }
 
     /**
-     * Get all 'unlike' reactions for a specific experience
+     * Get the most liked components of a type
      *
-     * @param int $experienceid ID of the experience
+     * @param  int   $component The component identifier
+     * @param  int   $limit The number of components to return
      * @return array Returns an array of records
      */
-    public static function get_unlikes_for_case($caseid)
+    public static function get_most_liked_component($component, $limit) : array
     {
         global $DB;
-        $sql = "SELECT * FROM {" . self::$table_cases_likes . "} WHERE caseid = ? AND reactiontype = '0'";
-        return $DB->get_records_sql($sql, array($caseid));
+        $component = Components::get_component_by_id($component);
+        $most_liked = $DB->get_records_sql("SELECT mdlk.componentinstance,
+                                                   COUNT(mdlk.id) as likes
+                                              FROM {". self::$table_likes ."} mdlk
+                                             WHERE mdlk.component = :component
+                                               AND mdlk.reactiontype = 1
+                                          GROUP BY componentinstance
+                                          ORDER BY likes DESC",
+            ['component' => $component->id],
+            0,
+            $limit);
+        $components_table = 'digital_' . $component->name . 's';
+        $components = array_values(array_map(function($record) use ($DB, $components_table) {
+            $component = $DB->get_record($components_table, ['id' => $record->componentinstance]);
+            $component->likes = $record->likes;
+            return $component;
+        }, $most_liked));
+        usort($components, function($a, $b) {
+            return $a->likes < $b->likes;
+        });
+        return $components;
     }
 
     /**
-     * Get all comments for a specific experience
+     * Toggle like/dislike for a specific component
      *
-     * @param int $experienceid ID of the experience
-     * @return array Returns an array of records
+     * @param  int      $component The component identifier
+     * @param  int      $componentinstance The component instance identifier
+     * @param  int      $reactiontype The reaction type
+     * @param  int      $userid The user identifier
+     * @return int|bool The identifier of the record if it was added or updated, -1 if it was deleted, false if it failed
      */
-    public static function get_comments_for_case($caseid)
+    public static function toggle_like_dislike(int $component, int $componentinstance, int $reactiontype, int $userid)
     {
         global $DB;
-        $sql = "SELECT * FROM {" . self::$table_cases_comments . "} WHERE caseid = ?";
-
-        return $DB->get_records_sql($sql, array($caseid)); 
+        $conditions = [
+            'component' => $component,
+            'componentinstance' => $componentinstance,
+            'userid' => $userid
+        ];
+        $existing_reaction = $DB->get_record(self::$table_likes, $conditions);
+        if ($existing_reaction) {
+            if ($existing_reaction->reactiontype == $reactiontype) {
+                if (!$DB->delete_records(self::$table_likes, $conditions)) {
+                    return false;
+                }
+                return -1;
+            } else {
+                $existing_reaction->reactiontype = $reactiontype;
+                $existing_reaction->timemodified = time();
+                if (!$DB->update_record(self::$table_likes, $existing_reaction)) {
+                    return false;
+                }
+                return $existing_reaction->id;
+            }
+        } else {
+            $reaction                    = new stdClass();
+            $reaction->component         = $component;
+            $reaction->componentinstance = $componentinstance;
+            $reaction->userid            = $userid;
+            $reaction->reactiontype      = $reactiontype;
+            $reaction->timecreated       = time();
+            $reaction->timemodified      = time();
+            if (!$reaction->id = $DB->insert_record(self::$table_likes, $reaction)) {
+                return false;
+            }
+            return $reaction->id;
+        }
     }
 
     /**
-     * Get all reports for a specific experience
-     * 
-     * @param int $caseid ID of the case
-     * @return array Returns an array of records
+     * Add a comment to a specific component
+     *
+     * @param  int      $component The component identifier
+     * @param  int      $componentinstance The component instance identifier
+     * @param  string   $comment The comment text
+     * @param  int      $userid The user identifier
+     * @return int|bool The identifier of the record if it was added, false if it failed
      */
-    public static function get_reports_for_case($caseid)
+    public static function add_comment(int $component, int $componentinstance, string $comment, int $userid)
     {
         global $DB;
-        $sql = "SELECT * FROM {" . self::$table_cases_reports . "} WHERE caseid = ?";
+        $record                    = new stdClass();
+        $record->component         = $component;
+        $record->componentinstance = $componentinstance;
+        $record->userid            = $userid;
+        $record->comment           = $comment;
+        $record->timecreated       = time();
+        $record->timemodified      = time();
 
-        return $DB->get_records_sql($sql, array($caseid)); 
+        if (!$record->id = $DB->insert_record(self::$table_comments, $record)) {
+            return false;
+        }
+        return $record->id;
     }
 
     /**
-     * Get the most liked experiences
+     * Delete a comment
      *
-     * @param int $limit The number of experiences to return
-     * @return array Returns an array of records
+     * @param  int      $commentid The comment identifier
+     * @return bool     True if the comment was deleted, false if it failed
      */
-    public static function get_most_liked_experience($limit = 5)
+    public static function delete_comment(int $commentid)
     {
         global $DB;
-        $sql = "SELECT e.id, e.userid, e.title, e.lang, e.visible, e.status, e.timecreated, COUNT(l.id) as likes
-                FROM {digital_experiences} e
-                LEFT JOIN {digital_experiences_likes} l ON e.id = l.experienceid
-                WHERE l.reactiontype = 1 AND e.visible = 1
-                GROUP BY e.id
-                ORDER BY likes DESC
-                LIMIT ". $limit;
+        $conditions = [
+            'id' => $commentid
+        ];
+        if (!$DB->delete_records(self::$table_comments, $conditions)) {
+            return false;
+        }
+        return true;
+    }
 
-        return array_values($DB->get_records_sql($sql));
+    /**
+     * Toggle report for a specific component
+     *
+     * @param  int      $component The component identifier
+     * @param  int      $componentinstance The component instance identifier
+     * @param  string   $description The report description
+     * @param  int      $userid The user identifier
+     * @return int|bool The identifier of the record if it was added, -1 if it was deleted, false if it failed
+     */
+    public static function toggle_report(int $component, int $componentinstance, string $description = null, int $userid)
+    {
+        global $DB;
+        $conditions = [
+            'component' => $component,
+            'componentinstance' => $componentinstance,
+            'userid' => $userid
+        ];
+        if ($existing_report = $DB->get_record(self::$table_reports, $conditions)) {
+            if (!$DB->delete_records(self::$table_reports, $conditions)) {
+                return false;
+            }
+            return -1;
+        } else {
+            $report                    = new stdClass();
+            $report->component         = $component;
+            $report->componentinstance = $componentinstance;
+            $report->userid            = $userid;
+            $report->description       = $description;
+            $report->timecreated       = time();
+            $report->timemodified      = time();
+            if (!$report->id = $DB->insert_record(self::$table_reports, $report)) {
+                return false;
+            }
+            return $report->id;
+        }
     }
 }

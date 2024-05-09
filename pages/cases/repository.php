@@ -37,7 +37,7 @@ use local_dta\utils\StringUtils;
 
 global $CFG, $PAGE, $OUTPUT;
 
-$strings = get_strings(['cases_header', 'cases_title'], "local_dta");
+$strings = get_strings(['cases_header', 'cases_title'], 'local_dta');
 
 // Setea el título de la página
 $PAGE->set_url(new moodle_url('/local/dta/pages/cases/repository.php'));
@@ -51,20 +51,19 @@ echo $OUTPUT->header();
 $cases = Cases::get_all_cases(true, 1);
 
 // Get the user data
-$user = get_complete_user_data("id", $USER->id);
+$user = get_complete_user_data('id', $USER->id);
 $picture = new user_picture($user);
 $picture->size = 101;
 $user->imageurl = $picture->get_url($PAGE)->__toString();
 
 $templateContext = [
-    "user" => $user,
-    "instance" => Components::get_component_by_name('case')->id,
-    "cases" => array_values($cases),
-    "url_create_case" => $CFG->wwwroot . '/local/dta/pages/cases/manage.php',
-    "url_case" => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id=',
-    "themepixurl" => $CFG->wwwroot . "/theme/dta/pix/",
+    'user' => $user,
+    'component' => 'case',
+    'cases' => array_values($cases),
+    'url_create_case' => $CFG->wwwroot . '/local/dta/pages/cases/manage.php',
+    'url_case' => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id=',
+    'themepixurl' => $CFG->wwwroot . '/theme/dta/pix/',
 ];
-
 
 $templateContext = FilterUtils::apply_filter_to_template_object($templateContext);
 

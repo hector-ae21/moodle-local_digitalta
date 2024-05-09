@@ -55,7 +55,7 @@ if(!$experience = Experiences::get_experience($id)) {
 }
 
 // Get the user and the user picture
-$user = get_complete_user_data("id", $experience->userid);
+$user = get_complete_user_data('id', $experience->userid);
 $user_picture = new user_picture($user);
 $user_picture->size = 101;
 $experience_case = Cases::get_cases_by_experience($id);
@@ -82,7 +82,7 @@ foreach ($sections as $section) {
 echo $OUTPUT->header();
 
 $template_context = [
-    "instance" => Components::get_component_by_name('experience')->id,
+    'component' => 'experience',
     'cases' => [
         'data' => $experience_case_info,
         'viewurl' => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id='
@@ -90,8 +90,8 @@ $template_context = [
     'experience' => [
         'data' => $experience,
         'pictureurl' => Experiences::get_picture_url($experience),
-        'deleteurl' => $CFG->wwwroot . "/local/dta/pages/experiences/delete.php?id=",
-        'editurl' => $CFG->wwwroot . "/local/dta/pages/experiences/manage.php?id=",
+        'deleteurl' => $CFG->wwwroot . '/local/dta/pages/experiences/delete.php?id=',
+        'editurl' => $CFG->wwwroot . '/local/dta/pages/experiences/manage.php?id=',
     ],
     'user' => [
         'id' => $user->id,
@@ -104,7 +104,7 @@ $template_context = [
     'isadmin' => is_siteadmin($USER),
     'showcontrols' => $experience->userid == $USER->id,
     'iconsurl' => $CFG->wwwroot . '/local/dta/icons/',
-    'createcaseurl' => $CFG->wwwroot . "/local/dta/pages/cases/manage.php?id=",
+    'createcaseurl' => $CFG->wwwroot . '/local/dta/pages/cases/manage.php?id=',
     'createreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection.php?id=',
     'viewreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection/view.php?id=',
     'reflection' => [], // SECTIONS TODO

@@ -41,7 +41,7 @@ global $CFG, $PAGE, $OUTPUT, $USER;
 
 $id = optional_param('id', 0, PARAM_INT);
 
-$strings = get_strings(['cases_header', 'cases_title'], "local_dta");
+$strings = get_strings(['cases_header', 'cases_title'], 'local_dta');
 
 $PAGE->set_url(new moodle_url('/local/dta/pages/cases/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
@@ -54,7 +54,10 @@ if (!$case = Cases::get_case($id)) {
     throw new moodle_exception('invalidcases', 'local_dta');
 }
 
-$case->reactions = Reactions::get_reactions_for_render_case($case->id);
+$case->reactions = Reactions::get_reactions_for_render_component(
+    Components::get_component_by_name('case')->id,
+    $case->id
+);
 
 $sections = Sections::get_sections([
     'component' => [Components::get_component_by_name('case')->id],
@@ -66,13 +69,13 @@ $sectionheader = [
     'description' => '' // SECTIONS TODO
 ];
 
-$user = get_complete_user_data("id", $case->userid);
+$user = get_complete_user_data('id', $case->userid);
 $picture = new user_picture($user);
 $picture->size = 101;
 $user->imageurl = $picture->get_url($PAGE)->__toString();
 
 $templateContext = [
-    'instance' => Components::get_component_by_name('case')->id,
+    'component' => 'case',
     'sections' => $sections,
     'sectionheader' => $sectionheader,
     'case' => $case,

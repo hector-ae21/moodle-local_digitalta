@@ -35,9 +35,6 @@ use local_dta\Experiences;
 use local_dta\Sections;
 use local_dta\TinyEditorHandler;
 
-use Exception;
-use stdClass;
-
 require_login();
 
 global $CFG, $PAGE, $OUTPUT, $USER;

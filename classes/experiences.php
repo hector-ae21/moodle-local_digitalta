@@ -163,7 +163,10 @@ class Experiences
         // Get the experience picture
         $experience->pictureurl = self::get_picture_url($experience);
         // Get the experience reactions
-        $experience->reactions = Reactions::get_reactions_for_render_experience($experience->id);
+        $experience->reactions = Reactions::get_reactions_for_render_component(
+            Components::get_component_by_name('experience')->id,
+            $experience->id
+        );
         // Get the experience creation date
         $experience->timecreated = DateUtils::time_elapsed_string($experience->timecreated);
         return $experience;

@@ -30,8 +30,6 @@ require_once($CFG->dirroot . '/local/dta/classes/sections.php');
 use local_dta\Components;
 use local_dta\Sections;
 
-use stdClass;
-
 /**
  * This class is used to upsert a section
  *

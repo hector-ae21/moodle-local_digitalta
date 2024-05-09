@@ -57,6 +57,159 @@ function xmldb_local_dta_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024050701, 'local', 'dta');
     }
 
+    if ($oldversion < 2024050702) {
+
+        // Define table digital_comments to be created.
+        $table = new xmldb_table('digital_comments');
+
+        // Adding fields to table digital_comments.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('component', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('componentinstance', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('comment', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        // Adding keys to table digital_comments.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+
+        // Conditionally launch create table for digital_comments.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Migrate the comments from the old tables to the new one
+        $old_tables = [
+            'digital_cases_comments' => $DB->get_field('digital_components', 'id', ['name' => 'case']),
+            'digital_experiences_comments' => $DB->get_field('digital_components', 'id', ['name' => 'experience']),
+        ];
+        foreach ($old_tables as $old_table => $component) {
+            $table = new xmldb_table($old_table);
+            if (!$dbman->table_exists($table)) {
+                continue;
+            }
+            $old_comments = $DB->get_records($old_table);
+            foreach ($old_comments as $old_comment) {
+                $comment = new stdClass();
+                $comment->component         = $component;
+                $comment->componentinstance =
+                    ($old_table == 'digital_cases_comments')
+                    ? $old_comment->caseid
+                    : $old_comment->experienceid;
+                $comment->userid            = $old_comment->userid;
+                $comment->comment           = $old_comment->comment;
+                $comment->timecreated       = time();
+                $comment->timemodified      = time();
+                $DB->insert_record('digital_comments', $comment);
+            }
+            // Drop table
+            $dbman->drop_table($table);
+        }
+
+        // Define table digital_likes to be created.
+        $table = new xmldb_table('digital_likes');
+
+        // Adding fields to table digital_likes.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('component', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('componentinstance', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('reactiontype', XMLDB_TYPE_INTEGER, '1', null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        // Adding keys to table digital_likes.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+
+        // Conditionally launch create table for digital_likes.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Migrate the likes from the old tables to the new one
+        $old_tables = [
+            'digital_cases_likes' => $DB->get_field('digital_components', 'id', ['name' => 'case']),
+            'digital_experiences_likes' => $DB->get_field('digital_components', 'id', ['name' => 'experience']),
+        ];
+        foreach ($old_tables as $old_table => $component) {
+            $table = new xmldb_table($old_table);
+            if (!$dbman->table_exists($table)) {
+                continue;
+            }
+            $old_likes = $DB->get_records($old_table);
+            foreach ($old_likes as $old_like) {
+                $like = new stdClass();
+                $like->component         = $component;
+                $like->componentinstance =
+                    ($old_table == 'digital_cases_likes')
+                    ? $old_like->caseid
+                    : $old_like->experienceid;
+                $like->userid            = $old_like->userid;
+                $like->reactiontype      = 1;
+                $like->timecreated       = time();
+                $like->timemodified      = time();
+                $DB->insert_record('digital_likes', $like);
+            }
+            // Drop table
+            $dbman->drop_table($table);
+        }
+
+        // Define table digital_reports to be created.
+        $table = new xmldb_table('digital_reports');
+
+        // Adding fields to table digital_reports.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('component', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('componentinstance', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('description', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        // Adding keys to table digital_reports.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+
+        // Conditionally launch create table for digital_reports.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Migrate the reports from the old tables to the new one
+        $old_tables = [
+            'digital_cases_reports' => $DB->get_field('digital_components', 'id', ['name' => 'case']),
+            'digital_experiences_reports' => $DB->get_field('digital_components', 'id', ['name' => 'experience']),
+        ];
+        foreach ($old_tables as $old_table => $component) {
+            $table = new xmldb_table($old_table);
+            if (!$dbman->table_exists($table)) {
+                continue;
+            }
+            $old_reports = $DB->get_records($old_table);
+            foreach ($old_reports as $old_report) {
+                $report = new stdClass();
+                $report->component         = $component;
+                $report->componentinstance =
+                    ($old_table == 'digital_cases_reports')
+                    ? $old_report->caseid
+                    : $old_report->experienceid;
+                $report->userid            = $old_report->userid;
+                $report->description       = null;
+                $report->timecreated       = time();
+                $report->timemodified      = time();
+                $DB->insert_record('digital_reports', $report);
+            }
+            // Drop table
+            $dbman->drop_table($table);
+        }
+
+        // Dta savepoint reached.
+        upgrade_plugin_savepoint(true, 2024050702, 'local', 'dta');
+    }
+
     // Try all insertions regardless of the version
     // Insert the components
     $table = new xmldb_table('digital_components');

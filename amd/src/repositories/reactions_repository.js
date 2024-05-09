@@ -4,8 +4,8 @@ import Ajax from 'core/ajax';
  * Toggle the like and dislike state.
  *
  * Valid args are:
- * - instancetype: The instance type.
- * - instanceid: The instance id.
+ * - component: The component.
+ * - componentinstance: The component instance.
  * - action: The action to perform.
  * @method toogleLikeAndDislike
  * @param {Object} args Arguments send to the webservice.
@@ -23,16 +23,16 @@ export const toogleLikeAndDislike = args => {
  * Save a comment.
  *
  * Valid args are:
- * - instancetype: The instance type.
- * - instanceid: The instance id.
+ * - component: The component.
+ * - componentinstance: The component instance.
  * - comment: The comment.
- * @method saveComment
+ * @method addComment
  * @param {Object} args - The arguments for the function.
  * @returns {Promise} Resolve with warnings.
  */
-export const saveComment = args => {
+export const addComment = args => {
     const request = {
-        methodname: 'local_dta_reactions_save_comment',
+        methodname: 'local_dta_reactions_add_comment',
         args: args
     };
     return Ajax.call([request])[0];
@@ -42,8 +42,8 @@ export const saveComment = args => {
  * Get the comments.
  *
  * Valid args are:
- * - instancetype: The instance type.
- * - instanceid: The instance id.
+ * - component: The component.
+ * - componentinstance: The component instance.
  * @method getComments
  * @param {Object} args - The arguments for the function.
  * @returns {Promise} Resolve with warnings.
@@ -60,15 +60,16 @@ export const getComments = args => {
  * Saves a report
  *
  * Valid args are:
- * - instancetype: The instance type.
- * - instanceid: The instance id.
- * @method saveReport
+ * - component: The component.
+ * - componentinstance: The component instance.
+ * - description: The description.
+ * @method toggleReport
  * @param {Object} args - The arguments for the function.
  * @returns {Promise} Resolve with warnings.
  */
-export const saveReport = args => {
+export const toggleReport = args => {
     const request = {
-        methodname: 'local_dta_reactions_send_report',
+        methodname: 'local_dta_reactions_toggle_report',
         args: args
     };
     return Ajax.call([request])[0];

@@ -202,7 +202,9 @@ class Chat
     {
         global $DB, $USER;
 
-        $user_id = $userid ?? $USER->id;
+        if(is_null($userid)){
+            $userid = $USER->id;
+        }
 
         $sql = "SELECT
         *

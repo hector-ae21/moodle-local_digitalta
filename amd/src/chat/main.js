@@ -94,12 +94,19 @@ export async function handleSendMessage() {
         message,
     }).then(() => {
         $(SELECTORS.INPUTS.CHAT_REPLY).val('');
-        renderChat(SELECTORS.OPEN_CHAT_ID);
+        addNewMessage(message);
         return;
     }).fail(Notification.exception);
     return;
 }
 
-function addNewMessage() {
-    // add new message
+/**
+ * Add new message
+ * @param {string} message
+ */
+async function addNewMessage(message) {
+    const date = new Date().toLocaleTimeString('es-ES', {hour12: false, hour: '2-digit', minute: '2-digit'});
+    const html = await renderMessage(message, date, true);
+
+    $(SELECTORS.CONTAINERS.MESSAGES).append(html);
 }

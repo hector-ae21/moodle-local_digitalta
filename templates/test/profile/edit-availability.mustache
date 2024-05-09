@@ -1,0 +1,114 @@
+<div class="availability container card">
+    <h2>EDIT AVAILABILITY</h2>
+    <div class="day-selector">
+        <span class="day-circle" data-day="M">M</span>
+        <span class="day-circle" data-day="T">T</span>
+        <span class="day-circle" data-day="W">W</span>
+        <span class="day-circle" data-day="T">T</span>
+        <span class="day-circle" data-day="F">F</span>
+        <span class="day-circle" data-day="S">S</span>
+        <span class="day-circle" data-day="S">S</span>
+    </div>
+    <div id="day-schedules">
+        <!-- Schedules for each day will be dynamically inserted here -->
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.day-circle').click(function() {
+        $(this).toggleClass('active');
+        var day = $(this).data('day');
+        if ($(this).hasClass('active')) {
+            if ($('#' + day).length === 0) {
+                $('#day-schedules').append('<div id="' + day + '" class="day-schedule"><h3>' + day + '</h3><div class="time-slot"><input type="time"> to <input type="time"><button class="add">+</button></div></div>');
+            }
+        } else {
+            $('#' + day).remove();
+        }
+    });
+
+    $('#day-schedules').on('click', '.add', function() {
+        var $parent = $(this).parent();
+        $(this).remove();
+        $parent.append('<button class="remove">-</button>');
+        var newSlot = $parent.clone().find('input').val('').end();
+        newSlot.find('.remove').siblings('.add').remove();
+        newSlot.appendTo($parent.parent());
+        newSlot.append('<button class="add">+</button>');
+    });
+
+    $('#day-schedules').on('click', '.remove', function() {
+        $(this).parent().remove();
+    });
+});
+
+</script>
+
+<style>
+.availability {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+}
+
+.availability h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.day-selector {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.day-circle {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    border: 1px solid #007bff;
+    cursor: pointer;
+}
+
+.day-circle.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.day-schedule {
+    margin-bottom: 10px;
+}
+
+.time-slot {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.time-slot input[type="time"] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    margin-right: 5px;
+}
+
+.time-slot button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.time-slot button.remove {
+    background-color: #ff6347; /* Tomato red for remove button */
+}
+</style>

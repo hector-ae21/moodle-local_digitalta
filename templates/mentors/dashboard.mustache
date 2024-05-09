@@ -10,5 +10,12 @@
   {{> local_dta/mentors/searchbar }}
 </div>
 <div class="content">
-  {{> local_dta/mentors/mentors-list }}
+  <div class="cards-repository">
+    <input id="numLoaded" type="hidden" value={{numToLoad}} />
+    <div id="mentor-list" class="d-flex flex-row flex-wrap justify-content-start">
+      {{> local_dta/mentors/mentors-list }}
+    </div>
+  </div>
+  <button class="btn btn-primary" id="load-more-button" value="{{numToLoad}}">Load More</button>
+  {{> local_dta/general/top-of-scroll-button}}
 </div>

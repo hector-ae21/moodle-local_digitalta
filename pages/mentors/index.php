@@ -20,14 +20,15 @@ global $CFG, $PAGE, $OUTPUT , $USER;
 $strings = get_strings(['mentor_page_title'], "local_dta");
 
 $PAGE->set_url(new moodle_url('/local/dta/pages/mentors/index.php'));
-$PAGE->set_context(context_system::instance()) ;
+$PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->mentor_page_title);
-$PAGE->requires->js_call_amd('local_dta/mentors/pagination', 'init');
+$PAGE->requires->js_call_amd('local_dta/mentors/main', 'init');
 
 echo $OUTPUT->header();
 
-// get all mentors (now all users)
-$mentors = Mentor::get_mentor_chunk(0, 10);
+// get chunk of mentors
+$numToLoad = 10; // number of mentors to load
+$mentors = Mentor::get_mentor_chunk(0, $numToLoad);
 $formattedMentors = [];
 
 
@@ -80,6 +81,7 @@ foreach ($mentors as $mentor) {
 $templatecontext = [
     "mentors"=> $formattedMentors,
     "ismentorcardvertical" => true,
+    "numToLoad" => $numToLoad,
 ];
 
 // $templatecontext = filter_utils::apply_filter_to_template_object($templatecontext);

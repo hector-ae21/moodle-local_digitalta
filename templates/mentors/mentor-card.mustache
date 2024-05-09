@@ -1,5 +1,5 @@
 {{#ismentorcardvertical}}
-<div class="mentor-card-vertical shadow-sm">
+<div class="mentor mentor-card-vertical shadow-sm">
     <h3>{{name}}</h3>
     <div class="text-tertiary">{{position}}</div>
     {{#imageurl}}
@@ -20,13 +20,12 @@
     </div>
     <div class="button-container">
         <a class="btn-connect" href="{{addcontacturl}}" title="{{#str}}mentor_card_action_add_contact, local_dta{{/str}}"><i class="fa fa-user-plus"></i></a>
-        <a class="btn-email" href="{{sendemailurl}}" title="{{#str}}mentor_card_action_send_email, local_dta{{/str}}"><i class="fa fa-envelope"></i></a>
         <a class="btn-profile" href="{{viewprofileurl}}" title="{{#str}}mentor_card_action_view_profile, local_dta{{/str}}"><i class="fa fa-user"></i></a>
     </div>
 </div>
 {{/ismentorcardvertical}}
 {{^ismentorcardvertical}}
-<div class="mentor-card-horizontal shadow-sm">
+<div class="mentor mentor-card-horizontal shadow-sm">
     <div class="mentor-data w-100">
         <img src="https://via.placeholder.com/75" class="rounded-circle mb-2" alt="Brian Walton" width="75px" height="75px">
         <div class="mentor-info d-flex flex-column justify-content-start align-items-start w-100">
@@ -44,7 +43,6 @@
     </div>
     <div class="button-container">
         <a class="btn-connect"><i class="fa fa-user-plus"></i></a>
-        <a class="btn-email"><i class="fa fa-envelope"></i></a>
         <a class="btn-profile"><i class="fa fa-user"></i></a>
     </div>
 </div>

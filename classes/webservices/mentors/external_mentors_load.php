@@ -28,6 +28,8 @@ require_once($CFG->dirroot . '/local/dta/classes/mentors.php');
 
 use local_dta\Mentor;
 
+
+
 /**
  * This class is used to delete a context
  *
@@ -36,6 +38,20 @@ use local_dta\Mentor;
  */
 class external_mentors_load extends external_api
 {
+    /**
+     * Define the parameters for the function
+     *
+     * @return external_function_parameters
+     */
+    public static function load_mentors_parameters()
+    {
+        return new external_function_parameters(
+            array(
+                'numLoaded' => new external_value(PARAM_INT, 'Number of mentors already loaded'),
+                'numToLoad' => new external_value(PARAM_INT, 'Number of mentors to load'),
+            )
+        );
+    }
 
     /**
      * Define the parameters for the function
@@ -44,8 +60,104 @@ class external_mentors_load extends external_api
      */
     public static function load_mentors(int $numLoaded, int $numToLoad)
     {
+        global $CFG, $PAGE;
+        $PAGE->set_context(context_system::instance());
+
         $mentors = Mentor::get_mentor_chunk($numLoaded, $numToLoad);
-        
+        $formattedMentors = [];
+
+        foreach ($mentors as $mentor) {
+            $newMentor = new stdClass();
+            $newMentor->id = $mentor->id;
+            $newMentor->name = $mentor->firstname . " " . $mentor->lastname;
+            $newMentor->position = "Teacher at University of Salamanca";
+
+            $mentor_picture = new user_picture($mentor);
+            $mentor_picture->size = 101;
+            $newMentor->imageurl = $mentor_picture->get_url($PAGE)->__toString();
+            $newMentor->viewprofileurl = $CFG->wwwroot . "/local/dta/pages/profile/index.php?id=" . $mentor->id;
+            $newMentor->addcontacturl = "#";
+            $newMentor->sendemailurl = "#";
+            $newMentor->tags = [
+                [
+                    "id" => 1,
+                    "name" => "Tag 1",
+                ],
+                [
+                    "id" => 2,
+                    "name" => "Tag 2",
+                ],
+                [
+                    "id" => 3,
+                    "name" => "Tag 3",
+                ],
+            ];
+            $newMentor->themes = [
+                [
+                    "id" => 1,
+                    "name" => "Theme 1",
+                ],
+                [
+                    "id" => 2,
+                    "name" => "Theme 2",
+                ],
+                [
+                    "id" => 3,
+                    "name" => "Theme 3",
+                ],
+            ];
+
+            array_push($formattedMentors, $newMentor);
+        }
+
+        return [
+            'result' => true,
+            'mentors' => $formattedMentors,
+        ];
+    }
+
+    /*
+     * Define the return value
+     *
+     * @return external_single_structure
+     */
+    public static function load_mentors_returns()
+    {
+        return new external_single_structure(
+            [
+                'result' => new external_value(PARAM_BOOL, 'Result'),
+                'error' => new external_value(PARAM_RAW, 'Error message' , VALUE_OPTIONAL),
+                'mentors' => new external_multiple_structure(
+                    new external_single_structure(
+                        [
+                            'id' => new external_value(PARAM_INT, 'ID'),
+                            'name' => new external_value(PARAM_TEXT, 'Name'),
+                            'position' => new external_value(PARAM_TEXT, 'Position'),
+                            'themes' => new external_multiple_structure(
+                                new external_single_structure(
+                                    [
+                                        'id' => new external_value(PARAM_INT, 'ID'),
+                                        'name' => new external_value(PARAM_TEXT, 'Name')
+                                    ]
+                                )
+                            ),
+                            'tags' => new external_multiple_structure(
+                                new external_single_structure(
+                                    [
+                                        'id' => new external_value(PARAM_INT, 'ID'),
+                                        'name' => new external_value(PARAM_TEXT, 'Name')
+                                    ]
+                                )
+                            ),
+                            'imageurl' => new external_value(PARAM_TEXT, 'Image URL'),
+                            'viewprofileurl' => new external_value(PARAM_TEXT, 'View profile URL'),
+                            'addcontacturl' => new external_value(PARAM_TEXT, 'Add contact URL'),
+                            'sendemailurl' => new external_value(PARAM_TEXT, 'Send email URL'),
+                        ]
+                    )
+                ),
+            ]
+        );
     }
 
     

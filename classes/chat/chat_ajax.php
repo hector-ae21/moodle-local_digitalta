@@ -33,6 +33,10 @@ switch ($action) {
         $chat_rooms = Chat::get_chat_rooms();
         echo json_encode($chat_rooms);
         break;
+    case 'getmessages':
+        $chat_rooms = Chat::get_chat_messages(2, 2);
+        echo json_encode($chat_rooms);
+        break;
     
     default:
         echo json_encode(array('error' => 'Invalid action'));

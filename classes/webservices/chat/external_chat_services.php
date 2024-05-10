@@ -51,7 +51,7 @@ class external_chat_services extends external_api
 
         return [
             'result' => true,
-            'chat_rooms' => $rooms
+            'chatrooms' => $rooms
         ];
     }
 
@@ -60,7 +60,7 @@ class external_chat_services extends external_api
         return new external_single_structure(
             [
                 'result' => new external_value(PARAM_BOOL, 'Result'),
-                'chat_rooms' => new external_multiple_structure(
+                'chatrooms' => new external_multiple_structure(
                     new external_single_structure(
                         [
                             'id' => new external_value(PARAM_INT, 'ID'),
@@ -68,7 +68,8 @@ class external_chat_services extends external_api
                             'userid' => new external_value(PARAM_INT, 'User ID'),
                             'timecreated' => new external_value(PARAM_TEXT, 'Time Created'),
                             'timemodified' => new external_value(PARAM_TEXT, 'Time Modified'),
-                            'experienceid' => new external_value(PARAM_INT, 'Experience ID')
+                            'experienceid' => new external_value(PARAM_INT, 'Experience ID'),
+                            'name' => new external_value(PARAM_TEXT, 'Name'),
                         ]
                     )
                 ),
@@ -115,14 +116,18 @@ class external_chat_services extends external_api
         return new external_function_parameters(
             array(
                 'chatid' => new external_value(PARAM_INT, 'ID'),
-                'userid' => new external_value(PARAM_INT, 'User ID'),
+                'userid' => new external_value(PARAM_INT, 'User ID' , VALUE_DEFAULT, null),
                 'message' => new external_value(PARAM_TEXT, 'Message')
             )
         );
     }
 
-    public static function add_message($chatid, $userid, $message)
+    public static function add_message($chatid, $userid = null, $message)
     {
+        if (is_null($userid)) {
+            global $USER;
+            $userid = $USER->id;
+        }
         $is = Chat::add_message_to_chat_room($chatid, $userid, $message);
         
         return [
@@ -136,6 +141,55 @@ class external_chat_services extends external_api
             [
                 'result' => new external_value(PARAM_BOOL, 'Result'),
                 'error' => new external_value(PARAM_RAW, 'Error message', VALUE_OPTIONAL)
+            ]
+        );
+    }
+
+    
+    // SERVICE : local_dta_get_messages
+    public static function get_messages_parameters()
+    {
+        return new external_function_parameters(
+            array(
+                'chatid' => new external_value(PARAM_INT, 'ID'),
+                'userid' => new external_value(PARAM_INT, 'User ID' , VALUE_DEFAULT, null),
+            )
+        );
+    }
+
+    public static function get_messages($chatid, $userid = null)
+    {
+        if (is_null($userid)) {
+            global $USER;
+            $userid = $USER->id;
+        }
+        $messages = Chat::get_chat_messages($chatid, $userid);
+        
+        return [
+            'result' => true,
+            'messages' => $messages
+        ];
+    }
+
+    public static function get_messages_returns()
+    {
+        return new external_single_structure(
+            [
+                'result' => new external_value(PARAM_BOOL, 'Result'),
+                'error' => new external_value(PARAM_RAW, 'Error message', VALUE_OPTIONAL),
+                'messages' => new external_multiple_structure(
+                    new external_single_structure(
+                        [
+                            'id' => new external_value(PARAM_INT, 'ID'),
+                            'chatid' => new external_value(PARAM_INT, 'Chat ID'),
+                            'userid' => new external_value(PARAM_INT, 'User ID'),
+                            'message' => new external_value(PARAM_TEXT, 'Message'),
+                            'timecreated' => new external_value(PARAM_TEXT, 'Time Created'),
+                            'timemodified' => new external_value(PARAM_TEXT, 'Time Modified'),
+                            'is_mine' => new external_value(PARAM_BOOL, 'Is Mine'),
+                        ]
+                    )
+                ),
             ]
         );
     }

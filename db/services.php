@@ -311,5 +311,14 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_dta_get_messages' => [
+        'classname'   => 'external_chat_services',
+        'methodname'  => 'get_messages',
+        'classpath'   => 'local/dta/classes/webservices/chat/external_chat_services.php',
+        'description' => 'Get messages from a chat room',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
 
 ];

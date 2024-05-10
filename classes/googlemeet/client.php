@@ -51,7 +51,7 @@ class client
    *
    * @return void
    */
-  public function __construct()
+  public function __construct($chatid=null)
   {
     try {
       $this->issuer = \core\oauth2\api::get_issuer(get_config('local_dta', 'issuerid'));
@@ -63,7 +63,7 @@ class client
       $this->enabled = false;
     }
 
-    $client = $this->get_user_oauth_client();
+    $client = $this->get_user_oauth_client($chatid);
     if ($this->enabled && $client->get_login_url()->get_host() !== 'accounts.google.com') {
       throw new moodle_exception('invalidissuerid', 'local_dta');
     }
@@ -74,7 +74,7 @@ class client
    *
    * @return \core\oauth2\client
    */
-  protected function get_user_oauth_client()
+  protected function get_user_oauth_client($chatid = null)
   {
     if ($this->client) {
       return $this->client;
@@ -83,7 +83,9 @@ class client
     $returnurl = new moodle_url('/local/dta/classes/googlemeet/callback.php');
     $returnurl->param('callback', 'yes');
     $returnurl->param('sesskey', sesskey());
-
+    if($chatid){
+      $returnurl->param('chatid', $chatid);
+    }
     $this->client = \core\oauth2\api::get_user_oauth_client($this->issuer, $returnurl, self::SCOPES, true);
 
     return $this->client;
@@ -96,11 +98,11 @@ class client
    *
    * @return string HTML code
    */
-  public function print_login_popup($attr = null)
+  public function print_login_popup($chatid = null)
   {
     global $OUTPUT;
 
-    $client = $this->get_user_oauth_client();
+    $client = $this->get_user_oauth_client($chatid);
     $url = new moodle_url($client->get_login_url());
     $state = $url->get_param('state') . '&reloadparent=true';
     $url->param('state', $state);
@@ -108,7 +110,7 @@ class client
     return html_writer::div('
           <button class="btn btn-primary" onClick="javascript:window.open(\'' . $client->get_login_url() . '\',
               \'Login\',\'height=600,width=599,top=0,left=0,menubar=0,location=0,directories=0,fullscreen=0\'
-          ); return false">' . get_string('logintoaccount', 'googlemeet') . '</button>', 'mt-2');
+          ); return false">' . get_string('tutoring:videocallbutton', 'local_dta') . '</button>', 'mt-2');
   }
 
   /**
@@ -204,13 +206,16 @@ class client
    *
    * @return string|null The meeting space URI
    */
-  public function callback()
+  public function callback($chatid)
   {
     $client = $this->get_user_oauth_client();
 
     if($this->check_login()){
       $response = $this->create_meeting_space();
       if($response->meetingUri){
+        if($chatid){
+          helper::save_googlemeet_record($chatid, $response->meetingCode);
+        }
         return $response->meetingUri;
       }
     }

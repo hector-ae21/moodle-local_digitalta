@@ -352,6 +352,26 @@ function xmldb_local_dta_upgrade($oldversion)
         // Set the new plugin version.
         upgrade_plugin_savepoint(true, 2024050702, 'local', 'dta');
     }
+    
+    if($oldversion < 2024051001) {
+        // Define table digital_chat to be created.
+        $table = new xmldb_table('digital_videomeetings');
 
+        // Adding fields to table digital_chat.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('chatid', XMLDB_TYPE_INTEGER, '11', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('meetingcode', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        // Adding keys to table digital_chat.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('chatid', XMLDB_KEY_FOREIGN, ['chatid'], 'digital_chat', ['id']);
+        // Create the table if it doesn't exist.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Dta savepoint reached.
+        upgrade_plugin_savepoint(true, 2024051001, 'local', 'dta');
+    }
     return true;
 }

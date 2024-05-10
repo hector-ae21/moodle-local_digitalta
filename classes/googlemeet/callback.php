@@ -36,15 +36,13 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 // Wait as long as it takes for this script to finish.
 \core_php_time_limit::raise();
 
-try{
-  $client = new client();
-}
-catch(\Exception $e){
-  print_error('error:oauthclient', 'local_dta', '', $e->getMessage());
-}
+$chatid = required_param('chatid', PARAM_INT);
+
+$client = new client();
+
 
 // Post callback.
-$response = $client->callback();
+$response = $client->callback($chatid);
 
 $openMeetingHTML = $response ? 'window.open("' . $response . '", "_blank");' : '';
 

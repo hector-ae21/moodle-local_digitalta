@@ -55,4 +55,20 @@ class helper
 
     return $response;
   }
+
+  public static function get_googlemeet_record($chatid){
+    global $DB;
+    $record = $DB->get_record('digital_videomeetings', ['chatid' => $chatid]);
+    return $record;
+  }
+
+  public static function save_googlemeet_record($chatid, $meetingcode){
+    global $DB;
+    $DB->delete_records('digital_videomeetings', ['chatid' => $chatid]);
+    $record = new stdClass();
+    $record->chatid = $chatid;
+    $record->meetingcode = $meetingcode;
+    $record->timecreated = time();
+    $DB->insert_record('digital_videomeetings', $record);
+  }
 }

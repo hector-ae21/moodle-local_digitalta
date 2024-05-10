@@ -36,23 +36,30 @@ use local_dta\Cases;
 use local_dta\client;
 use local_dta\Components;
 use local_dta\Experiences;
+use local_dta\helper;
 use local_dta\Resources;
 use local_dta\Sections;
 use local_dta\utils\FilterUtils;
 
 require_login();
 
-global $CFG, $PAGE, $OUTPUT , $USER;
+global $CFG, $PAGE, $OUTPUT, $USER;
 
-function get_googlemeet_call_button() {
-    $client = new client();
+function get_googlemeet_call_button()
+{
+    $client = new client(1);
     if (!$client->enabled) {
         return;
     }
     if ($client->check_login()) {
         $client->logout();
     }
-    return $client->print_login_popup();
+    $meetingrecord = helper::get_googlemeet_record(1);
+    if ($meetingrecord) {
+        return '<button class="btn btn-primary" onclick="window.open(\'https://meet.google.com/' . $meetingrecord->meetingcode . '\', \'_blank\');">' . get_string('tutoring:videocallbutton', 'local_dta') . '</button>';
+    } else {
+        return $client->print_login_popup(1);
+    }
 }
 
 // Seting the page url and context
@@ -63,7 +70,7 @@ $PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
 $PAGE->requires->js_call_amd('local_dta/experiences/view/main', 'init');
 
 // Get the experience
-if(!$experience = Experiences::get_experience($id)) {
+if (!$experience = Experiences::get_experience($id)) {
     throw new moodle_exception('invalidexperience', 'local_dta');
 }
 

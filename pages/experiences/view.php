@@ -30,8 +30,10 @@ require_once($CFG->dirroot . '/local/dta/classes/resources.php');
 require_once($CFG->dirroot . '/local/dta/classes/sections.php');
 require_once($CFG->dirroot . '/local/dta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/local/dta/locallib.php');
+require_once($CFG->dirroot . '/local/dta/classes/googlemeet/client.php');
 
 use local_dta\Cases;
+use local_dta\client;
 use local_dta\Components;
 use local_dta\Experiences;
 use local_dta\Resources;
@@ -41,6 +43,17 @@ use local_dta\utils\FilterUtils;
 require_login();
 
 global $CFG, $PAGE, $OUTPUT , $USER;
+
+function get_googlemeet_call_button() {
+    $client = new client();
+    if (!$client->enabled) {
+        return;
+    }
+    if ($client->check_login()) {
+        $client->logout();
+    }
+    return $client->print_login_popup();
+}
 
 // Seting the page url and context
 $id = required_param('id', PARAM_INT);
@@ -115,7 +128,9 @@ $template_context = [
     //],
 ];
 
+
 $template_context = FilterUtils::apply_filter_to_template_object($template_context);
+$template_context['googlemeetcall']['button'] = get_googlemeet_call_button();
 
 echo $OUTPUT->render_from_template('local_dta/experiences/view/view', $template_context);
 

@@ -15,16 +15,33 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version metadata for the local_dta plugin.
+ * Google Rest API.
  *
- * @package   local_dta
- * @copyright 2024 ADSDR-FUNIBER Scepter Team
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     local_dta
+ * @copyright   2024 ADSDR-FUNIBER Scepter Team
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace local_dta;
 
-$plugin->version = 2024051000;
-$plugin->requires = 2021051100;
-$plugin->component = 'local_dta';
-$plugin->maturity = MATURITY_ALPHA;
+
+class rest extends \core\oauth2\rest
+{
+
+  /**
+   * Define the functions of the rest API.
+   *
+   * @return array
+   */
+  public function get_api_functions()
+  {
+    return [
+      'createmeetingspace' => [
+        'endpoint' => 'https://meet.googleapis.com/v2/spaces',
+        'method' => 'post',
+        'args' => [],
+        'response' => 'json'
+      ]
+    ];
+  }
+}

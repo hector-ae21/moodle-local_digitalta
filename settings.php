@@ -15,16 +15,33 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version metadata for the local_dta plugin.
+ * Plugin administration pages are defined here.
  *
- * @package   local_dta
- * @copyright 2024 ADSDR-FUNIBER Scepter Team
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     local_dta
+ * @category    admin
+ * @copyright   2024 ADSDR-FUNIBER Scepter Team
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024051000;
-$plugin->requires = 2021051100;
-$plugin->component = 'local_dta';
-$plugin->maturity = MATURITY_ALPHA;
+if ($ADMIN->fulltree) {
+  $settings = new admin_settingpage('local_dta', 'Local DTA settings');
+
+  $ADMIN->add('localplugins', $settings);
+
+  $options = [''];
+  $issuers = \core\oauth2\api::get_all_issuers();
+
+  foreach ($issuers as $issuer) {
+    $options[$issuer->get('id')] = s($issuer->get('name'));
+  }
+
+  $settings->add(new admin_setting_configselect(
+    'local_dta/issuerid',
+    get_string('config:issuerid', 'local_dta'),
+    '',
+    0,
+    $options
+  ));
+}

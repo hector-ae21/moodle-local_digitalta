@@ -438,3 +438,8 @@ $string['tutoring:mentor_comments'] = 'Mentor comments';
 $string['tutoring:see_all_mentors'] = 'See all mentors';
 $string['tutoring:open_chats'] = 'Open chats';
 $string['tutoring:view_tooltip'] = 'View tooltip';
+$string['tutoring:videocallbutton'] = 'Start Google Meet call';
+
+// Settings
+
+$string['config:issuerid'] = 'OAuth service for Google Meet integration';

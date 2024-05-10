@@ -1,0 +1,58 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+namespace local_dta;
+
+use moodle_exception;
+use stdClass;
+
+/**
+ * Utility class for all instance (module) routines helper.
+ *
+ * @package     local_dta
+ * @copyright   2024 ADSDR-FUNIBER Scepter Team
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class helper
+{
+
+  /**
+   * Wrapper function to perform an API call and also catch and handle potential exceptions.
+   *
+   * @param rest $service The rest API object
+   * @param string $api The name of the API call
+   * @param array $params The parameters required by the API call
+   * @param string $rawpost Optional param to include in the body of a post.
+   *
+   * @return \stdClass The response object
+   * @throws moodle_exception
+   */
+  public static function request($service, $api, $params, $rawpost = false): ?\stdClass
+  {
+    try {
+      $response = $service->call($api, $params, $rawpost);
+    } catch (\Exception $e) {
+      if ($e->getCode() == 403 && strpos($e->getMessage(), 'Access Not Configured') !== false) {
+        // This is raised when the Drive API service or the Calendar API service
+        // has not been enabled on Google APIs control panel.
+        throw new moodle_exception('servicenotenabled', 'local_dta');
+      }
+      throw $e;
+    }
+
+    return $response;
+  }
+}

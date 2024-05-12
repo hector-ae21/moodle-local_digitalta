@@ -27,7 +27,10 @@ require_once($CFG->dirroot . '/local/dta/classes/cases.php');
 require_once($CFG->dirroot . '/local/dta/classes/components.php');
 require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
 require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
+require_once($CFG->dirroot . '/local/dta/classes/tags.php');
 require_once($CFG->dirroot . '/local/dta/classes/themes.php');
+require_once($CFG->dirroot . '/local/dta/classes/tinyeditorhandler.php');
+require_once($CFG->dirroot . '/local/dta/classes/files/filemanagerhandler.php');
 require_once($CFG->dirroot . '/local/dta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/local/dta/classes/utils/stringutils.php');
 
@@ -37,18 +40,21 @@ use local_dta\Cases;
 use local_dta\Components;
 use local_dta\Experiences;
 use local_dta\Reactions;
+use local_dta\Tags;
 use local_dta\Themes;
+use local_dta\TinyEditorHandler;
 use local_dta\utils\FilterUtils;
 use local_dta\utils\StringUtils;
 
-$strings = get_strings(['teacheracademy_header', 'teacheracademy_title'], "local_dta");
-
 $PAGE->set_url(new moodle_url('/local/dta/pages/teacheracademy/index.php'));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->teacheracademy_title);
+$PAGE->set_title(get_string('teacheracademy:title', 'local_dta'));
+$PAGE->requires->js_call_amd('local_dta/teacheracademy/actions', 'init');
 $PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
 
 echo $OUTPUT->header();
+
+(new TinyEditorHandler)->get_config_editor(['maxfiles' => 1]);
 
 // Get themes
 $themes = Themes::get_themes();
@@ -59,6 +65,10 @@ $themes = array_map(function($key, $theme) {
     $theme->picture = $OUTPUT->image_url('dta-theme' . ($key + 1) . '-colored', 'local_dta');
     return $theme;
 }, array_keys($themes), $themes);
+
+// Get tags
+$tags = Tags::get_tags();
+$tags = array_values($tags);
 
 // Get experiences
 $featuredExperiences = Reactions::get_most_liked_component(
@@ -88,32 +98,66 @@ $cases = array_map(function($case) {
 }, $cases);
 
 // Get user data
-$user = get_complete_user_data("id", $USER->id);
+$user = get_complete_user_data('id', $USER->id);
 $picture = new user_picture($user);
 $picture->size = 101;
 $user->imageurl = $picture->get_url($PAGE)->__toString();
+
+// Get the actions
+$actions = [
+    [
+        'string' => get_string('teacheracademy:actions:explore', 'local_dta'),
+        'action' => 'open_url',
+        'value' => $CFG->wwwroot . "/local/dta/pages/experiences/index.php"
+    ],
+    [
+        'string' => get_string('teacheracademy:actions:ask', 'local_dta'),
+        'action' => 'modal_ask',
+        'value' => null
+    ],
+    [
+        'string' => get_string('teacheracademy:actions:share', 'local_dta'),
+        'action' => 'modal_share',
+        'value' => null
+    ],
+    [
+        'string' => get_string('teacheracademy:actions:connect', 'local_dta'),
+        'action' => 'open_url',
+        'value' => $CFG->wwwroot . "/local/dta/pages/mentors/index.php"
+    ],
+    [
+        'string' => get_string('teacheracademy:actions:discover', 'local_dta'),
+        'action' => 'open_url',
+        'value' => $CFG->wwwroot . "/local/dta/pages/repository/index.php"
+    ],
+    [
+        'string' => get_string('teacheracademy:actions:getinspired', 'local_dta'),
+        'action' => 'open_url',
+        'value' => $CFG->wwwroot . "/local/dta/pages/cases/index.php"
+    ]
+];
 
 // Template context
 $templateContext = [
     "user" => $user,
     "themepixurl" => $CFG->wwwroot . "/theme/dta/pix/",
+    "actions" => $actions,
     "experiences" => [
         "data" => $experiences,
         "addurl" => $CFG->wwwroot . "/local/dta/pages/experiences/manage.php",
         "viewurl" => $CFG->wwwroot . '/local/dta/pages/experiences/view.php?id=',
-        "allurl" => $CFG->wwwroot . "/local/dta/pages/experiences/dashboard.php",
+        "allurl" => $CFG->wwwroot . "/local/dta/pages/experiences/index.php",
     ],
     "themes" => [
         "data" => $themes,
         "viewurl" => $CFG->wwwroot . '/local/dta/pages/tags/view.php?type=theme&id=',
-        "allurl" => $CFG->wwwroot . "/local/dta/pages/tags/dashboard.php"
+        "allurl" => $CFG->wwwroot . "/local/dta/pages/tags/index.php"
     ],
     "cases" => [
         "data" => array_slice($cases, 0, 4),
         "viewurl" => $CFG->wwwroot . "/local/dta/pages/cases/view.php?id=",
-        "allurl" => $CFG->wwwroot . "/local/dta/pages/cases/repository.php"
-    ],
-    "ismentorcardvertical" => false,
+        "allurl" => $CFG->wwwroot . "/local/dta/pages/cases/index.php"
+    ]
 ];
 
 $templateContext = FilterUtils::apply_filter_to_template_object($templateContext);

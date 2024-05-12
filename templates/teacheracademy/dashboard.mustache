@@ -5,7 +5,7 @@
             <div class="row d-flex align-items-justify">
                 <div class="col-12">
                     <div class="dta-subtitle">DigitalTA</div>
-                    <h1 class="dta-title display-3">{{#str}} teacheracademy_title, local_dta {{/str}}</h1>
+                    <h1 class="dta-title display-3">{{#str}} teacheracademy:title, local_dta {{/str}}</h1>
                 </div>
             </div>
         </div>
@@ -14,24 +14,22 @@
     <section data-section-name="dta-teacheracademy-introduction">
         <div class="container-fluid d-flex text-center">
             <div class="row d-flex align-items-center">
-                <div class="col-md-8 col-12 pt-4 text-justify" style="line-height: 2em;">
-                    {{#str}} teacheracademy_description, local_dta {{/str}}
+                <div class="col-lg-8 col-12 pt-4 text-justify" style="line-height: 2em;">
+                    {{#str}} teacheracademy:description, local_dta {{/str}}
                 </div>
-                <div class="col-md-4 col-12">
+                <div class="col-lg-4 col-12">
                     <video width="100%" autoplay loop muted>
                         <source src="https://digitalta.eu/wp-content/themes/digital-ta/img/video_web_digitalTA.mp4" type="video/mp4"/>
-                        {{#str}} teacheracademy_video_not_supported, local_dta {{/str}}
+                        {{#str}} general:video_not_supported, local_dta {{/str}}
                     </video>
                 </div>
             </div>
         </div>
     </section>
-    <!--Section: Experience miniform-->
-    <section data-section-name="dta-teacheracademy-post-input">
-        <div class="row my-4 justify-content-center">
-            <div class="col-8">
-                {{> local_dta/experiences/dashboard/post-input}}
-            </div>
+    <!--Section: Actions-->
+    <section data-section-name="dta-teacheracademy-actions">
+        <div class="container">
+            {{> local_dta/teacheracademy/action-list}}
         </div>
     </section>
     <!--Section: Themes-->

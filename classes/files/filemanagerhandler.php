@@ -28,6 +28,8 @@ namespace local_dta\file;
 
 require_once($CFG->dirroot . '/lib/form/filemanager.php');
 
+use MoodleQuickForm_filemanager;
+
 /**
  * This class is used to handle files
  *
@@ -36,13 +38,10 @@ require_once($CFG->dirroot . '/lib/form/filemanager.php');
  */
 class FileManagerHandler
 {
+    /** @var int $draftitemid */
     private $draftitemid;
 
-    /**
-     * Default options for the filemanager
-     * @var array $options
-     * @access protected
-     */
+    /** @var array $options */
     protected $options = [
         'maxfiles' => 1,
         'subdirs' => 0,
@@ -52,12 +51,20 @@ class FileManagerHandler
         'return_types' => FILE_INTERNAL | FILE_EXTERNAL,
     ];
 
+    /** @var array $attributes */
     protected $attributes = [
         'id' => 'fileManager',
         'class' => 'fileManager',
         'name' => 'fileManager'
     ];
 
+    /**
+     * Constructor
+     *
+     * @param int   $draftitemid Draft item id
+     * @param array $attributes  Attributes
+     * @param array $options     Options
+     */
     public function __construct($draftitemid = null, $attributes = null, $options = null,)
     {
         $this->draftitemid = $draftitemid ?? rand(1, 999999999);
@@ -69,6 +76,13 @@ class FileManagerHandler
         }
     }
 
+    /**
+     * Prepare draft area with files
+     *
+     * @param int    $filecontextid File context id
+     * @param string $component     Component
+     * @param string $filearea      File area
+     */
     private function prepare_draft_area_with_files($filecontextid, $component, $filearea)
     {
         global $USER;
@@ -99,23 +113,44 @@ class FileManagerHandler
         }
     }
 
+    /**
+     * Prepare draft area html
+     *
+     * @param  int    $filecontextid File context id
+     * @param  string $filearea      File area
+     * @param  string $component     Component
+     * @return string The draft area HTML
+     */
+    public function prepare_draft_area_html($filecontextid, $component, $filearea)
+    {
+        self::prepare_draft_area_with_files($filecontextid, $component, $filearea);
+        $filepicker = new MoodleQuickForm_filemanager(
+            'filemanager',
+            get_string('file'),
+            $this->attributes,
+            $this->options);
+        $filepicker->setValue($this->draftitemid);
+        return json_encode($filepicker->toHtml());
+    }
+
+    /**
+     * Initialize file manager
+     *
+     * @param string $filearea       File area
+     * @param string $component      Component
+     * @param int    $filecontextid  File context id
+     */
     public function init($filearea, $component = "local_dta", $filecontextid = 1)
     {
         global $PAGE;
-
-        self::prepare_draft_area_with_files($filecontextid, $component, $filearea);
-        $filepicker = new \MoodleQuickForm_filemanager('filemanager', get_string('file'), $this->attributes, $this->options);
-        $filepicker->setValue($this->draftitemid);
-
-        $html = json_encode($filepicker->toHtml());
-
+        $html = self::prepare_draft_area_html($filecontextid, $component, $filearea);
         $inlinejs = <<<EOF
         M.custom = {};
         M.custom.filemanager = {
             html: $html
         };
         EOF;
-
         $PAGE->requires->js_amd_inline($inlinejs);
     }
+
 }

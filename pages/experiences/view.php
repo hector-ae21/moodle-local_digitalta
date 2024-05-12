@@ -28,6 +28,7 @@ require_once($CFG->dirroot . '/local/dta/classes/components.php');
 require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
 require_once($CFG->dirroot . '/local/dta/classes/resources.php');
 require_once($CFG->dirroot . '/local/dta/classes/sections.php');
+require_once($CFG->dirroot . '/local/dta/classes/tinyeditorhandler.php');
 require_once($CFG->dirroot . '/local/dta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/local/dta/locallib.php');
 
@@ -36,6 +37,7 @@ use local_dta\Components;
 use local_dta\Experiences;
 use local_dta\Resources;
 use local_dta\Sections;
+use local_dta\TinyEditorHandler;
 use local_dta\utils\FilterUtils;
 
 require_login();
@@ -47,7 +49,7 @@ $id = required_param('id', PARAM_INT);
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
 $PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
-$PAGE->requires->js_call_amd('local_dta/experiences/view/main', 'init');
+$PAGE->requires->js_call_amd('local_dta/experiences/main', 'init');
 
 // Get the experience
 if(!$experience = Experiences::get_experience($id)) {
@@ -81,6 +83,8 @@ foreach ($sections as $section) {
 
 echo $OUTPUT->header();
 
+(new TinyEditorHandler)->get_config_editor(['maxfiles' => 1]);
+
 $template_context = [
     'component' => 'experience',
     'cases' => [
@@ -105,8 +109,6 @@ $template_context = [
     'showcontrols' => $experience->userid == $USER->id,
     'iconsurl' => $CFG->wwwroot . '/local/dta/icons/',
     'createcaseurl' => $CFG->wwwroot . '/local/dta/pages/cases/manage.php?id=',
-    'createreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection.php?id=',
-    'viewreflectionurl' => $CFG->wwwroot . '/local/dta/pages/experiences/reflection/view.php?id=',
     'reflection' => [], // SECTIONS TODO
     'reflectionsections' => $formated_sections,
     //'related' => [

@@ -36,36 +36,55 @@ use local_dta\Experiences;
  */
 class external_experiences_upsert extends external_api
 {
-
+    /**
+     * Returns the description of the external function parameters
+     *
+     * @return external_function_parameters The external function parameters
+     */
     public static function experiences_upsert_parameters()
     {
         return new external_function_parameters(
-            array(
-                'id' => new external_value(PARAM_INT, 'experience ID'),
-                'title' => new external_value(PARAM_RAW, 'Title'),
-                'lang' => new external_value(PARAM_RAW, 'Lang'),
-                'visible' => new external_value(PARAM_BOOL, 'Visible', VALUE_DEFAULT, 1),
+            [
+                'id' => new external_value(PARAM_INT, 'experience ID', VALUE_DEFAULT, 0),
+                'title' => new external_value(PARAM_TEXT, 'Title'),
+                'description' => new external_value(PARAM_RAW, 'Description', VALUE_OPTIONAL),
+                'lang' => new external_value(PARAM_TEXT, 'Lang'),
+                'visible' => new external_value(PARAM_INT, 'Visible', VALUE_DEFAULT, 1),
                 'status' => new external_value(PARAM_INT, 'Status' , VALUE_DEFAULT, 0),
                 'themes' => new external_multiple_structure(
-                    new external_value(PARAM_INT, 'ID del elemento')  , 'Themes' , VALUE_DEFAULT, []
+                    new external_value(PARAM_INT, 'ID del elemento'), 'Themes' , VALUE_DEFAULT, []
                 ),
                 'tags' => new external_multiple_structure(
-                    new external_value(PARAM_INT, 'ID del elemento')  , 'Tags' , VALUE_DEFAULT, []
+                    new external_value(PARAM_INT, 'ID del elemento'), 'Tags' , VALUE_DEFAULT, []
                 )
-            )
+            ]
         );
     }
 
-    public static function experiences_upsert($id, $title, $lang, $visible = 1, $status = 0 , $themes = [], $tags = [])
+    /**
+     * Upserts an experience
+     *
+     * @param  int    $id          Experience ID
+     * @param  string $title       Title
+     * @param  string $description Description
+     * @param  string $lang        Lang
+     * @param  int    $visible     Visible
+     * @param  int    $status      Status
+     * @param  array  $themes      Themes
+     * @param  array  $tags        Tags
+     * @return array  The result of the operation
+     */
+    public static function experiences_upsert($id = 0, $title, $description = '', $lang, $visible = 1, $status = 0 , $themes = [], $tags = [])
     {
-        $experience          = new stdClass();
-        $experience->id      = $id ?? null;
-        $experience->title   = $title;
-        $experience->lang    = $lang;
-        $experience->visible = $visible;
-        $experience->status  = $status;
-        $experience->themes  = $themes;
-        $experience->tags    = $tags;
+        $experience              = new stdClass();
+        $experience->id          = $id;
+        $experience->title       = $title;
+        $experience->description = $description;
+        $experience->lang        = $lang;
+        $experience->visible     = $visible;
+        $experience->status      = $status;
+        $experience->themes      = $themes;
+        $experience->tags        = $tags;
 
         if(!$experience = Experiences::upsert_experience($experience)){
             return [
@@ -80,6 +99,11 @@ class external_experiences_upsert extends external_api
         ];
     }
 
+    /**
+     * Returns the description of the external function returns
+     *
+     * @return external_single_structure The external function returns
+     */
     public static function experiences_upsert_returns()
     {
         return new external_single_structure(

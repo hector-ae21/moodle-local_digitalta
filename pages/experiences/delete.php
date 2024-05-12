@@ -42,20 +42,21 @@ $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/delete.php', ['id' =
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->form_experience_delete_header);
 
-$experience = Experiences::get_experience($id);
-
+if (!$experience = Experiences::get_experience($id)) {
+    throw new moodle_exception('invalidexperiences', 'local_dta');
+}
 
 // Check permissions
-// if (local_dta_check_permissions($experience, $USER) == false) {
-//     print_error('errorpermissions', 'local_dta');
-// }
+if (!Experiences::check_permissions($experience, $USER)) {
+    throw new moodle_exception('errorpermissions', 'local_dta');
+}
 
 // Check if the delete hash is correct
 if ($delete === md5($experience->timecreated)) {
     if (!Experiences::delete_experience($experience)) {
-        print_error('errordeleteexperience', 'local_dta');
+        throw new moodle_exception('errordeleteexperience', 'local_dta');
     }
-    redirect(new moodle_url('/local/dta/pages/experiences/dashboard.php'), get_string('form_experience_delete_yes', 'local_dta'));
+    redirect(new moodle_url('/local/dta/pages/experiences/index.php'), get_string('form_experience_delete_yes', 'local_dta'));
     exit;
 }
 

@@ -46,7 +46,12 @@ class external_resources_get extends external_api
 
     public static function resources_get()
     {
-        $resources = Resources::get_all_resources();
+        if (!$resources = Resources::get_all_resources()) {
+            return [
+                'result' => false,
+                'error' => 'No resources found',
+            ];
+        }
         return [
             'result' => true,
             'resources' => $resources,
@@ -58,7 +63,6 @@ class external_resources_get extends external_api
         return new external_single_structure(
             [
                 'result' => new external_value(PARAM_BOOL, 'Result'),
-                'error' => new external_value(PARAM_RAW, 'Error message' , VALUE_OPTIONAL),
                 'resources' => new external_multiple_structure(
                     new external_single_structure(
                         [
@@ -81,6 +85,7 @@ class external_resources_get extends external_api
                         ]
                     )
                 ),
+                'error' => new external_value(PARAM_RAW, 'Error message' , VALUE_OPTIONAL)
             ]
         );
     }

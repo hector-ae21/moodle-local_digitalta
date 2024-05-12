@@ -2,26 +2,22 @@ import {setupForElementId} from "editor_tiny/editor";
 import {clean} from "./cleaner";
 import Notification from "core/notification";
 
-
 /**
  * Create tinyMCE in an elementId.
  * @param {string} elementId - The id of the area to create tinyMCE in.
  * @return {void}
  */
 export const createTinyMCE = (elementId) => {
-  const options = window.dta_tiny_config;
-
-  if (!options) {
-    return;
-  }
-
-  setupForElementId({elementId, options}).then(() => {
-    clean();
-    return;
-  }).catch((error) => {
-    Notification.error(error);
-  });
-
+    const options = window.dta_tiny_config;
+    if (!options) {
+        return;
+    }
+    setupForElementId({elementId, options}).then(() => {
+        clean();
+        return;
+    }).catch((error) => {
+        Notification.error(error);
+    });
 };
 
 /**
@@ -30,7 +26,7 @@ export const createTinyMCE = (elementId) => {
  * @return {void}
  */
 export const removeTinyMCEFromArea = (area) => {
-  window.tinymce.get(area).remove();
+    window.tinymce.get(area).remove();
 };
 
 /**
@@ -39,7 +35,5 @@ export const removeTinyMCEFromArea = (area) => {
  * @returns {string} The content of the tinyMCE area.
  */
 export const getTinyMCEContent = (area) => {
-  return window.tinyMCE.get(area).getContent();
+    return window.tinyMCE.get(area).getContent();
 };
-
-

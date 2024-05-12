@@ -15,7 +15,7 @@
         <div class="d-flex">
         {{! TODO agregar boton de borrado dentro del form }}
             {{^experience.data.status}} 
-            <a href="{{editurl}}{{data.id}}" class="mr-3 shadow-none" title="{{#str}}edit, local_dta{{/str}}">
+            <a href="#" class="mr-3 shadow-none" id="edit-experience-button" title="{{#str}}edit, local_dta{{/str}}">
                 <i class="fa fa-pencil fa-lg text-primary"></i>
             </a>
             <a href="{{deleteurl}}{{data.id}}" class="mr-3 shadow-none" title="{{#str}}delete, local_dta{{/str}}">

@@ -40,20 +40,20 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->form_case_delete_header);
 
 if (!$case = Cases::get_case($id)) {
-    print_error('invalidcases', 'local_dta');
+    throw new moodle_exception('invalidcases', 'local_dta');
 }
 
 // Check permissions
-if (local_dta_check_permissions_case($case, $USER) == false) {
-    print_error('errorpermissions', 'local_dta');
+if (!Cases::check_permissions($case, $USER)) {
+    throw new moodle_exception('errorpermissions', 'local_dta');
 }
 
 // Check if the delete hash is correct
 if ($delete === md5($case->timecreated)) {
     if (!Cases::delete_case($id)) {
-        print_error('errordeletecase', 'local_dta');
+        throw new moodle_exception('errordeletecase', 'local_dta');
     }
-    redirect(new moodle_url('/local/dta/pages/cases/repository.php'), get_string('form_case_delete_yes', 'local_dta'));
+    redirect(new moodle_url('/local/dta/pages/cases/index.php'), get_string('form_case_delete_yes', 'local_dta'));
     exit;
 }
 

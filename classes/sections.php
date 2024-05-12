@@ -144,7 +144,7 @@ class Sections
             $record->timecreated = $current_section->timecreated;
             $DB->update_record(self::$table, $section);
         } else {
-            $record->id = $DB->insert_record(self::$table, $section);
+            $record->id = $DB->insert_record(self::$table, $record);
         }
         return $section;
     }
@@ -162,7 +162,12 @@ class Sections
         $record->component         = $section->component;
         $record->componentinstance = $section->componentinstance;
         $record->groupid           = $section->groupid;
-        $record->sequence          = $section->sequence;
+        $record->sequence          = property_exists($section, 'sequence')
+            ? $section->sequence
+            : self::get_next_available_sequence_for_component(
+                $section->component,
+                $section->componentinstance,
+                $section->groupid);
         $record->sectiontype       = $section->sectiontype;
         $record->content           = $section->content;
         $record->timecreated       = time();
@@ -176,7 +181,7 @@ class Sections
      * @param  object $section The section object to check.
      */
     private static function validate_metadata(object $section) {
-        $keys = ['component', 'componentinstance', 'groupid', 'sequence', 'sectiontype'];
+        $keys = ['component', 'componentinstance', 'groupid', 'sectiontype'];
         $missing_keys = [];
         foreach ($keys as $key) {
             if (!property_exists($section, $key) || empty($section->{$key}) || is_null($section->{$key})) {
@@ -281,4 +286,22 @@ class Sections
         return $group;
     }
 
+    /**
+     * Get the next available sequence for a component.
+     * 
+     * @param  int $component The component id.
+     * @param  int $componentinstance The component instance id.
+     * @param  int $groupid The group id.
+     * @return int The next available sequence.
+     */
+    public static function get_next_available_sequence_for_component(int $component, int $componentinstance, int $groupid) : int {
+        global $DB;
+        if (!$sequence = $DB->get_field(self::$table, 'MAX(sequence)', [
+                'component' => $component,
+                'componentinstance' => $componentinstance,
+                'groupid' => $groupid])) {
+            return 1;
+        }
+        return $sequence + 1;
+    }
 }

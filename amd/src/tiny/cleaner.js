@@ -1,19 +1,22 @@
 import $ from "jquery";
 
+/**
+ * Clean the bottom box of the editor.
+ * @return {void}
+ */
 const cleanBottomBox = () => {
-  const observer = new MutationObserver((mutations, obs) => {
-    const statusBar = $(".tox-statusbar");
-    const textContainer = $(".tox-statusbar__text-container");
+    const observer = new MutationObserver((mutations, obs) => {
+        const statusBar = $(".tox-statusbar");
+        const textContainer = $(".tox-statusbar__text-container");
+        if (statusBar.length && textContainer.length) {
+            statusBar.css("border-top", "none");
+            textContainer.remove();
 
-    if (statusBar.length && textContainer.length) {
-      statusBar.css("border-top", "none");
-      textContainer.remove();
-
-      obs.disconnect();
-    }
-  });
-  const config = { childList: true, subtree: true };
-  observer.observe(document.body, config);
+            obs.disconnect();
+        }
+    });
+    const config = { childList: true, subtree: true };
+    observer.observe(document.body, config);
 };
 
 /**
@@ -21,23 +24,23 @@ const cleanBottomBox = () => {
  * @return {void}
  */
 function cleanMenus() {
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.addedNodes.length) {
-        const positionToRemove = [ 1, 2,4];
-        $(".tox-menubar").each(function () {
-          $(this).find("button").each(function (i, el) {
-            if (positionToRemove.includes(i)) {
-              $(el).hide();
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.addedNodes.length) {
+                const positionToRemove = [ 1, 2,4];
+                $(".tox-menubar").each(function () {
+                    $(this).find("button").each(function (i, el) {
+                        if (positionToRemove.includes(i)) {
+                            $(el).hide();
+                        }
+                    } );
+                });
             }
-          } );
         });
-      }
     });
-  });
 
-  const config = { childList: true, subtree: true };
-  observer.observe(document.body, config);
+    const config = { childList: true, subtree: true };
+    observer.observe(document.body, config);
 }
 
 /**
@@ -45,6 +48,6 @@ function cleanMenus() {
  * @return {void}
  * */
 export function clean() {
-  cleanBottomBox();
-  cleanMenus();
+    cleanBottomBox();
+    cleanMenus();
 }

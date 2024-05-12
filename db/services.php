@@ -24,7 +24,16 @@
 
 $functions = [
 
-    // EXPERIENCES
+    // Experiences
+    'local_dta_experiences_get' => [
+        'classname'   => 'external_experiences_get',
+        'methodname'  => 'experiences_get',
+        'classpath'   => 'local/dta/classes/webservices/experiences/external_experiences_get.php',
+        'description' => 'Get all experiences',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     'local_dta_experiences_upsert' => [
         'classname'   => 'external_experiences_upsert',
         'methodname'  => 'experiences_upsert',
@@ -44,7 +53,7 @@ $functions = [
         'ajax'        => true,
     ],
 
-    // CASES
+    // Cases
     'local_dta_cases_edit' => [
         'classname'   => 'external_cases_edit',
         'methodname'  => 'cases_edit',
@@ -64,7 +73,18 @@ $functions = [
         'ajax'        => true,
     ],
 
-    // RESOURCES
+    // Languages
+    'local_dta_languages_get' => [
+        'classname'   => 'external_languages_get',
+        'methodname'  => 'languages_get',
+        'classpath'   => 'local/dta/classes/webservices/languages/external_languages_get.php',
+        'description' => 'Get all languages',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
+    // Resources
     'local_dta_resources_upsert' => [
         'classname'   => 'external_resources_upsert',
         'methodname'  => 'resources_upsert',
@@ -84,7 +104,7 @@ $functions = [
         'ajax'        => true,
     ],
 
-    // SECTIONS
+    // Sections
     'local_dta_sections_upsert' => [
         'classname'    => 'external_sections_upsert',
         'methodname'   => 'sections_upsert',
@@ -104,7 +124,7 @@ $functions = [
         'ajax'         => true,
     ],
 
-    // CONTEXT 
+    // Context 
     'local_dta_context_insert' => [
         'classname'   => 'external_context_insert',
         'methodname'  => 'context_insert',
@@ -124,7 +144,7 @@ $functions = [
         'ajax'        => true,
     ],
 
-    // REACTIONS
+    // Reactions
     'local_dta_reactions_get_comments' => [
         'classname'   => 'external_reactions_get_comments',
         'methodname'  => 'reactions_get_comments',
@@ -162,31 +182,51 @@ $functions = [
         'ajax'        => true,
     ],
 
-    // TAGS
-    'local_dta_get_tags' => [
-        'classname'   => 'external_get_tags',
-        'methodname'  => 'get_tags',
-        'classpath'   => 'local/dta/classes/webservices/tags/external_get_tags.php',
+    // Themes
+    'local_dta_themes_get' => [
+        'classname'   => 'external_themes_get',
+        'methodname'  => 'themes_get',
+        'classpath'   => 'local/dta/classes/webservices/themes/external_themes_get.php',
+        'description' => 'Get all themes by text',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
+    // Tags
+    'local_dta_tags_get' => [
+        'classname'   => 'external_tags_get',
+        'methodname'  => 'tags_get',
+        'classpath'   => 'local/dta/classes/webservices/tags/external_tags_get.php',
         'description' => 'Get all tags by text',
         'type'        => 'read',
         'requirelogin' => true,
         'ajax'        => true,
     ],
     'local_dta_create_tags' => [
-        'classname'   => 'external_create_tags',
+        'classname'   => 'external_tags_create',
         'methodname'  => 'create_tags',
-        'classpath'   => 'local/dta/classes/webservices/tags/external_create_tags.php',
+        'classpath'   => 'local/dta/classes/webservices/tags/external_tags_create.php',
         'description' => 'Create tags',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ], 
 
-    // FILES
+    // Files
+    'local_dta_prepare_draft_area_html' => [
+        'classname'   => 'external_files_prepare_draft_area_html',
+        'methodname'  => 'prepare_draft_area_html',
+        'classpath'   => 'local/dta/classes/webservices/files/external_files_prepare_draft_area_html.php',
+        'description' => 'Prepare draft area html',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     'local_dta_upload_file_from_draft' => [
-        'classname'   => 'external_upload_file_from_draft',
+        'classname'   => 'external_files_upload_from_draft',
         'methodname'  => 'upload_file_from_draft',
-        'classpath'   => 'local/dta/classes/webservices/files/external_upload_file_from_draft.php',
+        'classpath'   => 'local/dta/classes/webservices/files/external_files_upload_from_draft.php',
         'description' => 'Upload a file',
         'type'        => 'write',
         'requirelogin' => true,

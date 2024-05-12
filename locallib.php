@@ -315,7 +315,7 @@ function local_dta_get_element_translation(string $element, string $string) : st
         default:
             return $string;
     }
-    if (!in_array($string, $elements)) {
+    if (!in_array($string, $elements) and !array_key_exists($string, $elements)) {
         return $string;
     }
     return get_string($element . ":" . strtolower(str_replace("?", "", str_replace(" ", "_", $string))), 'local_dta');

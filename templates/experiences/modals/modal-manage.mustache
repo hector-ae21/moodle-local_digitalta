@@ -1,0 +1,104 @@
+{{< core/modal }}
+    {{$title}}
+        {{ modal.title }}
+    {{/title}}
+    {{$body}}
+        <form>
+            <input type="hidden" id="experience-add-id" name="experience-add-id" value="{{current.id}}" />
+            <div class="d-flex flex-column">
+                <div class="form-row mb-3">
+                    <div class="form-group col-md-12">
+                        {{ modal.description }}
+                    </div>
+                    <div class="form-group col-md-12">
+                        {{#str}} general:required, local_dta {{/str}}
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="form-group col-md-12">
+                        <label for="experience-add-title" class="text-secondary dta-required">
+                            {{{ modal.sections.title.label }}}
+                        </label>
+                        <input type="text" value="{{current.title}}" class="form-control" id="experience-add-title" name="experience-add-title" placeholder="{{{ modal.sections.title.placeholder }}}" required />
+                    </div>
+                </div>
+                <!-- @EXPERIENCE_PICTURE TODO: Add picture to experience creation
+                <div class="form-row mb-3">
+                    <div class="form-group col-md-12">
+                        <label for="experience-add-picture" class="text-secondary">
+                            {{{ modal.sections.picture.label }}}
+                        </label>      
+                        <div id="experience-add-picture" class="img-picker col-md-5 rounded">
+                        </div>
+                    </div>
+                </div>
+                -->
+                <div class="form-row mb-3">
+                    <div class="form-group col-sm-6 col-12 mb-3">
+                        <label for="experience-add-visibility" class="text-secondary dta-required">
+                            {{{ modal.sections.visibility.label }}}
+                        </label>
+                        <select id="experience-add-visibility" name="experience-add-visibility" class="form-control" value="{{current.visible}}" required>
+                            {{#modal.visibility}}
+                                {{#selected}}
+                                    <option value="{{key}}" class="text-capitalize" selected>{{{value}}}</option>
+                                {{/selected}}
+                                {{^selected}}
+                                    <option value="{{key}}" class="text-capitalize">{{{value}}}</option>
+                                {{/selected}}
+                            {{/modal.visibility}}
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6 col-12">
+                        <label for="experience-add-lang" class="text-secondary dta-required">
+                            {{{ modal.sections.language.label }}}
+                        </label>
+                        <select id="experience-add-lang" name="experience-add-lang" class="form-control" value="{{current.lang}}" required>
+                            {{#modal.languages}}
+                                {{#selected}}
+                                    <option value="{{key}}" class="text-capitalize" selected>{{{value}}}</option>
+                                {{/selected}}
+                                {{^selected}}
+                                    <option value="{{key}}" class="text-capitalize">{{{value}}}</option>
+                                {{/selected}}
+                            {{/modal.languages}}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="form-group col-sm-6 col-12 mb-3">
+                        <label for="experience-add-themes" class="text-secondary dta-required">
+                            {{{ modal.sections.themes.label }}}
+                        </label>
+                        <select multiple class="form-control d-none" id="experience-add-themes" name="experience-add-themes" required>
+                            {{#current.themes}}
+                                <option selected value="{{id}}" data-active-selection="true" class="text-capitalize selected">{{name}}</option>
+                            {{/current.themes}}
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6 col-12">
+                        <label for="experience-add-tags" class="text-secondary">
+                            {{{ modal.sections.tags.label }}}
+                        </label>
+                        <select multiple class="form-control d-none" id="experience-add-tags" name="experience-add-tags">
+                            {{#current.tags}}
+                                <option selected value="{{id}}" data-active-selection="true" class="text-capitalize selected">{{name}}</option>
+                            {{/current.tags}}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row mb-3">
+                    <div class="form-group col-md-12">
+                        <label for="experience-add-description" class="text-secondary dta-required">
+                            {{#str}} teacheracademy:actions:add_experience:description, local_dta {{/str}}
+                        </label>
+                        <textarea id="experience-add-description" name="experience-add-description" rows="10" class="editor form-control" required>{{{current.description}}}</textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    {{/body}}
+    {{$footer}}
+        <button type="button" data-action="save" class="btn btn-primary">{{#str}} save, local_dta {{/str}}</button>
+    {{/footer}}
+{{/ core/modal }}

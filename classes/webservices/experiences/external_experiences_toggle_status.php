@@ -36,16 +36,26 @@ use local_dta\Experiences;
  */
 class external_experiences_toggle_status extends external_api
 {
-
+    /**
+     * Returns the description of the external function parameters
+     *
+     * @return external_function_parameters The external function parameters
+     */
     public static function experiences_toggle_status_parameters()
     {
         return new external_function_parameters(
-            array(
+            [
                 'id' => new external_value(PARAM_INT, 'experience ID'),
-            )
+            ]
         );
     }
 
+    /**
+     * Toggles the status of an experience
+     *
+     * @param  int   $id Experience ID
+     * @return array The result of the operation
+     */
     public static function experiences_toggle_status($id)
     {
         return [
@@ -54,6 +64,11 @@ class external_experiences_toggle_status extends external_api
         ];
     }
 
+    /**
+     * Returns the description of the external function returns
+     *
+     * @return external_single_structure The external function returns
+     */
     public static function experiences_toggle_status_returns()
     {
         return new external_single_structure(

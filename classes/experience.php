@@ -44,7 +44,7 @@ class Experience
     /** @var string The language of the experience. */
     public $lang;
 
-    /** @var string The video of the experience. */
+    /** @var int The video of the experience. */
     public $visible;
 
     /** @var int The status of the experience. */
@@ -55,9 +55,6 @@ class Experience
 
     /** @var string The date the experience was modified. */
     public $timemodified;
-
-    /** @var string The picture of the experience. */
-    public $picture;
 
     /**
      * Constructor.

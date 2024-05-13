@@ -210,29 +210,6 @@ function xmldb_local_dta_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024050702, 'local', 'dta');
     }
 
-    if ($oldversion < 2024051200) {
-
-        // Define table digital_languages to be created.
-        $table = new xmldb_table('digital_languages');
-
-        // Adding fields to table digital_languages.
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
-        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
-
-        // Adding keys to table digital_languages.
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-
-        // Conditionally launch create table for digital_languages.
-        if (!$dbman->table_exists($table)) {
-            $dbman->create_table($table);
-        }
-
-        // Dta savepoint reached.
-        upgrade_plugin_savepoint(true, 2024051200, 'local', 'dta');
-    }
-
     // Try all insertions regardless of the version
     // Insert the components
     $table = new xmldb_table('digital_components');
@@ -308,21 +285,6 @@ function xmldb_local_dta_upgrade($oldversion)
             $resource_format->timecreated = time();
             $resource_format->timemodified = time();
             $DB->insert_record('digital_resources_formats', $resource_format);
-        }
-    }
-
-    // Insert the languages
-    $table = new xmldb_table('digital_languages');
-    if ($dbman->table_exists($table)) {
-        foreach (LOCAL_DTA_LANGUAGES as $key => $value) {
-            if ($DB->record_exists('digital_languages', ['name' => $key])) {
-                continue;
-            }
-            $language = new stdClass();
-            $language->name = $key;
-            $language->timecreated = time();
-            $language->timemodified = time();
-            $DB->insert_record('digital_languages', $language);
         }
     }
 

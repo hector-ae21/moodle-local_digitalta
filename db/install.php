@@ -94,13 +94,4 @@ function xmldb_local_dta_install() {
         $section->timemodified = time();
         $DB->insert_record('digital_sections_groups', $section);
     }
-
-    // Insert the languages
-    foreach (LOCAL_DTA_LANGUAGES as $key => $value) {
-        $language = new stdClass();
-        $language->name = $key;
-        $language->timecreated = time();
-        $language->timemodified = time();
-        $DB->insert_record('digital_languages', $language);
-    }
 }

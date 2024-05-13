@@ -10,7 +10,7 @@ import { getList } from "core/normalise";
 import { prepareDraftHTML, saveFiles } from "local_dta/files/filemanager";
 */
 import { SELECTORS } from "./main";
-import { upsertContext } from "local_dta/repositories/context_repository";
+import { contextUpsert } from "local_dta/repositories/context_repository";
 import * as Cfg from "core/config";
 import * as Str from "core/str";
 import $ from "jquery";
@@ -92,7 +92,6 @@ export const displayManageModal = async (strings, experienceid) => {
             selected: language.code === experience.lang
         };
     });
-    window.console.log(languages);
     let visibility = [
         { key: 1, value: strings[9] },
         { key: 0, value: strings[10] }
@@ -172,7 +171,6 @@ export const displayManageModal = async (strings, experienceid) => {
  * @param {Modal} modal
  */
 const handleManageModalSubmission = async (event, modal) => {
-    window.console.log("UHUHUHU");
     const form = getList(modal.getRoot())[0].querySelector("form");
     if (!form) {
         return;
@@ -190,7 +188,6 @@ const handleManageModalSubmission = async (event, modal) => {
             form.querySelectorAll('select[name="experience-add-tags"] option:checked'),
             option => option.value)
     };
-    window.console.log(formData);
     try {
         const response = await experienceUpsert(formData);
         /* @EXPERIENCE_PICTURE TODO: Add picture to experience creation
@@ -256,7 +253,7 @@ const handleResourceModal = () => {
     const contextid = [];
     seleccionados.forEach(async (resourceid) => {
         contextid.push(
-            upsertContext({
+            contextUpsert({
                 component: "experience",
                 componentinstance: experienceid,
                 modifier: "resource",
@@ -298,7 +295,7 @@ const handleCasesModal = () => {
     const contextid = [];
     seleccionados.forEach(async (caseid) => {
         contextid.push(
-            upsertContext({
+            contextUpsert({
                 component: "experience",
                 componentinstance: experienceid,
                 modifier: "case",

@@ -73,6 +73,46 @@ $functions = [
         'ajax'        => true,
     ],
 
+    // Context 
+    'local_dta_context_upsert' => [
+        'classname'   => 'external_context_upsert',
+        'methodname'  => 'context_upsert',
+        'classpath'   => 'local/dta/classes/webservices/context/external_context_upsert.php',
+        'description' => 'upsert a context',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_context_delete' => [
+        'classname'   => 'external_context_delete',
+        'methodname'  => 'context_delete',
+        'classpath'   => 'local/dta/classes/webservices/context/external_context_delete.php',
+        'description' => 'upsert a context',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
+    // Files
+    'local_dta_prepare_draft_area_html' => [
+        'classname'   => 'external_files_prepare_draft_area_html',
+        'methodname'  => 'prepare_draft_area_html',
+        'classpath'   => 'local/dta/classes/webservices/files/external_files_prepare_draft_area_html.php',
+        'description' => 'Prepare draft area html',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_upload_file_from_draft' => [
+        'classname'   => 'external_files_upload_from_draft',
+        'methodname'  => 'upload_file_from_draft',
+        'classpath'   => 'local/dta/classes/webservices/files/external_files_upload_from_draft.php',
+        'description' => 'Upload a file',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
     // Languages
     'local_dta_languages_get' => [
         'classname'   => 'external_languages_get',
@@ -80,6 +120,44 @@ $functions = [
         'classpath'   => 'local/dta/classes/webservices/languages/external_languages_get.php',
         'description' => 'Get all languages',
         'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
+    // Reactions
+    'local_dta_reactions_get_comments' => [
+        'classname'   => 'external_reactions_get_comments',
+        'methodname'  => 'reactions_get_comments',
+        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_get_comments.php',
+        'description' => 'Get comments for an instance of a component',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_reactions_add_comment' => [
+        'classname'   => 'external_reactions_add_comment',
+        'methodname'  => 'reactions_add_comment',
+        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_add_comment.php',
+        'description' => 'Add a comment for an instance of a component',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_reactions_toggle_like_dislike' => [
+        'classname'   => 'external_reactions_toggle_like_dislike',
+        'methodname'  => 'reactions_toggle_like_dislike',
+        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_toggle_like_dislike.php',
+        'description' => 'Toggle like or dislike for an instance of a a component',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_reactions_toggle_report' => [
+        'classname'   => 'external_reactions_toggle_report',
+        'methodname'  => 'reactions_toggle_report',
+        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_toggle_report.php',
+        'description' => 'toggle a report for an experience or a case',
+        'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
@@ -124,75 +202,6 @@ $functions = [
         'ajax'         => true,
     ],
 
-    // Context 
-    'local_dta_context_insert' => [
-        'classname'   => 'external_context_insert',
-        'methodname'  => 'context_insert',
-        'classpath'   => 'local/dta/classes/webservices/context/external_context_insert.php',
-        'description' => 'upsert a context',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_context_delete' => [
-        'classname'   => 'external_context_delete',
-        'methodname'  => 'context_delete',
-        'classpath'   => 'local/dta/classes/webservices/context/external_context_delete.php',
-        'description' => 'upsert a context',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
-    // Reactions
-    'local_dta_reactions_get_comments' => [
-        'classname'   => 'external_reactions_get_comments',
-        'methodname'  => 'reactions_get_comments',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_get_comments.php',
-        'description' => 'Get comments for an instance of a component',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_reactions_add_comment' => [
-        'classname'   => 'external_reactions_add_comment',
-        'methodname'  => 'reactions_add_comment',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_add_comment.php',
-        'description' => 'Add a comment for an instance of a component',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_reactions_toggle_like_dislike' => [
-        'classname'   => 'external_reactions_toggle_like_dislike',
-        'methodname'  => 'reactions_toggle_like_dislike',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_toggle_like_dislike.php',
-        'description' => 'Toggle like or dislike for an instance of a a component',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_reactions_toggle_report' => [
-        'classname'   => 'external_reactions_toggle_report',
-        'methodname'  => 'reactions_toggle_report',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_toggle_report.php',
-        'description' => 'toggle a report for an experience or a case',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
-    // Themes
-    'local_dta_themes_get' => [
-        'classname'   => 'external_themes_get',
-        'methodname'  => 'themes_get',
-        'classpath'   => 'local/dta/classes/webservices/themes/external_themes_get.php',
-        'description' => 'Get all themes by text',
-        'type'        => 'read',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
     // Tags
     'local_dta_tags_get' => [
         'classname'   => 'external_tags_get',
@@ -211,24 +220,15 @@ $functions = [
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
-    ], 
-
-    // Files
-    'local_dta_prepare_draft_area_html' => [
-        'classname'   => 'external_files_prepare_draft_area_html',
-        'methodname'  => 'prepare_draft_area_html',
-        'classpath'   => 'local/dta/classes/webservices/files/external_files_prepare_draft_area_html.php',
-        'description' => 'Prepare draft area html',
-        'type'        => 'read',
-        'requirelogin' => true,
-        'ajax'        => true,
     ],
-    'local_dta_upload_file_from_draft' => [
-        'classname'   => 'external_files_upload_from_draft',
-        'methodname'  => 'upload_file_from_draft',
-        'classpath'   => 'local/dta/classes/webservices/files/external_files_upload_from_draft.php',
-        'description' => 'Upload a file',
-        'type'        => 'write',
+
+    // Themes
+    'local_dta_themes_get' => [
+        'classname'   => 'external_themes_get',
+        'methodname'  => 'themes_get',
+        'classpath'   => 'local/dta/classes/webservices/themes/external_themes_get.php',
+        'description' => 'Get all themes by text',
+        'type'        => 'read',
         'requirelogin' => true,
         'ajax'        => true,
     ],

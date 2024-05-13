@@ -71,7 +71,7 @@ if ($experienceid) {
     $case               = new stdClass();
     $case->experienceid = $experienceid;
     $case->title        = $experience->title;
-    $case->description  = ""; // SECTIONS TODO
+    $case->description  = "";
     $case->lang         = $experience->lang;
     $case = Cases::add_case($case);
 } elseif ($caseid or $casetitle) {
@@ -80,7 +80,7 @@ if ($experienceid) {
         $case               = new stdClass();
         $case->title        = $casetitle;
         $case->description  = "";
-        $case->lang         = 'en'; // @LANGUAGES TODO: Hardcoded
+        $case->lang         = current_language();
         $case = Cases::add_case($case);
     };
 } else {
@@ -94,7 +94,7 @@ $sections = Sections::get_sections([
 
 $sectionheader = [
     'title' => $case->title,
-    'description' => '' // SECTIONS TODO
+    'description' => $case->description
 ];
 
 $template_context = [

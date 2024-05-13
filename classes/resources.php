@@ -62,9 +62,9 @@ class Resources
         if (!$resource = $DB->get_record(self::$table, ['id' => $id])) {
             return null;
         }
-        $resource = new Resource($resource);
+        $resource         = new Resource($resource);
         $resource->themes = Themes::get_themes_for_component('resource', $resource->id);
-        $resource->tags = Tags::get_tags_for_component('resource', $resource->id);
+        $resource->tags   = Tags::get_tags_for_component('resource', $resource->id);
         return $resource;
     }
 
@@ -79,9 +79,9 @@ class Resources
             return [];
         }
         $resources = array_values(array_map(function ($resource) {
-            $resource = new Resource($resource);
+            $resource         = new Resource($resource);
             $resource->themes = Themes::get_themes_for_component('resource', $resource->id);
-            $resource->tags = Tags::get_tags_for_component('resource', $resource->id);
+            $resource->tags   = Tags::get_tags_for_component('resource', $resource->id);
             return $resource;
         }, $resources));
         return $resources;
@@ -90,25 +90,21 @@ class Resources
     /**
      * Get resources based on provided filters.
      *
-     * @param  array $filters Array of filters to apply. Accepted: type, format, language.
+     * @param  array $filters Array of filters to apply. Accepted: type, format, lang.
      * @return array Array of filtered resources.
      */
     public static function get_resources(array $filters = []) : array {
         $resources = self::get_all_resources();
-
         if (empty($filters)) {
             return $resources;
         }
-
-        $allowed_filters = ['type', 'format', 'language'];
-
+        $allowed_filters = ['type', 'format', 'lang'];
         foreach ($filters as $filter_key => $filter_value) {
             if (!in_array($filter_key, $allowed_filters)) {
                 continue;
             }
             $resources = self::apply_filter($filter_key, $filter_value, $resources);
         }
-
         return $resources;
     }
 

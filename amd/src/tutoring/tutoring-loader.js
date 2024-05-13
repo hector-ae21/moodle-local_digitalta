@@ -9,6 +9,7 @@ define(['jquery', 'core/templates'], function($, Templates) {
                   .then(function(html, js) {
                       $('#chat-container').html(html);
                       Templates.runTemplateJS(js);
+                      return;
                   }).fail(function(ex) {
                     //eslint-disable-next-line no-console
                       console.warn('Failed to render chat detail template:', ex);
@@ -21,6 +22,7 @@ define(['jquery', 'core/templates'], function($, Templates) {
                   .then(function(html, js) {
                       $('#chat-container').html(html);
                       Templates.runTemplateJS(js);
+                      return;
                   }).fail(function(ex) {
                     //eslint-disable-next-line no-console
                       console.warn('Failed to render main chat template:', ex);
@@ -35,6 +37,8 @@ define(['jquery', 'core/templates'], function($, Templates) {
                   .then(function(html, js) {
                       $('#chat-container').html(html);
                       Templates.runTemplateJS(js);
+                      return;
+
                   }).fail(function(ex) {
                     //eslint-disable-next-line no-console
                       console.warn('Failed to render group chat template:', ex);
@@ -47,6 +51,7 @@ define(['jquery', 'core/templates'], function($, Templates) {
                   .then(function(html, js) {
                       $('#chat-container').html(html);
                       Templates.runTemplateJS(js);
+                      return;
                   }).fail(function(ex) {
                     //eslint-disable-next-line no-console
                       console.warn('Failed to render tutoring requests template:', ex);

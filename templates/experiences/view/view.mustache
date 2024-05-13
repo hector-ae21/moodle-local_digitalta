@@ -8,15 +8,7 @@
                 </div>
                 <div class="col-12 col-xl-3 mb-4">
                     <div class="col-12 mb-4">
-                        {{> local_dta/chat/index}}
-                    </div>
-                    <div class="col-12 mb-4">
-                        <div>
-                            {{> local_dta/chat/index}}
-                        </div>
-                    </div>
-                    <div class="col-12 mb-4">
-                        {{> local_dta/chat/index}}
+                        {{> local_dta/test/menu_mentor/index}}
                     </div>
                     <div class="col-12">
                         {{> local_dta/experiences/view/resources-card}}
@@ -26,9 +18,3 @@
         </div>
     </div>
 </div>
-
-{{#js}}
-require(['local_dta/tutoring/tutoring-loader'], function(chatHandler) {
-chatHandler.init();
-});
-{{/js}}

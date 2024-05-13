@@ -1,114 +1,370 @@
-<div class="availability container card">
-    <h2>EDIT AVAILABILITY</h2>
-    <div class="day-selector">
-        <span class="day-circle" data-day="M">M</span>
-        <span class="day-circle" data-day="T">T</span>
-        <span class="day-circle" data-day="W">W</span>
-        <span class="day-circle" data-day="T">T</span>
-        <span class="day-circle" data-day="F">F</span>
-        <span class="day-circle" data-day="S">S</span>
-        <span class="day-circle" data-day="S">S</span>
+<div class="card mt-5">
+  <h2 class="ml-2 mb-4">EDIT AVAILABILITY</h2>
+  <div class="form-check ml-2 mb-3">
+    <input class="form-check-input" type="checkbox" id="anyTime" />
+    <label class="form-check-label" for="anyTime">Any Time</label>
+  </div>
+  <div
+    class="tiles-group-availability mb-4"
+    aria-label="Days of the week"
+  >
+    <div class="tile">
+      <input
+        type="checkbox"
+        class="day-checkbox"
+        name="monday"
+        id="monday"
+        autocomplete="off"
+        hidden
+      />
+      <div class="tile-label">
+        <label for="monday">Mon</label>
+      </div>
     </div>
-    <div id="day-schedules">
-        <!-- Schedules for each day will be dynamically inserted here -->
+
+    <div class="tile">
+      <input
+        type="checkbox"
+        class="day-checkbox"
+        name="tuesday"
+        id="tuesday"
+        autocomplete="off"
+        hidden
+      />
+      <div class="tile-label">
+        <label for="tuesday">Tue</label>
+      </div>
     </div>
+
+    <div class="tile">
+      <input
+        type="checkbox"
+        class="day-checkbox"
+        name="wednesday"
+        id="wednesday"
+        autocomplete="off"
+        hidden
+      />
+      <div class="tile-label">
+        <label for="wednesday">Wed</label>
+      </div>
+    </div>
+
+    <div class="tile">
+      <input
+        type="checkbox"
+        class="day-checkbox"
+        name="thursday"
+        id="thursday"
+        autocomplete="off"
+        hidden
+      />
+      <div class="tile-label">
+        <label for="thursday">Thu</label>
+      </div>
+    </div>
+
+    <div class="tile">
+      <input
+        type="checkbox"
+        class="day-checkbox"
+        name="friday"
+        id="friday"
+        autocomplete="off"
+        hidden
+      />
+      <div class="tile-label">
+        <label for="friday">Fri</label>
+      </div>
+    </div>
+
+    <div class="tile">
+      <input
+        type="checkbox"
+        class="day-checkbox"
+        name="saturday"
+        id="saturday"
+        autocomplete="off"
+        hidden
+      />
+      <div class="tile-label">
+        <label for="saturday">Sat</label>
+      </div>
+    </div>
+
+    <div class="tile">
+      <input
+        type="checkbox"
+        class="day-checkbox"
+        name="sunday"
+        id="sunday"
+        autocomplete="off"
+        hidden
+      />
+      <div class="tile-label">
+        <label for="sunday">Sun</label>
+      </div>
+    </div>
+  </div>
+
+  <div id="scheduleContainer"></div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
-$(document).ready(function() {
-    $('.day-circle').click(function() {
-        $(this).toggleClass('active');
-        var day = $(this).data('day');
-        if ($(this).hasClass('active')) {
-            if ($('#' + day).length === 0) {
-                $('#day-schedules').append('<div id="' + day + '" class="day-schedule"><h3>' + day + '</h3><div class="time-slot"><input type="time"> to <input type="time"><button class="add">+</button></div></div>');
-            }
-        } else {
-            $('#' + day).remove();
-        }
-    });
+const days = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+const scheduleContainer = document.getElementById("scheduleContainer");
+const checkboxes = document.querySelectorAll(".day-checkbox");
 
-    $('#day-schedules').on('click', '.add', function() {
-        var $parent = $(this).parent();
-        $(this).remove();
-        $parent.append('<button class="remove">-</button>');
-        var newSlot = $parent.clone().find('input').val('').end();
-        newSlot.find('.remove').siblings('.add').remove();
-        newSlot.appendTo($parent.parent());
-        newSlot.append('<button class="add">+</button>');
-    });
+checkboxes.forEach((checkbox, index) => {
+  checkbox.addEventListener("change", function () {
+    checkbox.parentNode.classList.toggle("bg-zinc-400", checkbox.checked);
 
-    $('#day-schedules').on('click', '.remove', function() {
-        $(this).parent().remove();
-    });
+    const dayId = days[index];
+    if (checkbox.checked) {
+      // Create the day block only if it doesn't already exist
+      if (!document.getElementById(dayId)) {
+        const dayBlock = document.createElement("div");
+        dayBlock.setAttribute("id", dayId);
+        dayBlock.classList.add(
+          "row",
+          "mb-3",
+          "day-block",
+          "p-2",
+          "d-flex",
+          "justify-content-between",
+          "align-items-center"
+        );
+        dayBlock.innerHTML = `
+         <div class="col">
+           <h5>${dayId}</h5>
+         </div>
+         <div class="col d-fflex">
+           <div class="input-group mb-3">
+             <div class="time-range">
+               <input type="text" class="form-control time-input" placeholder="09:00" />
+               <span class="to-label">to</span>
+               <input type="text" class="form-control time-input" placeholder="17:00" />
+             </div>
+             <button
+               class="btn btn-outline-primary"
+               type="button"
+               onclick="addTimeRange(this)"
+             >
+               <i class="fa fa-plus"></i>
+             </button>
+             <button
+               class="btn btn-outline-secondary d-none"
+               type="button"
+               onclick="removeTimeRange(this)"
+             >
+               <i class="fa fa-minus"></i>
+             </button>
+           </div>
+         </div>
+
+                `;
+        insertDayBlockInOrder(dayBlock, index);
+      }
+    } else {
+      const dayToRemove = document.getElementById(dayId);
+      if (dayToRemove) {
+        scheduleContainer.removeChild(dayToRemove);
+      }
+    }
+  });
 });
+
+function insertDayBlockInOrder(dayBlock, dayIndex) {
+  const existingBlocks = scheduleContainer.children;
+  if (existingBlocks.length === 0) {
+    scheduleContainer.appendChild(dayBlock);
+  } else {
+    let inserted = false;
+    for (let i = 0; i < existingBlocks.length; i++) {
+      const existingBlockIndex = days.indexOf(existingBlocks[i].id);
+      if (dayIndex < existingBlockIndex) {
+        scheduleContainer.insertBefore(dayBlock, existingBlocks[i]);
+        inserted = true;
+        break;
+      }
+    }
+    if (!inserted) {
+      scheduleContainer.appendChild(dayBlock);
+    }
+  }
+}
+
+function addTimeRange(button) {
+  const parentDiv = button.parentNode;
+  const newTimeRange = parentDiv.cloneNode(true);
+  newTimeRange.querySelectorAll("input").forEach((input) => (input.value = "")); // Clear the inputs in the cloned element
+
+  // Get all minus buttons in the container and make them visible
+  const allMinusButtons =
+    parentDiv.parentNode.querySelectorAll(".minus-button");
+  allMinusButtons.forEach((button) => {
+    button.classList.remove("d-none");
+    button.classList.add("d-block");
+  });
+
+  // Add the new time range block
+  parentDiv.parentNode.insertBefore(newTimeRange, parentDiv.nextSibling);
+
+  // Hide the add button in the previous block and show only in the last block
+  const addButtons = parentDiv.parentNode.querySelectorAll(".add-button");
+  addButtons.forEach((btn) => btn.classList.add("d-none"));
+  addButtons[addButtons.length - 1].classList.remove("d-none");
+
+  updateRemoveButtons(parentDiv.parentNode);
+}
+
+function removeTimeRange(button) {
+  const parentDiv = button.parentNode;
+  const containerDiv = parentDiv.parentNode;
+  if (containerDiv.childElementCount > 1) {
+    containerDiv.removeChild(parentDiv);
+  }
+  updateRemoveButtons(containerDiv);
+}
+
+function updateRemoveButtons(containerDiv) {
+  const removeButtons = containerDiv.querySelectorAll(".minus-button");
+  if (containerDiv.childElementCount === 1) {
+    removeButtons[0].classList.remove("d-block");
+    removeButtons[0].classList.add("d-none");
+  } else {
+    removeButtons.forEach((button) => {
+      button.classList.remove("d-none");
+      button.classList.add("d-block");
+    });
+  }
+
+  // Ensure the add button is only visible in the last block
+  const lastAddButton =
+    containerDiv.lastElementChild.querySelector(".add-button");
+  if (lastAddButton) {
+    lastAddButton.classList.remove("d-none");
+    lastAddButton.classList.add("d-block");
+  }
+}
 
 </script>
 
 <style>
-.availability {
-    font-family: Arial, sans-serif;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    width: 300px;
-}
+  /* Basic styling for the tile and tile-label */
+  .tile {
+    display: inline-block;
+    user-select: none; /* Prevent text selection */
+    margin: 5px; /* Spacing between tiles */
+  }
 
-.availability h2 {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 20px;
-}
+  .tile-label {
+    border: 2px solid #062f4a; /* Border resembling a button */
+    color: #062f4a; /* Text color */
+    padding: 10px 20px; /* Padding to make it visually appealing */
+    border-radius: 5px; /* Rounded corners like a button */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+    display: inline-block; /* Ensures the .tile-label only takes up as much space as needed */
+  }
 
-.day-selector {
+  /* Make the label cover the entire tile-label */
+  .tile-label label {
+    display: block; /* Makes the label block-level */
+    width: 100%; /* Ensures the label covers the full width of its parent */
+    margin: 0; /* Align label text properly within the padding of tile-label */
+    cursor: pointer; /* Cursor indicates clickable area */
+  }
+
+  /* Hide the actual checkbox */
+  .day-checkbox {
+    display: none;
+  }
+
+  /* Style when the checkbox is checked */
+  .tile input[type="checkbox"]:checked + .tile-label {
+    background-color: #062f4a; /* Change background color */
+    color: white; /* Change text color */
+    border-color: #062f4a; /* Optional: change border color to match */
+  }
+
+/**/
+
+.input-group {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+    flex-wrap: nowrap; /* Prevents wrapping of elements */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space distribution */
+    width: 100%; /* Full width to ensure alignment */
 }
 
-.day-circle {
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
+.time-range {
+    display: flex;
+    flex: 1 1 auto; /* Allows the container to grow and shrink but respects the base size */
+    margin-right: 10px; /* Space before buttons */
+}
+
+.time-range .form-control {
+    flex: 1; /* Allows input fields to grow and fill the space */
     text-align: center;
-    border-radius: 50%;
-    border: 1px solid #007bff;
-    cursor: pointer;
+    border-radius: 5px 0 0 5px; /* Only left corners rounded for the first input */
+    border: 2px solid #ccc;
+    min-width: 50px; /* Minimum width to ensure inputs don't disappear */
 }
 
-.day-circle.active {
-    background-color: #007bff;
-    color: white;
-}
-
-.day-schedule {
-    margin-bottom: 10px;
-}
-
-.time-slot {
+.time-range .to-label {
+    padding: 0 10px; /* Padding around 'to' text */
+    background-color: #fff; /* Matching background */
+    border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    align-self: stretch;
     display: flex;
-    align-items: center;
-    margin-bottom: 5px;
+    align-items: center; /* Center text vertically */
 }
 
-.time-slot input[type="time"] {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 5px;
-    margin-right: 5px;
+.time-range .form-control:last-child {
+    border-radius: 0 5px 5px 0; /* Only right corners rounded for the second input */
 }
 
-.time-slot button {
-    background-color: #007bff;
-    border: none;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
+.btn {
+    padding: 5px 10px; /* Smaller padding for a more compact look */
+    white-space: nowrap; /* Prevents button text from wrapping */
 }
 
-.time-slot button.remove {
-    background-color: #ff6347; /* Tomato red for remove button */
+.fa {
+    color: #062f4a; /* Icon color */
 }
+
+/* Button adjustments */
+.btn-outline-primary {
+    border-color: #062f4a; /* Bootstrap primary color */
+}
+
+.btn-outline-secondary {
+    border-color: #6c757d; /* Bootstrap secondary color */
+}
+
+@media (max-width: 576px) { /* Adjust based on your breakpoint needs */
+    .input-group {
+        flex-direction: column; /* Stack them vertically if absolutely necessary */
+        align-items: stretch; /* Align stretch to make input group width 100% */
+    }
+
+    .time-range {
+        margin-bottom: 10px; /* Space between inputs and buttons when stacked */
+    }
+
+    .btn {
+        width: 100%; /* Full width buttons on smaller screens */
+    }
+}
+
+
 </style>

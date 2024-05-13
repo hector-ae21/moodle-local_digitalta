@@ -1,0 +1,21 @@
+<section data-section-name="dta-mentor-repository-title">
+  <div class="container-fluid d-flex">
+    <h1 class="dta-title display-3">
+      {{#str}}mentor_page_title, local_dta{{/str}}
+    </h1>
+  </div>
+</section>
+
+<div class="searchbar shadow d-flex flex-row align-items-center">
+  {{> local_dta/mentors/searchbar }}
+</div>
+<div class="content">
+  <div class="cards-repository">
+    <input id="numLoaded" type="hidden" value={{numToLoad}} />
+    <div id="mentor-list" class="d-flex flex-row flex-wrap justify-content-start">
+      {{> local_dta/mentors/mentors-list }}
+    </div>
+  </div>
+  <button class="btn btn-primary" id="load-more-button" value="{{numToLoad}}">Load More</button>
+  {{> local_dta/general/top-of-scroll-button}}
+</div>

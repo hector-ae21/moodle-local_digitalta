@@ -31,10 +31,13 @@ require_once($CFG->dirroot . '/local/dta/classes/sections.php');
 require_once($CFG->dirroot . '/local/dta/classes/tinyeditorhandler.php');
 require_once($CFG->dirroot . '/local/dta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/local/dta/locallib.php');
+require_once($CFG->dirroot . '/local/dta/classes/googlemeet/client.php');
 
 use local_dta\Cases;
+use local_dta\client;
 use local_dta\Components;
 use local_dta\Experiences;
+use local_dta\helper;
 use local_dta\Resources;
 use local_dta\Sections;
 use local_dta\TinyEditorHandler;
@@ -42,7 +45,24 @@ use local_dta\utils\FilterUtils;
 
 require_login();
 
-global $CFG, $PAGE, $OUTPUT , $USER;
+global $CFG, $PAGE, $OUTPUT, $USER;
+
+function get_googlemeet_call_button()
+{
+    $client = new client(1);
+    if (!$client->enabled) {
+        return;
+    }
+    if ($client->check_login()) {
+        $client->logout();
+    }
+    $meetingrecord = helper::get_googlemeet_record(1);
+    if ($meetingrecord) {
+        return '<button class="btn btn-primary" onclick="window.open(\'https://meet.google.com/' . $meetingrecord->meetingcode . '\', \'_blank\');">' . get_string('tutoring:videocallbutton', 'local_dta') . '</button>';
+    } else {
+        return $client->print_login_popup(1);
+    }
+}
 
 // Seting the page url and context
 $id = required_param('id', PARAM_INT);
@@ -52,7 +72,7 @@ $PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
 $PAGE->requires->js_call_amd('local_dta/experiences/main', 'init');
 
 // Get the experience
-if(!$experience = Experiences::get_experience($id)) {
+if (!$experience = Experiences::get_experience($id)) {
     throw new moodle_exception('invalidexperience', 'local_dta');
 }
 
@@ -117,7 +137,9 @@ $template_context = [
     //],
 ];
 
+
 $template_context = FilterUtils::apply_filter_to_template_object($template_context);
+$template_context['googlemeetcall']['button'] = get_googlemeet_call_button();
 
 echo $OUTPUT->render_from_template('local_dta/experiences/view/view', $template_context);
 

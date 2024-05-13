@@ -11,6 +11,9 @@
 // Plugin-related strings
 $string['pluginname'] = 'DigitalTA';
 
+// Settings
+$string['config:issuerid'] = 'OAuth service for Google Meet integration';
+
 // General
 $string['general:platform_name']       = 'Teacher Academy';
 $string['general:required']            = '<span style="color: red;">*</span> Elements marked with a red asterisk are required.';
@@ -213,8 +216,6 @@ $string['cases_header'] = 'Cases';
 $string['cases_title'] = 'Cases';
 $string['cases_add_new_case'] = 'Add new case';
 
-
-
 // Reaction Buttons
 $string['reaction_buttons_flag_title'] = 'Report';
 
@@ -237,6 +238,31 @@ $string['date_justnow'] = 'Just now';
 // Repository 
 $string['repository_title'] = 'Resource Repository';
 $string['repository_header'] = 'Resource Repository';
+
+// Mentor Repository - MyTutoring
+$string['mentor_page_title'] = 'Mentors';
+$string['mentor_searchbar_placeholder'] = 'Search a mentor...';
+$string['mentor_card_action_add_contact'] = 'Request contact';
+$string['mentor_card_action_send_email'] = 'Send email';
+$string['mentor_card_action_view_profile'] = 'View profile';
+
+// Filters
+$string['filter_themes_label'] = 'Themes';
+$string['filter_themes_placeholder'] = 'Select a theme...';
+$string['filter_tags_label'] = 'Tags';
+$string['filter_tags_placeholder'] = 'Select a tag...';
+$string['filter_language_label'] = 'Language';
+$string['filter_language_placeholder'] = 'Select a language...';
+
+// Tutoring
+$string['tutoring:request'] = 'Tutoring Request';
+$string['tutoring:title'] = 'MY TUTORING';
+$string['tutoring:back_to_chat'] = 'Back to chat';
+$string['tutoring:mentor_comments'] = 'Mentor comments';
+$string['tutoring:see_all_mentors'] = 'See all mentors';
+$string['tutoring:open_chats'] = 'Open chats';
+$string['tutoring:view_tooltip'] = 'View tooltip';
+$string['tutoring:videocallbutton'] = 'Start Google Meet call';
 
 
 

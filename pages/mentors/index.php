@@ -23,54 +23,81 @@
  */
 
 require_once(__DIR__ . '/../../../../config.php');
-require_once($CFG->dirroot . '/local/dta/classes/components.php');
-require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
-require_once($CFG->dirroot . '/local/dta/classes/utils/filterutils.php');
-require_once($CFG->dirroot . '/local/dta/classes/utils/stringutils.php');
+require_once($CFG->dirroot . '/local/dta/classes/mentors.php');
 
 require_login();
 
-use local_dta\Components;
-use local_dta\Experiences;
-use local_dta\utils\FilterUtils;
-use local_dta\utils\StringUtils;
+use local_dta\Mentor;
 
-global $CFG, $PAGE, $OUTPUT;
+$strings = get_strings(['mentor_page_title'], "local_dta");
 
-$strings = get_strings(['experiences_header', 'experiences_title'], "local_dta");
-
-// Setea el título de la página
-$PAGE->set_url(new moodle_url('/local/dta/pages/experiences/dashboard.php'));
+$PAGE->set_url(new moodle_url('/local/dta/pages/mentors/index.php'));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->experiences_title);
-$PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
+$PAGE->set_title($strings->mentor_page_title);
+$PAGE->requires->js_call_amd('local_dta/mentors/main', 'init');
 
 echo $OUTPUT->header();
 
-$experiences = Experiences::get_all_experiences(false);
-$experiences = array_map(function ($experience) {
-    $experience->description = ""; // SECTIONS TODO
-    return $experience;
-}, $experiences);
+// get chunk of mentors
+$numToLoad = 10; // number of mentors to load
+$mentors = Mentor::get_mentor_chunk(0, $numToLoad);
+$formattedMentors = [];
 
-$user = get_complete_user_data("id", $USER->id);
-$picture = new user_picture($user);
-$picture->size = 101;
-$user->imageurl = $picture->get_url($PAGE)->__toString();
 
-$template_context = [
-    "user" => $user,
-    "instance" => Components::get_component_by_name('experience')->id,
-    "experiences" => [
-        "data" => $experiences,
-        "showcontrolsadmin" => is_siteadmin($USER),
-        "addurl" => $CFG->wwwroot . "/local/dta/pages/experiences/manage.php",
-        "viewurl" => $CFG->wwwroot . '/local/dta/pages/experiences/view.php?id='
-    ],
+
+foreach ($mentors as $mentor) {
+    $newMentor = new stdClass();
+    $newMentor->id = $mentor->id;
+    $newMentor->name = $mentor->firstname . " " . $mentor->lastname;
+    $newMentor->position = "Teacher at University of Salamanca";
+
+    $mentor_picture = new user_picture($mentor);
+    $mentor_picture->size = 101;
+    $newMentor->imageurl = $mentor_picture->get_url($PAGE)->__toString();
+
+    $newMentor->viewprofileurl = $CFG->wwwroot . "/local/dta/pages/profile/index.php?id=" . $mentor->id;
+    $newMentor->addcontacturl = "#";
+    $newMentor->sendemailurl = "#";
+    $newMentor->tags = [
+        [
+            "id" => 1,
+            "name" => "Tag 1",
+        ],
+        [
+            "id" => 2,
+            "name" => "Tag 2",
+        ],
+        [
+            "id" => 3,
+            "name" => "Tag 3",
+        ],
+    ];
+    $newMentor->themes = [
+        [
+            "id" => 1,
+            "name" => "Theme 1",
+        ],
+        [
+            "id" => 2,
+            "name" => "Theme 2",
+        ],
+        [
+            "id" => 3,
+            "name" => "Theme 3",
+        ],
+    ];
+
+    array_push($formattedMentors, $newMentor);
+}
+
+$templatecontext = [
+    "mentors"=> $formattedMentors,
+    "ismentorcardvertical" => true,
+    "numToLoad" => $numToLoad,
 ];
 
-$template_context = FilterUtils::apply_filter_to_template_object($template_context);
+// $templatecontext = filter_utils::apply_filter_to_template_object($templatecontext);
 
-echo $OUTPUT->render_from_template('local_dta/experiences/dashboard/dashboard', $template_context);
+echo $OUTPUT->render_from_template('local_dta/mentors/dashboard', $templatecontext);
 
 echo $OUTPUT->footer();

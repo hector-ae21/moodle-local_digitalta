@@ -119,6 +119,11 @@ class TinyEditorHandler extends \editor_tiny\editor
         $fpoptions = $this->get_filepicker_options($context, file_get_unused_draft_itemid());
 
 
+        $context = $PAGE->context;
+
+        $fpoptions = $this->get_filepicker_options($context,  file_get_unused_draft_itemid());
+
+
         $manager = new manager();
         // Ensure that the default configuration is set.
         parent::set_default_configuration($manager);

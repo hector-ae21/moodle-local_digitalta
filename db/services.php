@@ -73,6 +73,44 @@ $functions = [
         'ajax'        => true,
     ],
 
+    // Chat
+    'local_dta_get_chat_rooms' => [
+        'classname'   => 'external_chat_services',
+        'methodname'  => 'get_chat_rooms',
+        'classpath'   => 'local/dta/classes/webservices/chat/external_chat_services.php',
+        'description' => 'Get chat rooms',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_add_user_to_chat_room' => [
+        'classname'   => 'external_chat_services',
+        'methodname'  => 'add_user_to_chat_room',
+        'classpath'   => 'local/dta/classes/webservices/chat/external_chat_services.php',
+        'description' => 'Add a user to a chat room',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_add_message' => [
+        'classname'   => 'external_chat_services',
+        'methodname'  => 'add_message',
+        'classpath'   => 'local/dta/classes/webservices/chat/external_chat_services.php',
+        'description' => 'Add a message to a chat room',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_get_messages' => [
+        'classname'   => 'external_chat_services',
+        'methodname'  => 'get_messages',
+        'classpath'   => 'local/dta/classes/webservices/chat/external_chat_services.php',
+        'description' => 'Get messages from a chat room',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
     // Context 
     'local_dta_context_upsert' => [
         'classname'   => 'external_context_upsert',
@@ -119,6 +157,17 @@ $functions = [
         'methodname'  => 'languages_get',
         'classpath'   => 'local/dta/classes/webservices/languages/external_languages_get.php',
         'description' => 'Get all languages',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
+    // Mentors
+    'local_dta_mentors_load' => [
+        'classname'   => 'external_mentors_load',
+        'methodname'  => 'load_mentors',
+        'classpath'   => 'local/dta/classes/webservices/mentors/external_mentors_load.php',
+        'description' => 'load mentors',
         'type'        => 'read',
         'requirelogin' => true,
         'ajax'        => true,
@@ -229,6 +278,35 @@ $functions = [
         'classpath'   => 'local/dta/classes/webservices/themes/external_themes_get.php',
         'description' => 'Get all themes by text',
         'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
+    // Tutoring
+    'local_dta_create_tutor_disponibility' => [
+        'classname'   => 'external_create_tutor_disponibility',
+        'methodname'  => 'create_tutor_disponibility',
+        'classpath'   => 'local/dta/classes/webservices/tutoring/external_create_tutor_disponibility.php',
+        'description' => 'Create a tutor disponibility',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_update_tutor_disponibility' => [
+        'classname'   => 'external_update_tutor_disponibility',
+        'methodname'  => 'update_tutor_disponibility',
+        'classpath'   => 'local/dta/classes/webservices/tutoring/external_update_tutor_disponibility.php',
+        'description' => 'Update a tutor disponibility',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_delete_tutor_disponibility' => [
+        'classname'   => 'external_delete_tutor_disponibility',
+        'methodname'  => 'delete_tutor_disponibility',
+        'classpath'   => 'local/dta/classes/webservices/tutoring/external_delete_tutor_disponibility.php',
+        'description' => 'Delete a tutor disponibility',
+        'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],

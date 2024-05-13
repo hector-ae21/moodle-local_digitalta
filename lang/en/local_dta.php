@@ -263,6 +263,8 @@ $string['tutoring:see_all_mentors'] = 'See all mentors';
 $string['tutoring:open_chats'] = 'Open chats';
 $string['tutoring:view_tooltip'] = 'View tooltip';
 $string['tutoring:videocallbutton'] = 'Start Google Meet call';
+$string['tutoring:joinvideocall'] = 'Join Google Meet call';
+$string['tutoring:closevideocall'] = 'Close call';
 
 
 

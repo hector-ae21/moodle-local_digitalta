@@ -28,6 +28,9 @@
         </div>
         {{#googlemeetcall}}
           {{{button}}}
+          {{#closecall}}
+            <button class="btn btn-danger btn-sm mt-2" id="close-video-meeting" data-chatid="{{.}}">Close Call</button>
+          {{/closecall}}
         {{/googlemeetcall}}
       </div>
     </div>

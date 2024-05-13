@@ -24,7 +24,7 @@
 
 namespace local_dta;
 
-require_once($CFG->dirroot . '/local/dta/classes/cases.php');
+require_once($CFG->dirroot . '/local/dta/classes/case.php');
 require_once($CFG->dirroot . '/local/dta/classes/components.php');
 require_once($CFG->dirroot . '/local/dta/classes/context.php');
 require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
@@ -39,6 +39,7 @@ use local_dta\Context;
 use local_dta\Reactions;
 use local_dta\Resources;
 use local_dta\Sections;
+use local_dta\StudyCase;
 use local_dta\Tags;
 use local_dta\Themes;
 use local_dta\utils\DateUtils;
@@ -240,7 +241,6 @@ class Cases
         $section->component         = Components::get_component_by_name('case')->id;
         $section->componentinstance = $record->id;
         $section->groupid           = Sections::get_group_by_name('General')->id;
-        $section->sequence          = 1;
         $section->sectiontype       = Sections::get_type_by_name('text')->id;
         $section->content           = "";
         $section = Sections::upsert_section($section);
@@ -251,7 +251,7 @@ class Cases
         if (!empty($case->tags)) {
             Tags::update_tags('case', $record->id, $case->tags);
         }
-        return new Cases($record);
+        return new StudyCase($record);
 
     }
 
@@ -290,7 +290,7 @@ class Cases
         if (!empty($case->tags)) {
             Tags::update_tags('case', $case->id, $case->tags);
         }
-        return new Cases($case);    
+        return new StudyCase($case);    
     }
 
     /**
@@ -348,7 +348,7 @@ class Cases
             throw new Exception('Error case not found');
         }
         // Check permissions
-        if (!local_dta_check_permissions($case, $USER)) {
+        if (!self::check_permissions($case, $USER)) {
             throw new Exception('Error permissions');
         }
         // Delete the sections
@@ -364,6 +364,21 @@ class Cases
         // TODO: Delete the contexts, resources and reactions
         // Delete the case
         return $DB->delete_records(self::$table, ['id' => $case->id]);
+    }
+
+    /**
+     * Check user permissions over cases
+     *
+     * @param  object $case The case object
+     * @param  object $user The user object
+     * @return bool   True if the user has permissions, false otherwise
+     */
+    public static function check_permissions($case, $user)
+    {
+        if ($user->id == $case->userid || is_siteadmin($user)) {
+            return true;
+        }
+        return false;
     }
 
 

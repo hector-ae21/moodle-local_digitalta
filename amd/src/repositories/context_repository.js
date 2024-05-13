@@ -8,13 +8,13 @@ import Ajax from 'core/ajax';
  * - componentinstance: The component instance.
  * - modifier: The modifier.
  * - modifierinstance: The modifier instance.
- * @method upsertContext
+ * @method contextUpsert
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.
  */
-export const upsertContext = args => {
+export const contextUpsert = args => {
     const request = {
-        methodname: 'local_dta_context_insert',
+        methodname: 'local_dta_context_upsert',
         args
     };
     return Ajax.call([request])[0];

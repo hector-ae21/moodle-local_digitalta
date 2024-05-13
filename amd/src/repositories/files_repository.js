@@ -1,6 +1,26 @@
 import Ajax from "core/ajax";
 
 /**
+ * Prepare draft area HTML.
+ *
+ * Valid args are:
+ * - filearea: The file area.
+ * - component: The component.
+ * - filecontextid: The context id.
+ *
+ * @method prepareDraftAreaHTML
+ * @param {Object} args Arguments send to the webservice.
+ * @return {Promise} Resolve with warnings.
+ */
+export const prepareDraftAreaHTML = args => {
+    const request = {
+        methodname: "local_dta_prepare_draft_area_html",
+        args: args,
+    };
+    return Ajax.call([request])[0];
+};
+
+/**
  * Upload file from draft.
  *
  * Valid args are:
@@ -9,14 +29,14 @@ import Ajax from "core/ajax";
  * - filearea: The file area.
  * - contextid: The context id.
  *
- * @method getUnusedDraftItemId
+ * @method uploadFile
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.
  */
 export const uploadFile = args => {
-  const request = {
-    methodname: "local_dta_upload_file_from_draft",
-    args: args,
-  };
-  return Ajax.call([request])[0];
+    const request = {
+        methodname: "local_dta_upload_file_from_draft",
+        args: args,
+    };
+    return Ajax.call([request])[0];
 };

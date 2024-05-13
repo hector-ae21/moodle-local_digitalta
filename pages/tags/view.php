@@ -54,8 +54,8 @@ if (!$tagtheme) {
     throw new moodle_exception('invalidthemetag', 'local_dta');
 }
 $pagetitle = ($tagtype == 'tag')
-    ? get_string('themestags_tag', 'local_dta')
-    : get_string('themestags_theme', 'local_dta');
+    ? get_string('concept:tag', 'local_dta')
+    : get_string('concept:theme', 'local_dta');
 
 $PAGE->set_title($pagetitle . ': ' . $tagtheme->name);
 

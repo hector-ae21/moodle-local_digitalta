@@ -38,7 +38,6 @@ use local_dta\Sections;
  */
 class external_sections_upsert extends external_api
 {
- 
     /**
      * Returns the description of the external function parameters
      *
@@ -53,7 +52,7 @@ class external_sections_upsert extends external_api
                 'component' => new external_value(PARAM_TEXT, 'Component'),
                 'componentinstance' => new external_value(PARAM_INT, 'Component instance'),
                 'group' => new external_value(PARAM_TEXT, 'Group ID', VALUE_DEFAULT, 'General'),
-                'sequence' => new external_value(PARAM_INT, 'Sequence', VALUE_DEFAULT, 0),
+                'sequence' => new external_value(PARAM_INT, 'Sequence', VALUE_OPTIONAL),
                 'content' => new external_value(PARAM_TEXT, 'Content', VALUE_DEFAULT, "")
             ]
         );
@@ -71,7 +70,7 @@ class external_sections_upsert extends external_api
      * @param  string $content           Content
      * @return array  The result of the operation
      */
-    public static function sections_upsert($sectionid = 0, $sectiontype = 'text', $component, $componentinstance, $group = 'General', $sequence = 0, $content = "")
+    public static function sections_upsert($sectionid = 0, $sectiontype = 'text', $component, $componentinstance, $group = 'General', $sequence = null, $content = "")
     {
         $section = new stdClass();
 
@@ -92,7 +91,7 @@ class external_sections_upsert extends external_api
         $section->componentinstance = $componentinstance;
         $section->groupid           = Sections::get_group_by_name($group)->id;
 
-        if ($sequence !== -1) {
+        if ($sequence !== null) {
             $section->sequence = $sequence;
         }
 

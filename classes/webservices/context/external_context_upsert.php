@@ -34,10 +34,10 @@ use local_dta\Context;
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class external_context_insert extends external_api
+class external_context_upsert extends external_api
 {
 
-    public static function context_insert_parameters()
+    public static function context_upsert_parameters()
     {
         return new external_function_parameters(
             array(
@@ -49,7 +49,7 @@ class external_context_insert extends external_api
         );
     }
 
-    public static function context_insert($component, $componentinstance, $modifier, $modifierinstance)
+    public static function context_upsert($component, $componentinstance, $modifier, $modifierinstance)
     {
         global $USER;
 
@@ -66,7 +66,7 @@ class external_context_insert extends external_api
         ];
     }
 
-    public static function context_insert_returns()
+    public static function context_upsert_returns()
     {
         return new external_single_structure(
             [

@@ -21,13 +21,12 @@ export function autocompleteTags(area) {
  * @return {void}
  */
 async function handleNewTag(selectedOptions) {
-
     for (var i = 0; i < selectedOptions.length; i++) {
-      if (selectedOptions[i].value === "-1") {
-        selectedOptions[i].label = selectedOptions[i].label.replace("Create: ", "");
-        const {id} = await saveNewTag(selectedOptions[i].label);
-        selectedOptions[i].value = parseInt(id);
-      }
+        if (selectedOptions[i].value === "-1") {
+            selectedOptions[i].label = selectedOptions[i].label.replace("Create: ", "");
+            const {id} = await saveNewTag(selectedOptions[i].label);
+            selectedOptions[i].value = parseInt(id);
+        }
     }
 }
 
@@ -38,10 +37,10 @@ async function handleNewTag(selectedOptions) {
  */
 async function saveNewTag(tagName) {
     try {
-      return await createTags({
-        tag: tagName
-      });
+        return await createTags({
+            tag: tagName
+        });
     } catch (error) {
-      return Notification.exception(error);
+        return Notification.exception(error);
     }
 }

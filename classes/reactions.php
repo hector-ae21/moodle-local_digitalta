@@ -344,4 +344,22 @@ class Reactions
             return $report->id;
         }
     }
+
+    /**
+     * Delete all reactions for a specific component
+     *
+     * @param  int $component The component identifier
+     * @param  int $componentinstance The component instance identifier
+     */
+    public static function delete_all_reactions_for_component(int $component, int $componentinstance)
+    {
+        global $DB;
+        $conditions = [
+            'component' => $component,
+            'componentinstance' => $componentinstance
+        ];
+        $DB->delete_records(self::$table_likes, $conditions);
+        $DB->delete_records(self::$table_comments, $conditions);
+        $DB->delete_records(self::$table_reports, $conditions);
+    }
 }

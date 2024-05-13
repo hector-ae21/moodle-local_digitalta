@@ -1,6 +1,6 @@
-<div class="container-fluid col-10 dta-themetags-view">
+<div class="container-fluid col-10 dta-themestags-view">
     <!--Section: Title-->
-    <section data-section-name="dta-themetags-view-title">
+    <section data-section-name="dta-themestags-view-title">
         <div class="container-fluid d-flex">
             <div class="row d-flex align-items-justify">
                 <div class="col-12">
@@ -10,21 +10,35 @@
             </div>
         </div>
     </section>
+    <!--Section: Introduction-->
+    <section data-section-name="dta-themestags-view-introduction">
+        <div class="container-fluid d-flex text-center">
+            <div class="row d-flex align-items-center">
+                <div class="col-12 pt-4 text-justify" style="line-height: 2em;">
+                    {{#str}} themestags:view:description, local_dta, {{{tag.name}}} {{/str}}
+                </div>
+            </div>
+        </div>
+    </section>
     <!--Section: Content-->
-    <section data-section-name="dta-themetags-view-content">
+    <section data-section-name="dta-themestags-view-content">
         <div class="container-fluid d-flex my-4">
             <div class="row w-100">
-                <div class="col-sm-12 col-md-9">
+                <div class="col-sm-12 col-md-6">
                     <!-- Experiences -->
-                    <div class="dta-themetags-view-experiences mb-3">
+                    <div class="dta-themestags-view-experiences mb-3">
                         {{> local_dta/tags/view/experience-list}}
                     </div>
                     <!-- Cases -->
-                    <div class="dta-themetags-view-cases">
+                    <div class="dta-themestags-view-cases">
                         {{> local_dta/tags/view/case-list}}
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-3">
+                <div class="col-sm-12 col-md-6">
+                    <!-- Resources -->
+                    <div class="dta-themetag-view-resources">
+                        {{> local_dta/tags/view/resource-list}}
+                    </div>
                     <!-- Users -->
                     <div class="dta-themetag-view-users">
                         {{> local_dta/tags/view/user-list}}

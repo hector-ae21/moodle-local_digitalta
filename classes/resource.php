@@ -40,12 +40,6 @@ class Resource
     
     /** @var string The description of the resource. */
     public $description;
-
-    /** @var string The themes of the resource. */
-    public $themes;
-
-    /** @var string The tags of the resource. */
-    public $tags;
     
     /** @var string The type of the resource. */
     public $type;
@@ -55,7 +49,7 @@ class Resource
     
     /** @var string The path of the resource. */
     public $path;
-    
+
     /** @var string The language of the resource. */
     public $lang;
 
@@ -67,6 +61,12 @@ class Resource
     
     /** @var string The timestamp of when the resource was last modified. */
     public $timemodified;
+
+    /** @var string The themes of the resource. */
+    public $themes;
+
+    /** @var string The tags of the resource. */
+    public $tags;
 
     /**
      * Constructor.

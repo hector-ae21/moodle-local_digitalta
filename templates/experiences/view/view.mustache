@@ -1,5 +1,5 @@
 <div class="container-fluid col-10 dta-experience">
-<input type="hidden" id="experience-id" value="{{experience.data.id}}">
+    <input type="hidden" id="experience-id" value="{{experience.data.id}}">
     <div class="row">
         <div class="col-12 mb-4">
             <div class="row">
@@ -10,16 +10,17 @@
                     <div class="col-12 mb-4">
                         {{> local_dta/chat/index}}
                     </div>
-                    <div class="col-12">
-                        {{> local_dta/experiences/view/resources-card}} 
+                    <div class="col-12 mb-4">
+                        <div>
+                            {{> local_dta/chat/index}}
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 mb-4">
-            <div class="row">
-                <div class="col-12 mb-4">
-                    {{> local_dta/experiences/view/reflection-card}}
+                    <div class="col-12 mb-4">
+                        {{> local_dta/chat/index}}
+                    </div>
+                    <div class="col-12">
+                        {{> local_dta/experiences/view/resources-card}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -28,6 +29,6 @@
 
 {{#js}}
 require(['local_dta/tutoring/tutoring-loader'], function(chatHandler) {
-    chatHandler.init();
+chatHandler.init();
 });
 {{/js}}

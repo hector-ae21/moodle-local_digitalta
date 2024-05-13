@@ -49,7 +49,7 @@ $PAGE->set_url(new moodle_url('/local/dta/pages/cases/manage.php', ['id' => $exp
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($strings->cases_title);
 $PAGE->requires->js_call_amd(
-    'local_dta/cases/manage/form',
+    'local_dta/cases/form',
     'init',
     array(
         'url_view' => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id=', 
@@ -71,7 +71,7 @@ if ($experienceid) {
     $case               = new stdClass();
     $case->experienceid = $experienceid;
     $case->title        = $experience->title;
-    $case->description  = ""; // SECTIONS TODO
+    $case->description  = "";
     $case->lang         = $experience->lang;
     $case = Cases::add_case($case);
 } elseif ($caseid or $casetitle) {
@@ -80,7 +80,7 @@ if ($experienceid) {
         $case               = new stdClass();
         $case->title        = $casetitle;
         $case->description  = "";
-        $case->lang         = 'en'; // HARDCODED TODO: LANGUAGES
+        $case->lang         = current_language();
         $case = Cases::add_case($case);
     };
 } else {
@@ -94,7 +94,7 @@ $sections = Sections::get_sections([
 
 $sectionheader = [
     'title' => $case->title,
-    'description' => '' // SECTIONS TODO
+    'description' => $case->description
 ];
 
 $template_context = [

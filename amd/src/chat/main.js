@@ -5,6 +5,7 @@ import SELECTORS from './selectors';
 import { getChatRooms, sendMessage, getMessages } from 'local_dta/repositories/chat_repository';
 import setEventListeners from './listeners';
 import Status from './status';
+import mentorHandler from 'local_dta/mentors/experience_view/main';
 
 const status = new Status();
 
@@ -36,6 +37,7 @@ export async function renderMenuChat() {
         $(SELECTORS.TARGET).html(html);
         status.emptyActiveMessages();
         SELECTORS.OPEN_CHAT_ID = 0;
+        mentorHandler();
         return;
     }).fail(Notification.exception);
 }

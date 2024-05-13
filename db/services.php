@@ -152,6 +152,24 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_dta_get_mentors' => [
+        'classname'   => 'external_get_mentors',
+        'methodname'  => 'get_mentors',
+        'classpath'   => 'local/dta/classes/webservices/mentors/external_get_mentors.php',
+        'description' => 'get mentors',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_dta_get_mentor_requests' => [
+        'classname'   => 'external_get_mentor_requests',
+        'methodname'  => 'get_mentor_requests',
+        'classpath'   => 'local/dta/classes/webservices/mentors/external_get_mentor_requests.php',
+        'description' => 'get mentor requests',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
 
 
     // CONTEXT 

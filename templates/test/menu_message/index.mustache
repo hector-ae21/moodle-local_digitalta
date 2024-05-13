@@ -27,12 +27,12 @@
       </button>
       <div class="d-flex align-items-center mb-2">
         <h5 class="mb-1">{{#str}}tutoring:request, local_dta{{/str}}</h5>
-        <span class="badge badge-danger ml-2">2</span>
+        <span class="badge badge-danger ml-2">{{total}}</span>
       </div>
       <div class="list-group">
-      {{#user_list}}
+      {{#requests}}
       {{> local_dta/test/menu_message/item}}
-      {{/user_list}}
+      {{/requests}}
     </div>
   </div>
 </div>

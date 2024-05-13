@@ -204,8 +204,8 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Primary key"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Group name"/>
-        <FIELD NAME="timecreated" TYPE="datetime" NOTNULL="true" SEQUENCE="false" COMMENT="Time created"/>
-        <FIELD NAME="timemodified" TYPE="datetime" NOTNULL="true" SEQUENCE="false" COMMENT="Time modified"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT="Time created"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT="Time modified"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -216,8 +216,8 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Primary key"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Type name"/>
-        <FIELD NAME="timecreated" TYPE="datetime" NOTNULL="true" SEQUENCE="false" COMMENT="Time created"/>
-        <FIELD NAME="timemodified" TYPE="datetime" NOTNULL="true" SEQUENCE="false" COMMENT="Time modified"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT="Time created"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT="Time modified"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -228,8 +228,8 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="Primary key"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Tag name"/>
-        <FIELD NAME="timecreated" TYPE="datetime" NOTNULL="true" SEQUENCE="false" COMMENT="Time created"/>
-        <FIELD NAME="timemodified" TYPE="datetime" NOTNULL="true" SEQUENCE="false" COMMENT="Time modified"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT="Time created"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT="Time modified"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -239,8 +239,8 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="timecreated" TYPE="datetime" NOTNULL="true" SEQUENCE="false" COMMENT="Time created"/>
-        <FIELD NAME="timemodified" TYPE="datetime" NOTNULL="true" SEQUENCE="false" COMMENT="Time modified"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT="Time created"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false" COMMENT="Time modified"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -271,7 +271,6 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="experienceid" TYPE="foreign" FIELDS="experienceid" REFTABLE="digital_experiences" REFFIELDS="id"/>
         <KEY NAME="chatid" TYPE="foreign" FIELDS="chatid" REFTABLE="digital_chat" REFFIELDS="id"/>
         <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
@@ -289,6 +288,21 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="chatid" TYPE="foreign" FIELDS="chatid" REFTABLE="digital_chat" REFFIELDS="id"/>
         <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+
+    <TABLE NAME="digital_mentoring_request" COMMENT="DigitalTA chat users read messages">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="experienceid" TYPE="int" LENGTH="11" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="mentorid" TYPE="int" LENGTH="11" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="status" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="status 0 for pending, 1 for accepted, 2 for rejected"/>
+        <FIELD NAME="timecreated" TYPE="datetime" NOTNULL="true" SEQUENCE="false" COMMENT="Time created"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="experienceid" TYPE="foreign" FIELDS="experienceid" REFTABLE="digital_experiences" REFFIELDS="id"/>
+        <KEY NAME="mentorid" TYPE="foreign" FIELDS="mentorid" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
 

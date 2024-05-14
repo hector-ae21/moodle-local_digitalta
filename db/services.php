@@ -160,6 +160,15 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_dta_add_mentor_request' => [
+        'classname'   => 'external_add_mentor_request',
+        'methodname'  => 'add_mentor_request',
+        'classpath'   => 'local/dta/classes/webservices/mentors/external_add_mentor_request.php',
+        'description' => 'add mentor request',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
 
 
     // CONTEXT 

@@ -12,11 +12,6 @@ import { SELECTORS } from "./selectors";
  * @return {void}
  */
 export function reloadMentors(offset, chunkAmount) {
-  //eslint-disable-next-line no-console
-  console.log("offset -> ", offset);
-  //eslint-disable-next-line no-console
-  console.log("chunkAmount -> ", chunkAmount);
-
   loadMentors({ numLoaded: offset, numToLoad: chunkAmount })
     .then((mentors) => {
       Templates.render("local_dta/mentors/mentors-list", {
@@ -28,8 +23,14 @@ export function reloadMentors(offset, chunkAmount) {
           return;
         })
         .fail(Notification.exception);
+        return;
     })
     .fail(Notification.exception);
+}
+
+export const sendMentorRequest = () => {
+  // Enviar solicitud de mentoría
+  Notification.success("Solicitud enviada correctamente");
 }
 
 /**
@@ -40,7 +41,7 @@ export function reloadMentors(offset, chunkAmount) {
  */
 export async function loadMore(chunkAmount) {
   // Traer más mentores y actualizar el número de mentores cargados
-  let offset = parseInt($(SELECTORS.INPUTS.numLoaded).val()) + chunkAmount;
+  let offset = parseInt($(SELECTORS.INPUTS.numLoaded).val()) + parseInt(chunkAmount);
   $(SELECTORS.INPUTS.numLoaded).val(offset);
 
   reloadMentors(offset, chunkAmount);

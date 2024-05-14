@@ -1,11 +1,15 @@
 import $ from 'jquery';
-import { SELECTORS, loadMore } from './main';
+import {loadMore, sendMentorRequest } from './main';
+import { SELECTORS } from './selectors';
 
 
 export const setEventListeners = () => {
     $(document).on('click', SELECTORS.BUTTONS.loadMoreButton, function() {
-        const chunkAmount = parseInt($(SELECTORS.BUTTONS.loadMoreButton).val());
+        loadMore($(SELECTORS.BUTTONS.loadMoreButton).val());
+    });
 
-        loadMore(chunkAmount);
+    $(SELECTORS.BUTTONS.ADDREQUEST).on('click', function() {
+        const id = $(this).closest('.mentor').data('id');
+        sendMentorRequest(id);
     });
 };

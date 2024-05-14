@@ -43,7 +43,6 @@ class Mentor
         global $DB;
         return array_values($DB->get_records(self::$table));
     }
-
     /**
      * Send a mentor request.
      * 
@@ -124,4 +123,17 @@ class Mentor
         global $DB;
         return $DB->get_records_sql("SELECT * FROM {" . self::$table . "} LIMIT $numToLoad OFFSET $numLoaded");
     }
+
+    /**
+     * Verify if a mentor request exists.
+     * 
+     * @param $mentorid int The ID of the mentor.
+     * @param $experienceid int The ID of the experience.
+     */
+    public static function is_enrolled_mentor_in_course(int $mentorid, int $experienceid): bool
+    {
+        global $DB;
+        return $DB->record_exists(self::$mentor_request_table, ['mentorid' => $mentorid, 'experienceid' => $experienceid]);
+    }
+
 }

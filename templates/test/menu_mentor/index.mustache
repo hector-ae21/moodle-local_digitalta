@@ -17,21 +17,18 @@
         <input type="text" class="search-field__input" id="search-mentors-input"
           placeholder="Search user to ask tutoring..." aria-label="Search user" />
       </div>
-      <a href="#" class="d-flex justify-content-end mb-1">{{#str}}tutoring:see_all_mentors, local_dta{{/str}}</a>
+      <a href="{{mentorrepourl}}" class="d-flex justify-content-end mb-1">{{#str}}tutoring:see_all_mentors, local_dta{{/str}}</a>
+
       <div id="search-mentors-result"></div>
-      <div class="d-flex align-items-center">
-        <button class="btn btn-light">
-          <i class="fa fa-arrow-left"></i>
-        </button>
-        <p>{{#str}}tutoring:back_to_chat, local_dta{{/str}}</p>
-      </div>
-      <div class="mb-2">
-        <h5 class="mb-1">Experience name with long title</h5>
-        <h5 class="mb-1">{{#str}}tutoring:request, local_dta{{/str}}</h5>
-      </div>
+
       <div class="list-group mb-2">
         {{#user_list}}
         {{> local_dta/test/menu_mentor/item}}
+        {{/user_list}}
+        {{^user_list}}
+        <div class="text-center">
+          <h6> {{#str}}experience_view_mytutoring_request_not_found, local_dta{{/str}}  </h6>
+        </div>
         {{/user_list}}
       </div>
       <div class="socialize-button mb-2">
@@ -39,7 +36,7 @@
           <i class="fa fa-paper-plane"></i> Chat
         </button>
         <button class="btn btn-zoom-call">
-          <i class="fa fa-video-camera"></i> Start Zoom Call
+          <i class="fa fa-video-camera"></i> Start Meet Call
         </button>
       </div>
       <div class="mentor-comments">

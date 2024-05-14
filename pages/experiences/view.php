@@ -132,6 +132,7 @@ $template_context = [
     'createcaseurl' => $CFG->wwwroot . '/local/dta/pages/cases/manage.php?id=',
     'reflection' => [], // SECTIONS TODO
     'reflectionsections' => $formated_sections,
+    'mentorrepourl' => $CFG->wwwroot . '/local/dta/pages/mentors/index.php?id=' . $experience->id,
     //'related' => [
     //    'resources' => Resources::get_resources_by_context_component('experience', $id),
     //    'cases' => Cases::get_cases_by_context_component('experience', $id)

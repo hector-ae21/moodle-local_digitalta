@@ -10,17 +10,14 @@
     </div>
   </div>
   <div>
-    <button class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Send request">
+    <button class="btn btn-outline-primary mb-1" data-toggle="tooltip" data-placement="top" title="Send request">
       <i class="fa fa-user-plus"></i>
     </button>
-    <button class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top" title="Cancel sent request">
+  {{#isEnrolled}}
+    <button class="btn btn-outline-danger mb-1" data-toggle="tooltip" data-placement="top" title="Cancel sent request">
       <i class="fa fa-user-times"></i>
     </button>
+  {{/isEnrolled}}
   </div>
-</div>
-{{/mentors}}
-{{^mentors}}
-<div class="text-center">
-  <h5>No results found</h5>
 </div>
 {{/mentors}}

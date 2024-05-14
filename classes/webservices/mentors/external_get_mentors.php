@@ -22,9 +22,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use local_dta\Mentor;
+
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/classes/tags.php');
+require_once($CFG->dirroot . '/local/dta/classes/mentors.php');
 /**
  * This class is used to create tags
  *
@@ -38,12 +40,13 @@ class external_get_mentors extends external_api
     {
         return new external_function_parameters(
             [
-                'searchText' => new external_value(PARAM_TEXT, 'Search text', VALUE_DEFAULT, '%%')
+                'searchText' => new external_value(PARAM_TEXT, 'Search text', VALUE_DEFAULT, '%%'),
+                'experienceid' => new external_value(PARAM_INT, 'Experience id', VALUE_DEFAULT, 0)
             ]
         );
     }
 
-    public static function get_mentors($searchText = '%%')
+    public static function get_mentors($searchText = '%%', $experienceid  = 0)
     {
         global $DB;
         $searchText = '%' . trim($searchText) . '%';
@@ -59,11 +62,17 @@ class external_get_mentors extends external_api
         $mentors = $DB->get_records_sql($sql, ['fullname' => $searchText]);
 
 
+        foreach ($mentors as $mentor) {
+            $mentor->isEnrolled = Mentor::is_enrolled_mentor_in_course($mentor->id, $experienceid);
+        }   
+
         $mentors = array_map(function ($mentor) {
             return [
                 'id' => $mentor->id,
-                'firstname' => $mentor->firstname,
-                'lastname' => $mentor->lastname,
+                'name' => $mentor->firstname . ' ' . $mentor->lastname,
+                'isEnrolled' => $mentor->isEnrolled,
+                'profileimage' => 'https://via.placeholder.com/150',
+                'university' => "Universidad de la vida",
             ];
         }, $mentors);
 
@@ -76,8 +85,10 @@ class external_get_mentors extends external_api
             new external_single_structure(
                 array(
                     'id' => new external_value(PARAM_INT, 'Mentor id'),
-                    'firstname' => new external_value(PARAM_TEXT, 'Mentor firstname'),
-                    'lastname' => new external_value(PARAM_TEXT, 'Mentor lastname'),
+                    'name' => new external_value(PARAM_TEXT, 'Mentor firstname'),
+                    'isEnrolled' => new external_value(PARAM_BOOL, 'Is enrolled in the experience'),
+                    'profileimage' => new external_value(PARAM_TEXT, 'Profile image'),
+                    'university' => new external_value(PARAM_TEXT, 'University'),
                 )
             )
         );

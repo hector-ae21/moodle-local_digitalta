@@ -31,7 +31,7 @@ export const setEventListeners = () => {
         deleteRelatedContext(event.currentTarget.dataset.contextid);
     });
 
-    $(document).on('input', SELECTORS.INPUTS.mentorsSearch, async (event) => {
+    $(document).on('input', SELECTORS.INPUTS.mentorsSearch, async(event) => {
         await getMentors(event.currentTarget.value);
     });
 };

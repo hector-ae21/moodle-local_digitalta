@@ -21,6 +21,10 @@ export const SELECTORS = {
     },
     INPUTS: {
         experienceid: '#experience-id',
+        mentorsSearch: '#search-mentors-input',
+    },
+    SECTIONS : {
+        searchMentorsResults: '#search-mentors-result',
     }
 };
 

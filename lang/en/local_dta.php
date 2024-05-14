@@ -265,7 +265,7 @@ $string['tutoring:view_tooltip'] = 'View tooltip';
 $string['tutoring:videocallbutton'] = 'Start Google Meet call';
 $string['tutoring:joinvideocall'] = 'Join Google Meet call';
 $string['tutoring:closevideocall'] = 'Close call';
-
+$string['tutoring:at_university'] = 'Teacher at';
 
 
 

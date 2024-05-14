@@ -46,11 +46,19 @@ class external_get_mentors extends external_api
     public static function get_mentors($searchText = '%%')
     {
         global $DB;
-        $searchText = '%' . $searchText . '%';
-        $likementor = $DB->sql_like('name', ':name');
-        $mentors = $DB->get_records_sql("SELECT * FROM {user} WHERE {$likementor}",
-            ['name' => '%' . $searchText . '%']);
+        $searchText = '%' . trim($searchText) . '%';
         
+        if ($DB->sql_regex_supported()) {
+            $fullname = $DB->sql_concat('firstname', "' '", 'lastname');
+        } else {
+            $fullname = "CONCAT(firstname, ' ', lastname)";
+        }
+
+        $likeFullname = $DB->sql_like($fullname, ':fullname', false);
+        $sql = "SELECT * FROM {user} WHERE {$likeFullname}";
+        $mentors = $DB->get_records_sql($sql, ['fullname' => $searchText]);
+
+
         $mentors = array_map(function ($mentor) {
             return [
                 'id' => $mentor->id,

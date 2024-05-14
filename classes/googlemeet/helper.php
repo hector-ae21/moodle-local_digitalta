@@ -71,4 +71,9 @@ class helper
     $record->timecreated = time();
     $DB->insert_record('digital_videomeetings', $record);
   }
+
+  public static function delete_googlemeet_record($chatid){
+    global $DB;
+    return $DB->delete_records('digital_videomeetings', ['chatid' => $chatid]);
+  }
 }

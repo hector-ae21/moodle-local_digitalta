@@ -58,7 +58,7 @@ function get_googlemeet_call_button()
     }
     $meetingrecord = helper::get_googlemeet_record(1);
     if ($meetingrecord) {
-        return '<button class="btn btn-primary" onclick="window.open(\'https://meet.google.com/' . $meetingrecord->meetingcode . '\', \'_blank\');">' . get_string('tutoring:videocallbutton', 'local_dta') . '</button>';
+        return '<button class="btn btn-primary btn-sm mt-2" onclick="window.open(\'https://meet.google.com/' . $meetingrecord->meetingcode . '\', \'_blank\');">' . get_string('tutoring:joinvideocall', 'local_dta') . '</button>';
     } else {
         return $client->print_login_popup(1);
     }
@@ -70,6 +70,7 @@ $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/view.php', ['id' => 
 $PAGE->set_context(context_system::instance());
 $PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
 $PAGE->requires->js_call_amd('local_dta/experiences/main', 'init');
+$PAGE->requires->js_call_amd('local_dta/tutoring/google-meet', 'init');
 
 // Get the experience
 if (!$experience = Experiences::get_experience($id)) {
@@ -140,6 +141,8 @@ $template_context = [
 
 $template_context = FilterUtils::apply_filter_to_template_object($template_context);
 $template_context['googlemeetcall']['button'] = get_googlemeet_call_button();
+$meeting_record = helper::get_googlemeet_record(1);
+$template_context['googlemeetcall']['closecall']  = $meeting_record ? $meeting_record->chatid : null;
 
 echo $OUTPUT->render_from_template('local_dta/experiences/view/view', $template_context);
 

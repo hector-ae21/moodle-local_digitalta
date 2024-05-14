@@ -537,4 +537,13 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_dta_delete_meeting' => [
+        'classname'   => 'external_delete_meeting',
+        'methodname'  => 'delete_meeting',
+        'classpath'   => 'local/dta/classes/webservices/googlemeet/external_delete_meeting.php',
+        'description' => 'Delete a google meet meeting',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ]
 ];

@@ -48,10 +48,10 @@ class external_get_mentors extends external_api
 
     public static function get_mentors($searchText = '%%', $experienceid  = 0)
     {
-        global $DB, $PAGE;
+        global $DB, $PAGE, $USER;
         $PAGE->set_context(context_system::instance());
         $searchText = '%' . trim($searchText) . '%';
-        
+
         if ($DB->sql_regex_supported()) {
             $fullname = $DB->sql_concat('firstname', "' '", 'lastname');
         } else {
@@ -61,11 +61,15 @@ class external_get_mentors extends external_api
         $likeFullname = $DB->sql_like($fullname, ':fullname', false);
         $sql = "SELECT * FROM {user} WHERE {$likeFullname}";
         $mentors = $DB->get_records_sql($sql, ['fullname' => $searchText]);
+        
+        $mentors = array_filter($mentors, function ($mentor) use ($USER) {
+            return $mentor->id != $USER->id;
+        });
 
 
         foreach ($mentors as $mentor) {
             $mentor->isEnrolled = Mentor::is_enrolled_mentor_in_course($mentor->id, $experienceid);
-        }   
+        }
 
         $mentors = array_map(function ($mentor) use ($PAGE) {
             $mentor_picture = new user_picture($mentor);

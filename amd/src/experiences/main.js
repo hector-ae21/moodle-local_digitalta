@@ -50,6 +50,6 @@ export async function deleteRelatedContext(contextid) {
     }
 }
 
-export const init = (userid = null) => {
-    setEventListeners(userid);
+export const init = () => {
+    setEventListeners();
 };

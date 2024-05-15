@@ -48,7 +48,8 @@ class external_get_mentors extends external_api
 
     public static function get_mentors($searchText = '%%', $experienceid  = 0)
     {
-        global $DB;
+        global $DB, $PAGE;
+        $PAGE->set_context(context_system::instance());
         $searchText = '%' . trim($searchText) . '%';
         
         if ($DB->sql_regex_supported()) {
@@ -66,12 +67,14 @@ class external_get_mentors extends external_api
             $mentor->isEnrolled = Mentor::is_enrolled_mentor_in_course($mentor->id, $experienceid);
         }   
 
-        $mentors = array_map(function ($mentor) {
+        $mentors = array_map(function ($mentor) use ($PAGE) {
+            $mentor_picture = new user_picture($mentor);
+            $mentor_picture->size = 101;
             return [
                 'id' => $mentor->id,
                 'name' => $mentor->firstname . ' ' . $mentor->lastname,
                 'isEnrolled' => $mentor->isEnrolled,
-                'profileimage' => 'https://via.placeholder.com/150',
+                'profileimage' => $mentor_picture->get_url($PAGE)->__toString(),
                 'university' => "Universidad de la vida",
             ];
         }, $mentors);

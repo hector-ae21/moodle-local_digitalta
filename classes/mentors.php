@@ -133,7 +133,11 @@ class Mentor
     public static function is_enrolled_mentor_in_course(int $mentorid, int $experienceid): bool
     {
         global $DB;
-        return $DB->record_exists(self::$mentor_request_table, ['mentorid' => $mentorid, 'experienceid' => $experienceid]);
+        $data = $DB->get_record(self::$mentor_request_table, ['mentorid' => $mentorid, 'experienceid' => $experienceid]);
+        if (!$data) {
+            return false;
+        }
+        return $data->status == 0;
     }
 
 }

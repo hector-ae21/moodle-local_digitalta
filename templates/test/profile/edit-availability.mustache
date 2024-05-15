@@ -146,7 +146,7 @@ checkboxes.forEach((checkbox, index) => {
          <div class="col">
            <h5>${dayId}</h5>
          </div>
-         <div class="col d-fflex">
+         <div class="col">
            <div class="input-group mb-3">
              <div class="time-range">
                <input type="text" class="form-control time-input" placeholder="09:00" />
@@ -154,14 +154,14 @@ checkboxes.forEach((checkbox, index) => {
                <input type="text" class="form-control time-input" placeholder="17:00" />
              </div>
              <button
-               class="btn btn-outline-primary"
+               class="ml-2 btn btn-plus"
                type="button"
                onclick="addTimeRange(this)"
              >
                <i class="fa fa-plus"></i>
              </button>
              <button
-               class="btn btn-outline-secondary d-none"
+               class="ml-2 btn btn-minus"
                type="button"
                onclick="removeTimeRange(this)"
              >
@@ -172,6 +172,7 @@ checkboxes.forEach((checkbox, index) => {
 
                 `;
         insertDayBlockInOrder(dayBlock, index);
+        updateButtons(dayBlock); // Update the buttons for the new day block
       }
     } else {
       const dayToRemove = document.getElementById(dayId);
@@ -207,23 +208,11 @@ function addTimeRange(button) {
   const newTimeRange = parentDiv.cloneNode(true);
   newTimeRange.querySelectorAll("input").forEach((input) => (input.value = "")); // Clear the inputs in the cloned element
 
-  // Get all minus buttons in the container and make them visible
-  const allMinusButtons =
-    parentDiv.parentNode.querySelectorAll(".minus-button");
-  allMinusButtons.forEach((button) => {
-    button.classList.remove("d-none");
-    button.classList.add("d-block");
-  });
-
   // Add the new time range block
   parentDiv.parentNode.insertBefore(newTimeRange, parentDiv.nextSibling);
 
-  // Hide the add button in the previous block and show only in the last block
-  const addButtons = parentDiv.parentNode.querySelectorAll(".add-button");
-  addButtons.forEach((btn) => btn.classList.add("d-none"));
-  addButtons[addButtons.length - 1].classList.remove("d-none");
-
-  updateRemoveButtons(parentDiv.parentNode);
+  // Update the visibility of the buttons
+  updateButtons(parentDiv.parentNode);
 }
 
 function removeTimeRange(button) {
@@ -232,29 +221,31 @@ function removeTimeRange(button) {
   if (containerDiv.childElementCount > 1) {
     containerDiv.removeChild(parentDiv);
   }
-  updateRemoveButtons(containerDiv);
+  updateButtons(containerDiv);
 }
 
-function updateRemoveButtons(containerDiv) {
-  const removeButtons = containerDiv.querySelectorAll(".minus-button");
-  if (containerDiv.childElementCount === 1) {
-    removeButtons[0].classList.remove("d-block");
-    removeButtons[0].classList.add("d-none");
-  } else {
-    removeButtons.forEach((button) => {
-      button.classList.remove("d-none");
-      button.classList.add("d-block");
-    });
-  }
+function updateButtons(containerDiv) {
+  const timeRanges = containerDiv.querySelectorAll(".input-group");
+  timeRanges.forEach((timeRange, index) => {
+    const addButton = timeRange.querySelector(".btn-plus");
+    const removeButton = timeRange.querySelector(".btn-minus");
 
-  // Ensure the add button is only visible in the last block
-  const lastAddButton =
-    containerDiv.lastElementChild.querySelector(".add-button");
-  if (lastAddButton) {
-    lastAddButton.classList.remove("d-none");
-    lastAddButton.classList.add("d-block");
-  }
+    // Only show the add button for the last time range
+    if (index === timeRanges.length - 1) {
+      addButton.style.display = "inline-block";
+    } else {
+      addButton.style.display = "none";
+    }
+
+    // Only show the remove button for all but the first time range
+    if (index > 0) {
+      removeButton.style.display = "inline-block";
+    } else {
+      removeButton.style.display = "none";
+    }
+  });
 }
+
 
 </script>
 
@@ -297,59 +288,39 @@ function updateRemoveButtons(containerDiv) {
 
 /**/
 
-.input-group {
-    display: flex;
-    flex-wrap: nowrap; /* Prevents wrapping of elements */
-    align-items: center; /* Center items vertically */
-    justify-content: space-between; /* Space distribution */
-    width: 100%; /* Full width to ensure alignment */
-}
 
 .time-range {
-    display: flex;
-    flex: 1 1 auto; /* Allows the container to grow and shrink but respects the base size */
-    margin-right: 10px; /* Space before buttons */
+  display: flex;
+  align-items: center;
+  background-color: #f2f2f2;
+  border-radius: 20px;
+  width: 200px;
 }
 
 .time-range .form-control {
-    flex: 1; /* Allows input fields to grow and fill the space */
-    text-align: center;
-    border-radius: 5px 0 0 5px; /* Only left corners rounded for the first input */
-    border: 2px solid #ccc;
-    min-width: 50px; /* Minimum width to ensure inputs don't disappear */
+  border: none;
+  background-color: transparent;
+  text-align: center;
 }
 
 .time-range .to-label {
-    padding: 0 10px; /* Padding around 'to' text */
-    background-color: #fff; /* Matching background */
-    border-top: 2px solid #ccc;
-    border-bottom: 2px solid #ccc;
-    align-self: stretch;
-    display: flex;
-    align-items: center; /* Center text vertically */
+  margin: 0 10px;
 }
 
-.time-range .form-control:last-child {
-    border-radius: 0 5px 5px 0; /* Only right corners rounded for the second input */
-}
+
 
 .btn {
     padding: 5px 10px; /* Smaller padding for a more compact look */
     white-space: nowrap; /* Prevents button text from wrapping */
 }
 
-.fa {
-    color: #062f4a; /* Icon color */
+
+button.btn.btn-plus, .btn.btn-minus {
+  color: #062f4a;
+  background-color: transparent;
+  border-color: #062f4a;
 }
 
-/* Button adjustments */
-.btn-outline-primary {
-    border-color: #062f4a; /* Bootstrap primary color */
-}
-
-.btn-outline-secondary {
-    border-color: #6c757d; /* Bootstrap secondary color */
-}
 
 @media (max-width: 576px) { /* Adjust based on your breakpoint needs */
     .input-group {

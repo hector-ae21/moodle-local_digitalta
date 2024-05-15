@@ -50,6 +50,7 @@ class external_get_mentor_requests extends external_api
     public static function get_mentor_requests($experienceid)
     {
         global $DB, $PAGE;
+        $PAGE->set_context(context_system::instance());
         $mentors = Mentor::get_mentor_requests_by_experience($experienceid);
 
         if (count($mentors) == 0) {

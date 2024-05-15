@@ -31,7 +31,14 @@ export const setEventListeners = () => {
         deleteRelatedContext(event.currentTarget.dataset.contextid);
     });
 
+    $(document).on('click', SELECTORS.BUTTONS.sendMentorRequest, (event) => {
+        const mentorid = event.currentTarget.dataset.mentorid;
+        
+        
+    });
+
     $(document).on('input', SELECTORS.INPUTS.mentorsSearch, async(event) => {
         await getMentors(event.currentTarget.value);
     });
+
 };

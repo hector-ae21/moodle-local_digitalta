@@ -18,6 +18,7 @@ export const SELECTORS = {
         addResourceBtn: '#add-resource-button',
         addCasesBtn: "#add-cases-button",
         removeContextButton: "#remove-context-button",
+        sendMentorRequest: "#send-mentor-request",
     },
     INPUTS: {
         experienceid: '#experience-id',

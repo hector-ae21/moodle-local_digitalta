@@ -29,3 +29,21 @@ export function addMentorsResults(mentorsData) {
     Notification.exception(error);
   });
 }
+
+/**
+ * Add mentor request
+ * @param {int} mentorid
+ * @param {int} experienceid
+ */
+export function addMentorRequest(mentorid , experienceid) {
+  const args = {mentorid, experienceid};
+  addMentorRequest(args).then(() => {
+    Notification.success("Mentor request sent");
+    return;
+  }
+  ).catch((error) => {
+    Notification.exception(error);
+  });
+}
+
+

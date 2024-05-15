@@ -35,7 +35,7 @@ export function addMentorsResults(mentorsData) {
  * @param {int} mentorid
  * @param {int} experienceid
  */
-export function handlerAddMentorRequest(mentorid , experienceid) {
+export function handlerAddMentorRequest(mentorid, experienceid) {
   const args = {mentorid, experienceid};
   addMentorRequest(args).then(() => {
     Notification.success("Mentor request sent");

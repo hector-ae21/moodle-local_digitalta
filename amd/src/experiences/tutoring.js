@@ -1,7 +1,7 @@
-import { searchMentors } from "local_dta/repositories/tutoring_repository";
+import {searchMentors, addMentorRequest} from "local_dta/repositories/tutoring_repository";
 import Templates from "core/templates";
 import Notification from "core/notification";
-import { SELECTORS } from "./main";
+import SELECTORS from "./selectors";
 import $ from "jquery";
 
 export const getMentors = async (searchText) => {
@@ -35,7 +35,7 @@ export function addMentorsResults(mentorsData) {
  * @param {int} mentorid
  * @param {int} experienceid
  */
-export function addMentorRequest(mentorid , experienceid) {
+export function handlerAddMentorRequest(mentorid , experienceid) {
   const args = {mentorid, experienceid};
   addMentorRequest(args).then(() => {
     Notification.success("Mentor request sent");
@@ -45,5 +45,3 @@ export function addMentorRequest(mentorid , experienceid) {
     Notification.exception(error);
   });
 }
-
-

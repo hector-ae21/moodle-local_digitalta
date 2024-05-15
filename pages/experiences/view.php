@@ -69,7 +69,7 @@ $id = required_param('id', PARAM_INT);
 $PAGE->set_url(new moodle_url('/local/dta/pages/experiences/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
 $PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
-$PAGE->requires->js_call_amd('local_dta/experiences/main', 'init');
+$PAGE->requires->js_call_amd('local_dta/experiences/main', 'init', array('userid' => $USER->id));
 $PAGE->requires->js_call_amd('local_dta/tutoring/google-meet', 'init');
 
 // Get the experience

@@ -296,6 +296,30 @@ function xmldb_local_dta_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024051001, 'local', 'dta');
     }
 
+    if($oldversion < 2024051304) {
+        $table = new xmldb_table('digital_mentoring_request');
+
+        // Adding fields to table digital_mentoring_request.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('experienceid', XMLDB_TYPE_INTEGER, '11', null, null, null, null);
+        $table->add_field('mentorid', XMLDB_TYPE_INTEGER, '11', null, null, null, null);
+        $table->add_field('status', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timecreated', XMLDB_TYPE_DATETIME, null, XMLDB_NOTNULL, null, null, null);
+
+        // Adding keys to table digital_mentoring_request.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('experienceid', XMLDB_KEY_FOREIGN, ['experienceid'], 'digital_experiences', ['id']);
+        $table->add_key('mentorid', XMLDB_KEY_FOREIGN, ['mentorid'], 'user', ['id']);
+
+        // Create the table if it doesn't exist.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Dta savepoint reached.
+        upgrade_plugin_savepoint(true, 2024051304, 'local', 'dta');
+    }
+
     // Try all insertions regardless of the version
     // Insert the components
     $table = new xmldb_table('digital_components');

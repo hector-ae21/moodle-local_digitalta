@@ -4,7 +4,7 @@ import { showChangeStatusModal, toggleExperienceStatus } from './modals';
 import { showManageModal, displaylinkResourcesModal, displaylinkCasesModal } from './modals';
 import { getMentors } from './tutoring';
 
-export const setEventListeners = () => {
+export const setEventListeners = (userid = null) => {
     const experienceid = $(SELECTORS.INPUTS.experienceid).val();
 
     $(document).on('click', SELECTORS.BUTTONS.edit, () => {
@@ -33,8 +33,10 @@ export const setEventListeners = () => {
 
     $(document).on('click', SELECTORS.BUTTONS.sendMentorRequest, (event) => {
         const mentorid = event.currentTarget.dataset.mentorid;
-        
-        
+        // eslint-disable-next-line no-console
+        console.log(mentorid);
+        // eslint-disable-next-line no-console
+        console.log("user id: " , userid);
     });
 
     $(document).on('input', SELECTORS.INPUTS.mentorsSearch, async(event) => {

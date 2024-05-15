@@ -32,6 +32,7 @@ require_once($CFG->dirroot . '/local/dta/classes/tinyeditorhandler.php');
 require_once($CFG->dirroot . '/local/dta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/local/dta/locallib.php');
 require_once($CFG->dirroot . '/local/dta/classes/googlemeet/client.php');
+require_once($CFG->dirroot . '/local/dta/classes/mentors.php');
 
 use local_dta\Cases;
 use local_dta\client;
@@ -42,6 +43,7 @@ use local_dta\Resources;
 use local_dta\Sections;
 use local_dta\TinyEditorHandler;
 use local_dta\utils\FilterUtils;
+use local_dta\Mentor;
 
 require_login();
 
@@ -102,9 +104,26 @@ foreach ($sections as $section) {
     ]);
 }
 
+
+$mentors = Mentor::get_mentor_requests_by_experience($experience->id);
+
+$mentors = array_map(function ($mentor) use ($DB, $PAGE) {
+    $mentor_info = $DB->get_record('user', ['id' => $mentor->mentorid]);
+    $mentor_picture = new user_picture($mentor_info);
+    $mentor_picture->size = 101;
+    return [
+        'id' => $mentor_info->id,
+        'firstname' => $mentor_info->firstname,
+        'lastname' => $mentor_info->lastname,
+        'profileimageurl' => $mentor_picture->get_url($PAGE)->__toString()
+    ];
+}, $mentors);
+
+
 echo $OUTPUT->header();
 
 (new TinyEditorHandler)->get_config_editor(['maxfiles' => 1]);
+
 
 $template_context = [
     'component' => 'experience',
@@ -133,6 +152,7 @@ $template_context = [
     'reflection' => [], // SECTIONS TODO
     'reflectionsections' => $formated_sections,
     'mentorrepourl' => $CFG->wwwroot . '/local/dta/pages/mentors/index.php?id=' . $experience->id,
+    'mentorslist' => $mentors,
     //'related' => [
     //    'resources' => Resources::get_resources_by_context_component('experience', $id),
     //    'cases' => Cases::get_cases_by_context_component('experience', $id)
@@ -144,6 +164,7 @@ $template_context = FilterUtils::apply_filter_to_template_object($template_conte
 $template_context['googlemeetcall']['button'] = get_googlemeet_call_button();
 $meeting_record = helper::get_googlemeet_record(1);
 $template_context['googlemeetcall']['closecall']  = $meeting_record ? $meeting_record->chatid : null;
+
 
 echo $OUTPUT->render_from_template('local_dta/experiences/view/view', $template_context);
 

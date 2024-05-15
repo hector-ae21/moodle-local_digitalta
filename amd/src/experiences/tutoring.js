@@ -1,4 +1,4 @@
-import {searchMentors, addMentorRequest} from "local_dta/repositories/tutoring_repository";
+import {searchMentors, addMentorRequest, removeMentorRequest} from "local_dta/repositories/tutoring_repository";
 import Templates from "core/templates";
 import Notification from "core/notification";
 import SELECTORS from "./selectors";
@@ -38,10 +38,25 @@ export function addMentorsResults(mentorsData) {
 export function handlerAddMentorRequest(mentorid, experienceid) {
   const args = {mentorid, experienceid};
   addMentorRequest(args).then(() => {
-    Notification.success("Mentor request sent");
+    getMentors($(SELECTORS.INPUTS.mentorsSearch).val());
     return;
-  }
-  ).catch((error) => {
+  }).catch((error) => {
+    Notification.exception(error);
+  });
+}
+
+
+/**
+ * Remove mentor request
+ * @param {int} mentorid
+ * @param {int} experienceid
+ */
+export function handlerRemoveMentorRequest(mentorid, experienceid) {
+  const args = {mentorid, experienceid};
+  removeMentorRequest(args).then(() => {
+    getMentors($(SELECTORS.INPUTS.mentorsSearch).val());
+    return;
+  }).catch((error) => {
     Notification.exception(error);
   });
 }

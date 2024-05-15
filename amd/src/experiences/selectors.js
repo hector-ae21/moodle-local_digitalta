@@ -7,7 +7,8 @@ const SELECTORS = {
         addResourceBtn: '#add-resource-button',
         addCasesBtn: "#add-cases-button",
         removeContextButton: "#remove-context-button",
-        sendMentorRequest: "#send-mentor-request",
+        sendMentorRequest: ".send-mentor-request",
+        removeMentorRequest: ".remove-mentor-request",
     },
     INPUTS: {
         experienceid: '#experience-id',

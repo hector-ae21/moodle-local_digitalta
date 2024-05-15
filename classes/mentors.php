@@ -59,7 +59,7 @@ class Mentor
         $data->mentorid = $mentorid;
         $data->experienceid = $experienceid;
         $data->status = 0;
-        $data->timecreated = time();
+        $data->timecreated = date('Y-m-d H:i:s', time());
         if (!$data->id = $DB->insert_record(self::$mentor_request_table, $data)) {
             return false;
         }
@@ -86,10 +86,10 @@ class Mentor
      * 
      * @return array The mentor requests.
      */
-    public static function get_mentor_requests_by_experience(int $experienceid): array
+    public static function get_mentor_requests_by_experience(int $experienceid, int $status = 1): array
     {
         global $DB;
-        return $DB->get_records(self::$mentor_request_table, ['experienceid' => $experienceid]);
+        return array_values($DB->get_records(self::$mentor_request_table, ['experienceid' => $experienceid, 'status' => $status]));
     }
 
     /**
@@ -138,6 +138,18 @@ class Mentor
             return false;
         }
         return $data->status == 0;
+    }
+
+    /**
+     * Remove a mentor request.
+     * 
+     * @param $mentorid int The ID of the mentor.
+     * @param $experienceid int The ID of the experience.
+     */
+    public static function remove_mentor_request(int $mentorid, int $experienceid): bool
+    {
+        global $DB;
+        return $DB->delete_records(self::$mentor_request_table, ['mentorid' => $mentorid, 'experienceid' => $experienceid]);
     }
 
 }

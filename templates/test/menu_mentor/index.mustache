@@ -22,14 +22,14 @@
       <div id="search-mentors-result"></div>
 
       <div class="list-group mb-2">
-        {{#user_list}}
+        {{#mentorslist}}
         {{> local_dta/test/menu_mentor/item}}
-        {{/user_list}}
-        {{^user_list}}
+        {{/mentorslist}}
+        {{^mentorslist}}
         <div class="text-center">
           <h6> {{#str}}experience_view_mytutoring_request_not_found, local_dta{{/str}}  </h6>
         </div>
-        {{/user_list}}
+        {{/mentorslist}}
       </div>
       <div class="socialize-button mb-2">
         <button class="btn btn-chat">

@@ -169,6 +169,15 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_dta_remove_mentor_request' => [
+        'classname'   => 'external_remove_mentor_request',
+        'methodname'  => 'remove_mentor_request',
+        'classpath'   => 'local/dta/classes/webservices/mentors/external_remove_mentor_request.php',
+        'description' => 'add mentor request',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
 
 
     // CONTEXT 

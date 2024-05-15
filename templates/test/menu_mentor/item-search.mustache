@@ -17,7 +17,7 @@
    {{/isEnrolled}}
   
   {{#isEnrolled}}
-    <button data-action="cancel-mentor-request" data-id="{{id}}" class="btn btn-outline-danger mb-1" data-toggle="tooltip" data-placement="top" title="Cancel sent request">
+    <button class="btn btn-outline-danger mb-1 remove-mentor-request" data-mentorid="{{id}}" data-toggle="tooltip" data-placement="top" title="Cancel sent request">
       <i class="fa fa-user-times"></i>
     </button>
   {{/isEnrolled}}

@@ -1,8 +1,9 @@
 import $ from 'jquery';
-import { SELECTORS, deleteRelatedContext } from './main';
-import { showChangeStatusModal, toggleExperienceStatus } from './modals';
-import { showManageModal, displaylinkResourcesModal, displaylinkCasesModal } from './modals';
-import { getMentors } from './tutoring';
+import {deleteRelatedContext} from './main';
+import SELECTORS from './selectors';
+import {showChangeStatusModal, toggleExperienceStatus} from './modals';
+import {showManageModal, displaylinkResourcesModal, displaylinkCasesModal} from './modals';
+import {getMentors, handlerAddMentorRequest} from './tutoring';
 
 export const setEventListeners = () => {
     const experienceid = $(SELECTORS.INPUTS.experienceid).val();
@@ -33,8 +34,7 @@ export const setEventListeners = () => {
 
     $(document).on('click', SELECTORS.BUTTONS.sendMentorRequest, (event) => {
         const mentorid = event.currentTarget.dataset.mentorid;
-        
-        
+        handlerAddMentorRequest(mentorid, experienceid);
     });
 
     $(document).on('input', SELECTORS.INPUTS.mentorsSearch, async(event) => {

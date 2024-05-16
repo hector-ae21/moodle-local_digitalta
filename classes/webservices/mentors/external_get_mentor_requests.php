@@ -42,16 +42,20 @@ class external_get_mentor_requests extends external_api
     {
         return new external_function_parameters(
             [
-                'experienceid' => new external_value(PARAM_INT, 'Experience id'),
+                'experienceid' => new external_value(PARAM_INT, 'Experience id', VALUE_DEFAULT, 0),
             ]
         );
     }
 
-    public static function get_mentor_requests($experienceid)
+    public static function get_mentor_requests($experienceid = 0)
     {
-        global $DB, $PAGE;
+        global $DB, $PAGE, $USER;
         $PAGE->set_context(context_system::instance());
-        $mentors = Mentor::get_mentor_requests_by_experience($experienceid);
+        if($experienceid == 0) {
+            $mentors = Mentor::get_mentor_requests_by_mentor($USER->id);
+        }else{
+            $mentors = Mentor::get_mentor_requests_by_experience($experienceid);
+        }
 
         if (count($mentors) == 0) {
             return [
@@ -62,7 +66,7 @@ class external_get_mentor_requests extends external_api
 
         $mentors = array_map(function ($mentor) use ($DB, $PAGE) {
             $mentor_info = $DB->get_record('user', ['id' => $mentor->mentorid]);
-            $mentor_picture = new user_picture($mentor);
+            $mentor_picture = new user_picture($mentor_info);
             $mentor_picture->size = 101;
             return [
                 'id' => $mentor_info->id,

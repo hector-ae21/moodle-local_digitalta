@@ -66,9 +66,12 @@ class external_get_mentors extends external_api
             return $mentor->id != $USER->id;
         });
 
+        $mentors = array_filter($mentors, function ($mentor) use ($experienceid){
+            return !Mentor::is_enrolled_mentor_in_course($mentor->id, $experienceid, 1);
+        });
 
         foreach ($mentors as $mentor) {
-            $mentor->isEnrolled = Mentor::is_enrolled_mentor_in_course($mentor->id, $experienceid);
+            $mentor->isEnrolled = Mentor::is_enrolled_mentor_in_course($mentor->id, $experienceid, 0);
         }
 
         $mentors = array_map(function ($mentor) use ($PAGE) {

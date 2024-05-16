@@ -12,17 +12,26 @@ const status = new Status();
 /**
  * Create a chat in the target
  * @param {string} target
+ * @param {int} experienceid
  */
-export default function createChatInTarget(target) {
+export default function createChatInTarget(target, experienceid = null) {
     SELECTORS.TARGET = target;
-    initComponent();
+    initComponent(experienceid);
     return;
 }
 
-// Initialize the component
-const initComponent = () => {
+/**
+ * Initialize chat component
+ * @param {*} experienceid
+ */
+const initComponent = (experienceid) => {
     setEventListeners();
-    renderMenuChat();
+    if (experienceid) {
+        openChatFromExperience(experienceid);
+        return;
+    } else {
+        renderMenuChat();
+    }
     setInterval(reloaderMessages, 1000);
 };
 
@@ -30,7 +39,7 @@ const initComponent = () => {
  * Render menu chat
  */
 export async function renderMenuChat() {
-    const { chatrooms } = await getChatRooms();
+    const { chatrooms } = await getChatRooms({experienceid: 0});
     Template.render(SELECTORS.TEMPLATES.MENU_CHAT, {
         chatrooms
     }).then((html) => {
@@ -45,13 +54,14 @@ export async function renderMenuChat() {
 /**
  * Open chat
  * @param {number} id
+ * @param {boolean} hideBack
  * Render chat
  */
-export async function renderChat(id) {
+export async function renderChat(id, hideBack = false) {
     const { messages } = await getMessages({ chatid: id });
     SELECTORS.OPEN_CHAT_ID = id;
     Template.render(SELECTORS.TEMPLATES.CHAT, {
-        SELECTORS
+        hideBack
     }).then((html) => {
         $(SELECTORS.TARGET).html(html);
         handlerMessages(messages);
@@ -169,4 +179,13 @@ async function addNewMessage(message) {
     status.activeMessages.push({ message, timecreated: date, is_mine: true });
 
     $(SELECTORS.CONTAINERS.MESSAGES).append(html);
+}
+
+/**
+ * Open chat from experience
+ * @param {int} experienceid
+ */
+export async function openChatFromExperience(experienceid) {
+    const {chatrooms} = await getChatRooms({experienceid});
+    renderChat(chatrooms[0].id, true);
 }

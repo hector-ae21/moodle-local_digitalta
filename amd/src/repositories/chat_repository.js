@@ -4,14 +4,15 @@ import Ajax from 'core/ajax';
  * Get chat rooms.
  *
  * Valid args are:
- * None
+ * experienceid (int) - The experience id (optional)
  * @method getChatRooms
+ * @param {Object} args
  * @return {Promise}
  */
-export const getChatRooms = () => {
+export const getChatRooms = args => {
     const request = {
         methodname: 'local_dta_get_chat_rooms',
-        args: {}
+        args
     };
     return Ajax.call([request])[0];
 };

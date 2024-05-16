@@ -196,9 +196,11 @@ class Chat
     /**
      * Get all chat rooms for a user
      *
+     * @param int $userid User ID
+     * @param int $experienceid Experience ID
      * @return array
      */
-    public static function get_chat_rooms($userid = null): array
+    public static function get_chat_rooms($userid = null , $experienceid = null): array
     {
         global $DB, $USER;
 
@@ -214,9 +216,14 @@ class Chat
         ON
             cu.chatid = cr.id
         WHERE
-        cu.userid = 2;";
+            cu.userid = ?";
 
-        $chat_rooms = array_values($DB->get_records_sql($sql, array($user_id)));
+        if($experienceid){
+            $sql .= " AND cr.experienceid = ? LIMIT 1";
+        }
+
+
+        $chat_rooms = array_values($DB->get_records_sql($sql, array($userid, $experienceid)));
         $chat_rooms = self::set_chat_names($chat_rooms);
         
         return $chat_rooms;

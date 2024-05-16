@@ -41,13 +41,14 @@ class external_chat_services extends external_api
     {
         return new external_function_parameters(
             array(
+                'experienceid' => new external_value(PARAM_INT, 'experience ID' , VALUE_OPTIONAL, null),
             )
         );
     }
 
-    public static function get_chat_rooms()
+    public static function get_chat_rooms($experienceid = null)
     {
-        $rooms = Chat::get_chat_rooms();
+        $rooms = Chat::get_chat_rooms(null, $experienceid);
 
         return [
             'result' => true,

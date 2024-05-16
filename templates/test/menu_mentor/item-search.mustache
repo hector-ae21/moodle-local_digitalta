@@ -11,13 +11,13 @@
   </div>
   <div>
   {{^isEnrolled}}
-    <button class="btn btn-outline-primary mb-1 send-mentor-request" data-mentorid="{{id}}" data-toggle="tooltip" data-placement="top" title="Send request" id="send-mentor-request">
+    <button class="btn btn-outline-primary mb-1 send-mentor-request" data-mentorid="{{id}}" title="Send request" id="send-mentor-request">
       <i class="fa fa-user-plus"></i>
     </button>
    {{/isEnrolled}}
   
   {{#isEnrolled}}
-    <button class="btn btn-outline-danger mb-1 remove-mentor-request" data-mentorid="{{id}}" data-toggle="tooltip" data-placement="top" title="Cancel sent request">
+    <button class="btn btn-outline-danger mb-1 remove-mentor-request" data-mentorid="{{id}}" title="Cancel sent request">
       <i class="fa fa-user-times"></i>
     </button>
   {{/isEnrolled}}

@@ -9,11 +9,13 @@ const SELECTORS = {
         "MENU_CHAT": "local_dta/test/menu_chat/index",
         "CHAT": "local_dta/test/chat/index",
         "MY_MESSAGE": "local_dta/test/chat/message_my",
-        "OTHER_MESSAGE": "local_dta/test/chat/message_other"
+        "OTHER_MESSAGE": "local_dta/test/chat/message_other",
+        "MENU_MENTOR": "local_dta/test/menu_mentor/index",
     },
     BUTTONS: {
         "OPEN_CHAT": ".open-chat",
         "BACK_MENU": "#back-menu",
+        "BACK_MENU_EXPERIENCE": "#back-menu-experience",
         "REPLY": "#reply-message"
     },
     INPUTS: {

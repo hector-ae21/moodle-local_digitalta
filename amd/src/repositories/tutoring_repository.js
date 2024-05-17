@@ -66,3 +66,21 @@ export const removeMentorRequest = async(args) => {
   };
   return await Ajax.call([request])[0];
 };
+
+
+/**
+ * Valid args are:
+ * - requestid (int): The request id.
+ * - acceptance (bool): The acceptance.
+ * Add experience to mentor.
+ * @method acceptanceMentorRequest
+ * @param {object} args Arguments send to the webservice.
+ * @return {Promise} Resolve with mentors.
+ */
+export const acceptanceMentorRequest = async(args) => {
+  const request = {
+    methodname: "local_dta_accept_mentor_request",
+    args: args,
+  };
+  return await Ajax.call([request])[0];
+};

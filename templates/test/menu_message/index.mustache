@@ -22,9 +22,18 @@
         />
       </div>
       <a href="#" class="d-flex justify-content-end mb-1">{{#str}}tutoring:see_all_mentors, local_dta{{/str}}</a>
-      <button class="btn btn-light">
+
+    {{^hideBack}}
+      <button class="btn btn-light" id="back-menu">
         <i class="fa fa-arrow-left"></i>
       </button>
+    {{/hideBack}}
+    {{#hideBack}}
+      <button class="btn btn-light" id="back-menu-experience">
+        <i class="fa fa-arrow-left"></i>
+      </button>
+    {{/hideBack}}
+      
       <div class="d-flex align-items-center mb-2">
         <h5 class="mb-1">{{#str}}tutoring:request, local_dta{{/str}}</h5>
         <span class="badge badge-danger ml-2">{{total}}</span>

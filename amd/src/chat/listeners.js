@@ -1,6 +1,6 @@
 import $ from "jquery";
 import SELECTORS from "./selectors";
-import {renderChat, renderMenuChat, handleSendMessage} from "./main";
+import {renderChat, renderMenuChat, handleSendMessage, renderMenuMentor} from "./main";
 
 /**
  * Set event listeners for the module.
@@ -18,10 +18,13 @@ export default function setEventListeners() {
         renderMenuChat();
     });
 
+    // Back to menu
+    $(document).on("click", SELECTORS.BUTTONS.BACK_MENU_EXPERIENCE, function() {
+        renderMenuMentor();
+    });
+
     // Reply message
     $(document).on("click", SELECTORS.BUTTONS.REPLY, function() {
         handleSendMessage();
     });
-
-
 }

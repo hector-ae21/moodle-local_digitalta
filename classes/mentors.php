@@ -7,11 +7,11 @@
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-// This file controls DTA resource as an instance of the repository and digital_resource table in the database
-// NOT TO BE CONFUSED WITH THE FILEMANAGER HANDLER OR MOODLE FILE API
-
 namespace local_dta;
+
+require_once($CFG->dirroot . '/local/dta/classes/chat/chat.php');
+
+use local_dta\Chat;
 
 class Mentor
 {
@@ -31,6 +31,17 @@ class Mentor
     {
         global $DB;
         return $DB->get_record(self::$table, ['id' => $id]);
+    }
+
+    /**
+     * Get a mentor by its ID.
+     * 
+     * @param $id int The ID of the mentor.
+     */
+    public static function get_request(int $id): object | bool
+    {
+        global $DB;
+        return $DB->get_record(self::$mentor_request_table, ['id' => $id]);
     }
 
     /**
@@ -111,6 +122,40 @@ class Mentor
     }
 
     /**
+     * Accept a mentor request.
+     * 
+     * @param $requestid int The ID of the mentor request.
+     */
+    public static function accept_mentor_request(int $requestid): bool
+    {
+        $request = self::get_request($requestid);
+        if (!$request) {
+            return false;
+        }
+
+        $chat = Chat::get_chat_room_by_experience($request->experienceid);
+
+        if (!$chat) {
+            $chat = new \stdClass();
+            $chat->id = Chat::create_chat_room($request->experienceid);
+        }
+        
+        Chat::add_user_to_chat_room($chat->id, $request->mentorid);
+
+        return self::change_mentor_request_status($requestid, 1);
+    }
+
+    /**
+     * Reject a mentor request.
+     * 
+     * @param $requestid int The ID of the mentor request.
+     */
+    public static function reject_mentor_request(int $requestid): bool
+    {
+        return self::remove_mentor_request_by_id($requestid);
+    }
+
+    /**
      * Get a chunk of mentors.
      * 
      * @param $numLoaded int The number of mentors already loaded.
@@ -152,6 +197,17 @@ class Mentor
     {
         global $DB;
         return $DB->delete_records(self::$mentor_request_table, ['mentorid' => $mentorid, 'experienceid' => $experienceid]);
+    }
+
+    /**
+     * Remove a mentor request.
+     * 
+     * @param $requestid int The ID of the mentor request.
+     */
+    public static function remove_mentor_request_by_id(int $requestid): bool
+    {
+        global $DB;
+        return $DB->delete_records(self::$mentor_request_table, ['id' => $requestid]);
     }
 
 }

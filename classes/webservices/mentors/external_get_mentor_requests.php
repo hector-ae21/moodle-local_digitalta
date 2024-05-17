@@ -69,7 +69,8 @@ class external_get_mentor_requests extends external_api
             $mentor_picture = new user_picture($mentor_info);
             $mentor_picture->size = 101;
             return [
-                'id' => $mentor_info->id,
+                'requestid' => $mentor->id,
+                'userid' => $mentor_info->id,
                 'firstname' => $mentor_info->firstname,
                 'lastname' => $mentor_info->lastname,
                 'profileimageurl' => $mentor_picture->get_url($PAGE)->__toString()
@@ -90,7 +91,8 @@ class external_get_mentor_requests extends external_api
                     'requests' => new external_multiple_structure(
                         new external_single_structure(
                             [
-                                'id' => new external_value(PARAM_INT, 'Mentor id'),
+                                'requestid' => new external_value(PARAM_INT, 'Mentor request id'),
+                                'userid' => new external_value(PARAM_INT, 'Mentor id'),
                                 'firstname' => new external_value(PARAM_TEXT, 'Mentor firstname'),
                                 'lastname' => new external_value(PARAM_TEXT, 'Mentor lastname'),
                                 'profileimageurl' => new external_value(PARAM_URL, 'Mentor profile image url')

@@ -33,6 +33,7 @@ const initComponent = (experienceid) => {
         renderMenuChat();
     }
     setInterval(reloaderMessages, 1000);
+    mentorHandler();
 };
 
 /**
@@ -188,4 +189,15 @@ async function addNewMessage(message) {
 export async function openChatFromExperience(experienceid) {
     const {chatrooms} = await getChatRooms({experienceid});
     renderChat(chatrooms[0].id, true);
+}
+
+/**
+ * Render menu mentor
+ * @returns {Promise}
+ */
+export async function renderMenuMentor() {
+    Template.render(SELECTORS.TEMPLATES.MENU_MENTOR, {}).then((html) => {
+        $(SELECTORS.TARGET).html(html);
+        return;
+    }).fail(Notification.exception);
 }

@@ -17,7 +17,8 @@
         <input type="text" class="search-field__input" id="search-mentors-input"
           placeholder="Search user to ask tutoring..." aria-label="Search user" />
       </div>
-      <a href="{{mentorrepourl}}" class="d-flex justify-content-end mb-1">{{#str}}tutoring:see_all_mentors, local_dta{{/str}}</a>
+      <a href="{{mentorrepourl}}" class="d-flex justify-content-end mb-1">{{#str}}tutoring:see_all_mentors,
+        local_dta{{/str}}</a>
 
       <div id="search-mentors-result"></div>
 
@@ -27,7 +28,7 @@
         {{/mentorslist}}
         {{^mentorslist}}
         <div class="text-center">
-          <h6> {{#str}}experience_view_mytutoring_request_not_found, local_dta{{/str}}  </h6>
+          <h6> {{#str}}experience_view_mytutoring_request_not_found, local_dta{{/str}} </h6>
         </div>
         {{/mentorslist}}
       </div>
@@ -35,9 +36,14 @@
         <button class="btn btn-chat">
           <i class="fa fa-paper-plane"></i> Chat
         </button>
-        <button class="btn btn-zoom-call">
-          <i class="fa fa-video-camera"></i> Start Meet Call
-        </button>
+        {{#googlemeetcall}}
+        <div class="d-flex justify-space-between">
+          {{{button}}}
+          {{#closecall}}
+          <button class="btn btn-danger btn-sm mt-2" id="close-video-meeting" data-chatid="{{.}}">Close Call</button>
+          {{/closecall}}
+          {{/googlemeetcall}}
+        </div>
       </div>
       <div class="mentor-comments">
         <h4 class="mentor-comments-title">{{#str}}tutoring:mentor_comments, local_dta{{/str}}</h4>

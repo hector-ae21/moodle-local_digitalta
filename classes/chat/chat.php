@@ -53,6 +53,18 @@ class Chat
     }
 
     /**
+     * Get a chat room by experience
+     *
+     * @param int $experienceid Experience ID
+     * @return stdClass|null
+     */
+    public static function get_chat_room_by_experience($experienceid): ?stdClass
+    {
+        global $DB;
+        return $DB->get_record(self::$table_chat_room, array('experienceid' => $experienceid));
+    }
+
+    /**
      * Add a user to a chat room
      *
      * @param int $chat_room_id Chat room ID

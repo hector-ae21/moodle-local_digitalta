@@ -33,8 +33,10 @@ require_once($CFG->dirroot . '/local/dta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/local/dta/locallib.php');
 require_once($CFG->dirroot . '/local/dta/classes/googlemeet/client.php');
 require_once($CFG->dirroot . '/local/dta/classes/mentors.php');
+require_once($CFG->dirroot . '/local/dta/classes/chat/chat.php');
 
 use local_dta\Cases;
+use local_dta\Chat;
 use local_dta\client;
 use local_dta\Components;
 use local_dta\Experiences;
@@ -49,9 +51,9 @@ require_login();
 
 global $CFG, $PAGE, $OUTPUT, $USER;
 
-function get_googlemeet_call_button()
+function get_googlemeet_call_button($chatid)
 {
-    $client = new client(1);
+    $client = new client($chatid);
     if (!$client->enabled) {
         return;
     }
@@ -60,9 +62,9 @@ function get_googlemeet_call_button()
     }
     $meetingrecord = helper::get_googlemeet_record(1);
     if ($meetingrecord) {
-        return '<button class="btn btn-primary btn-sm mt-2" onclick="window.open(\'https://meet.google.com/' . $meetingrecord->meetingcode . '\', \'_blank\');">' . get_string('tutoring:joinvideocall', 'local_dta') . '</button>';
+        return '<button class="btn btn-zoom-call btn-sm mt-2  mr-2" onclick="window.open(\'https://meet.google.com/' . $meetingrecord->meetingcode . '\', \'_blank\');"> <i class="fa fa-video-camera"></i> ' . get_string('tutoring:joinvideocall', 'local_dta') . '</button>';
     } else {
-        return $client->print_login_popup(1);
+        return $client->print_login_popup($chatid);
     }
 }
 
@@ -158,13 +160,15 @@ $template_context = [
     //    'cases' => Cases::get_cases_by_context_component('experience', $id)
     //],
 ];
-
-
 $template_context = FilterUtils::apply_filter_to_template_object($template_context);
-$template_context['googlemeetcall']['button'] = get_googlemeet_call_button();
-$meeting_record = helper::get_googlemeet_record(1);
-$template_context['googlemeetcall']['closecall']  = $meeting_record ? $meeting_record->chatid : null;
 
+$experience_chat = Chat::get_chat_room_by_experience($id);
+if ($experience_chat) {
+    $experience_chatid = $experience_chat->id;
+    $template_context['googlemeetcall']['button'] = get_googlemeet_call_button($experience_chatid);
+    $meeting_record = helper::get_googlemeet_record($experience_chatid);
+    $template_context['googlemeetcall']['closecall']  = $meeting_record ? $meeting_record->chatid : null;
+}
 
 echo $OUTPUT->render_from_template('local_dta/experiences/view/view', $template_context);
 

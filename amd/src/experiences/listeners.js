@@ -4,6 +4,7 @@ import SELECTORS from "./selectors";
 import { showChangeStatusModal, toggleExperienceStatus } from "./modals";
 import { showManageModal, displaylinkResourcesModal, displaylinkCasesModal } from "./modals";
 import { getMentors, handlerAddMentorRequest, handlerRemoveMentorRequest } from "./tutoring";
+import setChat from "local_dta/chat/main";
 
 export const setEventListeners = () => {
   const experienceid = $(SELECTORS.INPUTS.experienceid).val();
@@ -37,10 +38,13 @@ export const setEventListeners = () => {
     handlerAddMentorRequest(mentorid, experienceid);
   });
 
-
   $(document).on("click", SELECTORS.BUTTONS.removeMentorRequest, (event) => {
     const mentorid = event.currentTarget.dataset.mentorid;
     handlerRemoveMentorRequest(mentorid, experienceid);
+  });
+
+  $(document).on("click", SELECTORS.BUTTONS.openChat, () => {
+    setChat(SELECTORS.SECTIONS.mentoringSection, experienceid);
   });
 
   $(document).on("input", SELECTORS.INPUTS.mentorsSearch, async(event) => {

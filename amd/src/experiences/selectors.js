@@ -9,6 +9,7 @@ const SELECTORS = {
         removeContextButton: "#remove-context-button",
         sendMentorRequest: ".send-mentor-request",
         removeMentorRequest: ".remove-mentor-request",
+        openChat: "#btn-chat",
     },
     INPUTS: {
         experienceid: '#experience-id',
@@ -16,6 +17,7 @@ const SELECTORS = {
     },
     SECTIONS: {
         searchMentorsResults: '#search-mentors-result',
+        mentoringSection: '#mentoring-section',
     }
 };
 

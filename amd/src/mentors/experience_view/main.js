@@ -25,7 +25,7 @@ const renderRequestsButton = () => {
 };
 
 export const openMentorsRequests = () => {
-  const experienceid = $(SELECTORS.INPUT.EXPERIENCE_ID).val();
+  const experienceid = $(SELECTORS.INPUT.EXPERIENCE_ID).val() || 0;
   getMentorRequestsByExperience({ experienceid: experienceid })
     .then((data) => {
       Template.render(TEMPLATES.MENTOR_REQUESTS, data)

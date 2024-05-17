@@ -70,13 +70,14 @@ class Mentor
      * Get mentor requests by mentor ID.
      * 
      * @param $mentorid int The ID of the mentor.
+     * @param $status int The status of the mentor request.
      * 
      * @return array The mentor requests.
      */
-    public static function get_mentor_requests_by_mentor(int $mentorid): array
+    public static function get_mentor_requests_by_mentor(int $mentorid, $status = 0): array
     {
         global $DB;
-        return $DB->get_records(self::$mentor_request_table, ['mentorid' => $mentorid]);
+        return array_values($DB->get_records(self::$mentor_request_table, ['mentorid' => $mentorid , 'status' => $status]));
     }
 
     /**
@@ -129,11 +130,12 @@ class Mentor
      * 
      * @param $mentorid int The ID of the mentor.
      * @param $experienceid int The ID of the experience.
+     * @param $status int The status of the mentor request.
      */
-    public static function is_enrolled_mentor_in_course(int $mentorid, int $experienceid): bool
+    public static function is_enrolled_mentor_in_course(int $mentorid, int $experienceid, int $status = 1): bool
     {
         global $DB;
-        $data = $DB->get_record(self::$mentor_request_table, ['mentorid' => $mentorid, 'experienceid' => $experienceid]);
+        $data = $DB->get_record(self::$mentor_request_table, ['mentorid' => $mentorid, 'experienceid' => $experienceid , 'status' => $status]);
         if (!$data) {
             return false;
         }

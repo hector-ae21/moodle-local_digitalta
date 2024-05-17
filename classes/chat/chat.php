@@ -61,7 +61,8 @@ class Chat
     public static function get_chat_room_by_experience($experienceid): ?stdClass
     {
         global $DB;
-        return $DB->get_record(self::$table_chat_room, array('experienceid' => $experienceid));
+        $chat = $DB->get_record(self::$table_chat_room, array('experienceid' => $experienceid));
+        return $chat ? $chat : null;
     }
 
     /**

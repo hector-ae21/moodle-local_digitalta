@@ -1,5 +1,5 @@
-import Autocomplete from "theme_dta/form-autocomplete";
-import {createTags} from "local_dta/repositories/tags_repository";
+import Autocomplete from "theme_digitalta/form-autocomplete";
+import {tagsCreate} from "local_digitalta/repositories/tags_repository";
 import Notification from "core/notification";
 
 /**
@@ -8,7 +8,7 @@ import Notification from "core/notification";
  * @return {void}
  */
 export function autocompleteTags(area) {
-    Autocomplete.enhance(area, null, "local_dta/tags/autocomplete_method");
+    Autocomplete.enhance(area, null, "local_digitalta/tags/autocomplete_method");
     area = area.replace("#", "");
     document.getElementById(area).addEventListener("change", function(e) {
         handleNewTag(e.target.selectedOptions);
@@ -37,7 +37,7 @@ async function handleNewTag(selectedOptions) {
  */
 async function saveNewTag(tagName) {
     try {
-        return await createTags({
+        return await tagsCreate({
             tag: tagName
         });
     } catch (error) {

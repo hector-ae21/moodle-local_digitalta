@@ -17,16 +17,16 @@
 /**
  * WebService to create tags
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/classes/tags.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/tags.php');
 
-use local_dta\Tags;
+use local_digitalta\Tags;
 
 /**
  * This class is used to create tags
@@ -46,7 +46,7 @@ class external_tags_get extends external_api
     {
         return new external_function_parameters(
             [
-                'searchText' => new external_value(PARAM_TEXT, 'Search text', VALUE_DEFAULT, '%%')
+                'searchText' => new external_value(PARAM_TEXT, 'Search text', VALUE_DEFAULT, '')
             ]
         );
     }
@@ -57,12 +57,9 @@ class external_tags_get extends external_api
      * @param  string $searchText Search text
      * @return array  Array of tags
      */
-    public static function tags_get($searchText = '%%')
+    public static function tags_get($searchText = '')
     {
-        $searchText = '%' . $searchText . '%';
-        $tags = Tags::get_tags_by_text($searchText) ?? [];
-        $tags = array_values($tags);
-        return $tags;
+        return Tags::get_tags_by_text($searchText) ?? [];
     }
 
     /**
@@ -74,10 +71,10 @@ class external_tags_get extends external_api
     {
         return new external_multiple_structure(
             new external_single_structure(
-                array(
+                [
                     'id' => new external_value(PARAM_INT, 'Tag ID'),
                     'name' => new external_value(PARAM_TEXT, 'Tag name')
-                )
+                ]
             )
         );
     }

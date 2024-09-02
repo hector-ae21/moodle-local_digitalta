@@ -17,60 +17,63 @@
 /**
  * Experiences dashboard page
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../../../config.php');
-require_once($CFG->dirroot . '/local/dta/classes/components.php');
-require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
-require_once($CFG->dirroot . '/local/dta/classes/utils/filterutils.php');
-require_once($CFG->dirroot . '/local/dta/classes/utils/stringutils.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 
 require_login();
 
-use local_dta\Components;
-use local_dta\Experiences;
-use local_dta\utils\FilterUtils;
-use local_dta\utils\StringUtils;
+use local_digitalta\Experiences;
+use local_digitalta\Sections;
+use local_digitalta\utils\FilterUtils;
 
-global $CFG, $PAGE, $OUTPUT;
+$pagetitle = get_string('experiences:title', 'local_digitalta');
 
-$strings = get_strings(['experiences_header', 'experiences_title'], 'local_dta');
-
-// Setea el título de la página
-$PAGE->set_url(new moodle_url('/local/dta/pages/experiences/dashboard.php'));
+$PAGE->set_url(new moodle_url('/local/digitalta/pages/experiences/dashboard.php'));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->experiences_title);
-$PAGE->requires->js_call_amd('local_dta/reactions/manager', 'init');
+$PAGE->set_title($pagetitle);
+$PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
+
+// Get the experiences
+$experiences = Experiences::get_experiences(['visible' => 1]);
+$experiences = array_map(function ($experience) {
+    $sections = [];
+    foreach ($experience->sections as $section) {
+        $groupname = Sections::get_group($section->groupid)->name;
+        list($section->groupname, $section->groupname_simplified) =
+            local_digitalta_get_element_translation('section_group', $groupname);
+        $section->content = strip_tags($section->content);
+        $sections[$section->groupname_simplified] = $section;
+    }
+    $experience->sections = $sections;
+    return $experience;
+}, $experiences);
+array_multisort(
+    array_column($experiences, 'timecreated'), SORT_DESC,
+    $experiences
+);
 
 echo $OUTPUT->header();
 
-$experiences = Experiences::get_all_experiences(false);
-$experiences = array_map(function ($experience) {
-    $experience->description = ""; // SECTIONS TODO
-    return $experience;
-}, $experiences);
-
-$user = get_complete_user_data('id', $USER->id);
-$picture = new user_picture($user);
-$picture->size = 101;
-$user->imageurl = $picture->get_url($PAGE)->__toString();
-
 $template_context = [
-    'user' => $user,
+    'title' => $pagetitle,
     'component' => 'experience',
     'experiences' => [
         'data' => $experiences,
-        'showcontrolsadmin' => is_siteadmin($USER),
-        'addurl' => $CFG->wwwroot . '/local/dta/pages/experiences/manage.php',
-        'viewurl' => $CFG->wwwroot . '/local/dta/pages/experiences/view.php?id='
+        'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/experiences/view.php?id='
     ],
+    'viewtagurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=tag&id=',
+    'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id='
 ];
 
-$template_context = FilterUtils::apply_filter_to_template_object($template_context);
+$template_context = FilterUtils::apply_filters($template_context);
 
-echo $OUTPUT->render_from_template('local_dta/experiences/dashboard/dashboard', $template_context);
+echo $OUTPUT->render_from_template('local_digitalta/experiences/dashboard/dashboard', $template_context);
 
 echo $OUTPUT->footer();

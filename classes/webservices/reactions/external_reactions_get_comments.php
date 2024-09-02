@@ -17,20 +17,20 @@
 /**
  * WebService to get comments
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/classes/components.php');
-require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
-require_once($CFG->dirroot . '/local/dta/classes/utils/dateutils.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/components.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/reactions.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/utils/dateutils.php');
 
-use local_dta\Components;
-use local_dta\Reactions;
-use local_dta\utils\DateUtils;
+use local_digitalta\Components;
+use local_digitalta\Reactions;
+use local_digitalta\utils\DateUtils;
 
 /**
  * This class is used to get comments
@@ -75,8 +75,8 @@ class external_reactions_get_comments extends external_api
             $return->id      = $comment->id;
             $return->comment = $comment->comment;
 
-            $return->created = DateUtils::format_unix_timestamp($comment->timecreated, 'Y-m-d H:i:s');
-            $return->created = DateUtils::time_elapsed_string($return->created);
+            $return->created_raw = date('Y-m-d H:i:s', $comment->timecreated);
+            $return->created     = DateUtils::time_elapsed_string($comment->timecreated);
 
             $user = $DB->get_record('user', ['id' => $comment->userid]);
 
@@ -120,6 +120,7 @@ class external_reactions_get_comments extends external_api
                             ),
                             'comment' => new external_value(PARAM_RAW, 'Comment'),
                             'created' => new external_value(PARAM_TEXT, 'Time created'),
+                            'created_raw' => new external_value(PARAM_TEXT, 'Time created raw')
                         ]
                     ), 'Comments', VALUE_OPTIONAL
                 ),

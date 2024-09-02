@@ -17,16 +17,16 @@
 /**
  * WebService to delete a section
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/classes/sections.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
 
-use local_dta\Sections;
+use local_digitalta\Sections;
 
 /**
  * This class is used to delete a section
@@ -46,7 +46,7 @@ class external_sections_delete extends external_api
     {
         return new external_function_parameters(
             [
-                'sectionid' => new external_value(PARAM_INT, 'Section ID')
+                'id' => new external_value(PARAM_INT, 'Section ID')
             ]
         );
     }
@@ -54,15 +54,15 @@ class external_sections_delete extends external_api
     /**
      * Deletes a section
      *
-     * @param  int   $sectionid Section ID
+     * @param  int   $id Section ID
      * @return array The result of the operation
      */
-    public static function sections_delete($sectionid)
+    public static function sections_delete($id)
     {
-        if (!Sections::get_section($sectionid)) {
+        if (!Sections::get_section($id)) {
             return ['result' => false, 'error' => 'Section not found'];
         }
-        if (!Sections::delete_section($sectionid)) {
+        if (!Sections::delete_section($id)) {
             return ['result' => false, 'error' => 'Error deleting section'];
         }
         return ['result' => true];
@@ -78,7 +78,7 @@ class external_sections_delete extends external_api
         return new external_single_structure(
             [
                 'result' => new external_value(PARAM_BOOL, 'True if the section was deleted, false otherwise'),
-                'error' => new external_value(PARAM_TEXT, 'Error message if there was an error')
+                'error' => new external_value(PARAM_TEXT, 'Error message if there was an error', VALUE_OPTIONAL)
             ]
         );
     }

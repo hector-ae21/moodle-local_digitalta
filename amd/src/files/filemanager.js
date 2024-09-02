@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { prepareDraftAreaHTML, uploadFile } from "local_dta/repositories/files_repository";
+import { prepareDraftAreaHTML, filesUploadFromDraft } from "local_digitalta/repositories/files_repository";
 import Notification from "core/notification";
 
 /**
@@ -33,7 +33,7 @@ export const prepareDraftHTML = (fileArea, component, fileContextId) => {
 export const saveFiles = (containerId, fileinputId, fileid, filearea, contextid = 1) => {
     const fileContainer = $(`#${containerId} `);
     const draftid = fileContainer.find(`#${fileinputId}`).attr("Value");
-    return uploadFile({
+    return filesUploadFromDraft({
         draftid,
         fileid,
         filearea,

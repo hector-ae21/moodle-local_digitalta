@@ -1,5 +1,5 @@
 import {setupForElementId} from "editor_tiny/editor";
-import {clean} from "./cleaner";
+import {clean} from "local_digitalta/tiny/cleaner";
 import Notification from "core/notification";
 
 /**
@@ -8,7 +8,7 @@ import Notification from "core/notification";
  * @return {void}
  */
 export const createTinyMCE = (elementId) => {
-    const options = window.dta_tiny_config;
+    const options = window.digitalta_tiny_config;
     if (!options) {
         return;
     }
@@ -16,7 +16,7 @@ export const createTinyMCE = (elementId) => {
         clean();
         return;
     }).catch((error) => {
-        Notification.error(error);
+        Notification.exception(error);
     });
 };
 
@@ -26,7 +26,7 @@ export const createTinyMCE = (elementId) => {
  * @return {void}
  */
 export const removeTinyMCEFromArea = (area) => {
-    window.tinymce.get(area).remove();
+    window.tinyMCE.get(area).remove();
 };
 
 /**

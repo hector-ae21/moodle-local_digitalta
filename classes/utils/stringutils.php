@@ -17,12 +17,12 @@
 /**
  * String utils
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta\utils;
+namespace local_digitalta\utils;
 
 /**
  * This class is used to operate with strings

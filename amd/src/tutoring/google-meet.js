@@ -1,4 +1,4 @@
-import { deleteMeeting } from "local_dta/repositories/tutoring_repository";
+import { tutoringMeetingsDelete } from "local_digitalta/repositories/tutoring_repository";
 import $ from 'jquery';
 
 
@@ -24,7 +24,7 @@ export const setEventListeners = () => {
  */
 export async function closeCallOnClick(id) {
 
-  const isDeleted = await deleteMeeting({ chatid: id });
+  const isDeleted = await tutoringMeetingsDelete({ chatid: id });
   if (isDeleted) {
     location.reload();
   }

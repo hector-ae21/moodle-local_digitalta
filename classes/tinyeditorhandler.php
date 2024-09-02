@@ -17,11 +17,11 @@
 /**
  * TinyEditorHandler class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace local_dta;
+namespace local_digitalta;
 
 require_once($CFG->dirroot . '/lib/editor/tiny/classes/editor.php');
 require_once($CFG->dirroot . '/lib/editor/tiny/classes/manager.php');
@@ -40,21 +40,24 @@ class TinyEditorHandler extends \editor_tiny\editor
 {
 
     /** @var array options provided to initalize filepicker */
-    protected $_options = array(
-        'subdirs' => 0,
+    protected $_options = [
+        'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED,
+        'autosave' => true,
+        'changeformat' => 0,
+        'context' => null,
+        'enable_filemanagement' => true,
         'maxbytes' => 0,
         'maxfiles' => 0,
-        'changeformat' => 0,
-        'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED,
-        'context' => null,
         'noclean' => 0,
-        'trusttext' => 0,
-        'return_types' => 15,
-        'enable_filemanagement' => true,
         'removeorphaneddrafts' => false,
-        'autosave' => true
-    );
+        'return_types' => 15,
+        'subdirs' => 0,
+        'trusttext' => 0
+    ];
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         global $CFG, $PAGE;
@@ -66,6 +69,12 @@ class TinyEditorHandler extends \editor_tiny\editor
         }
     }
 
+    /**
+     * Get filepicker options
+     *
+     * @param object $context The context
+     * @param int $draftitemid The draft item id
+     */
     public static function get_filepicker_options($context, $draftitemid)
     {
         return [
@@ -75,6 +84,13 @@ class TinyEditorHandler extends \editor_tiny\editor
         ];
     }
 
+    /**
+     * Get specific filepicker options
+     *
+     * @param array $acceptedtypes The accepted types
+     * @param int $draftitemid The draft item id
+     * @param object $context The context
+     */
     protected static function specific_filepicker_options($acceptedtypes, $draftitemid, $context)
     {
         $filepickeroptions = new stdClass();
@@ -91,6 +107,11 @@ class TinyEditorHandler extends \editor_tiny\editor
         return $options;
     }
 
+    /**
+     * Remove unwanted plugins
+     *
+     * @param object $config The configuration
+     */
     protected static function remove_unwanted_plugins($config)
     {
         $pluginsToRemove = [
@@ -110,21 +131,19 @@ class TinyEditorHandler extends \editor_tiny\editor
         return $config;
     }
 
-
+    /**
+     * Get the configuration editor
+     *
+     * @param array $options The options
+     * @param array $fpoptions The file picker options
+     */
     public function get_config_editor($options = null, $fpoptions = null)
     {
         global $PAGE;
         $context = $PAGE->context;
-
         $fpoptions = $this->get_filepicker_options($context, file_get_unused_draft_itemid());
-
-
-        $context = $PAGE->context;
-
-        $fpoptions = $this->get_filepicker_options($context,  file_get_unused_draft_itemid());
-
-
         $manager = new manager();
+        
         // Ensure that the default configuration is set.
         parent::set_default_configuration($manager);
 
@@ -197,7 +216,7 @@ class TinyEditorHandler extends \editor_tiny\editor
         $configoptions = json_encode(convert_to_array($config));
 
         $inlinejs = <<<EOF
-        window.dta_tiny_config = $configoptions;
+        window.digitalta_tiny_config = $configoptions;
         EOF;
 
         $PAGE->requires->js_amd_inline($inlinejs);

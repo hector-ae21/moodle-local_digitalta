@@ -17,24 +17,24 @@
 /**
  * WebService to get an experience
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/classes/components.php');
-require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
-require_once($CFG->dirroot . '/local/dta/classes/sections.php');
-require_once($CFG->dirroot . '/local/dta/classes/tags.php');
-require_once($CFG->dirroot . '/local/dta/classes/themes.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/components.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/tags.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/themes.php');
 
-use local_dta\Components;
-use local_dta\Experiences;
-use local_dta\Sections;
-use local_dta\Tags;
-use local_dta\Themes;
+use local_digitalta\Components;
+use local_digitalta\Experiences;
+use local_digitalta\Sections;
+use local_digitalta\Tags;
+use local_digitalta\Themes;
 
 /**
  * This class is used to get an experience
@@ -74,32 +74,45 @@ class external_experiences_get extends external_api
             ];
         }
 
-        // Get the description for the experience
-        $section = Sections::get_sections([
-            'component' => [Components::get_component_by_name('experience')->id],
-            'componentinstance' => [$experience->id],
-            'groupid' => [Sections::get_group_by_name('What?')->id]
+        // Get the sections for the experience
+        $sections = Sections::get_sections([
+            'component' => Components::get_component_by_name('experience')->id,
+            'componentinstance' => $experience->id
         ]);
-        $section = reset($section);
-        $experience->description = $section->content;
+        $experience->sections = array_map(function ($section) {
+            $groupname = Sections::get_group($section->groupid)->name;
+            list($groupname, $groupname_simplified) =
+                local_digitalta_get_element_translation('section_group', $groupname);
+            return (object) [
+                'id' => $section->id,
+                'component' => $section->component,
+                'componentinstance' => $section->componentinstance,
+                'groupid' => $section->groupid,
+                'groupname' => $groupname,
+                'groupname_simplified' => $groupname_simplified,
+                'sequence' => $section->sequence,
+                'type' => $section->type,
+                'content' => $section->content
+            ];
+        }, $sections);
 
         // Get the themes for the experience
         $themes = Themes::get_themes_for_component('experience', $experience->id);
-        $experience->themes = array_values(array_map(function ($theme) {
+        $experience->themes = array_map(function ($theme) {
             return (object) [
                 'id' => $theme->id,
                 'name' => $theme->name
             ];
-        }, $themes));
+        }, $themes);
 
         // Get the tags for the experience
         $tags = Tags::get_tags_for_component('experience', $experience->id);
-        $experience->tags = array_values(array_map(function ($tag) {
+        $experience->tags = array_map(function ($tag) {
             return (object) [
                 'id' => $tag->id,
                 'name' => $tag->name
             ];
-        }, $tags));
+        }, $tags);
 
         return [
             'result' => true,
@@ -122,12 +135,26 @@ class external_experiences_get extends external_api
                         'id' => new external_value(PARAM_INT, 'ID'),
                         'userid' => new external_value(PARAM_INT, 'User ID'),
                         'title' => new external_value(PARAM_TEXT, 'Title'),
-                        'description' => new external_value(PARAM_RAW, 'Description'),
                         'lang' => new external_value(PARAM_TEXT, 'Lang'),
                         'visible' => new external_value(PARAM_INT, 'Visible'),
                         'status' => new external_value(PARAM_INT, 'Status'),
-                        'timecreated' => new external_value(PARAM_TEXT, 'Time created'),
-                        'timemodified' => new external_value(PARAM_TEXT, 'Time modified'),
+                        'timecreated' => new external_value(PARAM_INT, 'Time created'),
+                        'timemodified' => new external_value(PARAM_INT, 'Time modified'),
+                        'sections' => new external_multiple_structure(
+                            new external_single_structure(
+                                [
+                                    'id' => new external_value(PARAM_INT, 'Section ID'),
+                                    'component' => new external_value(PARAM_INT, 'Component ID'),
+                                    'componentinstance' => new external_value(PARAM_INT, 'Component Instance ID'),
+                                    'groupid' => new external_value(PARAM_INT, 'Group ID'),
+                                    'groupname' => new external_value(PARAM_TEXT, 'Group name'),
+                                    'groupname_simplified' => new external_value(PARAM_TEXT, 'Group name simplified'),
+                                    'sequence' => new external_value(PARAM_INT, 'Sequence'),
+                                    'type' => new external_value(PARAM_INT, 'Section type'),
+                                    'content' => new external_value(PARAM_RAW, 'Content')
+                                ]
+                            ), 'Sections' , VALUE_DEFAULT, []
+                        ),
                         'tags' => new external_multiple_structure(
                             new external_single_structure(
                                 [

@@ -5,81 +5,95 @@ import Ajax from "core/ajax";
  *
  * Valid args are:
  * - chatid: Chat id to delete meeting from
- * @method deleteMeeting
+ * @method tutoringMeetingsDelete
  * @param {object} args Arguments send to the webservice.
  * @return {Promise} Resolve with boolean indicating if meeting was deleted.
  */
-export const deleteMeeting = (args) => {
+export const tutoringMeetingsDelete = (args) => {
   const request = {
-    methodname: "local_dta_delete_meeting",
+    methodname: "local_digitalta_tutoring_meetings_delete",
     args: args,
   };
   return Ajax.call([request])[0];
 };
 
 /**
- * Get mentors by search text
- * @method searchMentors
+ * Get tutors by search text
+ * @method tutoringTutorsGet
  * @param {object} args Arguments send to the webservice.
- * @return {Promise} Resolve with mentors.
+ * @return {Promise} Resolve with tutors.
  */
-export const searchMentors = async (args) => {
+export const tutoringTutorsGet = async (args) => {
   const request = {
-    methodname: "local_dta_get_mentors",
+    methodname: "local_digitalta_tutoring_tutors_get",
     args: args,
   };
   return await Ajax.call([request])[0];
 };
 
+/**
+ * Load tutors.
+ *
+ * Valid args are:
+ * - experienceid (int): The experience id.
+ * @method tutoringRequestsGet
+ * @param {Object} args Arguments send to the webservice.
+ * @return {Promise} Resolve with warnings.
+ */
+export const tutoringRequestsGet = args => {
+  const request = {
+      methodname: 'local_digitalta_tutoring_requests_get',
+      args: args,
+  };
+  return Ajax.call([request])[0];
+};
 
 /**
  * Valid args are:
- * - mentorid (int): The mentor id.
+ * - tutorid (int): The tutor id.
  * - experienceid (int): The experience id.
- * Add experience to mentor.
- * @method addMentorRequest
+ * Add experience to tutor.
+ * @method tutoringRequestsAdd
  * @param {object} args Arguments send to the webservice.
- * @return {Promise} Resolve with mentors.
+ * @return {Promise} Resolve with tutors.
  */
-export const addMentorRequest = async(args) => {
+export const tutoringRequestsAdd = async(args) => {
   const request = {
-    methodname: "local_dta_add_mentor_request",
+    methodname: "local_digitalta_tutoring_requests_add",
     args: args,
   };
   return await Ajax.call([request])[0];
 };
-
 
 /**
  * Valid args are:
- * - mentorid (int): The mentor id.
+ * - tutorid (int): The tutor id.
  * - experienceid (int): The experience id.
- * Add experience to mentor.
- * @method removeMentorRequest
+ * Add experience to tutor.
+ * @method tutoringRequestsRemove
  * @param {object} args Arguments send to the webservice.
- * @return {Promise} Resolve with mentors.
+ * @return {Promise} Resolve with tutors.
  */
-export const removeMentorRequest = async(args) => {
+export const tutoringRequestsRemove = async(args) => {
   const request = {
-    methodname: "local_dta_remove_mentor_request",
+    methodname: "local_digitalta_tutoring_requests_remove",
     args: args,
   };
   return await Ajax.call([request])[0];
 };
-
 
 /**
  * Valid args are:
  * - requestid (int): The request id.
  * - acceptance (bool): The acceptance.
- * Add experience to mentor.
- * @method acceptanceMentorRequest
+ * Add experience to tutor.
+ * @method tutoringRequestsAccept
  * @param {object} args Arguments send to the webservice.
- * @return {Promise} Resolve with mentors.
+ * @return {Promise} Resolve with tutors.
  */
-export const acceptanceMentorRequest = async(args) => {
+export const tutoringRequestsAccept = async(args) => {
   const request = {
-    methodname: "local_dta_accept_mentor_request",
+    methodname: "local_digitalta_tutoring_requests_accept",
     args: args,
   };
   return await Ajax.call([request])[0];

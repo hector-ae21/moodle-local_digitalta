@@ -17,51 +17,48 @@
 /**
  * Experience delete page
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../../../config.php');
-require_once($CFG->dirroot . '/local/dta/lib.php');
-require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
+require_once($CFG->dirroot . '/local/digitalta/lib.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
 
-use local_dta\Experiences;
+use local_digitalta\Experiences;
 
 require_login();
 
-global $CFG, $PAGE, $OUTPUT, $USER;
+$pagetitle = get_string('experience:delete', 'local_digitalta');
 
-$strings = get_strings(['form_experience_delete_header', 'form_experience_delete_confirm', 'form_experience_delete_yes', 'form_experience_delete_no'], "local_dta");
-
-// Get the experience id
 $id = required_param('id', PARAM_INT);
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
 
-$PAGE->set_url(new moodle_url('/local/dta/pages/experiences/delete.php', ['id' => $id]));
+$PAGE->set_url(new moodle_url('/local/digitalta/pages/experiences/delete.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->form_experience_delete_header);
+$PAGE->set_title($pagetitle);
 
 if (!$experience = Experiences::get_experience($id)) {
-    throw new moodle_exception('invalidexperiences', 'local_dta');
+    throw new moodle_exception('invalidexperience', 'local_digitalta');
 }
 
-// Check permissions
 if (!Experiences::check_permissions($experience, $USER)) {
-    throw new moodle_exception('errorpermissions', 'local_dta');
+    throw new moodle_exception('errorpermissions', 'local_digitalta');
 }
 
-// Check if the delete hash is correct
 if ($delete === md5($experience->timecreated)) {
     if (!Experiences::delete_experience($experience)) {
-        throw new moodle_exception('errordeleteexperience', 'local_dta');
+        throw new moodle_exception('errordeleteexperience', 'local_digitalta');
     }
-    redirect(new moodle_url('/local/dta/pages/experiences/index.php'), get_string('form_experience_delete_yes', 'local_dta'));
+    redirect(new moodle_url('/local/digitalta/pages/experiences/index.php'),
+        get_string('experience:delete:success', 'local_digitalta'));
     exit;
 }
 
-$continueurl = new moodle_url('/local/dta/pages/experiences/delete.php', array('id' => $experience->id, 'delete' => md5($experience->timecreated)));
-$backurl = new moodle_url('/local/dta/pages/experiences/view.php', ['id' => $experience->id]);
+$continueurl = new moodle_url('/local/digitalta/pages/experiences/delete.php',
+    ['id' => $experience->id, 'delete' => md5($experience->timecreated)]);
+$backurl = new moodle_url('/local/digitalta/pages/experiences/view.php', ['id' => $experience->id]);
 $continuebutton = new single_button(
     $continueurl,
     get_string('delete'),
@@ -71,5 +68,11 @@ $continuebutton = new single_button(
 );
 
 echo $OUTPUT->header();
-echo $OUTPUT->confirm("{$strings->form_experience_delete_confirm} <br><br> {$experience->title}", $continuebutton, $backurl);
+echo $OUTPUT->confirm(
+    "<p>"
+    . get_string('experience:delete:confirm', 'local_digitalta')
+    . "</p><p style=\"font-weight: bold; \">"
+    . $experience->title
+    . "</p>",
+    $continuebutton, $backurl);
 echo $OUTPUT->footer();

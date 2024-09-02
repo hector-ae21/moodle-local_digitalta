@@ -1,6 +1,6 @@
 import $ from "jquery";
-import SELECTORS from "./selectors";
-import {renderChat, renderMenuChat, handleSendMessage, renderMenuMentor} from "./main";
+import SELECTORS from "local_digitalta/chat/selectors";
+import {renderChat, renderMenuChat, handleSendMessage, renderMenuTutor} from "local_digitalta/chat/main";
 
 /**
  * Set event listeners for the module.
@@ -20,7 +20,7 @@ export default function setEventListeners() {
 
     // Back to menu
     $(document).on("click", SELECTORS.BUTTONS.BACK_MENU_EXPERIENCE, function() {
-        renderMenuMentor();
+        renderMenuTutor();
     });
 
     // Reply message

@@ -17,7 +17,7 @@
 /**
  * WebService to get cases
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,9 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/classes/cases.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/cases.php');
 
-use local_dta\Cases;
+use local_digitalta\Cases;
 
 /**
  * This class is used to get cases
@@ -57,7 +57,7 @@ class external_cases_get extends external_api
      */
     public static function cases_get()
     {
-        $cases = Cases::get_all_cases(false);
+        $cases = Cases::get_cases(null, false);
         return [
             'status' => true,
             'cases' => $cases
@@ -86,8 +86,8 @@ class external_cases_get extends external_api
                             'description' => new external_value(PARAM_TEXT, 'description'),
                             'lang' => new external_value(PARAM_TEXT, 'lang'),
                             'status' => new external_value(PARAM_INT, 'status'),
-                            'timecreated' => new external_value(PARAM_TEXT, 'timecreated'),
-                            'timemodified' => new external_value(PARAM_TEXT, 'timemodified')
+                            'timecreated' => new external_value(PARAM_INT, 'timecreated'),
+                            'timemodified' => new external_value(PARAM_INT, 'timemodified')
                         ]
                     )
                 )

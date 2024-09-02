@@ -17,12 +17,12 @@
 /**
  * Filter utils
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta\utils;
+namespace local_digitalta\utils;
 
 /**
  * This class is used to operate with filters
@@ -33,41 +33,42 @@ namespace local_dta\utils;
 class FilterUtils
 {
     /**
-     * Apply filter to template object
+     * Apply filter to object, array or strings
      * 
-     * @param object $template_object
-     * @param string $context
+     * @param mixed $filterable_target
+     * @param int $contextid
      * @param string $format
      * @param array $options
      * @return void
      */
-    public static function apply_filter_to_template_object($template_object, $contextid = 1, $format = FORMAT_HTML, $options = []) {
-        $options['filter'] = true; // Asegúrate de que los filtros estén siempre activos
+    public static function apply_filters($filterable_target, $contextid = 1, $format = FORMAT_HTML, $options = []) {
+        // Ensure filters are always enabled
+        $options['filter'] = true;
     
-        if (is_array($template_object)) {
-            // Procesa arrays
-            foreach ($template_object as $key => &$value) {
-                // Omitir campos que contienen 'url' en la clave
+        // Arrays
+        if (is_array($filterable_target)) {
+            foreach ($filterable_target as $key => &$value) {
                 if (stripos($key, 'url') === false) {
-                    $value = self::apply_filter_to_template_object($value, $contextid, $format, $options);
+                    $value = self::apply_filters($value, $contextid, $format, $options);
                 }
             }
-            return $template_object;
-        } elseif (is_object($template_object)) {
-            // Procesa objetos
-            foreach ($template_object as $property => &$value) {
-                // Omitir propiedades que contienen 'url' en el nombre
+            return $filterable_target;
+        // Objects
+        } elseif (is_object($filterable_target)) {
+            foreach ($filterable_target as $property => &$value) {
                 if (stripos($property, 'url') === false) {
-                    $template_object->$property = self::apply_filter_to_template_object($value, $contextid, $format, $options);
+                    $filterable_target->$property = self::apply_filters($value, $contextid, $format, $options);
                 }
             }
-            return $template_object;
-        } elseif (is_string($template_object)) {
-            // Aplica el filtro a cadenas
-            return format_text($template_object, $format, $options, $contextid);
+            return $filterable_target;
+        // Strings
+        } elseif (is_string($filterable_target)) {
+            // TODO: Deactivated temporarily due to unexpected behavior
+            //return format_text($filterable_target, $format, $options, $contextid);
+            return $filterable_target;
+        // Other
         } else {
-            // Devuelve el valor sin cambios si no es array, objeto o cadena
-            return $template_object;
+            return $filterable_target;
         }
     }
 }

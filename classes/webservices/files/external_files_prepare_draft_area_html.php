@@ -17,14 +17,14 @@
 /**
  * WebService to prepare the HTML for a file upload area
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once($CFG->dirroot . '/local/dta/classes/files/filemanagerhandler.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/files/filemanagerhandler.php');
 
-use local_dta\file\FileManagerHandler;
+use local_digitalta\file\FileManagerHandler;
 
 /**
  * This class is used to upload a file from draft area
@@ -58,7 +58,7 @@ class external_files_prepare_draft_area_html extends external_api
      * @param  int    $filecontextid File context id
      * @return string The draft area HTML
      */
-    public static function prepare_draft_area_html($filearea, $component = "local_dta", $filecontextid = 1)
+    public static function prepare_draft_area_html($filearea, $component = "local_digitalta", $filecontextid = 1)
     {
         $fileManagerHandler = new FileManagerHandler();
         if (!$html = $fileManagerHandler->prepare_draft_area_html($filecontextid, $component, $filearea)) {

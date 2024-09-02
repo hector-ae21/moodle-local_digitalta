@@ -17,379 +17,96 @@
 /**
  * External functions and service definitions.
  *
- * @package    local_dta
+ * @package    local_digitalta
  * @copyright  2024 ADSDR-FUNIBER Scepter Team
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $functions = [
 
-    // Experiences
-    'local_dta_experiences_get' => [
-        'classname'   => 'external_experiences_get',
-        'methodname'  => 'experiences_get',
-        'classpath'   => 'local/dta/classes/webservices/experiences/external_experiences_get.php',
-        'description' => 'Get all experiences',
-        'type'        => 'read',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_experiences_upsert' => [
-        'classname'   => 'external_experiences_upsert',
-        'methodname'  => 'experiences_upsert',
-        'classpath'   => 'local/dta/classes/webservices/experiences/external_experiences_upsert.php',
-        'description' => 'upsert an experience',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_experiences_toggle_status' => [
-        'classname'   => 'external_experiences_toggle_status',
-        'methodname'  => 'experiences_toggle_status',
-        'classpath'   => 'local/dta/classes/webservices/experiences/external_experiences_toggle_status.php',
-        'description' => 'Toggle the status of an experience',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
     // Cases
-    'local_dta_cases_edit' => [
+    'local_digitalta_cases_edit' => [
         'classname'   => 'external_cases_edit',
         'methodname'  => 'cases_edit',
-        'classpath'   => 'local/dta/classes/webservices/cases/external_cases_edit.php',
+        'classpath'   => 'local/digitalta/classes/webservices/cases/external_cases_edit.php',
         'description' => 'Edit a Case',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_cases_get' => [
+    'local_digitalta_cases_get' => [
         'classname'   => 'external_cases_get',
         'methodname'  => 'cases_get',
-        'classpath'   => 'local/dta/classes/webservices/cases/external_cases_get.php',
+        'classpath'   => 'local/digitalta/classes/webservices/cases/external_cases_get.php',
         'description' => 'Get all cases',
         'type'        => 'read',
         'requirelogin' => true,
         'ajax'        => true,
     ],
 
-    //FILES
-    'local_dta_upload_file_from_draft' => [
-        'classname'   => 'external_upload_file_from_draft',
-        'methodname'  => 'upload_file_from_draft',
-        'classpath'   => 'local/dta/classes/webservices/files/external_upload_file_from_draft.php',
-        'description' => 'Upload a file',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
-    //TUTORING
-    'local_dta_create_tutor_disponibility' => [
-        'classname'   => 'external_create_tutor_disponibility',
-        'methodname'  => 'create_tutor_disponibility',
-        'classpath'   => 'local/dta/classes/webservices/tutoring/external_create_tutor_disponibility.php',
-        'description' => 'Create a tutor disponibility',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_update_tutor_disponibility' => [
-        'classname'   => 'external_update_tutor_disponibility',
-        'methodname'  => 'update_tutor_disponibility',
-        'classpath'   => 'local/dta/classes/webservices/tutoring/external_update_tutor_disponibility.php',
-        'description' => 'Update a tutor disponibility',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_delete_tutor_disponibility' => [
-        'classname'   => 'external_delete_tutor_disponibility',
-        'methodname'  => 'delete_tutor_disponibility',
-        'classpath'   => 'local/dta/classes/webservices/tutoring/external_delete_tutor_disponibility.php',
-        'description' => 'Delete a tutor disponibility',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    // RESOURCES
-    'local_dta_resources_upsert' => [
-        'classname'   => 'external_resources_upsert',
-        'methodname'  => 'resources_upsert',
-        'classpath'   => 'local/dta/classes/webservices/resources/external_resources_upsert.php',
-        'description' => 'upsert a resource',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_resources_get' => [
-        'classname'   => 'external_resources_get',
-        'methodname'  => 'resources_get',
-        'classpath'   => 'local/dta/classes/webservices/resources/external_resources_get.php',
-        'description' => 'get resources',
-        'type'        => 'read',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
-    // MENTORS
-    'local_dta_mentors_load' => [
-        'classname'   => 'external_mentors_load',
-        'methodname'  => 'load_mentors',
-        'classpath'   => 'local/dta/classes/webservices/mentors/external_mentors_load.php',
-        'description' => 'load mentors',
-        'type'        => 'read',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_get_mentors' => [
-        'classname'   => 'external_get_mentors',
-        'methodname'  => 'get_mentors',
-        'classpath'   => 'local/dta/classes/webservices/mentors/external_get_mentors.php',
-        'description' => 'get mentors',
-        'type'        => 'read',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_get_mentor_requests' => [
-        'classname'   => 'external_get_mentor_requests',
-        'methodname'  => 'get_mentor_requests',
-        'classpath'   => 'local/dta/classes/webservices/mentors/external_get_mentor_requests.php',
-        'description' => 'get mentor requests',
-        'type'        => 'read',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_add_mentor_request' => [
-        'classname'   => 'external_add_mentor_request',
-        'methodname'  => 'add_mentor_request',
-        'classpath'   => 'local/dta/classes/webservices/mentors/external_add_mentor_request.php',
-        'description' => 'add mentor request',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_remove_mentor_request' => [
-        'classname'   => 'external_remove_mentor_request',
-        'methodname'  => 'remove_mentor_request',
-        'classpath'   => 'local/dta/classes/webservices/mentors/external_remove_mentor_request.php',
-        'description' => 'add mentor request',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_accept_mentor_request' => [
-        'classname'   => 'external_accept_mentor_request',
-        'methodname'  => 'accept_mentor_request',
-        'classpath'   => 'local/dta/classes/webservices/mentors/external_accept_mentor_request.php',
-        'description' => 'accept mentor request',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
-
-    // CONTEXT 
-    'local_dta_context_insert' => [
-        'classname'   => 'external_context_insert',
-        'methodname'  => 'context_insert',
-        'classpath'   => 'local/dta/classes/webservices/context/external_context_insert.php',
-        'description' => 'upsert a context',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_context_delete' => [
-        'classname'   => 'external_context_delete',
-        'methodname'  => 'context_delete',
-        'classpath'   => 'local/dta/classes/webservices/context/external_context_delete.php',
-        'description' => 'upsert a context',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
-    // SECTIONS
-    'local_dta_sections_upsert' => [
-        'classname'    => 'external_sections_upsert',
-        'methodname'   => 'sections_upsert',
-        'classpath'    => 'local/dta/classes/webservices/sections/external_sections_upsert.php',
-        'description'  => 'upsert a section',
-        'type'         => 'write',
-        'requirelogin' => true,
-        'ajax'         => true,
-    ],
-    'local_dta_sections_delete' => [
-        'classname'    => 'external_sections_delete',
-        'methodname'   => 'sections_delete',
-        'classpath'    => 'local/dta/classes/webservices/sections/external_sections_delete.php',
-        'description'  => 'delete a section',
-        'type'         => 'write',
-        'requirelogin' => true,
-        'ajax'         => true,
-    ],
-
-    // CONTEXT 
-    'local_dta_context_insert' => [
-        'classname'   => 'external_context_insert',
-        'methodname'  => 'context_insert',
-        'classpath'   => 'local/dta/classes/webservices/context/external_context_insert.php',
-        'description' => 'upsert a context',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_context_delete' => [
-        'classname'   => 'external_context_delete',
-        'methodname'  => 'context_delete',
-        'classpath'   => 'local/dta/classes/webservices/context/external_context_delete.php',
-        'description' => 'upsert a context',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
-    // REACTIONS
-    'local_dta_reactions_get_comments' => [
-        'classname'   => 'external_reactions_get_comments',
-        'methodname'  => 'reactions_get_comments',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_get_comments.php',
-        'description' => 'Get comments for an instance of a component',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_reactions_add_comment' => [
-        'classname'   => 'external_reactions_add_comment',
-        'methodname'  => 'reactions_add_comment',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_add_comment.php',
-        'description' => 'Add a comment for an instance of a component',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_reactions_toggle_like_dislike' => [
-        'classname'   => 'external_reactions_toggle_like_dislike',
-        'methodname'  => 'reactions_toggle_like_dislike',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_toggle_like_dislike.php',
-        'description' => 'Toggle like or dislike for an instance of a a component',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_reactions_toggle_report' => [
-        'classname'   => 'external_reactions_toggle_report',
-        'methodname'  => 'reactions_toggle_report',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_toggle_report.php',
-        'description' => 'toggle a report for an experience or a case',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
-    // TAGS
-    'local_dta_get_tags' => [
-        'classname'   => 'external_get_tags',
-        'methodname'  => 'get_tags',
-        'classpath'   => 'local/dta/classes/webservices/tags/external_get_tags.php',
-        'description' => 'Get all tags by text',
-        'type'        => 'read',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_create_tags' => [
-        'classname'   => 'external_create_tags',
-        'methodname'  => 'create_tags',
-        'classpath'   => 'local/dta/classes/webservices/tags/external_create_tags.php',
-        'description' => 'Create tags',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ], 
-
-    // FILES
-    'local_dta_upload_file_from_draft' => [
-        'classname'   => 'external_upload_file_from_draft',
-        'methodname'  => 'upload_file_from_draft',
-        'classpath'   => 'local/dta/classes/webservices/files/external_upload_file_from_draft.php',
-        'description' => 'Upload a file',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
-    // CHAT
-    'local_dta_get_chat_rooms' => [
-        'classname'   => 'external_chat_services',
-        'methodname'  => 'get_chat_rooms',
-        'classpath'   => 'local/dta/classes/webservices/chat/external_chat_services.php',
-        'description' => 'Get chat rooms',
-        'type'        => 'read',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_add_user_to_chat_room' => [
-        'classname'   => 'external_chat_services',
-        'methodname'  => 'add_user_to_chat_room',
-        'classpath'   => 'local/dta/classes/webservices/chat/external_chat_services.php',
-        'description' => 'Add a user to a chat room',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_add_message' => [
-        'classname'   => 'external_chat_services',
-        'methodname'  => 'add_message',
-        'classpath'   => 'local/dta/classes/webservices/chat/external_chat_services.php',
-        'description' => 'Add a message to a chat room',
-        'type'        => 'write',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-    'local_dta_get_messages' => [
-        'classname'   => 'external_chat_services',
-        'methodname'  => 'get_messages',
-        'classpath'   => 'local/dta/classes/webservices/chat/external_chat_services.php',
-        'description' => 'Get messages from a chat room',
-        'type'        => 'read',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
     // Context 
-    'local_dta_context_upsert' => [
+    'local_digitalta_context_upsert' => [
         'classname'   => 'external_context_upsert',
         'methodname'  => 'context_upsert',
-        'classpath'   => 'local/dta/classes/webservices/context/external_context_upsert.php',
+        'classpath'   => 'local/digitalta/classes/webservices/context/external_context_upsert.php',
         'description' => 'upsert a context',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_context_delete' => [
+    'local_digitalta_context_delete' => [
         'classname'   => 'external_context_delete',
         'methodname'  => 'context_delete',
-        'classpath'   => 'local/dta/classes/webservices/context/external_context_delete.php',
+        'classpath'   => 'local/digitalta/classes/webservices/context/external_context_delete.php',
         'description' => 'upsert a context',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+
+    // Experiences
+    'local_digitalta_experiences_get' => [
+        'classname'   => 'external_experiences_get',
+        'methodname'  => 'experiences_get',
+        'classpath'   => 'local/digitalta/classes/webservices/experiences/external_experiences_get.php',
+        'description' => 'Get all experiences',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_experiences_upsert' => [
+        'classname'   => 'external_experiences_upsert',
+        'methodname'  => 'experiences_upsert',
+        'classpath'   => 'local/digitalta/classes/webservices/experiences/external_experiences_upsert.php',
+        'description' => 'upsert an experience',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_experiences_toggle_status' => [
+        'classname'   => 'external_experiences_toggle_status',
+        'methodname'  => 'experiences_toggle_status',
+        'classpath'   => 'local/digitalta/classes/webservices/experiences/external_experiences_toggle_status.php',
+        'description' => 'Toggle the status of an experience',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
 
     // Files
-    'local_dta_prepare_draft_area_html' => [
+    'local_digitalta_files_prepare_draft_area_html' => [
         'classname'   => 'external_files_prepare_draft_area_html',
         'methodname'  => 'prepare_draft_area_html',
-        'classpath'   => 'local/dta/classes/webservices/files/external_files_prepare_draft_area_html.php',
+        'classpath'   => 'local/digitalta/classes/webservices/files/external_files_prepare_draft_area_html.php',
         'description' => 'Prepare draft area html',
         'type'        => 'read',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_upload_file_from_draft' => [
+    'local_digitalta_files_upload_from_draft' => [
         'classname'   => 'external_files_upload_from_draft',
         'methodname'  => 'upload_file_from_draft',
-        'classpath'   => 'local/dta/classes/webservices/files/external_files_upload_from_draft.php',
+        'classpath'   => 'local/digitalta/classes/webservices/files/external_files_upload_from_draft.php',
         'description' => 'Upload a file',
         'type'        => 'write',
         'requirelogin' => true,
@@ -397,59 +114,48 @@ $functions = [
     ],
 
     // Languages
-    'local_dta_languages_get' => [
+    'local_digitalta_languages_get' => [
         'classname'   => 'external_languages_get',
         'methodname'  => 'languages_get',
-        'classpath'   => 'local/dta/classes/webservices/languages/external_languages_get.php',
+        'classpath'   => 'local/digitalta/classes/webservices/languages/external_languages_get.php',
         'description' => 'Get all languages',
         'type'        => 'read',
         'requirelogin' => true,
         'ajax'        => true,
     ],
 
-    // Mentors
-    'local_dta_mentors_load' => [
-        'classname'   => 'external_mentors_load',
-        'methodname'  => 'load_mentors',
-        'classpath'   => 'local/dta/classes/webservices/mentors/external_mentors_load.php',
-        'description' => 'load mentors',
-        'type'        => 'read',
-        'requirelogin' => true,
-        'ajax'        => true,
-    ],
-
     // Reactions
-    'local_dta_reactions_get_comments' => [
+    'local_digitalta_reactions_get_comments' => [
         'classname'   => 'external_reactions_get_comments',
         'methodname'  => 'reactions_get_comments',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_get_comments.php',
+        'classpath'   => 'local/digitalta/classes/webservices/reactions/external_reactions_get_comments.php',
         'description' => 'Get comments for an instance of a component',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_reactions_add_comment' => [
+    'local_digitalta_reactions_add_comment' => [
         'classname'   => 'external_reactions_add_comment',
         'methodname'  => 'reactions_add_comment',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_add_comment.php',
+        'classpath'   => 'local/digitalta/classes/webservices/reactions/external_reactions_add_comment.php',
         'description' => 'Add a comment for an instance of a component',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_reactions_toggle_like_dislike' => [
+    'local_digitalta_reactions_toggle_like_dislike' => [
         'classname'   => 'external_reactions_toggle_like_dislike',
         'methodname'  => 'reactions_toggle_like_dislike',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_toggle_like_dislike.php',
+        'classpath'   => 'local/digitalta/classes/webservices/reactions/external_reactions_toggle_like_dislike.php',
         'description' => 'Toggle like or dislike for an instance of a a component',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_reactions_toggle_report' => [
+    'local_digitalta_reactions_toggle_report' => [
         'classname'   => 'external_reactions_toggle_report',
         'methodname'  => 'reactions_toggle_report',
-        'classpath'   => 'local/dta/classes/webservices/reactions/external_reactions_toggle_report.php',
+        'classpath'   => 'local/digitalta/classes/webservices/reactions/external_reactions_toggle_report.php',
         'description' => 'toggle a report for an experience or a case',
         'type'        => 'write',
         'requirelogin' => true,
@@ -457,39 +163,75 @@ $functions = [
     ],
 
     // Resources
-    'local_dta_resources_upsert' => [
+    'local_digitalta_resources_upsert' => [
         'classname'   => 'external_resources_upsert',
         'methodname'  => 'resources_upsert',
-        'classpath'   => 'local/dta/classes/webservices/resources/external_resources_upsert.php',
+        'classpath'   => 'local/digitalta/classes/webservices/resources/external_resources_upsert.php',
         'description' => 'upsert a resource',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_resources_get' => [
+    'local_digitalta_resources_get' => [
         'classname'   => 'external_resources_get',
         'methodname'  => 'resources_get',
-        'classpath'   => 'local/dta/classes/webservices/resources/external_resources_get.php',
+        'classpath'   => 'local/digitalta/classes/webservices/resources/external_resources_get.php',
         'description' => 'get resources',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_resources_types_get' => [
+        'classname'   => 'external_resources_types_get',
+        'methodname'  => 'resources_types_get',
+        'classpath'   => 'local/digitalta/classes/webservices/resources/external_resources_types_get.php',
+        'description' => 'get resource types',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_resources_assign' => [
+        'classname'   => 'external_resources_assign',
+        'methodname'  => 'resources_assign',
+        'classpath'   => 'local/digitalta/classes/webservices/resources/external_resources_assign.php',
+        'description' => 'Assign a resource',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_resources_unassign' => [
+        'classname'   => 'external_resources_unassign',
+        'methodname'  => 'resources_unassign',
+        'classpath'   => 'local/digitalta/classes/webservices/resources/external_resources_unassign.php',
+        'description' => 'Unassign a resource',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_resources_get_assignments_for_component' => [
+        'classname'   => 'external_resources_get_assignments_for_component',
+        'methodname'  => 'resources_get_assignments_for_component',
+        'classpath'   => 'local/digitalta/classes/webservices/resources/external_resources_get_assignments_for_component.php',
+        'description' => 'Get resources assigned to a component',
         'type'        => 'read',
         'requirelogin' => true,
         'ajax'        => true,
     ],
 
     // Sections
-    'local_dta_sections_upsert' => [
+    'local_digitalta_sections_upsert' => [
         'classname'    => 'external_sections_upsert',
         'methodname'   => 'sections_upsert',
-        'classpath'    => 'local/dta/classes/webservices/sections/external_sections_upsert.php',
+        'classpath'    => 'local/digitalta/classes/webservices/sections/external_sections_upsert.php',
         'description'  => 'upsert a section',
         'type'         => 'write',
         'requirelogin' => true,
         'ajax'         => true,
     ],
-    'local_dta_sections_delete' => [
+    'local_digitalta_sections_delete' => [
         'classname'    => 'external_sections_delete',
         'methodname'   => 'sections_delete',
-        'classpath'    => 'local/dta/classes/webservices/sections/external_sections_delete.php',
+        'classpath'    => 'local/digitalta/classes/webservices/sections/external_sections_delete.php',
         'description'  => 'delete a section',
         'type'         => 'write',
         'requirelogin' => true,
@@ -497,19 +239,19 @@ $functions = [
     ],
 
     // Tags
-    'local_dta_tags_get' => [
+    'local_digitalta_tags_get' => [
         'classname'   => 'external_tags_get',
         'methodname'  => 'tags_get',
-        'classpath'   => 'local/dta/classes/webservices/tags/external_tags_get.php',
+        'classpath'   => 'local/digitalta/classes/webservices/tags/external_tags_get.php',
         'description' => 'Get all tags by text',
         'type'        => 'read',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_create_tags' => [
+    'local_digitalta_tags_create' => [
         'classname'   => 'external_tags_create',
         'methodname'  => 'create_tags',
-        'classpath'   => 'local/dta/classes/webservices/tags/external_tags_create.php',
+        'classpath'   => 'local/digitalta/classes/webservices/tags/external_tags_create.php',
         'description' => 'Create tags',
         'type'        => 'write',
         'requirelogin' => true,
@@ -517,10 +259,10 @@ $functions = [
     ],
 
     // Themes
-    'local_dta_themes_get' => [
+    'local_digitalta_themes_get' => [
         'classname'   => 'external_themes_get',
         'methodname'  => 'themes_get',
-        'classpath'   => 'local/dta/classes/webservices/themes/external_themes_get.php',
+        'classpath'   => 'local/digitalta/classes/webservices/themes/external_themes_get.php',
         'description' => 'Get all themes by text',
         'type'        => 'read',
         'requirelogin' => true,
@@ -528,40 +270,123 @@ $functions = [
     ],
 
     // Tutoring
-    'local_dta_create_tutor_disponibility' => [
-        'classname'   => 'external_create_tutor_disponibility',
-        'methodname'  => 'create_tutor_disponibility',
-        'classpath'   => 'local/dta/classes/webservices/tutoring/external_create_tutor_disponibility.php',
-        'description' => 'Create a tutor disponibility',
+    'local_digitalta_tutoring_tutors_get' => [
+        'classname'   => 'external_tutoring_tutors_get',
+        'methodname'  => 'tutors_get',
+        'classpath'   => 'local/digitalta/classes/webservices/tutoring/external_tutoring_tutors_get.php',
+        'description' => 'Get tutors',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_tutoring_requests_get' => [
+        'classname'   => 'external_tutoring_requests_get',
+        'methodname'  => 'requests_get',
+        'classpath'   => 'local/digitalta/classes/webservices/tutoring/external_tutoring_requests_get.php',
+        'description' => 'Get tutor requests',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_tutoring_requests_add' => [
+        'classname'   => 'external_tutoring_requests_add',
+        'methodname'  => 'requests_add',
+        'classpath'   => 'local/digitalta/classes/webservices/tutoring/external_tutoring_requests_add.php',
+        'description' => 'Add tutor request',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_update_tutor_disponibility' => [
-        'classname'   => 'external_update_tutor_disponibility',
-        'methodname'  => 'update_tutor_disponibility',
-        'classpath'   => 'local/dta/classes/webservices/tutoring/external_update_tutor_disponibility.php',
-        'description' => 'Update a tutor disponibility',
+    'local_digitalta_tutoring_requests_remove' => [
+        'classname'   => 'external_tutoring_requests_remove',
+        'methodname'  => 'requests_remove',
+        'classpath'   => 'local/digitalta/classes/webservices/tutoring/external_tutoring_requests_remove.php',
+        'description' => 'add tutor request',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_delete_tutor_disponibility' => [
-        'classname'   => 'external_delete_tutor_disponibility',
-        'methodname'  => 'delete_tutor_disponibility',
-        'classpath'   => 'local/dta/classes/webservices/tutoring/external_delete_tutor_disponibility.php',
-        'description' => 'Delete a tutor disponibility',
+    'local_digitalta_tutoring_requests_accept' => [
+        'classname'   => 'external_tutoring_requests_accept',
+        'methodname'  => 'requests_accept',
+        'classpath'   => 'local/digitalta/classes/webservices/tutoring/external_tutoring_requests_accept.php',
+        'description' => 'accept tutor request',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
     ],
-    'local_dta_delete_meeting' => [
-        'classname'   => 'external_delete_meeting',
-        'methodname'  => 'delete_meeting',
-        'classpath'   => 'local/dta/classes/webservices/googlemeet/external_delete_meeting.php',
+    'local_digitalta_tutoring_availabilities_create' => [
+        'classname'   => 'external_tutoring_availabilities_create',
+        'methodname'  => 'availabilities_create',
+        'classpath'   => 'local/digitalta/classes/webservices/tutoring/external_tutoring_availabilities_create.php',
+        'description' => 'Create a tutor availability',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_tutoring_availabilities_update' => [
+        'classname'   => 'external_tutoring_availabilities_update',
+        'methodname'  => 'availabilities_update',
+        'classpath'   => 'local/digitalta/classes/webservices/tutoring/external_tutoring_availabilities_update.php',
+        'description' => 'Update a tutor availability',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_tutoring_availabilities_delete' => [
+        'classname'   => 'external_tutoring_availabilities_delete',
+        'methodname'  => 'availabilities_delete',
+        'classpath'   => 'local/digitalta/classes/webservices/tutoring/external_tutoring_availabilities_delete.php',
+        'description' => 'Delete a tutor availability',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_tutoring_meetings_delete' => [
+        'classname'   => 'external_tutoring_meetings_delete',
+        'methodname'  => 'meetings_delete',
+        'classpath'   => 'local/digitalta/classes/webservices/tutoring/external_tutoring_meetings_delete.php',
         'description' => 'Delete a google meet meeting',
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
-    ]
+    ],
+
+    // Chats
+    'local_digitalta_chats_get_rooms' => [
+        'classname'   => 'external_chats_get_rooms',
+        'methodname'  => 'chats_get_rooms',
+        'classpath'   => 'local/digitalta/classes/webservices/tutoring/external_chats_get_rooms.php',
+        'description' => 'Get chat rooms',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_chats_add_user_to_room' => [
+        'classname'   => 'external_chats_add_user_to_room',
+        'methodname'  => 'chats_add_user_to_room',
+        'classpath'   => 'local/digitalta/classes/webservices/tutoring/external_chats_add_user_to_room.php',
+        'description' => 'Add a user to a chat room',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_chats_add_message' => [
+        'classname'   => 'external_chats_add_message',
+        'methodname'  => 'chats_add_message',
+        'classpath'   => 'local/digitalta/classes/webservices/tutoring/external_chats_add_message.php',
+        'description' => 'Add a message to a chat room',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_chats_get_messages' => [
+        'classname'   => 'external_chats_get_messages',
+        'methodname'  => 'chats_get_messages',
+        'classpath'   => 'local/digitalta/classes/webservices/tutoring/external_chats_get_messages.php',
+        'description' => 'Get messages from a chat room',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
 ];

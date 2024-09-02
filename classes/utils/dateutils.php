@@ -17,12 +17,12 @@
 /**
  * Date utils
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta\utils;
+namespace local_digitalta\utils;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -36,10 +36,11 @@ require_once($CFG->dirroot . '/lib/moodlelib.php');
  */
 class DateUtils
 {
-    public static function time_elapsed_string($datetime, $full = false)
+    public static function time_elapsed_string(int $datetime, $full = false)
     {
         $now = new \DateTime();
-        $ago = new \DateTime($datetime);
+        $ago = new \DateTime();
+        $ago->setTimestamp($datetime);
         $diff = $now->diff($ago);
 
         $weeks = floor($diff->d / 7);
@@ -63,18 +64,13 @@ class DateUtils
         }
 
         if (!$parts) {
-            return get_string('date_justnow', 'local_dta');
+            return get_string('general:date_justnow', 'local_digitalta');
         }
 
         if (!$full) {
             $parts = array_slice($parts, 0, 1);
         }
 
-        return get_string('date_timeago', 'local_dta', implode(', ', $parts));
-    }
-
-    public static function format_unix_timestamp($timestamp, $format = 'Y-m-d H:i:s')
-    {
-        return date($format, $timestamp);
+        return get_string('general:date_timeago', 'local_digitalta', implode(', ', $parts));
     }
 }

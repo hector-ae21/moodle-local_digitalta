@@ -17,15 +17,15 @@
 /**
  * Google Rest API.
  *
- * @package     local_dta
+ * @package     local_digitalta
  * @copyright   2024 ADSDR-FUNIBER Scepter Team
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
 
 
-class rest extends \core\oauth2\rest
+class GoogleMeetRest extends \core\oauth2\rest
 {
 
   /**

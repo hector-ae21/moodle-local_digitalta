@@ -17,12 +17,12 @@
 /**
  * Reactions class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
 
 use stdClass;
 
@@ -35,13 +35,13 @@ use stdClass;
 class Reactions
 {
     /** @var string The table name for the comments. */
-    private static $table_comments = 'digital_comments';
+    private static $table_comments = 'digitalta_comments';
 
     /** @var string The table name for the likes. */
-    private static $table_likes = 'digital_likes';
+    private static $table_likes = 'digitalta_likes';
 
     /** @var string The table name for the reports. */
-    private static $table_reports = 'digital_reports';
+    private static $table_reports = 'digitalta_reports';
 
     /**
      * Get all reactions for a specific component
@@ -50,7 +50,7 @@ class Reactions
      * @param  int   $componentinstance Component instance identifier
      * @return array An array of records
      */
-    public static function get_reactions_for_render_component(int $component, int $componentinstance) : array
+    public static function get_reactions_for_render_component(int $component, int $componentinstance): array
     {
         global $USER;
         $likes = self::get_likes_for_component($component, $componentinstance);
@@ -88,7 +88,7 @@ class Reactions
      * @param  int   $userid The user identifier
      * @return bool  True if the user has reacted to the experience
      */
-    public static function user_reacted(array $reactions, int $userid) : bool
+    public static function user_reacted(array $reactions, int $userid): bool
     {
         foreach ($reactions as $reaction) {
             if ($reaction->userid == $userid) {
@@ -106,7 +106,7 @@ class Reactions
      * @param  int   $userid The user identifier
      * @return array Returns an array of records
      */
-    public static function get_likes_for_component(int $component, int $componentinstance, int $userid = null) : array
+    public static function get_likes_for_component(int $component, int $componentinstance, int $userid = null): array
     {
         global $DB;
         $conditions = [
@@ -128,7 +128,7 @@ class Reactions
      * @param  int   $userid The user identifier
      * @return array Returns an array of records
      */
-    public static function get_dislikes_for_component(int $component, int $componentinstance, int $userid = null) : array
+    public static function get_dislikes_for_component(int $component, int $componentinstance, int $userid = null): array
     {
         global $DB;
         $conditions = [
@@ -150,7 +150,7 @@ class Reactions
      * @param  int   $userid The user identifier
      * @return array Returns an array of records
      */
-    public static function get_comments_for_component(int $component, int $componentinstance, int $userid = null) : array
+    public static function get_comments_for_component(int $component, int $componentinstance, int $userid = null): array
     {
         global $DB;
         $conditions = [
@@ -171,7 +171,7 @@ class Reactions
      * @param  int   $userid The user identifier
      * @return array Returns an array of records
      */
-    public static function get_reports_for_component(int $component, int $componentinstance, int $userid = null) : array
+    public static function get_reports_for_component(int $component, int $componentinstance, int $userid = null): array
     {
         global $DB;
         $conditions = [
@@ -191,10 +191,10 @@ class Reactions
      * @param  int   $limit The number of components to return
      * @return array Returns an array of records
      */
-    public static function get_most_liked_component($component, $limit) : array
+    public static function get_most_liked_component(int $component, int $limit): array
     {
         global $DB;
-        $component = Components::get_component_by_id($component);
+        $component = Components::get_component($component);
         $most_liked = $DB->get_records_sql("SELECT mdlk.componentinstance,
                                                    COUNT(mdlk.id) as likes
                                               FROM {". self::$table_likes ."} mdlk
@@ -205,16 +205,10 @@ class Reactions
             ['component' => $component->id],
             0,
             $limit);
-        $components_table = 'digital_' . $component->name . 's';
-        $components = array_values(array_map(function($record) use ($DB, $components_table) {
-            $component = $DB->get_record($components_table, ['id' => $record->componentinstance]);
-            $component->likes = $record->likes;
-            return $component;
-        }, $most_liked));
-        usort($components, function($a, $b) {
+        usort($most_liked, function($a, $b) {
             return $a->likes < $b->likes;
         });
-        return $components;
+        return $most_liked;
     }
 
     /**

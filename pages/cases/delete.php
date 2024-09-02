@@ -17,48 +17,48 @@
 /**
  * Case delete page
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../../../config.php');
-require_once($CFG->dirroot . '/local/dta/lib.php');
-require_once($CFG->dirroot . '/local/dta/classes/cases.php');
+require_once($CFG->dirroot . '/local/digitalta/lib.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/cases.php');
 
-use local_dta\Cases;
+use local_digitalta\Cases;
 
 require_login();
 
-$strings = get_strings(['form_case_delete_header', 'form_case_delete_confirm', 'form_case_delete_yes', 'form_case_delete_no'], "local_dta");
+$pagetitle = get_string('case:delete', 'local_digitalta');
 
 $id = required_param('id', PARAM_INT);
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
 
-$PAGE->set_url(new moodle_url('/local/dta/pages/cases/delete.php', ['id' => $id]));
+$PAGE->set_url(new moodle_url('/local/digitalta/pages/cases/delete.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->form_case_delete_header);
+$PAGE->set_title($pagetitle);
 
 if (!$case = Cases::get_case($id)) {
-    throw new moodle_exception('invalidcases', 'local_dta');
+    throw new moodle_exception('invalidcase', 'local_digitalta');
 }
 
-// Check permissions
 if (!Cases::check_permissions($case, $USER)) {
-    throw new moodle_exception('errorpermissions', 'local_dta');
+    throw new moodle_exception('errorpermissions', 'local_digitalta');
 }
 
-// Check if the delete hash is correct
 if ($delete === md5($case->timecreated)) {
-    if (!Cases::delete_case($id)) {
-        throw new moodle_exception('errordeletecase', 'local_dta');
+    if (!Cases::delete_case($case)) {
+        throw new moodle_exception('errordeletecase', 'local_digitalta');
     }
-    redirect(new moodle_url('/local/dta/pages/cases/index.php'), get_string('form_case_delete_yes', 'local_dta'));
+    redirect(new moodle_url('/local/digitalta/pages/cases/index.php'),
+        get_string('case:delete:success', 'local_digitalta'));
     exit;
 }
 
-$continueurl = new moodle_url('/local/dta/pages/cases/delete.php', array('id' => $case->id, 'delete' => md5($case->timecreated)));
-$backurl = new moodle_url('/local/dta/pages/cases/view.php', ['id' => $case->id]);
+$continueurl = new moodle_url('/local/digitalta/pages/cases/delete.php',
+    ['id' => $case->id, 'delete' => md5($case->timecreated)]);
+$backurl = new moodle_url('/local/digitalta/pages/cases/view.php', ['id' => $case->id]);
 $continuebutton = new single_button(
     $continueurl,
     get_string('delete'),
@@ -68,5 +68,11 @@ $continuebutton = new single_button(
 );
 
 echo $OUTPUT->header();
-echo $OUTPUT->confirm("{$strings->form_case_delete_confirm}", $continuebutton, $backurl);
+echo $OUTPUT->confirm(
+    "<p>"
+    . get_string('case:delete:confirm', 'local_digitalta')
+    . "</p><p style=\"font-weight: bold; \">"
+    . $case->title
+    . "</p>",
+    $continuebutton, $backurl);
 echo $OUTPUT->footer();

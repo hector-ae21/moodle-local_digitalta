@@ -1,4 +1,4 @@
-import Autocomplete from "theme_dta/form-autocomplete";
+import Autocomplete from "theme_digitalta/form-autocomplete";
 
 /**
  * Autocomplete themes.
@@ -6,6 +6,6 @@ import Autocomplete from "theme_dta/form-autocomplete";
  * @return {void}
  */
 export function autocompleteThemes(area) {
-    Autocomplete.enhance(area, null, "local_dta/themes/autocomplete_method");
+    Autocomplete.enhance(area, null, "local_digitalta/themes/autocomplete_method");
     area = area.replace("#", "");
 }

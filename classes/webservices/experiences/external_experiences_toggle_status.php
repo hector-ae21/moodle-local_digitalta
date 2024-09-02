@@ -17,17 +17,17 @@
 /**
  * WebService to toggle the status of an experience
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/classes/context.php');
-require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/context.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
 
-use local_dta\Experiences;
+use local_digitalta\Experiences;
 
 /**
  * This class is used to toggle the status of an experience
@@ -61,7 +61,7 @@ class external_experiences_toggle_status extends external_api
     {
         return [
             'result' => true,
-            'status' => Experiences::change_status_experience($id)->status,
+            'status' => Experiences::toggle_status($id),
         ];
     }
 

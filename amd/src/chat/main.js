@@ -1,11 +1,11 @@
 import $ from 'jquery';
 import Template from 'core/templates';
 import Notification from 'core/notification';
-import SELECTORS from './selectors';
-import { getChatRooms, sendMessage, getMessages } from 'local_dta/repositories/chat_repository';
-import setEventListeners from './listeners';
-import Status from './status';
-import mentorHandler from 'local_dta/mentors/experience_view/main';
+import SELECTORS from 'local_digitalta/chat/selectors';
+import { chatsGetRooms, chatsSendMessage, chatsGetMessage } from 'local_digitalta/repositories/chat_repository';
+import setEventListeners from 'local_digitalta/chat/listeners';
+import Status from 'local_digitalta/chat/status';
+import tutorHandler from 'local_digitalta/tutors/experience_view/main';
 
 const status = new Status();
 
@@ -33,21 +33,21 @@ const initComponent = (experienceid) => {
         renderMenuChat();
     }
     setInterval(reloaderMessages, 1000);
-    mentorHandler();
+    tutorHandler();
 };
 
 /**
  * Render menu chat
  */
 export async function renderMenuChat() {
-    const { chatrooms } = await getChatRooms({experienceid: 0});
+    const { chatrooms } = await chatsGetRooms({experienceid: 0});
     Template.render(SELECTORS.TEMPLATES.MENU_CHAT, {
         chatrooms
     }).then((html) => {
         $(SELECTORS.TARGET).html(html);
         status.emptyActiveMessages();
         SELECTORS.OPEN_CHAT_ID = 0;
-        mentorHandler();
+        tutorHandler();
         return;
     }).fail(Notification.exception);
 }
@@ -59,7 +59,7 @@ export async function renderMenuChat() {
  * Render chat
  */
 export async function renderChat(id, hideBack = false) {
-    const { messages } = await getMessages({ chatid: id });
+    const { messages } = await chatsGetMessage({ chatid: id });
     SELECTORS.OPEN_CHAT_ID = id;
     Template.render(SELECTORS.TEMPLATES.CHAT, {
         hideBack
@@ -94,7 +94,7 @@ export async function handlerMessages(messages) {
  */
 export async function reloaderMessages() {
     if (SELECTORS.OPEN_CHAT_ID) {
-        const { messages } = await getMessages({ chatid: SELECTORS.OPEN_CHAT_ID });
+        const { messages } = await chatsGetMessage({ chatid: SELECTORS.OPEN_CHAT_ID });
         handlerNewOtherMessage(messages);
         return;
     }
@@ -159,7 +159,7 @@ export async function renderMessage(text, time, mine) {
  */
 export async function handleSendMessage() {
     const message = $(SELECTORS.INPUTS.CHAT_REPLY).val().trim();
-    sendMessage({
+    chatsSendMessage({
         chatid: SELECTORS.OPEN_CHAT_ID,
         message,
     }).then(() => {
@@ -187,15 +187,15 @@ async function addNewMessage(message) {
  * @param {int} experienceid
  */
 export async function openChatFromExperience(experienceid) {
-    const {chatrooms} = await getChatRooms({experienceid});
+    const {chatrooms} = await chatsGetRooms({experienceid});
     renderChat(chatrooms[0].id, true);
 }
 
 /**
- * Render menu mentor
+ * Render menu tutor
  * @returns {Promise}
  */
-export async function renderMenuMentor() {
+export async function renderMenuTutor() {
     Template.render(SELECTORS.TEMPLATES.MENU_MENTOR, {}).then((html) => {
         $(SELECTORS.TARGET).html(html);
         return;

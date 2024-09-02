@@ -17,7 +17,7 @@
 /**
  * Plugin administration pages are defined here.
  *
- * @package     local_dta
+ * @package     local_digitalta
  * @category    admin
  * @copyright   2024 ADSDR-FUNIBER Scepter Team
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
-  $settings = new admin_settingpage('local_dta', 'Local DTA settings');
+  $settings = new admin_settingpage('local_digitalta', 'Local DIGITALTA settings');
 
   $ADMIN->add('localplugins', $settings);
 
@@ -38,8 +38,8 @@ if ($ADMIN->fulltree) {
   }
 
   $settings->add(new admin_setting_configselect(
-    'local_dta/issuerid',
-    get_string('config:issuerid', 'local_dta'),
+    'local_digitalta/issuerid',
+    get_string('config:issuerid', 'local_digitalta'),
     '',
     0,
     $options

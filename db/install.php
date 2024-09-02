@@ -15,83 +15,83 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Install steps for the local_dta plugin.
+ * Install steps for the local_digitalta plugin.
  *
- * @package    local_dta
+ * @package    local_digitalta
  * @copyright  2024 ADSDR-FUNIBER Scepter Team
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/locallib.php');
+require_once($CFG->dirroot . '/local/digitalta/locallib.php');
 
 /**
- * Install the local_dta plugin.
+ * Install the local_digitalta plugin.
  */
-function xmldb_local_dta_install() {
+function xmldb_local_digitalta_install() {
     global $DB;
 
     // Insert the components
-    foreach (LOCAL_DTA_COMPONENTS as $value) {
+    foreach (LOCAL_DIGITALTA_COMPONENTS as $value) {
         $component = new stdClass();
         $component->name = $value;
         $component->timecreated = time();
         $component->timemodified = time();
-        $DB->insert_record('digital_components', $component);
+        $DB->insert_record('digitalta_components', $component);
     }
 
     // Insert the modifiers
-    foreach (LOCAL_DTA_MODIFIERS as $value) {
+    foreach (LOCAL_DIGITALTA_MODIFIERS as $value) {
         $modifier = new stdClass();
         $modifier->name = $value;
         $modifier->timecreated = time();
         $modifier->timemodified = time();
-        $DB->insert_record('digital_modifiers', $modifier);
+        $DB->insert_record('digitalta_modifiers', $modifier);
     }
 
     // Insert the themes
-    foreach (LOCAL_DTA_THEMES as $value) {
+    foreach (LOCAL_DIGITALTA_THEMES as $value) {
         $theme = new stdClass();
         $theme->name = $value;
         $theme->timecreated = time();
         $theme->timemodified = time();
-        $DB->insert_record('digital_themes', $theme);
+        $DB->insert_record('digitalta_themes', $theme);
     }
 
     // Insert the resource types
-    foreach (LOCAL_DTA_RESOURCE_TYPES as $value) {
+    foreach (LOCAL_DIGITALTA_RESOURCE_TYPES as $value) {
         $resource = new stdClass();
         $resource->name = $value;
         $resource->timecreated = time();
         $resource->timemodified = time();
-        $DB->insert_record('digital_resources_types', $resource);
+        $DB->insert_record('digitalta_resources_types', $resource);
     }
 
     // Insert the resource formats
-    foreach (LOCAL_DTA_RESOURCE_FORMATS as $value) {
+    foreach (LOCAL_DIGITALTA_RESOURCE_FORMATS as $value) {
         $resource = new stdClass();
         $resource->name = $value;
         $resource->timecreated = time();
         $resource->timemodified = time();
-        $DB->insert_record('digital_resources_formats', $resource);
+        $DB->insert_record('digitalta_resources_formats', $resource);
     }
 
     // Insert the section types
-    foreach (LOCAL_DTA_SECTION_TYPES as $value) {
+    foreach (LOCAL_DIGITALTA_SECTION_TYPES as $value) {
         $section = new stdClass();
         $section->name = $value;
         $section->timecreated = time();
         $section->timemodified = time();
-        $DB->insert_record('digital_sections_types', $section);
+        $DB->insert_record('digitalta_sections_types', $section);
     }
 
     // Insert the section groups
-    foreach (LOCAL_DTA_SECTION_GROUPS as $value) {
+    foreach (LOCAL_DIGITALTA_SECTION_GROUPS as $value) {
         $section = new stdClass();
         $section->name = $value;
         $section->timecreated = time();
         $section->timemodified = time();
-        $DB->insert_record('digital_sections_groups', $section);
+        $DB->insert_record('digitalta_sections_groups', $section);
     }
 }

@@ -5,13 +5,13 @@ import Ajax from 'core/ajax';
  *
  * Valid args are:
  * - searchText: The tag to search
- * @method getTags
+ * @method tagsGet
  * @param {object} args Arguments send to the webservice.
  * @return {Promise} Resolve with tags.
  */
-export const getTags = args => {
+export const tagsGet = args => {
     const request = {
-        methodname: 'local_dta_tags_get',
+        methodname: 'local_digitalta_tags_get',
         args: args
     };
     return Ajax.call([request])[0];
@@ -22,13 +22,13 @@ export const getTags = args => {
  *
  * Valid args are:
  * - tag: The tag to create
- * @method createTags
+ * @method tagsCreate
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with tags.
  */
-export const createTags = args => {
+export const tagsCreate = args => {
     const request = {
-        methodname: 'local_dta_create_tags',
+        methodname: 'local_digitalta_tags_create',
         args: args
     };
     return Ajax.call([request])[0];

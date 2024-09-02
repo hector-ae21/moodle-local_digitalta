@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version metadata for the local_dta plugin.
+ * Version metadata for the local_digitalta plugin.
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2024051700;
-$plugin->requires = 2021051100;
-$plugin->component = 'local_dta';
+$plugin->version = 2024080700;
+$plugin->requires = 2022112800;
+$plugin->component = 'local_digitalta';
 $plugin->maturity = MATURITY_ALPHA;

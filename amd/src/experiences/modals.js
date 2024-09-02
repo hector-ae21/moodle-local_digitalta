@@ -1,108 +1,239 @@
-import { autocompleteThemes } from "local_dta/themes/autocomplete";
-import { createTinyMCE, getTinyMCEContent } from "local_dta/tiny/manage";
-import { displayDialogue } from "local_dta/resources/manage_resources";
-import { experienceGet, experienceUpsert } from "local_dta/repositories/experiences_repository";
-import { getAllResources } from "local_dta/repositories/resources_repository";
-import { getCases } from "local_dta/repositories/cases_repository";
-import { getLanguages } from "local_dta/repositories/languages_repository";
-import { getList } from "core/normalise";
-/* @EXPERIENCE_PICTURE TODO: Add picture to experience creation
-import { prepareDraftHTML, saveFiles } from "local_dta/files/filemanager";
-*/
-import { SELECTORS } from "./main";
-import { contextUpsert } from "local_dta/repositories/context_repository";
+import {
+    autocompleteThemes
+} from "local_digitalta/themes/autocomplete";
+import {
+    autocompleteTags
+} from "local_digitalta/tags/autocomplete";
+import {
+    createTinyMCE,
+    getTinyMCEContent
+} from "local_digitalta/tiny/manage";
+import {
+    showManageResourcesModal
+} from "local_digitalta/resources/modals";
+import {
+    experiencesGet,
+    experiencesUpsert,
+    experiencesToggleStatus
+} from "local_digitalta/repositories/experiences_repository";
+import {
+    resourcesGet,
+    resourcesAssign,
+    resourcesUnassign
+} from "local_digitalta/repositories/resources_repository";
+import {
+    sectionsUpsert
+} from "local_digitalta/repositories/sections_repository";
+import {
+    languagesGet
+} from "local_digitalta/repositories/languages_repository";
+import {
+    getList
+} from "core/normalise";
 import * as Cfg from "core/config";
 import * as Str from "core/str";
-import $ from "jquery";
 import Modal from "core/modal";
 import ModalEvents from "core/modal_events";
 import ModalFactory from "core/modal_factory";
 import ModalRegistry from "core/modal_registry";
-import Notification from "core/notification";import { autocompleteTags } from "local_dta/tags/autocomplete";
+import Notification from "core/notification";
 
 const manageModal = class extends Modal {
-    static TYPE = 'local_dta/manageModal';
-    static TEMPLATE = 'local_dta/experiences/modals/modal-manage';
+    static TYPE = 'local_digitalta/manageModal';
+    static TEMPLATE = 'local_digitalta/experiences/modals/modal-manage';
     registerEventListeners() {
-        // Call the parent registration.
         super.registerEventListeners();
-        // Register to close on save/cancel.
         this.registerCloseOnSave();
         this.registerCloseOnCancel();
     }
 };
-
 ModalRegistry.register(manageModal.TYPE, manageModal, manageModal.TEMPLATE);
 
-const linkResourcesModal = class extends Modal {
-    static TYPE = "local_dta/linkResourcesModal";
-    static TEMPLATE = "local_dta/experiences/modals/modal-import-resources";
+const lockModal = class extends Modal {
+    static TYPE = 'local_digitalta/lockModal';
+    static TEMPLATE = 'local_digitalta/experiences/modals/modal-lock';
     registerEventListeners() {
         super.registerEventListeners();
         this.registerCloseOnSave();
         this.registerCloseOnCancel();
     }
 };
+ModalRegistry.register(lockModal.TYPE, lockModal, lockModal.TEMPLATE);
 
+const unlockModal = class extends Modal {
+    static TYPE = 'local_digitalta/unlockModal';
+    static TEMPLATE = 'local_digitalta/experiences/modals/modal-lock';
+    registerEventListeners() {
+        super.registerEventListeners();
+        this.registerCloseOnSave();
+        this.registerCloseOnCancel();
+    }
+};
+ModalRegistry.register(unlockModal.TYPE, unlockModal, unlockModal.TEMPLATE);
+
+const manageReflectionModal = class extends Modal {
+    static TYPE = 'local_digitalta/manageReflectionModal';
+    static TEMPLATE = 'local_digitalta/experiences/modals/modal-reflection';
+    registerEventListeners() {
+        super.registerEventListeners();
+        this.registerCloseOnSave();
+        this.registerCloseOnCancel();
+    }
+};
+ModalRegistry.register(manageReflectionModal.TYPE, manageReflectionModal, manageReflectionModal.TEMPLATE);
+
+const linkResourcesModal = class extends Modal {
+    static TYPE = "local_digitalta/linkResourcesModal";
+    static TEMPLATE = "local_digitalta/experiences/modals/modal-resources";
+    registerEventListeners() {
+        super.registerEventListeners();
+        this.registerCloseOnSave();
+        this.registerCloseOnCancel();
+    }
+};
 ModalRegistry.register(linkResourcesModal.TYPE, linkResourcesModal, linkResourcesModal.TEMPLATE);
 
-const linkCasesModal = class extends Modal {
-    static TYPE = "local_dta/linkCasesModal";
-    static TEMPLATE = "local_dta/experiences/modals/modal-import-cases";
+const linkResourceModal = class extends Modal {
+    static TYPE = "local_digitalta/linkResourceModal";
+    static TEMPLATE = "local_digitalta/experiences/modals/modal-resource-link";
     registerEventListeners() {
         super.registerEventListeners();
         this.registerCloseOnSave();
         this.registerCloseOnCancel();
     }
 };
+ModalRegistry.register(linkResourceModal.TYPE, linkResourceModal, linkResourceModal.TEMPLATE);
 
-ModalRegistry.register(linkCasesModal.TYPE, linkCasesModal, linkCasesModal.TEMPLATE);
+const unlinkResourceModal = class extends Modal {
+    static TYPE = 'local_digitalta/unlinkResourceModal';
+    static TEMPLATE = 'local_digitalta/experiences/modals/modal-resource-unlink';
+    registerEventListeners() {
+        super.registerEventListeners();
+        this.registerCloseOnSave();
+        this.registerCloseOnCancel();
+    }
+};
+ModalRegistry.register(unlinkResourceModal.TYPE, unlinkResourceModal, unlinkResourceModal.TEMPLATE);
 
-export const showManageModal = async (experienceid) => {
+// Manage modal
+
+/**
+ * Display the manage modal for asking questions
+ *
+ * @param {int} experienceid The experience id.
+ */
+export const showManageAskModal = async (experienceid = null) => {
     const string_keys = [
-        { key: "teacheracademy:actions:share", component: "local_dta" },
-        { key: "teacheracademy:actions:share:description", component: "local_dta" },
-        { key: "teacheracademy:actions:share:title", component: "local_dta" },
-        { key: "teacheracademy:actions:share:title:placeholder", component: "local_dta" },
-        { key: "teacheracademy:actions:share:visibility", component: "local_dta" },
-        { key: "teacheracademy:actions:share:language", component: "local_dta" },
-        { key: "teacheracademy:actions:share:themes", component: "local_dta" },
-        { key: "teacheracademy:actions:share:tags", component: "local_dta" },
-        { key: "teacheracademy:actions:share:picture", component: "local_dta" },
-        { key: "visibility:public", component: "local_dta" },
-        { key: "visibility:private", component: "local_dta" }
+        { key: "teacheracademy:actions:ask", component: "local_digitalta" },
+        { key: "teacheracademy:actions:ask:description", component: "local_digitalta" },
+        { key: "teacheracademy:actions:ask:title", component: "local_digitalta" },
+        { key: "teacheracademy:actions:ask:title:placeholder", component: "local_digitalta" },
+        { key: "teacheracademy:actions:ask:visibility", component: "local_digitalta" },
+        { key: "teacheracademy:actions:ask:language", component: "local_digitalta" },
+        { key: "teacheracademy:actions:ask:themes", component: "local_digitalta" },
+        { key: "teacheracademy:actions:ask:tags", component: "local_digitalta" },
+        { key: "teacheracademy:actions:ask:picture", component: "local_digitalta" },
+        { key: "visibility:public", component: "local_digitalta" },
+        { key: "visibility:private", component: "local_digitalta" }
     ];
-    const strings = Str.get_strings(string_keys);
-    Promise.all([strings])
-        .then(([strings]) => displayManageModal(strings, experienceid));
+    showManageModal(experienceid, string_keys);
 };
 
-export const displayManageModal = async (strings, experienceid) => {
-    let experience = {};
-    if (experienceid !== null) {
-        await experienceGet(experienceid).then((response) => {
-            experience = response.experience;
-        });
-    }
-    let languages = await getLanguages({prioritizeInstalled: true});
+/**
+ * Display the manage modal for sharing experiences.
+ *
+ * @param {int} experienceid The experience id.
+ */
+export const showManageShareModal = async (experienceid = null) => {
+    const string_keys = [
+        { key: "teacheracademy:actions:share", component: "local_digitalta" },
+        { key: "teacheracademy:actions:share:description", component: "local_digitalta" },
+        { key: "teacheracademy:actions:share:title", component: "local_digitalta" },
+        { key: "teacheracademy:actions:share:title:placeholder", component: "local_digitalta" },
+        { key: "teacheracademy:actions:share:visibility", component: "local_digitalta" },
+        { key: "teacheracademy:actions:share:language", component: "local_digitalta" },
+        { key: "teacheracademy:actions:share:themes", component: "local_digitalta" },
+        { key: "teacheracademy:actions:share:tags", component: "local_digitalta" },
+        { key: "teacheracademy:actions:share:picture", component: "local_digitalta" },
+        { key: "visibility:public", component: "local_digitalta" },
+        { key: "visibility:private", component: "local_digitalta" }
+    ];
+    showManageModal(experienceid, string_keys);
+};
+
+/**
+ * Display the manage modal.
+ *
+ * @param {int} experienceid The experience id.
+ * @param {Array} string_keys The string keys to display.
+ */
+export const showManageModal = async (experienceid = null, string_keys) => {
+    // Strings
+    const strings = await Str.get_strings(string_keys);
+    // Languages
+    const languages = await languagesGet({prioritizeInstalled: true});
+    // Experience
+    const experience = experienceid === null
+        ? Promise.resolve({})
+        : await experiencesGet(experienceid).then((response) => response.experience);
+    Promise.all([strings, languages, experience])
+        .then(([strings, languages, experience]) =>
+            displayManageModal(strings, languages, experience));
+};
+
+/**
+ * Display the manage modal.
+ *
+ * @param {Array} strings The strings to display.
+ * @param {Array} languages The list of available languages.
+ * @param {Object} experience The experience object.
+ *
+ */
+export const displayManageModal = async (strings, languages, experience = {}) => {
+    // Languages
+    let anyLanguageSelected = false;
     languages = languages.map((language) => {
+        language.selected = false;
+        if (experience.hasOwnProperty('lang') && language.code === experience.lang) {
+            language.selected = anyLanguageSelected = true;
+        }
         return {
             key: language.code,
             value: language.name,
-            selected: language.code === experience.lang
+            selected: language.selected
         };
     });
+    if (!anyLanguageSelected) {
+        languages[0].selected = true;
+    }
+    // Sections
+    let sections = {};
+    if (experience.sections) {
+        experience.sections.forEach((section) => {
+            sections[section.groupname_simplified] = section;
+        });
+    }
+    experience.sections = sections;
+    // Visibility
     let visibility = [
         { key: 1, value: strings[9] },
         { key: 0, value: strings[10] }
     ];
+    let anyVisibilitySelected = false;
     visibility = visibility.map((item) => {
+        item.selected = false;
+        if (experience.hasOwnProperty('visible') && item.key === experience.visible) {
+            item.selected = anyVisibilitySelected = true;
+        }
         return {
             key: item.key,
             value: item.value,
             selected: item.key === experience.visible
         };
     });
+    if (!anyVisibilitySelected) {
+        visibility[0].selected = true;
+    }
     const modal = await ModalFactory.create({
         type: manageModal.TYPE,
         templateContext: {
@@ -136,25 +267,21 @@ export const displayManageModal = async (strings, experienceid) => {
             current: {
                 id: experience.id ?? 0,
                 title: experience.title ?? null,
-                description: experience.description ?? null,
                 visible: experience.visible ?? null,
                 lang: experience.lang ?? null,
+                sections: experience.sections ?? [],
                 tags: experience.tags ?? [],
                 themes: experience.themes ?? []
             }
         },
         large: true,
+        removeOnClose: true
     });
     modal.show();
     const $root = modal.getRoot();
-    createTinyMCE('experience-add-description');
-    autocompleteTags('#experience-add-tags');
-    autocompleteThemes('#experience-add-themes');
-    /* @EXPERIENCE_PICTURE TODO: Add picture to experience creation
-    await prepareDraftHTML('experience_picture').then((response) => {
-        document.querySelector('#experience-add-picture').innerHTML = response.html;
-    });
-    */
+    createTinyMCE('experience-manage-reflection-what-content');
+    autocompleteTags('#experience-manage-tags');
+    autocompleteThemes('#experience-manage-themes');
     $root.on(ModalEvents.save, (event, modal) => {
         event.preventDefault();
         const form = $root[0].querySelector('form');
@@ -176,28 +303,36 @@ const handleManageModalSubmission = async (event, modal) => {
         return;
     }
     const formData = {
-        id: form.querySelector('input[name="experience-add-id"]').value,
-        title: form.querySelector('input[name="experience-add-title"]').value,
-        description: getTinyMCEContent('experience-add-description'),
-        visible: form.querySelector('select[name="experience-add-visibility"]').value,
-        lang: form.querySelector('select[name="experience-add-lang"]').value,
+        id: form.querySelector('input[name="experience-manage-id"]').value,
+        title: form.querySelector('input[name="experience-manage-title"]').value,
+        visible: form.querySelector('select[name="experience-manage-visibility"]').value,
+        lang: form.querySelector('select[name="experience-manage-lang"]').value,
+        sections: [
+            {
+                id: form.querySelector('textarea[name="experience-manage-reflection-what-content"]')
+                    .getAttribute('data-id') || null,
+                groupid: form.querySelector('textarea[name="experience-manage-reflection-what-content"]')
+                    .getAttribute('data-groupid') || null,
+                groupname: form.querySelector('textarea[name="experience-manage-reflection-what-content"]')
+                    .getAttribute('data-groupname') || null,
+                typename: 'text',
+                content: getTinyMCEContent('experience-manage-reflection-what-content')
+            }
+        ],
         themes: Array.from(
-            form.querySelectorAll('select[name="experience-add-themes"] option:checked'),
+            form.querySelectorAll('select[name="experience-manage-themes"] option:checked'),
             option => option.value),
         tags: Array.from(
-            form.querySelectorAll('select[name="experience-add-tags"] option:checked'),
+            form.querySelectorAll('select[name="experience-manage-tags"] option:checked'),
             option => option.value)
     };
     try {
-        const response = await experienceUpsert(formData);
-        /* @EXPERIENCE_PICTURE TODO: Add picture to experience creation
-        await saveFiles('experience-add-picture', 'fileManager', response.experienceid, 'experience_picture');
-        */
+        const response = await experiencesUpsert(formData);
         Notification.addNotification({
             message: "Experience saved successfully.",
             type: 'success'
         });
-        location.href = Cfg.wwwroot + '/local/dta/pages/experiences/view.php?id=' + response.experienceid;
+        location.href = Cfg.wwwroot + '/local/digitalta/pages/experiences/view.php?id=' + response.experienceid;
     } catch (error) {
         Notification.exception(error);
     }
@@ -220,95 +355,331 @@ const validateManageRequiredFields = (form) => {
     return true;
 };
 
-export const displaylinkResourcesModal = async (change) => {
-    const { resources } = await getAllResources();
+// Lock and unlock modals
+
+/**
+ * Display the lock modal.
+ *
+ * @param {int} experienceid The experience id.
+ */
+export const showLockModal = async (experienceid) => {
+    const string_keys = [
+        { key: "experience:lock", component: "local_digitalta" },
+        { key: "experience:lock:confirm", component: "local_digitalta" }
+    ];
+    const strings = Str.get_strings(string_keys);
+    Promise.all([strings])
+        .then(([strings]) => displayLockModal(strings, experienceid));
+};
+
+/**
+ * Display the unlock modal.
+ *
+ * @param {int} experienceid The experience id.
+ */
+export const showUnlockModal = async (experienceid) => {
+    const string_keys = [
+        { key: "experience:unlock", component: "local_digitalta" },
+        { key: "experience:unlock:confirm", component: "local_digitalta" }
+    ];
+    const strings = Str.get_strings(string_keys);
+    Promise.all([strings])
+        .then(([strings]) => displayLockModal(strings, experienceid));
+};
+
+/**
+ * Display the lock/unlock modal.
+ *
+ * @param {Array} strings The strings to display.
+ * @param {int} experienceid The experience id.
+ */
+const displayLockModal = async (strings, experienceid) => {
+    const modal = await ModalFactory.create({
+        type: lockModal.TYPE,
+        templateContext: {
+            modal: {
+                title: strings[0],
+                description: strings[1]
+            }
+        },
+        large: false,
+        removeOnClose: true
+    });
+    modal.show();
+    const $root = modal.getRoot();
+    $root.on(ModalEvents.save, (event) => {
+        event.preventDefault();
+        experiencesToggleStatus(experienceid);
+        modal.destroy();
+        window.location.reload();
+    });
+};
+
+// Manage reflection modal
+
+/**
+ * Display the manage reflection modal.
+ *
+ * @param {int} experienceid The experience id.
+ */
+export const showManageReflectionModal = async (experienceid) => {
+    // Strings
+    const string_keys = [
+        { key: "experience:reflection:title", component: "local_digitalta" },
+        { key: "experience:reflection:description", component: "local_digitalta" }
+    ];
+    const strings = Str.get_strings(string_keys);
+    // Experience
+    const experience = experienceid === null
+        ? Promise.resolve({})
+        : await experiencesGet(experienceid).then((response) => response.experience);
+    Promise.all([strings, experience])
+        .then(([strings, experience]) => displayManageReflectionModal(strings, experience));
+};
+
+/**
+ * Display the manage reflection modal.
+ *
+ * @param {Array} strings The strings to display.
+ * @param {Object} experience The experience object.
+ */
+export const displayManageReflectionModal = async (strings, experience) => {
+    let sections = {};
+    experience.sections.forEach((section) => {
+        sections[section.groupname_simplified] = section;
+    });
+    experience.sections = sections;
+    const modal = await ModalFactory.create({
+        type: manageReflectionModal.TYPE,
+        templateContext: {
+            modal: {
+                title: strings[0],
+                description: strings[1]
+            },
+            experienceid: experience.id ?? 0,
+            sections: experience.sections ?? []
+        },
+        large: true,
+        removeOnClose: true
+    });
+    modal.show();
+    const $root = modal.getRoot();
+    createTinyMCE('experience-manage-reflection-what-content');
+    createTinyMCE('experience-manage-reflection-so_what-content');
+    createTinyMCE('experience-manage-reflection-now_what-content');
+    $root.on(ModalEvents.save, (event, modal) => {
+        event.preventDefault();
+        const form = $root[0].querySelector('form');
+        if (validateManageRequiredFields(form)) {
+            handleManageReflectionModalSubmission(event, modal);
+        }
+    });
+};
+
+/**
+ * Handle the submission of the modal.
+ *
+ * @param {Event} event
+ * @param {Modal} modal
+ */
+const handleManageReflectionModalSubmission = async (event, modal) => {
+    const form = getList(modal.getRoot())[0].querySelector("form");
+    if (!form) {
+        return;
+    }
+    const formData = {
+        id: form.querySelector('input[name="experience-manage-id"]').value,
+        sections: [
+            {
+                id: form.querySelector('textarea[name="experience-manage-reflection-what-content"]')
+                    .getAttribute('data-id'),
+                groupid: form.querySelector('textarea[name="experience-manage-reflection-what-content"]')
+                    .getAttribute('data-groupid'),
+                content: getTinyMCEContent('experience-manage-reflection-what-content')
+            },
+            {
+                id: form.querySelector('textarea[name="experience-manage-reflection-so_what-content"]')
+                    .getAttribute('data-id'),
+                groupid: form.querySelector('textarea[name="experience-manage-reflection-so_what-content"]')
+                    .getAttribute('data-groupid'),
+                content: getTinyMCEContent('experience-manage-reflection-so_what-content')
+            },
+            {
+                id: form.querySelector('textarea[name="experience-manage-reflection-now_what-content"]')
+                    .getAttribute('data-id'),
+                groupid: form.querySelector('textarea[name="experience-manage-reflection-now_what-content"]')
+                    .getAttribute('data-groupid'),
+                content: getTinyMCEContent('experience-manage-reflection-now_what-content')
+            }
+        ]
+    };
+    try {
+        let promises = [];
+        for (const section of formData.sections) {
+            promises.push(sectionsUpsert({
+                'id': section.id,
+                'component': 'experience',
+                'componentinstance': formData.id,
+                'groupid': section.groupid,
+                'groupname': null,
+                'sequence': null,
+                'type': null,
+                'typename': 'text',
+                'title': null,
+                'content': section.content
+            }));
+        }
+        await Promise.all(promises);
+        Notification.addNotification({
+            message: "Reflection saved successfully.",
+            type: 'success'
+        });
+        location.href = Cfg.wwwroot + '/local/digitalta/pages/experiences/view.php?id=' + formData.id;
+    } catch (error) {
+        Notification.exception(error);
+    }
+};
+
+// Link resources modal
+
+/**
+ * Display the link resources modal.
+ *
+ * @param {int} experienceid The experience id.
+ */
+export const displayLinkResourcesModal = async (experienceid = null) => {
+    const { resources } = await resourcesGet({});
     const modal = await ModalFactory.create({
         type: linkResourcesModal.TYPE,
-        templateContext: { elementid_: Date.now(), resources, change: change},
+        templateContext: {
+            experienceid: experienceid,
+            resources
+        },
         large: true,
+        removeOnClose: true
     });
     modal.show();
     const $root = modal.getRoot();
-    if (change) {
-        const changeElement = $root.find("#changeToAddResource").get(0);
-        if (changeElement) {
-            changeElement.onclick = () => {
-                displayDialogue(true);
-                modal.hide();
-            };
-        }
+    const changeElement = $root.find("#changeToManageResource").get(0);
+    if (changeElement) {
+        changeElement.onclick = () => {
+            showManageResourcesModal(null, experienceid);
+            modal.destroy();
+        };
     }
-    $root.on(ModalEvents.save, () => {
-        handleResourceModal();
-    });
 };
 
-const handleResourceModal = () => {
-    const experienceid = $(SELECTORS.INPUTS.experienceid).val();
-    const seleccionados = [];
-    $("#resources-group input[type='checkbox']:checked").each(function () {
-        // Agregar el valor del checkbox seleccionado al array
-        seleccionados.push($(this).val());
-    });
-    const contextid = [];
-    seleccionados.forEach(async (resourceid) => {
-        contextid.push(
-            contextUpsert({
-                component: "experience",
-                componentinstance: experienceid,
-                modifier: "resource",
-                modifierinstance: resourceid,
-            })
-        );
-    });
-    Promise.all(contextid)
-        .then(() => {
-            window.location.reload();
-            return;
-        })
-        .catch((error) => {
-            Notification.exception(error);
-        });
-};
-
-export const displaylinkCasesModal = async () => {
-    const { cases } = await getCases();
-
+/**
+ * Display the link resource modal.
+ *
+ * @param {int} experienceid The experience id.
+ * @param {int} resourceid The resource id.
+ */
+export const displayLinkResourceModal = async (experienceid, resourceid) => {
+    // Resource
+    const resource = await resourcesGet({id: resourceid})
+        .then((response) => { return response.resources[0]; });
     const modal = await ModalFactory.create({
-        type: linkCasesModal.TYPE,
-        templateContext: { elementid_: Date.now(), cases },
+        type: linkResourceModal.TYPE,
+        templateContext: {
+            experienceid: experienceid,
+            resourceid: resource.id,
+            resourcename: resource.name
+        },
         large: true,
+        removeOnClose: true
     });
     modal.show();
     const $root = modal.getRoot();
-    $root.on(ModalEvents.save, () => {
-        handleCasesModal();
+    createTinyMCE('experience-link-resource-description');
+    $root.on(ModalEvents.save, (event, modal) => {
+        handleLinkResourceModalSubmission(event, modal);
     });
 };
 
-const handleCasesModal = () => {
-    const experienceid = $(SELECTORS.INPUTS.experienceid).val();
-    const seleccionados = [];
-    $("#cases-group input[type='checkbox']:checked").each(function () {
-        seleccionados.push($(this).val());
-    });
-    const contextid = [];
-    seleccionados.forEach(async (caseid) => {
-        contextid.push(
-            contextUpsert({
-                component: "experience",
-                componentinstance: experienceid,
-                modifier: "case",
-                modifierinstance: caseid,
-            })
-        );
-    });
-    Promise.all(contextid)
-        .then(() => {
-            window.location.reload();
-            return;
-        })
-        .catch((error) => {
-            Notification.exception(error);
+/**
+ * Handle the submission of the modal.
+ *
+ * @param {Event} event
+ * @param {Modal} modal
+ */
+const handleLinkResourceModalSubmission = async (event, modal) => {
+    const form = getList(modal.getRoot())[0].querySelector("form");
+    if (!form) {
+        return;
+    }
+    const formData = {
+        resourceid: form.querySelector('input[name="resourceid"]').value,
+        component: 'experience',
+        componentinstance: form.querySelector('input[name="experienceid"]').value,
+        description: getTinyMCEContent('experience-link-resource-description')
+    };
+    try {
+        await resourcesAssign(formData);
+        Notification.addNotification({
+            message: "Resource linked successfully.",
+            type: 'success'
         });
+        location.reload();
+    }
+    catch (error) {
+        Notification.exception(error);
+    }
+};
+
+/**
+ * Display the unlink resource modal.
+ *
+ * @param {int} experienceid The experience id.
+ * @param {int} resourceid The resource id.
+ */
+export const showUnlinkResourceModal = async (experienceid, resourceid) => {
+    const string_keys = [
+        { key: "experience:resources:unlink", component: "local_digitalta" },
+        { key: "experience:resources:unlink:confirm", component: "local_digitalta" }
+    ];
+    const strings = Str.get_strings(string_keys);
+    Promise.all([strings])
+        .then(([strings]) => displayUnlinkResourceModal(strings, experienceid, resourceid));
+};
+
+/**
+ * Display the unlink resource modal.
+ *
+ * @param {Array} strings The strings to display.
+ * @param {int} experienceid The experience id.
+ * @param {int} resourceid The resource id.
+ */
+const displayUnlinkResourceModal = async (strings, experienceid, resourceid) => {
+    const modal = await ModalFactory.create({
+        type: lockModal.TYPE,
+        templateContext: {
+            modal: {
+                title: strings[0],
+                description: strings[1]
+            }
+        },
+        large: false,
+        removeOnClose: true
+    });
+    modal.show();
+    const $root = modal.getRoot();
+    $root.on(ModalEvents.save, async (event, modal) => {
+        event.preventDefault();
+        try {
+            await resourcesUnassign({
+                id: resourceid,
+                component: 'experience',
+                componentinstance: experienceid
+            });
+            Notification.addNotification({
+                message: "Resource unlinked successfully.",
+                type: 'success'
+            });
+            modal.destroy();
+            window.location.reload();
+        } catch (error) {
+            Notification.exception(error);
+        }
+    });
 };

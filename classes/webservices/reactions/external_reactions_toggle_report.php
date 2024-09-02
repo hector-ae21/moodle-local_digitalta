@@ -17,18 +17,18 @@
 /**
  * WebService to toggle a report
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/classes/components.php');
-require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/components.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/reactions.php');
 
-use local_dta\Components;
-use local_dta\Reactions;
+use local_digitalta\Components;
+use local_digitalta\Reactions;
 
 /**
  * This class is used to toggle a report

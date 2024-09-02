@@ -17,12 +17,14 @@
 /**
  * Experience class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
+
+require_once($CFG->dirroot . '/local/digitalta/classes/component.php');
 
 /**
  * This class is used to represent the experience entity
@@ -32,11 +34,16 @@ namespace local_dta;
  */
 class Experience
 {
+    use Component;
+
     /** @var int The identifier of the experience. */
     public $id;
 
-    /** @var int The identifier of the user. */
+    /** @var int The identifier of the user who created the experience. */
     public $userid;
+
+    /** @var object The object of the user who created the experience. */
+    public $user;
 
     /** @var string The title of the experience. */
     public $title;
@@ -50,11 +57,20 @@ class Experience
     /** @var int The status of the experience. */
     public $status;
 
-    /** @var string The date the experience was created. */
+    /** @var int The date the experience was created. */
     public $timecreated;
 
-    /** @var string The date the experience was modified. */
+    /** @var string The date the experience was created in string format. */
+    public $timecreated_string;
+
+    /** @var int The date the experience was modified. */
     public $timemodified;
+
+    /** @var array The sections of the experience. */
+    public $sections;
+
+    /** @var string The URL of the picture of the experience. */
+    public $pictureurl;
 
     /**
      * Constructor.

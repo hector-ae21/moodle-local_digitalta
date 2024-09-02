@@ -1,60 +1,55 @@
 import $ from "jquery";
 import {
-    addTextSection,
-    changeSectionToEdit,
-    deleteSection,
-    removeSection,
-    upsertSection,
-    showDeleteSectionModal,
-    showSaveCase,
-    changeStatusToComplete
-} from "./form";
+    addSection,
+    switchSectionEdition,
+    saveSection,
+    validateFormData
+} from "local_digitalta/cases/main";
 import {
-    createTinyMCE,
-    removeTinyMCEFromArea
-} from 'local_dta/tiny/manage';
+    showDeleteSectionModal,
+    showSaveModal
+} from "local_digitalta/cases/modals";
+import SELECTORS from "local_digitalta/cases/selectors";
 
 /**
  * Set event listeners for the page.
  * @return {void}
  */
 export default function setEventListeners() {
-    // Add a new text section
-    $(document).on('click', '#add-section', () => {
-        addTextSection();
+    const caseid = $(SELECTORS.INPUTS.caseid).val();
+
+    $(document).on('click', SELECTORS.BUTTONS.addSection, (event) => {
+        event.preventDefault();
+        addSection(caseid, 'text');
     });
-    // Remove a section
-    $(document).on('click', '.section-close-button', function () {
-        const id = $(this).data('id');
-        removeSection(id);
-        removeTinyMCEFromArea(`content_${id}`);
+
+    $(document).on('click', SELECTORS.BUTTONS.editSection, async function (event) {
+        const sectionid = event.currentTarget.dataset.id;
+        const sectiontitle = $(`#title_${sectionid}`).text().trim();
+        const sectioncontent = $(`#content_${sectionid}`).html();
+        await switchSectionEdition(sectionid, true, sectiontitle, sectioncontent);
     });
-    // Edit the section
-    $(document).on('click', '.section-edit-button', function () {
-        const id = $(this).data('id');
-        upsertSection(id);
-        removeTinyMCEFromArea(`content_${id}`);
+
+    $(document).on('click', SELECTORS.BUTTONS.cancelEditSection, function (event) {
+        const sectionid = event.currentTarget.dataset.id;
+        const sectiontitle = $(`#title_${sectionid}_original`).val();
+        const sectioncontent = $(`#content_${sectionid}_original`).val();
+        switchSectionEdition(sectionid, false, sectiontitle, sectioncontent);
     });
-    // Change the section to edit mode
-    $(document).on('click', '.section-to-edit-button', async function () {
-        const id = $(this).data('id');
-        await changeSectionToEdit(true, id);
-        createTinyMCE(`content_${id}`);
+
+    $(document).on('click', SELECTORS.BUTTONS.saveSection, function (event) {
+        const sectionid = event.currentTarget.dataset.id;
+        saveSection(caseid, sectionid);
     });
-    // Show section delete modal
-    $(document).on('click', '.section-delete-button', function() {
-        showDeleteSectionModal($(this).data('id'));
+
+    $(document).on('click', SELECTORS.BUTTONS.deleteSection, function(event) {
+        const sectionid = event.currentTarget.dataset.id;
+        showDeleteSectionModal(sectionid);
     });
-    // Delete section
-    $(document).on('click', '#confirmDelete', function() {
-        deleteSection();
-    });
-    // Save button
-    $(document).on('click', '#save-case-button', function() {
-        showSaveCase();
-    });
-    // Change status to complete
-    $(document).on('click', '#complete-case-button', function() {
-        changeStatusToComplete();
+
+    $(document).on('click', SELECTORS.BUTTONS.saveCase, function() {
+        if (validateFormData()) {
+            showSaveModal();
+        }
     });
 }

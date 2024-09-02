@@ -5,18 +5,17 @@ import Ajax from 'core/ajax';
  *
  * Valid args are:
  * - experienceid: The experience id
- * @method experienceGet
+ * @method experiencesGet
  * @param {number} experienceid The experience id.
  * @return {Promise} Resolve with warnings.
  */
-export const experienceGet = (experienceid) => {
+export const experiencesGet = (experienceid) => {
     const request = {
-        methodname: 'local_dta_experiences_get',
+        methodname: 'local_digitalta_experiences_get',
         args: {id: experienceid}
     };
     return Ajax.call([request])[0];
 };
-
 
 /**
  * Upsert an experience.
@@ -24,19 +23,18 @@ export const experienceGet = (experienceid) => {
  * Valid args are:
  * - id: The experience id (optional)
  * - title: The title of the experience
- * - description: The description of the experience (optional)
  * - visible: The visibility of the experience
  * - lang: The language of the experience
  * - status: The status of the experience (optional)
  * - themes: The themes of the experience
  * - tags: The tags of the experience
- * @method experienceUpsert
+ * @method experiencesUpsert
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.
  */
-export const experienceUpsert = args => {
+export const experiencesUpsert = args => {
     const request = {
-        methodname: 'local_dta_experiences_upsert',
+        methodname: 'local_digitalta_experiences_upsert',
         args: args
     };
     return Ajax.call([request])[0];
@@ -47,13 +45,13 @@ export const experienceUpsert = args => {
  *
  * Valid args are:
  * - experienceid: The experience id
- * @method toggleStatus
+ * @method experiencesToggleStatus
  * @param {number} experienceid The experience id.
  * @return {Promise} Resolve with warnings.
  */
-export const toggleStatus = (experienceid) => {
+export const experiencesToggleStatus = (experienceid) => {
     const request = {
-        methodname: 'local_dta_experiences_toggle_status',
+        methodname: 'local_digitalta_experiences_toggle_status',
         args: {id: experienceid}
     };
     return Ajax.call([request])[0];

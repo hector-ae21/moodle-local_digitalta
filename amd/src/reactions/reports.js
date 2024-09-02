@@ -1,7 +1,7 @@
 import $ from "jquery";
-import { SELECTORS } from "./selectors";
+import { SELECTORS } from "local_digitalta/reactions/selectors";
 import Notification from "core/notification";
-import { toggleReport } from "../repositories/reactions_repository";
+import { reactionsToggleReport } from "local_digitalta/repositories/reactions_repository";
 
 /**
  * Toggle the like and dislike buttons.
@@ -9,7 +9,7 @@ import { toggleReport } from "../repositories/reactions_repository";
  */
 export function sendReport(componentinstance) {
     const component = $(SELECTORS.BUTTONS.report).data("component");
-    toggleReport({ component, componentinstance })
+    reactionsToggleReport({ component, componentinstance })
         .then((response) => {
             return updateUI(componentinstance, response.reactiontype);
         })

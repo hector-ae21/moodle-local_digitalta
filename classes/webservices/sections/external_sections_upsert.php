@@ -17,18 +17,18 @@
 /**
  * WebService to upsert a section
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/classes/components.php');
-require_once($CFG->dirroot . '/local/dta/classes/sections.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/components.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
 
-use local_dta\Components;
-use local_dta\Sections;
+use local_digitalta\Components;
+use local_digitalta\Sections;
 
 /**
  * This class is used to upsert a section
@@ -47,13 +47,16 @@ class external_sections_upsert extends external_api
     {
         return new external_function_parameters(
             [
-                'sectionid' => new external_value(PARAM_INT, 'Section ID', VALUE_DEFAULT, 0),
-                'sectiontype' => new external_value(PARAM_TEXT, 'Section type', VALUE_DEFAULT, 'text'),
+                'id' => new external_value(PARAM_INT, 'Section ID', VALUE_OPTIONAL),
                 'component' => new external_value(PARAM_TEXT, 'Component'),
                 'componentinstance' => new external_value(PARAM_INT, 'Component instance'),
-                'group' => new external_value(PARAM_TEXT, 'Group ID', VALUE_DEFAULT, 'General'),
+                'groupid' => new external_value(PARAM_INT, 'Group ID', VALUE_OPTIONAL),
+                'groupname' => new external_value(PARAM_TEXT, 'Group', VALUE_OPTIONAL),
                 'sequence' => new external_value(PARAM_INT, 'Sequence', VALUE_OPTIONAL),
-                'content' => new external_value(PARAM_TEXT, 'Content', VALUE_DEFAULT, "")
+                'type' => new external_value(PARAM_INT, 'Section type ID', VALUE_OPTIONAL),
+                'typename' => new external_value(PARAM_TEXT, 'Section type', VALUE_OPTIONAL),
+                'title' => new external_value(PARAM_TEXT, 'Title', VALUE_DEFAULT, ""),
+                'content' => new external_value(PARAM_RAW, 'Content', VALUE_DEFAULT, "")
             ]
         );
     }
@@ -61,55 +64,59 @@ class external_sections_upsert extends external_api
     /**
      * Upserts a section
      *
-     * @param  int    $sectionid         Section ID
-     * @param  string $sectiontype       Section type
+     * @param  int    $id                Section ID
      * @param  string $component         Component
      * @param  int    $componentinstance Component instance
-     * @param  string $group             Group ID
+     * @param  int    $groupid           Group ID
+     * @param  string $groupname         Group
      * @param  int    $sequence          Sequence
+     * @param  int    $type              Section type ID
+     * @param  string $typename          Section type
      * @param  string $content           Content
      * @return array  The result of the operation
      */
-    public static function sections_upsert($sectionid = 0, $sectiontype = 'text', $component, $componentinstance, $group = 'General', $sequence = null, $content = "")
+    public static function sections_upsert($id = 0, $component, $componentinstance, $groupid = null, $groupname = null, $sequence = null, $type = null, $typename = null, $title = "", $content = "")
     {
-        $section = new stdClass();
-
-        if ($sectionid > 0) {
-            if (!$current_section = Sections::get_section($sectionid)) {
-                return ['result' => false, 'error' => 'Section not found'];
-            }
-            $section->id = $sectionid;
-        }
-
-        $section->sectiontype = Sections::get_type_by_name($sectiontype)->id;
-
-        if (!Components::get_instance_record($component, $componentinstance)) {
-            return ['result' => false, 'error' => 'Component instance not found'];
-        }
-
+        $section                    = new stdClass();
+        $section->id                = $id;
         $section->component         = Components::get_component_by_name($component)->id;
         $section->componentinstance = $componentinstance;
-        $section->groupid           = Sections::get_group_by_name($group)->id;
+        $section->sequence          = $sequence;
+        $section->title             = $title;
+        $section->content           = $content;
 
-        if ($sequence !== null) {
-            $section->sequence = $sequence;
+        if ($groupid) {
+            $section->groupid = $groupid;
+        } elseif ($groupname) {
+            $section->groupid = Sections::get_group_by_name($groupname)->id;
+        } else {
+            return [
+                'result' => false,
+                'error' => 'Group or Group ID is required'
+            ];
         }
 
-        $section->content = $content;
-        
-
-        if (!$result = Sections::upsert_section($section)) {
-            return ['result' => false, 'error' => 'Error upserting section'];
+        if ($type) {
+            $section->type = $type;
+        } elseif ($typename) {
+            $section->type = Sections::get_type_by_name($typename)->id;
+        } else {
+            return [
+                'result' => false,
+                'error' => 'Type or Type ID is required'
+            ];
         }
+
+        if (!$sectionid = Sections::upsert_section($section)) {
+            return [
+                'result' => false,
+                'error' => 'Error upserting section'
+            ];
+        }
+
         return [
             'result' => true,
-            'sectionid' => $result->id,
-            'sectiontype' => $sectiontype,
-            'component' => $component,
-            'componentinstance' => $componentinstance,
-            'group' => $group,
-            'sequence' => $sequence,
-            'content' => $content
+            'sectionid' => $sectionid
         ];
     }
 
@@ -124,12 +131,6 @@ class external_sections_upsert extends external_api
             [
                 'result' => new external_value(PARAM_BOOL, 'Result'),
                 'sectionid' => new external_value(PARAM_INT, 'Section ID', VALUE_OPTIONAL),
-                'sectiontype' => new external_value(PARAM_TEXT, 'Section type', VALUE_OPTIONAL),
-                'component' => new external_value(PARAM_TEXT, 'Component', VALUE_OPTIONAL),
-                'componentinstance' => new external_value(PARAM_INT, 'Component instance', VALUE_OPTIONAL),
-                'group' => new external_value(PARAM_TEXT, 'Group ID', VALUE_OPTIONAL),
-                'sequence' => new external_value(PARAM_INT, 'Sequence', VALUE_OPTIONAL),
-                'content' => new external_value(PARAM_TEXT, 'Content', VALUE_OPTIONAL),
                 'error' => new external_value(PARAM_RAW, 'Error', VALUE_OPTIONAL)
             ]
         );

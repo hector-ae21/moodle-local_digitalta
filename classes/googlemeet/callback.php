@@ -18,15 +18,18 @@
 /**
  * Oauth client instance callback script
  *
- * @package    local_dta
+ * @package    local_digitalta
  * @copyright  2024 ADSDR-FUNIBER Scepter Team
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace local_dta;
+namespace local_digitalta;
 
 require_once(__DIR__ . '/../../../../config.php');
-require_once(__DIR__ . '/../../lib.php');
-require_once(__DIR__ . '/client.php');
+require_once($CFG->dirroot . '/local/digitalta/lib.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/googlemeet/client.php');
+
+use local_digitalta\GoogleMeetClient;
+
 require_login();
 
 // Headers to make it not cacheable.
@@ -38,7 +41,7 @@ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 
 $chatid = required_param('chatid', PARAM_INT);
 
-$client = new client();
+$client = new GoogleMeetClient();
 
 
 // Post callback.

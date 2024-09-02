@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library of functions for the local_dta plugin.
+ * Library of functions for the local_digitalta plugin.
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -38,7 +38,7 @@ require_once(__DIR__ . './../../config.php');
  * @param  array    $options Additional options affecting the file serving
  * @return bool     If the file not found, just send the file otherwise and do not return anything
  */
-function local_dta_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = [])
+function local_digitalta_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = [])
 {
     if ($context->contextlevel !== CONTEXT_SYSTEM) {
         return false;
@@ -47,7 +47,7 @@ function local_dta_pluginfile($course, $cm, $context, $filearea, $args, $forcedo
     $filename = array_pop($args);
     $filepath = (empty($args)) ? '/' : '/' . implode('/', $args) . '/';
     $fs = get_file_storage();
-    if (!$file = $fs->get_file($context->id, 'local_dta', $filearea, $itemid, $filepath, $filename)) {
+    if (!$file = $fs->get_file($context->id, 'local_digitalta', $filearea, $itemid, $filepath, $filename)) {
         return false;
     }
     send_stored_file($file, 0, 0, $forcedownload, $options);

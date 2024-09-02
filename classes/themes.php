@@ -17,16 +17,16 @@
 /**
  * Themes class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
 
-require_once($CFG->dirroot . '/local/dta/classes/context.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/context.php');
 
-use local_dta\Context;
+use local_digitalta\Context;
 
 use Exception;
 use stdClass;
@@ -42,31 +42,50 @@ defined('MOODLE_INTERNAL') || die();
 class Themes
 {
     /** @var string The name of the database table storing the themes. */
-    private static $table = 'digital_themes';
+    private static $table = 'digitalta_themes';
 
     /**
      * Get a theme by its ID.
      *
-     * @param  int         $themeid The ID of the theme.
-     * @return object|bool The retrieved theme object.
+     * @param  int         $id The ID of the theme.
+     * @return object|null The retrieved theme object.
      */
-    public static function get_theme(int $themeid)
+    public static function get_theme(int $id) : ?object
     {
-        global $DB;
-        $theme = $DB->get_record(self::$table, ['id' => $themeid]);
-        return $theme;
+        return self::get_themes(['id' => $id])[0] ?? null;
     }
 
     /**
      * Get all themes.
      *
+     * @param  array $filters The filters to apply
      * @return array An array containing all themes.
      */
-    public static function get_themes(): array
+    public static function get_themes(array $filters = []): array
     {
         global $DB;
-        $themes = $DB->get_records(self::$table);
-        return $themes;
+        $themes = $DB->get_records(self::$table, $filters);
+        return array_values(array_map(function ($theme) {
+            $theme->name = local_digitalta_get_element_translation('theme', $theme->name)[0];
+            return $theme;
+        }, $themes));
+    }
+
+    /**
+     * Get all themes by text
+     *
+     * @param string $text
+     * @return array
+     */
+    public static function get_themes_by_text($text): array
+    {
+        $themes = self::get_themes();
+        if (empty($text)) {
+            return $themes;
+        }
+        return array_values(array_filter($themes, function ($theme) use ($text) {
+            return stripos($theme->name, $text) !== false;
+        }));
     }
 
     /**
@@ -132,21 +151,6 @@ class Themes
     }
 
     /**
-     * Get all themes by text
-     *
-     * @param string $text
-     * @return array
-     */
-    public static function get_themes_by_text($text) : array
-    {
-        global $DB;
-        $liketheme = $DB->sql_like('name', ':name');
-        $themes = $DB->get_records_sql("SELECT * FROM {" . self::$table . "} WHERE {$liketheme}",
-            ['name' => '%' . $text . '%']);
-        return $themes;
-    }
-
-    /**
      * Assign a theme to a component
      *
      * @param  string $component The component to assign the theme to.
@@ -170,12 +174,12 @@ class Themes
         if (!$contexts = Context::get_contexts_by_component($component, $instance, 'theme')) {
             return [];
         }
-        return array_values(array_map(function ($context) {
+        return array_map(function ($context) {
             if (!$theme = self::get_theme($context->modifierinstance)) {
                 throw new Exception('Invalid theme');
             }
             return $theme;
-        }, $contexts));
+        }, $contexts);
     }
 
     /**
@@ -201,9 +205,9 @@ class Themes
      */
     public static function update_themes(string $component, int $instance, array $themes) {
         $current_themes = self::get_themes_for_component($component, $instance);
-        $current_themes = array_values(array_map(function ($theme) {
+        $current_themes = array_map(function ($theme) {
             return $theme->id;
-        }, $current_themes));
+        }, $current_themes);
         foreach ($current_themes as $themeid) {
             if (!in_array($themeid, $themes)) {
                 self::remove_theme_from_component($component, $instance, $themeid);

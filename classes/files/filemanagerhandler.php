@@ -17,14 +17,14 @@
 /**
  * File manager handler
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
  // WARNING!!!!! DONT TOUCH THIS FILE
 
-namespace local_dta\file;
+namespace local_digitalta\file;
 
 require_once($CFG->dirroot . '/lib/form/filemanager.php');
 
@@ -140,7 +140,7 @@ class FileManagerHandler
      * @param string $component      Component
      * @param int    $filecontextid  File context id
      */
-    public function init($filearea, $component = "local_dta", $filecontextid = 1)
+    public function init($filearea, $component = "local_digitalta", $filecontextid = 1)
     {
         global $PAGE;
         $html = self::prepare_draft_area_html($filecontextid, $component, $filearea);

@@ -17,14 +17,14 @@
 /**
  * Components class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
 
-require_once($CFG->dirroot . '/local/dta/locallib.php');
+require_once($CFG->dirroot . '/local/digitalta/locallib.php');
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -37,29 +37,17 @@ defined('MOODLE_INTERNAL') || die();
 class Components
 {
     /** @var string The table name for the components. */
-    private static $table = 'digital_components';
+    private static $table = 'digitalta_components';
 
     /**
-     * Get all the components
+     * Get the component by its id
      *
-     * @return array
-     */
-    public static function get_all_components()
-    {
-        global $DB;
-        return $DB->get_records(self::$table);
-    }
-
-    /**
-     * Get the component by id
-     *
-     * @param  int         $id The component identifier
+     * @param  int         $id The ID of the component
      * @return object|null The component
      */
-    public static function get_component_by_id(int $id)
+    public static function get_component(int $id): ?object
     {
-        global $DB;
-        return $DB->get_record(self::$table, ['id' => $id]);
+        return self::get_components(['id' => $id])[0] ?? null;
     }
 
     /**
@@ -68,10 +56,21 @@ class Components
      * @param  string      $name The component name
      * @return object|null The component
      */
-    public static function get_component_by_name(string $name)
+    public static function get_component_by_name(string $name): ?object
+    {
+        return self::get_components(['name' => $name])[0] ?? null;
+    }
+
+    /**
+     * Get components
+     *
+     * @param  array $filters The filters to apply
+     * @return array The components
+     */
+    public static function get_components(array $filters = [])
     {
         global $DB;
-        return $DB->get_record(self::$table, ['name' => $name]);
+        return array_values($DB->get_records(self::$table, $filters));
     }
 
     /**
@@ -87,10 +86,10 @@ class Components
 
         $dbman = $DB->get_manager();
 
-        if ($dbman->table_exists('digital_' . $component)) {
-            return $DB->get_record('digital_' . $component, ['id' => $instanceid]);
-        } elseif ($dbman->table_exists('digital_' . $component . 's')) {
-            return $DB->get_record('digital_' . $component . 's', ['id' => $instanceid]);
+        if ($dbman->table_exists('digitalta_' . $component)) {
+            return $DB->get_record('digitalta_' . $component, ['id' => $instanceid]);
+        } elseif ($dbman->table_exists('digitalta_' . $component . 's')) {
+            return $DB->get_record('digitalta_' . $component . 's', ['id' => $instanceid]);
         } elseif ($dbman->table_exists('mdl_' . $component)) {
             return $DB->get_record('mdl_' . $component, ['id' => $instanceid]);
         } else {

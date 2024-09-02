@@ -17,22 +17,31 @@
 /**
  * Resources class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
 
-require_once($CFG->dirroot . '/local/dta/classes/resource.php');
-require_once($CFG->dirroot . '/local/dta/classes/themes.php');
-require_once($CFG->dirroot . '/local/dta/classes/tags.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/components.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/context.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/languages.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/reactions.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/resource.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/themes.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/tags.php');
 
-use local_dta\Resource;
-use local_dta\Themes;
-use local_dta\Tags;
+use local_digitalta\Components;
+use local_digitalta\Context;
+use local_digitalta\Languages;
+use local_digitalta\Reactions;
+use local_digitalta\Resource;
+use local_digitalta\Themes;
+use local_digitalta\Tags;
 
 use Exception;
+use stdClass;
 
 /**
  * This class is used to manage the resources.
@@ -43,99 +52,120 @@ use Exception;
 class Resources
 {
     /** @var string The name of the database table storing the resources. */
-    private static $table = 'digital_resources';
+    private static $table = 'digitalta_resources';
+
+    /** @var string The name of the database table storing the resource assignments. */
+    private static $assign_table = 'digitalta_resources_assign';
 
     /** @var string The name of the database table storing the types. */
-    private static $types_table = 'digital_resources_types';
+    private static $types_table = 'digitalta_resources_types';
 
     /** @var string The name of the database table storing the formats. */
-    private static $formats_table = 'digital_resources_formats';
+    private static $formats_table = 'digitalta_resources_formats';
 
     /**
      * Get a resource by its ID.
      * 
-     * @param  int    $id int The ID of the resource.
-     * @return object The resource object.
+     * @param  int            $id int The ID of the resource.
+     * @return Resource|null The resource object.
      */
-    public static function get_resource(int $id) : object {
-        global $DB;
-        if (!$resource = $DB->get_record(self::$table, ['id' => $id])) {
-            return null;
-        }
-        $resource         = new Resource($resource);
-        $resource->themes = Themes::get_themes_for_component('resource', $resource->id);
-        $resource->tags   = Tags::get_tags_for_component('resource', $resource->id);
-        return $resource;
+    public static function get_resource(int $id, bool $extra_fields = true): ?Resource
+    {
+        return self::get_resources(['id' => $id], $extra_fields)[0] ?? null;
     }
 
     /**
-     * Get all resources.
-     * 
-     * @return array The resources.
-     */
-    public static function get_all_resources() : array {
-        global $DB;
-        if (!$resources = $DB->get_records(self::$table)) {
-            return [];
-        }
-        $resources = array_values(array_map(function ($resource) {
-            $resource         = new Resource($resource);
-            $resource->themes = Themes::get_themes_for_component('resource', $resource->id);
-            $resource->tags   = Tags::get_tags_for_component('resource', $resource->id);
-            return $resource;
-        }, $resources));
-        return $resources;
-    }
-
-    /**
-     * Get resources based on provided filters.
+     * Get resources
      *
-     * @param  array $filters Array of filters to apply. Accepted: type, format, lang.
-     * @return array Array of filtered resources.
+     * @param  array $filters The filters to apply
+     * @param  bool  If true, it will return the extra fields
+     * @return array The resources
      */
-    public static function get_resources(array $filters = []) : array {
-        $resources = self::get_all_resources();
-        if (empty($filters)) {
-            return $resources;
-        }
-        $allowed_filters = ['type', 'format', 'lang'];
-        foreach ($filters as $filter_key => $filter_value) {
-            if (!in_array($filter_key, $allowed_filters)) {
-                continue;
-            }
-            $resources = self::apply_filter($filter_key, $filter_value, $resources);
-        }
-        return $resources;
-    }
-
-    /**
-     * Apply a filter to the resources.
-     *
-     * @param  string $filter_key The key of the filter.
-     * @param  array  $filter_value The value of the filter.
-     * @param  array  $resources The resources to filter.
-     * @return array  The filtered resources.
-     */
-    private static function apply_filter(string $filter_key, array $filter_value, array $resources) : array {
-        $filtered_resources = [];
-        foreach ($filter_value as $value) {
-            foreach ($resources as $resource) {
-                if ($resource->{$filter_key} == $value) {
-                    $filtered_resources[] = $resource;
+    public static function get_resources(array $filters = [], bool $extra_fields = true): array
+    {
+        global $DB;
+        $filters = self::prepare_filters($filters);
+        $resources = $DB->get_records(self::$table, $filters);
+        return array_values(array_map(
+            function ($resource) use ($extra_fields) {
+                $resource = new Resource($resource);
+                if ($extra_fields) {
+                    $resource = self::get_extra_fields($resource);
                 }
+                return $resource;
+            },
+        $resources));
+    }
+
+    /**
+     * Prepare filters for resources
+     *
+     * @param  array $filters The filters to prepare
+     * @return array The prepared filters
+     */
+    private static function prepare_filters(array $filters): array
+    {
+        $prepared_filters = [];
+        foreach ($filters as $filter_key => $filter_value) {
+            switch ($filter_key) {
+                case 'typename':
+                    $prepared_filters['type'] = self::get_type_by_name($filter_value)->id;
+                    break;
+                case 'formatname':
+                    $prepared_filters['format'] = self::get_format_by_name($filter_value)->id;
+                default:
+                    $prepared_filters[$filter_key] = $filter_value;
+                    break;
             }
         }
-        return $filtered_resources;
+        return $prepared_filters;
+    }
+
+    /**
+     * Get extra fields for a resource.
+     * 
+     * @param  Resource $resource The resource object.
+     * @return object   The resource object with extra fields.
+     */
+    public static function get_extra_fields(Resource $resource)
+    {
+        // Get the themes for the resource
+        $themes = Themes::get_themes_for_component('resource', $resource->id);
+        $resource->themes = array_map(function ($theme) {
+            return (object) [
+                'name' => $theme->name,
+                'id' => $theme->id
+            ];
+        }, $themes);
+        // Get the tags for the resource
+        $tags = Tags::get_tags_for_component('resource', $resource->id);
+        $resource->tags = array_map(function ($tag) {
+            return (object) [
+                'name' => $tag->name,
+                'id' => $tag->id
+            ];
+        }, $tags);
+        $resource->fixed_tags = [
+            ['name' => Languages::get_language_name_by_code($resource->lang)]
+        ];
+        // Get the resource reactions
+        $resource->reactions = Reactions::get_reactions_for_render_component(
+            Components::get_component_by_name('resource')->id,
+            $resource->id
+        );
+        return $resource;
     }
 
     /**
      * Upsert a resource.
      * 
-     * @param  object    $resource The resource to upsert.
-     * @return object    The upserted resource.
+     * @param  object $resource The resource to upsert.
+     * @return int    The identifier of the upserted resource.
      */
-    public static function upsert_resource($resource) : object {
+    public static function upsert_resource($resource): int
+    {
         global $DB;
+        $record = new stdClass;
         $record = self::prepare_metadata_record($resource);
         if (property_exists($resource, 'id')
                 and !empty($resource->id)
@@ -149,13 +179,13 @@ class Resources
         } else {
             $record->id = $DB->insert_record(self::$table, $record);
         }
-        if (!empty($resource->themes)) {
+        if (property_exists($resource, 'themes') && $resource->themes) {
             Themes::update_themes('resource', $record->id, $resource->themes);
         }
-        if (!empty($resource->tags)) {
+        if (property_exists($resource, 'tags') && $resource->tags) {
             Tags::update_tags('resource', $record->id, $resource->tags);
         }
-        return self::get_resource($record->id);
+        return $record->id;
     }
 
     /**
@@ -165,7 +195,8 @@ class Resources
     * @return object    The prepared metadata record.
     * @throws Exception If the resource type is invalid.
     */
-    private static function prepare_metadata_record(object $resource) : object {
+    private static function prepare_metadata_record(object $resource): object
+    {
         global $USER;
         self::validate_metadata($resource);
         $record               = new Resource();
@@ -176,8 +207,8 @@ class Resources
         $record->format       = $resource->format;
         $record->lang         = $resource->lang;
         $record->path         = $resource->path;
-        $record->timecreated  = date('Y-m-d H:i:s', time());
-        $record->timemodified = date('Y-m-d H:i:s', time());
+        $record->timecreated  = time();
+        $record->timemodified = time();
         return $record;
     }
 
@@ -186,7 +217,8 @@ class Resources
      * 
      * @param  object $resource The resource object to check.
      */
-    private static function validate_metadata(object $resource) {
+    private static function validate_metadata(object $resource)
+    {
         $keys = ['name', 'type', 'format', 'lang'];
         $missing_keys = [];
         foreach ($keys as $key) {
@@ -202,12 +234,33 @@ class Resources
     /**
      * Delete a resource.
      * 
-     * @param  int $id The ID of the resource to delete.
-     * @return bool True if the resource was deleted, false otherwise.
+     * @param  mixed $resourceorid The resource to delete or its identifier.
+     * @return bool  True if the resource was deleted, false otherwise.
      */
-    public static function delete_resource(int $id) : bool {
-        global $DB;
-        return $DB->delete_records(self::$table, ['id' => $id]);
+    public static function delete_resource($resourceorid): bool
+    {
+        global $DB, $USER;
+        $resource = is_object($resourceorid) ? $resourceorid : self::get_resource($resourceorid);
+        if (!$DB->record_exists(self::$table, ['id' => $resource->id])) {
+            throw new Exception('Error resource not found');
+        }
+        // Check permissions
+        if (!self::check_permissions($resource, $USER)) {
+            throw new Exception('Error permissions');
+        }
+        // Get the component type identifier
+        $componentid = Components::get_component_by_name('resource')->id;
+        // Delete the contexts
+        Context::delete_all_contexts_for_component(
+            $componentid,
+            $resource->id
+        );
+        // Delete the reactions
+        Reactions::delete_all_reactions_for_component(
+            $componentid,
+            $resource->id
+        );
+        return $DB->delete_records(self::$table, ['id' => $resource->id]);
     }
 
     /**
@@ -215,12 +268,10 @@ class Resources
      * 
      * @return array The resource types.
      */
-    public static function get_types() : array {
+    public static function get_types(): array
+    {
         global $DB;
-        if (!$types = $DB->get_records(self::$types_table)) {
-            return [];
-        }
-        return $types;
+        return array_values($DB->get_records(self::$types_table));
     }
 
     /**
@@ -229,7 +280,8 @@ class Resources
      * @param  int         $id The identifier of the type.
      * @return object|null The type object.
      */
-    public static function get_type(int $id) {
+    public static function get_type(int $id)
+    {
         global $DB;
         if (!$type = $DB->get_record(self::$types_table, ['id' => $id])) {
             return null;
@@ -243,7 +295,8 @@ class Resources
      * @param  string      $name The name of the type.
      * @return object|null The type object.
      */
-    public static function get_type_by_name(string $name) {
+    public static function get_type_by_name(string $name)
+    {
         global $DB;
         if (!$type = $DB->get_record(self::$types_table, ['name' => $name])) {
             return null;
@@ -256,12 +309,10 @@ class Resources
      * 
      * @return array The resource formats.
      */
-    public static function get_formats() : array {
+    public static function get_formats(): array
+    {
         global $DB;
-        if (!$formats = $DB->get_records(self::$formats_table)) {
-            return [];
-        }
-        return $formats;
+        return $DB->get_records(self::$formats_table);
     }
 
     /**
@@ -270,7 +321,8 @@ class Resources
      * @param  int         $id The identifier of the format.
      * @return object|null The format object.
      */
-    public static function get_format(int $id) {
+    public static function get_format(int $id)
+    {
         global $DB;
         if (!$format = $DB->get_record(self::$formats_table, ['id' => $id])) {
             return null;
@@ -284,7 +336,8 @@ class Resources
      * @param  string      $name The name of the format.
      * @return object|null The format object.
      */
-    public static function get_format_by_name(string $name) {
+    public static function get_format_by_name(string $name)
+    {
         global $DB;
         if (!$format = $DB->get_record(self::$formats_table, ['name' => $name])) {
             return null;
@@ -292,39 +345,111 @@ class Resources
         return $format;
     }
 
-
-
-
-
-
-
-
     /**
-     * Populate the context of a resource.
-     * 
-     * @param $unique_context object The unique context.
-     * 
-     * @return object The resource with the populated context.
+     * Get all the resource assignments.
+     *
+     * @param string $component The component to get the assignments for.
+     * @param int    $componentinstance The instance of the component.
+     * @return array The resource assignments.
      */
-    public static function populate_context(object $unique_context): object {
-        $resource = self::get_resource($unique_context->modifierinstance);
-        $resource->context = $unique_context;
-        return $resource;
+    public static function get_assignments_for_component(string $component, int $componentinstance)
+    {
+        global $DB;
+        $componentid = Context::is_valid('component', $component);
+        if (!$componentid) {
+            return [];
+        }
+        return array_values($DB->get_records(self::$assign_table, [
+            'component' => $componentid,
+            'componentinstance' => $componentinstance]));
     }
 
     /**
-     * Get resources by context and component.
-     * @param string $component The component.
-     * @param int $componentinstance The component instance.
-     * @return array The resources.
+     * Get a resource assignment.
+     *
+     * @param int    $resourceid The ID of the resource.
+     * @param string $component The component to get the assignment for.
+     * @param int    $componentinstance The instance of the component.
+     * @return object The resource assignment.
      */
-    public static function get_resources_by_context_component(string $component, int $componentinstance) : array {
-        $context = Context::get_contexts_by_component($component, $componentinstance, 'resource');
- 
-        $resources = [];
-        foreach ($context as $unique_context) {
-            $resources[] = self::populate_context($unique_context);
+    public static function get_assignment(int $resourceid, string $component, int $componentinstance)
+    {
+        global $DB;
+        $componentid = Context::is_valid('component', $component);
+        if (!$componentid) {
+            return null;
         }
-        return array_values($resources);
+        return $DB->get_record(self::$assign_table, [
+            'resourceid' => $resourceid,
+            'component' => $componentid,
+            'componentinstance' => $componentinstance]);
+    }
+
+    /**
+     * Assign a resource to a component.
+     * 
+     * @param  int    $resourceid The ID of the resource.
+     * @param  string $component The component to assign the resource to.
+     * @param  int    $componentinstance The instance of the component.
+     * @param  string $description The description of the assignment.
+     * @return int    The ID of the assignment.
+     */
+    public static function assign_resource(int $resourceid, string $component, int $componentinstance, string $description = null)
+    {
+        global $DB;
+        if (!$componentid = Context::is_valid('component', $component)) {
+            throw new Exception('Invalid component');
+        }
+        $record                    = new \stdClass();
+        $record->resourceid        = $resourceid;
+        $record->component         = $componentid;
+        $record->componentinstance = $componentinstance;
+        $record->description       = $description;
+        $record->timecreated       = time();
+        $record->timemodified      = time();
+        return $DB->insert_record(self::$assign_table, $record);
+    }
+
+    /**
+     * Remove a resource assignment.
+     * 
+     * @param  int $id The ID of the assignment to remove.
+     * @return bool True if the assignment was removed, false otherwise.
+     */
+    public static function unassign_resource(int $id)
+    {
+        global $DB;
+        return $DB->delete_records(self::$assign_table, ['id' => $id]);
+    }
+
+    /**
+     * Delete all assignments for a component.
+     *
+     * @param int $component The component to delete the assignments for.
+     * @param int $componentinstance The instance of the component.
+     */
+    public static function delete_all_assignments_for_component(int $component, int $componentinstance)
+    {
+        global $DB;
+        $conditions = [
+            'component' => $component,
+            'componentinstance' => $componentinstance
+        ];
+        $DB->delete_records(self::$assign_table, $conditions);
+    }
+
+    /**
+     * Check user permissions over resources
+     *
+     * @param  object $resource The resource object
+     * @param  object $user The user object
+     * @return bool   True if the user has permissions, false otherwise
+     */
+    public static function check_permissions($resource, $user)
+    {
+        if ($user->id == $resource->userid || is_siteadmin($user)) {
+            return true;
+        }
+        return false;
     }
 }

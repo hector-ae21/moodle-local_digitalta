@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_dta;
+namespace local_digitalta;
 
 use moodle_exception;
 use stdClass;
@@ -22,11 +22,11 @@ use stdClass;
 /**
  * Utility class for all instance (module) routines helper.
  *
- * @package     local_dta
+ * @package     local_digitalta
  * @copyright   2024 ADSDR-FUNIBER Scepter Team
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class helper
+class GoogleMeetHelper
 {
 
   /**
@@ -48,7 +48,7 @@ class helper
       if ($e->getCode() == 403 && strpos($e->getMessage(), 'Access Not Configured') !== false) {
         // This is raised when the Drive API service or the Calendar API service
         // has not been enabled on Google APIs control panel.
-        throw new moodle_exception('servicenotenabled', 'local_dta');
+        throw new moodle_exception('servicenotenabled', 'local_digitalta');
       }
       throw $e;
     }
@@ -58,22 +58,22 @@ class helper
 
   public static function get_googlemeet_record($chatid){
     global $DB;
-    $record = $DB->get_record('digital_videomeetings', ['chatid' => $chatid]);
+    $record = $DB->get_record('digitalta_videomeetings', ['chatid' => $chatid]);
     return $record;
   }
 
   public static function save_googlemeet_record($chatid, $meetingcode){
     global $DB;
-    $DB->delete_records('digital_videomeetings', ['chatid' => $chatid]);
+    $DB->delete_records('digitalta_videomeetings', ['chatid' => $chatid]);
     $record = new stdClass();
     $record->chatid = $chatid;
     $record->meetingcode = $meetingcode;
     $record->timecreated = time();
-    $DB->insert_record('digital_videomeetings', $record);
+    $DB->insert_record('digitalta_videomeetings', $record);
   }
 
   public static function delete_googlemeet_record($chatid){
     global $DB;
-    return $DB->delete_records('digital_videomeetings', ['chatid' => $chatid]);
+    return $DB->delete_records('digitalta_videomeetings', ['chatid' => $chatid]);
   }
 }

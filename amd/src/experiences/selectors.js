@@ -1,23 +1,24 @@
 const SELECTORS = {
     BUTTONS: {
-        edit: '#edit-experience-button',
-        block: '#block-experience-button',
-        unblock: '#open-experience-button',
-        confirmBlockModal: '#confirm-block-experience-button',
-        addResourceBtn: '#add-resource-button',
-        addCasesBtn: "#add-cases-button",
-        removeContextButton: "#remove-context-button",
-        sendMentorRequest: ".send-mentor-request",
-        removeMentorRequest: ".remove-mentor-request",
+        manage: '#manage-experience-button',
+        lock: '#lock-experience-button',
+        unlock: '#unlock-experience-button',
+        confirmLockModal: '#confirm-lock-experience-button',
+        manageReflection: '#manage-experience-reflection-button',
+        linkResources: '#experience-link-resource-button',
+        linkResource: '.experience-link-resource',
+        unlinkResource: "#experience-remove-resource",
+        sendTutorRequest: ".send-tutor-request",
+        tutoringRequestsRemove: ".remove-tutor-request",
         openChat: "#btn-chat",
     },
     INPUTS: {
         experienceid: '#experience-id',
-        mentorsSearch: '#search-mentors-input',
+        tutorsSearch: '#search-tutors-input',
     },
     SECTIONS: {
-        searchMentorsResults: '#search-mentors-result',
-        mentoringSection: '#mentoring-section',
+        tutoringTutorsGetResults: '#search-tutors-result',
+        tutoringSection: '#experience-tutoring',
     }
 };
 

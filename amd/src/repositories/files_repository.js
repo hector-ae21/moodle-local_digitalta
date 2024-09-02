@@ -14,7 +14,7 @@ import Ajax from "core/ajax";
  */
 export const prepareDraftAreaHTML = args => {
     const request = {
-        methodname: "local_dta_prepare_draft_area_html",
+        methodname: "local_digitalta_files_prepare_draft_area_html",
         args: args,
     };
     return Ajax.call([request])[0];
@@ -29,13 +29,13 @@ export const prepareDraftAreaHTML = args => {
  * - filearea: The file area.
  * - contextid: The context id.
  *
- * @method uploadFile
+ * @method filesUploadFromDraft
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.
  */
-export const uploadFile = args => {
+export const filesUploadFromDraft = args => {
     const request = {
-        methodname: "local_dta_upload_file_from_draft",
+        methodname: "local_digitalta_files_upload_from_draft",
         args: args,
     };
     return Ajax.call([request])[0];

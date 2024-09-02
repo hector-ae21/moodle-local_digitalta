@@ -1,29 +1,29 @@
-import {searchMentors, addMentorRequest, removeMentorRequest} from "local_dta/repositories/tutoring_repository";
+import {tutoringTutorsGet, tutoringRequestsAdd, tutoringRequestsRemove} from "local_digitalta/repositories/tutoring_repository";
 import Templates from "core/templates";
 import Notification from "core/notification";
-import SELECTORS from "./selectors";
+import SELECTORS from "local_digitalta/experiences/selectors";
 import $ from "jquery";
 
-export const getMentors = async (searchText) => {
+export const getTutors = async (searchText) => {
   if (!searchText.trim()) {
-    $(SELECTORS.SECTIONS.searchMentorsResults).empty();
+    $(SELECTORS.SECTIONS.tutoringTutorsGetResults).empty();
     return;
   }
   const experienceid = $("#experience-id").val();
-  const mentors = await searchMentors({ searchText: searchText, experienceid });
-  await addMentorsResults(mentors);
+  const tutors = await tutoringTutorsGet({ searchText: searchText, experienceid });
+  await addTutorsResults(tutors);
 };
 
 /**
- * Add mentors to the results div
- * @param {object} mentorsData
+ * Add tutors to the results div
+ * @param {object} tutorsData
  * @return {void}
  */
-export function addMentorsResults(mentorsData) {
-  Templates.render("local_dta/test/menu_mentor/item-search", {
-    mentors: mentorsData,
+export function addTutorsResults(tutorsData) {
+  Templates.render("local_digitalta/test/menu_tutor/item-search", {
+    tutors: tutorsData,
   }).then((html) => {
-    $(SELECTORS.SECTIONS.searchMentorsResults).html(html);
+    $(SELECTORS.SECTIONS.tutoringTutorsGetResults).html(html);
     return;
   }).catch((error) => {
     Notification.exception(error);
@@ -31,14 +31,14 @@ export function addMentorsResults(mentorsData) {
 }
 
 /**
- * Add mentor request
- * @param {int} mentorid
+ * Add tutor request
+ * @param {int} tutorid
  * @param {int} experienceid
  */
-export function handlerAddMentorRequest(mentorid, experienceid) {
-  const args = {mentorid, experienceid};
-  addMentorRequest(args).then(() => {
-    getMentors($(SELECTORS.INPUTS.mentorsSearch).val());
+export function handlerAddTutorRequest(tutorid, experienceid) {
+  const args = {tutorid, experienceid};
+  tutoringRequestsAdd(args).then(() => {
+    getTutors($(SELECTORS.INPUTS.tutorsSearch).val());
     return;
   }).catch((error) => {
     Notification.exception(error);
@@ -47,14 +47,14 @@ export function handlerAddMentorRequest(mentorid, experienceid) {
 
 
 /**
- * Remove mentor request
- * @param {int} mentorid
+ * Remove tutor request
+ * @param {int} tutorid
  * @param {int} experienceid
  */
-export function handlerRemoveMentorRequest(mentorid, experienceid) {
-  const args = {mentorid, experienceid};
-  removeMentorRequest(args).then(() => {
-    getMentors($(SELECTORS.INPUTS.mentorsSearch).val());
+export function handlerRemoveTutorRequest(tutorid, experienceid) {
+  const args = {tutorid, experienceid};
+  tutoringRequestsRemove(args).then(() => {
+    getTutors($(SELECTORS.INPUTS.tutorsSearch).val());
     return;
   }).catch((error) => {
     Notification.exception(error);

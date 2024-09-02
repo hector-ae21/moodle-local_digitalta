@@ -32,7 +32,7 @@ define(['core/ajax'], function(Ajax) {
         transport: function(searchText, query, success, failure) {
             {
                 Ajax.call([{
-                    methodname: 'local_dta_themes_get',
+                    methodname: 'local_digitalta_themes_get',
                     args: {searchText: query},
                     done: function(result) {
                         if (result.length === 0) {

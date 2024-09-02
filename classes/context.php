@@ -17,14 +17,14 @@
 /**
  * Context class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
 
-require_once($CFG->dirroot . '/local/dta/locallib.php');
+require_once($CFG->dirroot . '/local/digitalta/locallib.php');
 
 use Exception;
 use stdClass;
@@ -40,7 +40,7 @@ defined('MOODLE_INTERNAL') || die();
 class Context
 {
     /** @var string The table name for the contexts. */
-    private static $table = 'digital_context';
+    private static $table = 'digitalta_context';
 
     /**
      * Check if a component or modifier is valid
@@ -55,7 +55,7 @@ class Context
         if (!in_array($type, ['component', 'modifier'])) {
             throw new Exception('Invalid type');
         }
-        $table = ($type == 'component') ? 'digital_components' : 'digital_modifiers';
+        $table = ($type == 'component') ? 'digitalta_components' : 'digitalta_modifiers';
         return $DB->get_field($table, 'id', ['name' => $name]);
     }
 
@@ -75,9 +75,9 @@ class Context
      * Get a context by its full data.
      *
      * @param  string      $component The name of the component.
-     * @param  integer     $componentinstance The instance of the component.
+     * @param  int         $componentinstance The instance of the component.
      * @param  string      $modifier The name of the modifier.
-     * @param  integer     $modifierinstance The instance of the modifier.
+     * @param  int         $modifierinstance The instance of the modifier.
      * @return object|bool
      */
     public static function get_context_by_full_data(string $component, int $componentinstance, string $modifier, int $modifierinstance)
@@ -99,7 +99,7 @@ class Context
      * Get context by component.
      *
      * @param  string    $component The name of the component.
-     * @param  integer   $componentinstance The instance of the component.
+     * @param  int       $componentinstance The instance of the component.
      * @param  string    $modifier The name of the modifier.
      * @return array
      * @throws Exception If the component is invalid.
@@ -122,14 +122,14 @@ class Context
             }
             $conditions['modifier'] = $modifierid;
         }
-        return $DB->get_records(self::$table, $conditions);
+        return array_values($DB->get_records(self::$table, $conditions));
     }
 
     /**
      * Get context by modifier.
      *
      * @param  string    $modifier The name of the modifier.
-     * @param  integer   $modifierinstance The instance of the modifier.
+     * @param  int       $modifierinstance The instance of the modifier.
      * @param  string    $component The name of the component.
      * @return array
      * @throws Exception If the modifier is invalid.
@@ -152,16 +152,16 @@ class Context
             }
             $conditions['component'] = $componentid;
         }
-        return $DB->get_records(self::$table, $conditions);
+        return array_values($DB->get_records(self::$table, $conditions));
     }
 
     /**
      * Add a new context.
      *
      * @param  string    $component The name of the component.
-     * @param  integer   $componentinstance The instance of the component.
+     * @param  int       $componentinstance The instance of the component.
      * @param  string    $modifier The name of the modifier.
-     * @param  integer   $modifierinstance The instance of the modifier.
+     * @param  int       $modifierinstance The instance of the modifier.
      * @return int       The ID of the added context.
      * @throws Exception If the component or modifier is invalid.
      */
@@ -196,4 +196,21 @@ class Context
         return $DB->delete_records(self::$table, ['id' => $id]);
     }
 
+    /**
+     * Delete all contexts for a component
+     *
+     * @param  int $component The component identifier
+     * @param  int $componentinstance The component instance identifier
+     * @return bool
+     * @throws Exception If the component is invalid.
+     */
+    public static function delete_all_contexts_for_component(int $component, int $componentinstance)
+    {
+        global $DB;
+        $conditions = [
+            'component' => $component,
+            'componentinstance' => $componentinstance
+        ];
+        $DB->delete_records(self::$table, $conditions);
+    }
 }

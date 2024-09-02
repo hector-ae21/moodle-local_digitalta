@@ -17,93 +17,104 @@
 /**
  * Case manage page
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../../../config.php');
-require_once($CFG->dirroot . '/local/dta/classes/cases.php');
-require_once($CFG->dirroot . '/local/dta/classes/components.php');
-require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
-require_once($CFG->dirroot . '/local/dta/classes/sections.php');
-require_once($CFG->dirroot . '/local/dta/classes/tinyeditorhandler.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/cases.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/components.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/languages.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/tinyeditorhandler.php');
 
-use local_dta\Cases;
-use local_dta\Components;
-use local_dta\Experiences;
-use local_dta\Sections;
-use local_dta\TinyEditorHandler;
+use local_digitalta\Cases;
+use local_digitalta\Components;
+use local_digitalta\Experiences;
+use local_digitalta\Languages;
+use local_digitalta\Sections;
+use local_digitalta\TinyEditorHandler;
 
 require_login();
 
-global $CFG, $PAGE, $OUTPUT, $USER;
+$caseid       = optional_param('id', 0, PARAM_INT);
+$experienceid = optional_param('experienceid', 0, PARAM_INT);
+$casetitle    = optional_param('casetitle', null, PARAM_RAW);
 
-$experienceid = optional_param('id', 0, PARAM_INT);
-$caseid       = optional_param('caseid', 0, PARAM_INT);
-$casetitle    = optional_param('casetitle', 0, PARAM_RAW);
+$pagetitle = get_string('cases:manage:add', 'local_digitalta');
 
-$strings = get_strings(['cases_header', 'cases_title'], "local_dta");
-
-$PAGE->set_url(new moodle_url('/local/dta/pages/cases/manage.php', ['id' => $experienceid]));
+$PAGE->set_url(new moodle_url('/local/digitalta/pages/cases/manage.php', [
+    'id' => $caseid,
+    'experienceid' => $experienceid,
+    'casetitle' => $casetitle
+]));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title($strings->cases_title);
 $PAGE->requires->js_call_amd(
-    'local_dta/cases/form',
+    'local_digitalta/cases/main',
     'init',
-    array(
-        'url_view' => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id=', 
-    )
+    [
+        'url_view' => $CFG->wwwroot . '/local/digitalta/pages/cases/view.php?id=', 
+    ]
 );
+if ($caseid > 0) {
+    if (!$case = Cases::get_case($caseid)) {
+        throw new Exception('Invalid case');
+    }
+    $pagetitle = $case->title;
+} elseif ($experienceid > 0) {
+    if (!$experience = Experiences::get_experience($experienceid)) {
+        throw new Exception('Invalid experience');
+    }
+    $record               = new stdClass();
+    $record->experienceid = $experienceid;
+    $record->title        = $experience->title;
+    $record->description  = "";
+    $record->lang         = $experience->lang;
+    $record->id           = Cases::add_case($record);
+    $case                 = Cases::get_case($record->id);
+} elseif ($casetitle != null) {
+    $record               = new stdClass();
+    $record->title        = $casetitle;
+    $record->description  = "";
+    $record->lang         = "";
+    $record->id           = Cases::add_case($record);
+    $case                 = Cases::get_case($record->id);
+} else {
+    throw new Exception('Invalid parameters');
+}
+
+$PAGE->set_title($pagetitle);
+
+$sections = Sections::get_sections([
+    'component' => Components::get_component_by_name('case')->id,
+    'componentinstance' => $case->id
+]);
+
+$languages = Languages::get_all_languages(true);
+$languages = array_map(function ($language) use ($case) {
+    $language->selected = $language->code === $case->lang;
+    return (object) [
+        'key' => $language->code,
+        'value' => $language->name,
+        'selected' => $language->selected
+    ];
+}, $languages);
 
 echo $OUTPUT->header();
 
 (new TinyEditorHandler)->get_config_editor(['maxfiles' => 1]);
 
-
-print_r("EXPERIENCIA: " . $experienceid);
-
-if ($experienceid) {
-    $template = 'local_dta/cases/manage/with-experience';
-    if (!$experience = Experiences::get_experience($experienceid)) {
-        throw new Exception('Invalid experience');
-    }
-    $case               = new stdClass();
-    $case->experienceid = $experienceid;
-    $case->title        = $experience->title;
-    $case->description  = "";
-    $case->lang         = $experience->lang;
-    $case = Cases::add_case($case);
-} elseif ($caseid or $casetitle) {
-    $template = 'local_dta/cases/manage/without-experience';
-    if (!$case = Cases::get_case($caseid)) {
-        $case               = new stdClass();
-        $case->title        = $casetitle;
-        $case->description  = "";
-        $case->lang         = current_language();
-        $case = Cases::add_case($case);
-    };
-} else {
-    throw new Exception('Invalid parameters');
-}
-
-$sections = Sections::get_sections([
-    'component' => [Components::get_component_by_name('case')->id],
-    'componentinstance' => [$case->id]
-]);
-
-$sectionheader = [
-    'title' => $case->title,
-    'description' => $case->description
-];
-
 $template_context = [
-    'experience' => $experience ?? null,
-    'sectionheader' => $sectionheader,
-    'sections' => $sections,
+    'component' => 'case',
+    'title' => $pagetitle,
     'case' => $case,
+    'sections' => $sections,
+    'languages' => $languages,
+    'experience' => $experience ?? null,
 ];
 
-echo $OUTPUT->render_from_template($template, $template_context);
+echo $OUTPUT->render_from_template('local_digitalta/cases/manage/manage', $template_context);
 
 echo $OUTPUT->footer();

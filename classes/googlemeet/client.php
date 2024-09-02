@@ -15,15 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 
-namespace local_dta;
+namespace local_digitalta;
 
-require_once(__DIR__ . '/rest.php');
-require_once(__DIR__ . '/helper.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/googlemeet/helper.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/googlemeet/rest.php');
+
+use local_digitalta\GoogleMeetHelper;
+use local_digitalta\GoogleMeetRest;
 
 use moodle_url;
 use html_writer;
+use dml_missing_record_exception;
+use moodle_exception;
 
-class client
+class GoogleMeetClient
 {
 
   /**
@@ -54,7 +59,7 @@ class client
   public function __construct($chatid=null)
   {
     try {
-      $this->issuer = \core\oauth2\api::get_issuer(get_config('local_dta', 'issuerid'));
+      $this->issuer = \core\oauth2\api::get_issuer(get_config('local_digitalta', 'issuerid'));
     } catch (dml_missing_record_exception $e) {
       $this->enabled = false;
     }
@@ -65,7 +70,7 @@ class client
 
     $client = $this->get_user_oauth_client($chatid);
     if ($this->enabled && $client->get_login_url()->get_host() !== 'accounts.google.com') {
-      throw new moodle_exception('invalidissuerid', 'local_dta');
+      throw new moodle_exception('invalidissuerid', 'local_digitalta');
     }
   }
 
@@ -80,7 +85,7 @@ class client
       return $this->client;
     }
 
-    $returnurl = new moodle_url('/local/dta/classes/googlemeet/callback.php');
+    $returnurl = new moodle_url('/local/digitalta/classes/googlemeet/callback.php');
     $returnurl->param('callback', 'yes');
     $returnurl->param('sesskey', sesskey());
     if($chatid){
@@ -110,7 +115,7 @@ class client
     return html_writer::div('
           <button class="btn btn-zoom-call" onClick="javascript:window.open(\'' . $client->get_login_url() . '\',
               \'Login\',\'height=600,width=599,top=0,left=0,menubar=0,location=0,directories=0,fullscreen=0\'
-          ); return false"><i class="fa fa-video-camera"></i> ' . get_string('tutoring:videocallbutton', 'local_dta') . '</button>', 'mt-2');
+          ); return false"><i class="fa fa-video-camera"></i> ' . get_string('tutoring:videocallbutton', 'local_digitalta') . '</button>', 'mt-2');
   }
 
   /**
@@ -214,7 +219,7 @@ class client
       $response = $this->create_meeting_space();
       if($response->meetingUri){
         if($chatid){
-          helper::save_googlemeet_record($chatid, $response->meetingCode);
+          GoogleMeetHelper::save_googlemeet_record($chatid, $response->meetingCode);
         }
         return $response->meetingUri;
       }
@@ -227,9 +232,9 @@ class client
   public function create_meeting_space()
   {
     if ($this->check_login()) {
-      $service = new rest($this->get_user_oauth_client());
+      $service = new GoogleMeetRest($this->get_user_oauth_client());
 
-      $response = helper::request($service, 'createmeetingspace', [], false);
+      $response = GoogleMeetHelper::request($service, 'createmeetingspace', [], false);
 
       return $response;
     }

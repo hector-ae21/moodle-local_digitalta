@@ -7,13 +7,13 @@ import Ajax from 'core/ajax';
  * - component: The component.
  * - componentinstance: The component instance.
  * - action: The action to perform.
- * @method toogleLikeAndDislike
+ * @method reactionsToogleLikeAndDislike
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.
  */
-export const toogleLikeAndDislike = args => {
+export const reactionsToogleLikeAndDislike = args => {
     const request = {
-        methodname: 'local_dta_reactions_toggle_like_dislike',
+        methodname: 'local_digitalta_reactions_toggle_like_dislike',
         args: args
     };
     return Ajax.call([request])[0];
@@ -26,13 +26,13 @@ export const toogleLikeAndDislike = args => {
  * - component: The component.
  * - componentinstance: The component instance.
  * - comment: The comment.
- * @method addComment
+ * @method reactionsAddComment
  * @param {Object} args - The arguments for the function.
  * @returns {Promise} Resolve with warnings.
  */
-export const addComment = args => {
+export const reactionsAddComment = args => {
     const request = {
-        methodname: 'local_dta_reactions_add_comment',
+        methodname: 'local_digitalta_reactions_add_comment',
         args: args
     };
     return Ajax.call([request])[0];
@@ -44,13 +44,13 @@ export const addComment = args => {
  * Valid args are:
  * - component: The component.
  * - componentinstance: The component instance.
- * @method getComments
+ * @method reactionsGetComments
  * @param {Object} args - The arguments for the function.
  * @returns {Promise} Resolve with warnings.
  */
-export const getComments = args => {
+export const reactionsGetComments = args => {
     const request = {
-        methodname: 'local_dta_reactions_get_comments',
+        methodname: 'local_digitalta_reactions_get_comments',
         args: args
     };
     return Ajax.call([request])[0];
@@ -63,13 +63,13 @@ export const getComments = args => {
  * - component: The component.
  * - componentinstance: The component instance.
  * - description: The description.
- * @method toggleReport
+ * @method reactionsToggleReport
  * @param {Object} args - The arguments for the function.
  * @returns {Promise} Resolve with warnings.
  */
-export const toggleReport = args => {
+export const reactionsToggleReport = args => {
     const request = {
-        methodname: 'local_dta_reactions_toggle_report',
+        methodname: 'local_digitalta_reactions_toggle_report',
         args: args
     };
     return Ajax.call([request])[0];

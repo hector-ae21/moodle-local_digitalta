@@ -17,96 +17,99 @@
 /**
  * Tags view page
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(__DIR__ . '/../../../../config.php');
-require_once($CFG->dirroot . '/local/dta/classes/experiences.php');
-require_once($CFG->dirroot . '/local/dta/classes/cases.php');
-require_once($CFG->dirroot . '/local/dta/classes/context.php');
-require_once($CFG->dirroot . '/local/dta/classes/themes.php');
-require_once($CFG->dirroot . '/local/dta/classes/tags.php');
-require_once($CFG->dirroot . '/local/dta/classes/utils/stringutils.php');
-require_once($CFG->dirroot . '/local/dta/classes/utils/filterutils.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/cases.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/context.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/resources.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/tags.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/themes.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 
 require_login();
 
-use local_dta\Cases;
-use local_dta\Context;
-use local_dta\Experiences;
-use local_dta\Tags;
-use local_dta\Themes;
-use local_dta\utils\FilterUtils;
-use local_dta\utils\StringUtils;
+use local_digitalta\Cases;
+use local_digitalta\Context;
+use local_digitalta\Experiences;
+use local_digitalta\Resources;
+use local_digitalta\Tags;
+use local_digitalta\Themes;
+use local_digitalta\utils\FilterUtils;
 
 $tagtype = required_param('type', PARAM_TEXT);
 $tagid = required_param('id', PARAM_INT);
 
 $PAGE->set_context(context_system::instance());
-$PAGE->set_url(new moodle_url('/local/dta/pages/tags/index.php', ['type' => $tagtype, 'id' => $tagid]));
+$PAGE->set_url(new moodle_url('/local/digitalta/pages/tags/index.php', ['type' => $tagtype, 'id' => $tagid]));
 
-$tagtheme = ($tagtype == 'tag')
+$themetag = ($tagtype == 'tag')
     ? Tags::get_tag($tagid)
     : Themes::get_theme($tagid);
-if (!$tagtheme) {
-    throw new moodle_exception('invalidthemetag', 'local_dta');
+if (!$themetag) {
+    throw new moodle_exception('themestags:invalidthemetag', 'local_digitalta');
 }
 $pagetitle = ($tagtype == 'tag')
-    ? get_string('concept:tag', 'local_dta')
-    : get_string('concept:theme', 'local_dta');
+    ? get_string('concept:tag', 'local_digitalta')
+    : get_string('concept:theme', 'local_digitalta');
 
-$PAGE->set_title($pagetitle . ': ' . $tagtheme->name);
+$PAGE->set_title($pagetitle . ': ' . $themetag->name);
 
 // Get the experiences
 $experiences = Context::get_contexts_by_modifier($tagtype, $tagid, 'experience');
-$experiences = array_values($experiences);
 $experiences = array_map(function($key, $context) {
     $experience = Experiences::get_experience($context->componentinstance);
-    $experience->description = ""; // SECTIONS TODO
     return $experience;
 }, array_keys($experiences), $experiences);
 
 // Get the cases
 $cases = Context::get_contexts_by_modifier($tagtype, $tagid, 'case');
-$cases = array_values($cases);
 $cases = array_map(function($key, $context) {
     $case = Cases::get_case($context->componentinstance);
-    $case->description = ""; // SECTIONS TODO
     return $case;
 }, array_keys($cases), $cases);
 
+// Get the resources
+$resources = Context::get_contexts_by_modifier($tagtype, $tagid, 'resource');
+$resources = array_map(function($key, $context) {
+    $resource = Resources::get_resource($context->componentinstance);
+    return $resource;
+}, array_keys($resources), $resources);
+
 // Get the users
-// TODO
 $users = Context::get_contexts_by_modifier($tagtype, $tagid, 'user');
-$users = array_values($users);
 
 echo $OUTPUT->header();
 
 $template_context = [
-    "title" => $pagetitle,
-    "themepixurl" => $CFG->wwwroot . "/theme/dta/pix/",
-    "tag" => [
-        "id" => $tagtheme->id,
-        "name" => $tagtheme->name
+    'title' => $pagetitle,
+    'tag' => [
+        'id' => $themetag->id,
+        'name' => $themetag->name
     ],
-    "experiences" => [
-        "data" => $experiences,
-        "viewurl" => $CFG->wwwroot . '/local/dta/pages/experiences/view.php?id='
+    'experiences' => [
+        'data' => $experiences,
+        'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/experiences/view.php?id='
     ],
-    "cases" => [
-        "data" => $cases,
-        "viewurl" => $CFG->wwwroot . '/local/dta/pages/cases/view.php?id='
+    'cases' => [
+        'data' => $cases,
+        'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/view.php?id='
     ],
-    "users" => [
-        "data" => $users,
-        "viewurl" => $CFG->wwwroot . '/local/dta/pages/profile/index.php?id='
+    'resources' => [
+        'data' => $resources
+    ],
+    'users' => [
+        'data' => $users,
+        'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/profile/index.php?id='
     ]
 ];
 
-$template_context = FilterUtils::apply_filter_to_template_object($template_context);
+$template_context = FilterUtils::apply_filters($template_context);
 
-echo $OUTPUT->render_from_template('local_dta/tags/view/view', $template_context);
+echo $OUTPUT->render_from_template('local_digitalta/tags/view/view', $template_context);
 
 echo $OUTPUT->footer();

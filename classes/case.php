@@ -17,12 +17,14 @@
 /**
  * StudyCase class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
+
+require_once($CFG->dirroot . '/local/digitalta/classes/component.php');
 
 /**
  * This class is used to represent the case entity.
@@ -32,16 +34,18 @@ namespace local_dta;
  */
 class StudyCase
 {
-    /** @var int The ID of the case. */
+    use Component;
+
+    /** @var int The identifier of the case. */
     public $id;
 
-    /** @var int The ID of the experience. */
+    /** @var int The identifier of the experience which the case was created from. */
     public $experienceid;
 
-    /** @var string The ID of the resource. */
+    /** @var string The identifier of the resource associated with the case. */
     public $resourceid;
 
-    /** @var int The ID of the user. */
+    /** @var int The identifier of the user who created the case. */
     public $userid;
 
     /** @var string The title of the case. */
@@ -56,11 +60,17 @@ class StudyCase
     /** @var int The status of the case. */
     public $status;
 
-    /** @var string The date the case was created. */
+    /** @var int The date the case was created. */
     public $timecreated;
 
-    /** @var string The date the case was modified. */
+    /** @var string The date the case was created in string format. */
+    public $timecreated_string;
+
+    /** @var int The date the case was modified. */
     public $timemodified;
+
+    /** @var array The sections of the experience. */
+    public $sections;
 
     /**
      * Constructor.

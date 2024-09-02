@@ -5,13 +5,13 @@ import Ajax from 'core/ajax';
  *
  * Valid args are:
  * experienceid (int) - The experience id (optional)
- * @method getChatRooms
+ * @method chatsGetRooms
  * @param {Object} args
  * @return {Promise}
  */
-export const getChatRooms = args => {
+export const chatsGetRooms = args => {
     const request = {
-        methodname: 'local_dta_get_chat_rooms',
+        methodname: 'local_digitalta_chats_get_rooms',
         args
     };
     return Ajax.call([request])[0];
@@ -25,13 +25,13 @@ export const getChatRooms = args => {
  * chatid (int) - The chat id
  * message (string) - The message
  * userid (int) - The user id
- * @method sendMessage
+ * @method chatsSendMessage
  * @param {Object} args
  * @return {Promise}
  */
-export const sendMessage = args => {
+export const chatsSendMessage = args => {
     const request = {
-        methodname: 'local_dta_add_message',
+        methodname: 'local_digitalta_chats_add_message',
         args
     };
     return Ajax.call([request])[0];
@@ -44,13 +44,13 @@ export const sendMessage = args => {
  * Valid args are:
  * chatid (int) - The chat id
  * userid (int) - The user id (optional)
- * @method getMessages
+ * @method chatsGetMessage
  * @param {Object} args
  * @return {Promise}
  */
-export const getMessages = args => {
+export const chatsGetMessage = args => {
     const request = {
-        methodname: 'local_dta_get_messages',
+        methodname: 'local_digitalta_chats_get_messages',
         args
     };
     return Ajax.call([request])[0];

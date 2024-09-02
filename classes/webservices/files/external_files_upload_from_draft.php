@@ -17,7 +17,7 @@
 /**
  * WebService to upload a file from draft area
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -96,7 +96,7 @@ class external_files_upload_from_draft extends external_api
         file_save_draft_area_files(
             $draftid,
             $contextid,
-            'local_dta',
+            'local_digitalta',
             $filearea,
             $fileid,
             self::$_options
@@ -105,7 +105,7 @@ class external_files_upload_from_draft extends external_api
         $fs = get_file_storage();
         $files = $fs->get_area_files(
             $contextid,
-            'local_dta',
+            'local_digitalta',
             $filearea,
             $fileid,
             'sortorder DESC, id ASC',

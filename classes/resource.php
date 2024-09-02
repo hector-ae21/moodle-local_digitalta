@@ -17,12 +17,14 @@
 /**
  * Resource class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
+
+require_once($CFG->dirroot . '/local/digitalta/classes/component.php');
 
 /**
  * This class is used to represent the resource entity.
@@ -32,7 +34,9 @@ namespace local_dta;
  */
 class Resource
 {
-    /** @var int The ID of the resource. */
+    use Component;
+
+    /** @var int The identifier of the resource. */
     public $id;
     
     /** @var string The name of the resource. */
@@ -53,20 +57,17 @@ class Resource
     /** @var string The language of the resource. */
     public $lang;
 
-    /** @var int The ID of the user who created the resource. */
+    /** @var int The identifier of the user who created the resource. */
     public $userid;
     
-    /** @var string The timestamp of when the resource was created. */
+    /** @var int The timestamp of when the resource was created. */
     public $timecreated;
     
-    /** @var string The timestamp of when the resource was last modified. */
+    /** @var int The timestamp of when the resource was last modified. */
     public $timemodified;
 
-    /** @var string The themes of the resource. */
-    public $themes;
-
-    /** @var string The tags of the resource. */
-    public $tags;
+    /** @var string The reason why the resource was assigned to a component. */
+    public $comment;
 
     /**
      * Constructor.

@@ -5,13 +5,13 @@ import Ajax from 'core/ajax';
  *
  * Valid args are:
  * - searchText: The theme to search
- * @method getThemes
+ * @method themesGet
  * @param {object} args Arguments send to the webservice.
  * @return {Promise} Resolve with themes.
  */
-export const getThemes = args => {
+export const themesGet = args => {
     const request = {
-        methodname: 'local_dta_themes_get',
+        methodname: 'local_digitalta_themes_get',
         args: args
     };
     return Ajax.call([request])[0];

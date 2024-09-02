@@ -6,11 +6,11 @@ const SELECTORS = {
     TARGET: "",
     OPEN_CHAT_ID: 0,
     TEMPLATES: {
-        "MENU_CHAT": "local_dta/test/menu_chat/index",
-        "CHAT": "local_dta/test/chat/index",
-        "MY_MESSAGE": "local_dta/test/chat/message_my",
-        "OTHER_MESSAGE": "local_dta/test/chat/message_other",
-        "MENU_MENTOR": "local_dta/test/menu_mentor/index",
+        "MENU_CHAT": "local_digitalta/test/menu_chat/index",
+        "CHAT": "local_digitalta/test/chat/index",
+        "MY_MESSAGE": "local_digitalta/test/chat/message_my",
+        "OTHER_MESSAGE": "local_digitalta/test/chat/message_other",
+        "MENU_MENTOR": "local_digitalta/test/menu_tutor/index",
     },
     BUTTONS: {
         "OPEN_CHAT": ".open-chat",

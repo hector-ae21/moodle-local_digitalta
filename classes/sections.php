@@ -17,14 +17,15 @@
 /**
  * Sections class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
 
 use Exception;
+use quizaccess_seb\property_list;
 use stdClass;
 
 /**
@@ -36,91 +37,58 @@ use stdClass;
 class Sections
 {
     /** @var string The table name for the sections. */
-    private static $table = 'digital_sections';
+    private static $table = 'digitalta_sections';
 
     /** @var string The table name for the groups. */
-    private static $groups_table = 'digital_sections_groups';
+    private static $groups_table = 'digitalta_sections_groups';
 
     /** @var string The table name for the types. */
-    private static $types_table = 'digital_sections_types';
+    private static $types_table = 'digitalta_sections_types';
 
     /**
-     * Get a section by id
+     * Get a section by its id
      *
-     * @param  int    $id The id of the section.
-     * @return object The section
+     * @param  int         $id The ID of the section.
+     * @return object|null The section
      */
-    public static function get_section(int $id)
+    public static function get_section(int $id) : ?object
     {
-        global $DB;
-        return $DB->get_record(self::$table, ['id' => $id]);
+        return self::get_sections(['id' => $id])[0] ?? null;
     }
 
     /**
-     * Get all the sections
+     * Get sections
      *
+     * @param  array $filters The filters to apply
      * @return array The sections
      */
-    public static function get_all_sections()
+    public static function get_sections(array $filters = []): array
     {
         global $DB;
-        return $DB->get_records(self::$table, null, 'component, componentinstance, groupid, sequence');
+        $filters = self::prepare_filters($filters);
+        return array_values($DB->get_records(self::$table, $filters, 'component, componentinstance, groupid, sequence'));
     }
 
     /**
-     * Get sections based on provided filters.
+     * Prepare filters for sections
      *
-     * @param  array $filters Array of filters to apply. Accepted: component, componentinstance, groupname, groupid, sequence.
-     * @return array Array of filtered sections.
+     * @param  array $filters The filters to prepare
+     * @return array The prepared filters
      */
-    public static function get_sections(array $filters = []) : array {
-        $sections = self::get_all_sections();
-
-        if (empty($filters)) {
-            return $sections;
-        }
-
-        $allowed_filters = ['component', 'componentinstance', 'groupid', 'groupname', 'sequence'];
-
+    private static function prepare_filters(array $filters): array
+    {
+        $prepared_filters = [];
         foreach ($filters as $filter_key => $filter_value) {
-            if (!in_array($filter_key, $allowed_filters)) {
-                continue;
-            }
-            $sections = self::apply_filter($filter_key, $filter_value, $sections);
-        }
-
-        return $sections;
-    }
-
-    /**
-     * Apply a filter to the sections.
-     *
-     * @param  string $filter_key The key of the filter.
-     * @param  array  $filter_value The value of the filter.
-     * @param  array  $sections The sections to filter.
-     * @return array  The filtered sections.
-     */
-    private static function apply_filter(string $filter_key, array $filter_value, array $sections) : array {
-        global $DB;
-        $filtered_sections = [];
-        foreach ($filter_value as $value) {
             switch ($filter_key) {
                 case 'groupname':
-                    $filter_key = 'groupid';
-                    if (!$value = self::get_group_by_name($value)->id) {
-                        return $filtered_sections;
-                    }
+                    $prepared_filters['groupid'] = self::get_group_by_name($filter_value)->id;
                     break;
                 default:
+                    $prepared_filters[$filter_key] = $filter_value;
                     break;
             }
-            foreach ($sections as $section) {
-                if ($section->{$filter_key} == $value) {
-                    $filtered_sections[] = $section;
-                }
-            }
         }
-        return $filtered_sections;
+        return $prepared_filters;
     }
 
     /**
@@ -129,24 +97,17 @@ class Sections
      * @param  object      $section The section to upsert.
      * @return object|null The section
      */
-    public static function upsert_section(object $section) : object
+    public static function upsert_section(object $section): int
     {
         global $DB;
         $record = new stdClass();
         $record = self::prepare_metadata_record($section);
-        if (property_exists($section, 'id')
-                and !empty($section->id)
-                and $section->id > 0) {
-            if (!$current_section = self::get_section($section->id)) {
-                return null;
-            }
-            $record->id          = $section->id;
-            $record->timecreated = $current_section->timecreated;
-            $DB->update_record(self::$table, $section);
+        if (property_exists($record, 'id')) {
+            $DB->update_record(self::$table, $record);
         } else {
             $record->id = $DB->insert_record(self::$table, $record);
         }
-        return $section;
+        return $record->id;
     }
 
     /**
@@ -156,21 +117,46 @@ class Sections
     * @return object    The prepared metadata record.
     * @throws Exception If the section type is invalid.
     */
-    private static function prepare_metadata_record(object $section) : object {
+    private static function prepare_metadata_record(object $section): object
+    {
+        $record = new stdClass();
         self::validate_metadata($section);
-        $record                    = new stdClass();
+        if (property_exists($section, 'id')
+                and !empty($section->id)
+                and $section->id > 0) {
+            $record = self::get_section($section->id);
+        } else if (property_exists($section, 'groupid')
+                and !empty($section->groupid)
+                and $section->groupid > 0) {
+            $record->groupid = $section->groupid;
+        } else if (property_exists($section, 'groupname')
+                and !empty($section->groupname)
+                and $group = self::get_group_by_name($section->groupname)) {
+            $record->groupid = $group->id;
+        } else {
+            $record->groupid = self::get_group_by_name('General')->id;
+        }
         $record->component         = $section->component;
         $record->componentinstance = $section->componentinstance;
-        $record->groupid           = $section->groupid;
-        $record->sequence          = property_exists($section, 'sequence')
-            ? $section->sequence
-            : self::get_next_available_sequence_for_component(
+
+        if (property_exists($section, 'sequence') && !empty($section->sequence) && $section->sequence > 0) {
+            $record->sequence = $section->sequence;
+        } elseif (property_exists($record, 'sequence') && !empty($record->sequence) && $record->sequence > 0) {
+            // Do nothing, sequence is already set and valid
+        } else {
+            $record->sequence = self::get_next_available_sequence_for_group(
                 $section->component,
                 $section->componentinstance,
-                $section->groupid);
-        $record->sectiontype       = $section->sectiontype;
+                $record->groupid
+            );
+        }
+
+        $record->type              = $section->type;
+        $record->title             = $section->title;
         $record->content           = $section->content;
-        $record->timecreated       = time();
+        $record->timecreated       = property_exists($section, 'timecreated')
+            ? $section->timecreated
+            : time();
         $record->timemodified      = time();
         return $record;
     }
@@ -180,14 +166,29 @@ class Sections
      * 
      * @param  object $section The section object to check.
      */
-    private static function validate_metadata(object $section) {
-        $keys = ['component', 'componentinstance', 'groupid', 'sectiontype'];
+    private static function validate_metadata(object $section)
+    {
+        // General keys
+        $keys = ['component', 'componentinstance', 'type'];
         $missing_keys = [];
         foreach ($keys as $key) {
             if (!property_exists($section, $key) || empty($section->{$key}) || is_null($section->{$key})) {
                 $missing_keys[] = $key;
             }
         }
+        // Group related keys
+        $valid_id = property_exists($section, 'id')
+            && !empty($section->id)
+            && $section->id > 0;
+        $valid_groupid = property_exists($section, 'groupid')
+            && !empty($section->groupid)
+            && $section->groupid > 0;
+        $valid_groupname = property_exists($section, 'groupname')
+            && !empty($section->groupname);
+        if (!$valid_id && !$valid_groupid && !$valid_groupname) {
+            $missing_keys[] = 'groupid';
+        }
+        // Throw exception if there are missing keys
         if (!empty($missing_keys)) {
             throw new Exception('Error adding section. Missing fields: ' . implode(', ', $missing_keys));
         }
@@ -199,9 +200,26 @@ class Sections
      * @param  int  $id The id of the section.
      * @return bool True if the section was deleted, false otherwise.
      */
-    public static function delete_section(int $id) : bool {
+    public static function delete_section(int $id): bool
+    {
         global $DB;
         return $DB->delete_records(self::$table, ['id' => $id]);
+    }
+
+    /**
+     * Delete all sections for a component.
+     * 
+     * @param int $component The component id.
+     * @param int $componentinstance The component instance id.
+     */
+    public static function delete_all_sections_for_component(int $component, int $componentinstance)
+    {
+        global $DB;
+        $conditions = [
+            'component' => $component,
+            'componentinstance' => $componentinstance
+        ];
+        $DB->delete_records(self::$table, $conditions);
     }
 
     /**
@@ -209,7 +227,8 @@ class Sections
      * 
      * @return array The section types.
      */
-    public static function get_types() : array {
+    public static function get_types(): array
+    {
         global $DB;
         if (!$types = $DB->get_records(self::$types_table)) {
             return [];
@@ -223,7 +242,8 @@ class Sections
      * @param  int         $id The identifier of the type.
      * @return object|null The type object.
      */
-    public static function get_type(int $id) {
+    public static function get_type(int $id)
+    {
         global $DB;
         if (!$type = $DB->get_record(self::$types_table, ['id' => $id])) {
             return null;
@@ -237,7 +257,8 @@ class Sections
      * @param  string      $name The name of the type.
      * @return object|null The type object.
      */
-    public static function get_type_by_name(string $name) {
+    public static function get_type_by_name(string $name)
+    {
         global $DB;
         if (!$type = $DB->get_record(self::$types_table, ['name' => $name])) {
             return null;
@@ -250,7 +271,8 @@ class Sections
      *
      * @return array The section groups.
      */
-    public static function get_groups() : array {
+    public static function get_groups(): array
+    {
         global $DB;
         if (!$groups = $DB->get_records(self::$groups_table)) {
             return [];
@@ -264,7 +286,8 @@ class Sections
      * @param  int         $id The identifier of the group.
      * @return object|null The group object.
      */
-    public static function get_group(int $id) {
+    public static function get_group(int $id)
+    {
         global $DB;
         if (!$group = $DB->get_record(self::$groups_table, ['id' => $id])) {
             return null;
@@ -278,7 +301,8 @@ class Sections
      * @param  string      $name The name of the group.
      * @return object|null The group object.
      */
-    public static function get_group_by_name(string $name) {
+    public static function get_group_by_name(string $name)
+    {
         global $DB;
         if (!$group = $DB->get_record(self::$groups_table, ['name' => $name])) {
             return null;
@@ -294,9 +318,10 @@ class Sections
      * @param  int $groupid The group id.
      * @return int The next available sequence.
      */
-    public static function get_next_available_sequence_for_component(int $component, int $componentinstance, int $groupid) : int {
+    public static function get_next_available_sequence_for_group(int $component, int $componentinstance, int $groupid): int
+    {
         global $DB;
-        if (!$sequence = $DB->get_field(self::$table, 'MAX(sequence)', [
+        if (!$sequence = $DB->get_field(self::$table, 'MAX(sequence) as sequence', [
                 'component' => $component,
                 'componentinstance' => $componentinstance,
                 'groupid' => $groupid])) {

@@ -5,13 +5,13 @@ import Ajax from 'core/ajax';
  *
  * Valid args are:
  * - prioritizeInstalled: Prioritize installed languages
- * @method getLanguages
+ * @method languagesGet
  * @param {object} args Arguments send to the webservice.
  * @return {Promise} Resolve with languages.
  */
-export const getLanguages = args => {
+export const languagesGet = args => {
     const request = {
-        methodname: 'local_dta_languages_get',
+        methodname: 'local_digitalta_languages_get',
         args: args
     };
     return Ajax.call([request])[0];

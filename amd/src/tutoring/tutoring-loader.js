@@ -5,7 +5,7 @@ define(['jquery', 'core/templates'], function($, Templates) {
           $('#chat-container').on('click', '.chat-select', function() {
               var context = JSON.parse($(this).data('context')); // Make sure to get the context if passed
 
-              Templates.render('local_dta/test/menu_chat/chat_detail', context)
+              Templates.render('local_digitalta/test/menu_chat/chat_detail', context)
                   .then(function(html, js) {
                       $('#chat-container').html(html);
                       Templates.runTemplateJS(js);
@@ -18,7 +18,7 @@ define(['jquery', 'core/templates'], function($, Templates) {
 
           // Handler for returning to the main chat menu
           $('#chat-container').on('click', '.btn-back', function() {
-              Templates.render('local_dta/test/menu_chat/main', {})
+              Templates.render('local_digitalta/test/menu_chat/main', {})
                   .then(function(html, js) {
                       $('#chat-container').html(html);
                       Templates.runTemplateJS(js);
@@ -33,7 +33,7 @@ define(['jquery', 'core/templates'], function($, Templates) {
           $('#chat-container').on('click', '.btn-chat', function() {
               var context = JSON.parse($(this).data('context'));
 
-              Templates.render('local_dta/test/chat/group_chat', context)
+              Templates.render('local_digitalta/test/chat/group_chat', context)
                   .then(function(html, js) {
                       $('#chat-container').html(html);
                       Templates.runTemplateJS(js);
@@ -47,7 +47,7 @@ define(['jquery', 'core/templates'], function($, Templates) {
 
           // Handler for opening tutoring requests
           $('#chat-container').on('click', '.tutoring-requests', function() {
-              Templates.render('local_dta/test/menu_message/tutoring_requests', {})
+              Templates.render('local_digitalta/test/menu_message/tutoring_requests', {})
                   .then(function(html, js) {
                       $('#chat-container').html(html);
                       Templates.runTemplateJS(js);

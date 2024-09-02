@@ -1,8 +1,8 @@
 import $ from "jquery";
 import Template from "core/templates";
 import Notification from "core/notification";
-import { SELECTORS } from "./selectors";
-import { addComment, getComments } from "../repositories/reactions_repository";
+import { SELECTORS } from "local_digitalta/reactions/selectors";
+import { reactionsAddComment, reactionsGetComments } from "local_digitalta/repositories/reactions_repository";
 
 /**
  * Send the comment to the server.
@@ -14,7 +14,7 @@ export function sendComment() {
     const comment = $(SELECTORS.COMMENTS.input).val().trim();
 
     if (comment) {
-        addComment({ component, componentinstance, comment })
+        reactionsAddComment({ component, componentinstance, comment })
             .then((response) => {
                 if (response.result) {
                     return updateUI();
@@ -37,20 +37,19 @@ export async function updateUI() {
         return;
     }
     try {
-        const response = await getComments({ component, componentinstance });
+        const response = await reactionsGetComments({ component, componentinstance });
         let comments = [];
         if (response.result && response.comments) {
             comments = response.comments.map((comment) => ({
                 comment: comment.comment,
+                created: comment.created_raw,
                 userfullname: comment.user.fullname,
                 userprofileurl: M.cfg.wwwroot + "/user/profile.php?id=" + comment.user.id,
             }));
         }
-        const html = await Template.render("local_dta/reactions/comments", { comments });
+        const html = await Template.render("local_digitalta/reactions/comments", { comments });
         $(SELECTORS.COMMENTS.list).html(html);
-        const button = $(SELECTORS.ACTIONS.viewComment + SELECTORS.DATA.id(componentinstance));
-              button.toggleClass("active", button.hasClass("show"));
-        $(SELECTORS.ACTIONS.viewComment + SELECTORS.DATA.id(componentinstance) + " span").text(
+        $(SELECTORS.ACTIONS.viewComments + SELECTORS.DATA.id(componentinstance) + " span").text(
             comments.length ? comments.length : ""
         );
     } catch (error) {

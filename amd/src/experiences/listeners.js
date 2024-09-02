@@ -1,53 +1,70 @@
 import $ from "jquery";
-import { deleteRelatedContext } from "./main";
-import SELECTORS from "./selectors";
-import { showChangeStatusModal, toggleExperienceStatus } from "./modals";
-import { showManageModal, displaylinkResourcesModal, displaylinkCasesModal } from "./modals";
-import { getMentors, handlerAddMentorRequest, handlerRemoveMentorRequest } from "./tutoring";
-import setChat from "local_dta/chat/main";
+import {
+    displayLinkResourceModal,
+    displayLinkResourcesModal,
+    showUnlinkResourceModal,
+    showLockModal,
+    showUnlockModal,
+    showManageShareModal,
+    showManageReflectionModal
+} from "local_digitalta/experiences/modals";
+import {
+    getTutors,
+    handlerAddTutorRequest,
+    handlerRemoveTutorRequest
+} from "local_digitalta/experiences/tutoring";
+import SELECTORS from "local_digitalta/experiences/selectors";
+import setChat from "local_digitalta/chat/main";
 
 export const setEventListeners = () => {
-  const experienceid = $(SELECTORS.INPUTS.experienceid).val();
+    const experienceid = $(SELECTORS.INPUTS.experienceid).val();
 
-  $(document).on("click", SELECTORS.BUTTONS.edit, () => {
-    showManageModal(experienceid);
-  });
+    $(document).on("click", SELECTORS.BUTTONS.manage, () => {
+        showManageShareModal(experienceid);
+    });
 
-  $(document).on("click", `${SELECTORS.BUTTONS.block}, ${SELECTORS.BUTTONS.unblock}`, () => {
-    showChangeStatusModal(experienceid);
-  });
+    $(document).on("click", SELECTORS.BUTTONS.lock, () => {
+        showLockModal(experienceid);
+    });
 
-  $(document).on("click", SELECTORS.BUTTONS.confirmBlockModal, () => {
-    toggleExperienceStatus(experienceid);
-  });
+    $(document).on("click", SELECTORS.BUTTONS.unlock, () => {
+        showUnlockModal(experienceid);
+    });
 
-  $(document).on("click", SELECTORS.BUTTONS.addResourceBtn, () => {
-    displaylinkResourcesModal(true);
-  });
+    $(document).on("click", SELECTORS.BUTTONS.manageReflection, () => {
+        showManageReflectionModal(experienceid);
+    });
 
-  $(document).on("click", SELECTORS.BUTTONS.addCasesBtn, () => {
-    displaylinkCasesModal();
-  });
+    $(document).on("click", SELECTORS.BUTTONS.linkResources, () => {
+        $('#reflection-resources-tab').trigger('click');
+        displayLinkResourcesModal(experienceid);
+    });
 
-  $(document).on("click", SELECTORS.BUTTONS.removeContextButton, (event) => {
-    deleteRelatedContext(event.currentTarget.dataset.contextid);
-  });
+    $(document).on("click", SELECTORS.BUTTONS.linkResource, (event) => {
+        const resourceid = event.currentTarget.dataset.id;
+        displayLinkResourceModal(experienceid, resourceid);
+    });
 
-  $(document).on("click", SELECTORS.BUTTONS.sendMentorRequest, (event) => {
-    const mentorid = event.currentTarget.dataset.mentorid;
-    handlerAddMentorRequest(mentorid, experienceid);
-  });
+    $(document).on("click", SELECTORS.BUTTONS.unlinkResource, (event) => {
+        const resourceid = event.currentTarget.dataset.id;
+        showUnlinkResourceModal(experienceid, resourceid);
+    });
 
-  $(document).on("click", SELECTORS.BUTTONS.removeMentorRequest, (event) => {
-    const mentorid = event.currentTarget.dataset.mentorid;
-    handlerRemoveMentorRequest(mentorid, experienceid);
-  });
+    $(document).on("click", SELECTORS.BUTTONS.sendTutorRequest, (event) => {
+        const tutorid = event.currentTarget.dataset.tutorid;
+        handlerAddTutorRequest(tutorid, experienceid);
+    });
 
-  $(document).on("click", SELECTORS.BUTTONS.openChat, () => {
-    setChat(SELECTORS.SECTIONS.mentoringSection, experienceid);
-  });
+    $(document).on("click", SELECTORS.BUTTONS.tutoringRequestsRemove, (event) => {
+        const tutorid = event.currentTarget.dataset.tutorid;
+        handlerRemoveTutorRequest(tutorid, experienceid);
+    });
 
-  $(document).on("input", SELECTORS.INPUTS.mentorsSearch, async(event) => {
-    getMentors(event.currentTarget.value);
-  });
+    $(document).on("click", SELECTORS.BUTTONS.openChat, () => {
+        setChat(SELECTORS.SECTIONS.tutoringSection, experienceid);
+    });
+
+    $(document).on("input", SELECTORS.INPUTS.tutorsSearch, async(event) => {
+        getTutors(event.currentTarget.value);
+    });
 };

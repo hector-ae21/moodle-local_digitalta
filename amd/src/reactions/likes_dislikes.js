@@ -1,6 +1,6 @@
 import $ from "jquery";
-import { toogleLikeAndDislike } from "local_dta/repositories/reactions_repository";
-import { SELECTORS } from "./selectors";
+import { reactionsToogleLikeAndDislike } from "local_digitalta/repositories/reactions_repository";
+import { SELECTORS } from "local_digitalta/reactions/selectors";
 import Notification from "core/notification";
 
 /**
@@ -10,7 +10,7 @@ import Notification from "core/notification";
  */
 export function toggle(componentinstance, reactiontype) {
     const component = $(SELECTORS.BUTTONS.likes).data("component");
-    toogleLikeAndDislike({component, componentinstance, reactiontype})
+    reactionsToogleLikeAndDislike({component, componentinstance, reactiontype})
         .then((response) => {
             return updateUI(componentinstance, response.likes, response.dislikes, response.reactiontype);
         })

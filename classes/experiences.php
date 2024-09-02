@@ -17,30 +17,34 @@
 /**
  * Experiences class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
 
-require_once($CFG->dirroot . '/local/dta/classes/components.php');
-require_once($CFG->dirroot . '/local/dta/classes/context.php');
-require_once($CFG->dirroot . '/local/dta/classes/experience.php');
-require_once($CFG->dirroot . '/local/dta/classes/reactions.php');
-require_once($CFG->dirroot . '/local/dta/classes/sections.php');
-require_once($CFG->dirroot . '/local/dta/classes/tags.php');
-require_once($CFG->dirroot . '/local/dta/classes/themes.php');
-require_once($CFG->dirroot . '/local/dta/classes/utils/dateutils.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/components.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/context.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/languages.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/experience.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/reactions.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/resources.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/tags.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/themes.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/utils/dateutils.php');
 
-use local_dta\Components;
-use local_dta\Context;
-use local_dta\Experience;
-use local_dta\Reactions;
-use local_dta\Sections;
-use local_dta\Tags;
-use local_dta\Themes;
-use local_dta\utils\DateUtils;
+use local_digitalta\Components;
+use local_digitalta\Context;
+use local_digitalta\Experience;
+use local_digitalta\Languages;
+use local_digitalta\Reactions;
+use local_digitalta\Resources;
+use local_digitalta\Sections;
+use local_digitalta\Tags;
+use local_digitalta\Themes;
+use local_digitalta\utils\DateUtils;
 
 use Exception;
 use stdClass;
@@ -54,103 +58,62 @@ use stdClass;
 class Experiences
 {
     /** @var string The table name for the experiences. */
-    private static $table = 'digital_experiences';
+    private static $table = 'digitalta_experiences';
 
     /**
      * Get an experience by this id
      * 
-     * @param  int         $id The id of the experience
-     * @param  bool        $extra_fields If true, it will return the extra fields
-     * @return object|null The experience
+     * @param  int             $id The id of the experience
+     * @param  bool            $extra_fields If true, it will return the extra fields
+     * @return Experience|null The experience
      */
-    public static function get_experience(int $id, bool $extra_fields = true)
+    public static function get_experience(int $id, bool $extra_fields = true): ?Experience
     {
-        global $DB;
-        if (!$experience = $DB->get_record(self::$table, ['id' => $id])) {
-            return null;
-        }
-        if ($extra_fields) {
-            $experience = self::get_extra_fields($experience);
-        }
+        $experience = self::get_experiences(['id' => $id], $extra_fields)[0] ?? null;
         return $experience;
     }
 
     /**
-     * Get all the experiences
+     * Get experiences
      * 
-     * @param  bool  $include_privates If true, it will include the private experiences
+     * @param  array $filters The filters to apply
      * @param  bool  $extra_fields If true, it will return the extra fields
      * @return array The experiences
      */
-    public static function get_all_experiences(bool $include_privates = true, bool $extra_fields = true)
+    public static function get_experiences(array $filters = [], bool $extra_fields = true): array
     {
         global $DB;
-        $experiences = $DB->get_records(self::$table,
-            $include_privates ? null : ['visible' => 1], 'timecreated DESC');
-        if (!$extra_fields) {
-            return array_values($experiences);
-        }
-        $experiences = array_values(array_map(function ($experience) {
-            return self::get_extra_fields($experience);
-        }, $experiences));
-        return $experiences;
+        $filters = self::prepare_filters($filters);
+        $experiences = $DB->get_records(self::$table, $filters);
+        return array_values(array_map(
+            function ($experience) use ($extra_fields) {
+                $experience = new Experience($experience);
+                if ($extra_fields) {
+                    $experience = self::get_extra_fields($experience);
+                }
+                return $experience;
+            },
+        $experiences));
     }
 
     /**
-     * Get experiences by user
+     * Prepare filters for experiences
      *
-     * @param  int   $userid The id of the user
-     * @param  bool  $extra_fields If true, it will return the extra fields
-     * @return array The experiences
+     * @param  array $filters The filters to prepare
+     * @return array The prepared filters
      */
-    public static function get_experiences_by_user($userid, $extra_fields = true)
+    private static function prepare_filters($filters)
     {
-        global $DB;
-        $experiences = $DB->get_records(self::$table, ['userid' => $userid]);
-        if (!$extra_fields) {
-            return array_values($experiences);
-        }
-        $experiences = array_values(array_map(function ($experience) {
-            return self::get_extra_fields($experience);
-        }, $experiences));
-        return $experiences;
-    }
-
-    /**
-     * Get latest experiences
-     * 
-     * @param  int   $limit The limit of experiences
-     * @param  bool  $include_privates If true, it will include the private experiences
-     * @param  bool  $extra_fields If true, it will return the extra fields
-     * @return array The latest experiences
-     */
-    public static function get_latest_experiences($limit = 3, $include_privates = true, $extra_fields = true)
-    {
-        global $DB;
-        $experiences = $DB->get_records(
-            self::$table,
-            $include_privates ? null : ['visible' => 1],
-            'timecreated DESC',
-            '*',
-            0,
-            $limit
-        );
-        if (!$extra_fields) {
-            return array_values($experiences);
-        }
-        $experiences = array_values(array_map(function ($experience) {
-            return self::get_extra_fields($experience);
-        }, $experiences));
-        return $experiences;
+        return $filters;
     }
 
     /**
      * Get extra fields for experiences
      * 
-     * @param  object $experience The experience
-     * @return object The experience with extra fields
+     * @param  Experience $experience The experience
+     * @return object     The experience with extra fields
      */
-    public static function get_extra_fields($experience)
+    public static function get_extra_fields(Experience $experience)
     {
         global $PAGE;
         // Get the user data 
@@ -164,25 +127,43 @@ class Experiences
             'imageurl' => $user_picture->get_url($PAGE)->__toString(),
             'profileurl' => new \moodle_url('/user/profile.php', ['id' => $user->id])
         ];
+        // Get the sections for the experience
+        $sections = Sections::get_sections([
+            'component' => Components::get_component_by_name('experience')->id,
+            'componentinstance' => $experience->id
+        ]);
+        $experience->sections = array_map(function ($section) {
+            return (object) [
+                'id' => $section->id,
+                'component' => $section->component,
+                'componentinstance' => $section->componentinstance,
+                'groupid' => $section->groupid,
+                'sequence' => $section->sequence,
+                'type' => $section->type,
+                'content' => $section->content
+            ];
+        }, $sections);
         // Get the themes for the experience
         $themes = Themes::get_themes_for_component('experience', $experience->id);
-        $experience->themes = array_values(array_map(function ($theme) {
+        $experience->themes = array_map(function ($theme) {
             return (object) [
                 'name' => $theme->name,
                 'id' => $theme->id
             ];
-        }, $themes));
+        }, $themes);
         // Get the tags for the experience
         $tags = Tags::get_tags_for_component('experience', $experience->id);
-        $experience->tags = array_values(array_map(function ($tag) {
+        $experience->tags = array_map(function ($tag) {
             return (object) [
                 'name' => $tag->name,
                 'id' => $tag->id
             ];
-        }, $tags));
+        }, $tags);
         $experience->fixed_tags = [
-            ['name' => $experience->visible ? 'Public' : 'Private'],
-            ['name' => $experience->lang]
+            ['name' => $experience->visible
+                ? get_string('visibility:public', 'local_digitalta')
+                : get_string('visibility:private', 'local_digitalta')],
+            ['name' => Languages::get_language_name_by_code($experience->lang)]
         ];
         // Get the experience picture
         $experience->pictureurl = self::get_picture_url($experience);
@@ -192,19 +173,7 @@ class Experiences
             $experience->id
         );
         // Get the experience creation date
-        $experience->timecreated = DateUtils::time_elapsed_string($experience->timecreated);
-        // Get the experience sections
-        $sections = Sections::get_sections([
-            'component' => [Components::get_component_by_name('experience')->id],
-            'componentinstance' => [$experience->id]
-        ]);
-        $experience->sections = [];
-        foreach ($sections as $section) {
-            $experience->sections[$section->sequence] = [
-                'group' => Sections::get_group($section->groupid)->name,
-                'content' => $section->content
-            ];
-        }
+        $experience->timecreated_string = DateUtils::time_elapsed_string($experience->timecreated);
         return $experience;
     }
 
@@ -218,42 +187,16 @@ class Experiences
     {
         global $OUTPUT;
         return $OUTPUT->get_generated_image_for_id($experience->id);
-        /* @EXPERIENCE_PICTURE TODO: Add picture to experience creation
-        $fs = get_file_storage();
-        $files = $fs->get_area_files(
-            \context_system::instance()->id,
-            'local_dta',
-            'experience_picture',
-            $experience->id,
-            'sortorder DESC, id ASC',
-            false
-        );
-
-        if (empty($files)) {
-            return false;
-        }
-
-        $file = reset($files);
-        $pictureurl = \moodle_url::make_pluginfile_url(
-            $file->get_contextid(),
-            $file->get_component(),
-            $file->get_filearea(),
-            $file->get_itemid(),
-            $file->get_filepath(),
-            $file->get_filename()
-        );
-        return $pictureurl;
-        */
     }
 
     /**
      * Upsert an experience
      *
      * @param  object    $experience The experience to upsert
-     * @return object    The upserted experience
+     * @return int       The upserted experience
      * @throws Exception If metadata fields are missing.
      */
-    public static function upsert_experience($experience) : object
+    public static function upsert_experience($experience): int
     {
         global $DB;
         $record = new stdClass;
@@ -270,35 +213,48 @@ class Experiences
         } else {
             $record->id = $DB->insert_record(self::$table, $record);
             // Create the default sections for the experience
-            $sectiongroups = ["What?", "So What?", "Now What?"];
-            foreach ($sectiongroups as $sectiongroup) {
+            $componentid = Components::get_component_by_name('experience')->id;
+            $sectiontexttypeid = Sections::get_type_by_name('text')->id;
+            $sectiongroupnames = ["What?", "So What?", "Now What?"];
+            foreach ($sectiongroupnames as $sectiongroupname) {
                 $section = new stdClass();
+                $section->component         = $componentid;
+                $section->componentinstance = $record->id;
+                $section->groupid           = Sections::get_group_by_name($sectiongroupname)->id;
+                $section->sequence          = null;
+                $section->type              = $sectiontexttypeid;
+                $section->title             = "";
+                $section->content           = "";
+                $section->id = Sections::upsert_section($section);
+                if ($sectiongroupname == "What?") {
+                    $experience->sections[0]['id'] = $section->id;
+                }
+                unset($section);
+            }
+        }
+        // Sections
+        if (!empty($experience->sections)) {
+            foreach ($experience->sections as $section) {
+                $section                    = (object) $section;
                 $section->component         = Components::get_component_by_name('experience')->id;
                 $section->componentinstance = $record->id;
-                $section->groupid           = Sections::get_group_by_name($sectiongroup)->id;
-                $section->sectiontype       = Sections::get_type_by_name('text')->id;
-                $section->content           = "";
+                if ($section->groupname) {
+                    $section->groupid = Sections::get_group_by_name($section->groupname)->id;
+                }
+                if ($section->typename) {
+                    $section->type = Sections::get_type_by_name($section->typename)->id;
+                }
                 Sections::upsert_section($section);
             }
         }
-        // Description
-        if (!empty($experience->description)) {
-            $section = Sections::get_sections([
-                'component' => [Components::get_component_by_name('experience')->id],
-                'componentinstance' => [$record->id],
-                'groupid' => [Sections::get_group_by_name('What?')->id]
-            ]);
-            $section = reset($section);
-            $section->content = $experience->description;
-            Sections::upsert_section($section);
-        }
-        if (!empty($experience->themes)) {
+        // Update theme and tags
+        if (property_exists($experience, 'themes') && $experience->themes) {
             Themes::update_themes('experience', $record->id, $experience->themes);
         }
-        if (!empty($experience->tags)) {
+        if (property_exists($experience, 'tags') && $experience->tags) {
             Tags::update_tags('experience', $record->id, $experience->tags);
         }
-        return new Experience($record);
+        return $record->id;
     }
 
     /**
@@ -312,14 +268,14 @@ class Experiences
     {
         global $USER;
         self::validate_metadata($experience);
-        $record               = new stdClass();
+        $record               = new Experience();
         $record->userid       = $USER->id;
         $record->title        = $experience->title;
         $record->lang         = $experience->lang;
         $record->visible      = $experience->visible;
         $record->status       = $experience->status ?? 0;
-        $record->timecreated  = date('Y-m-d H:i:s', time());
-        $record->timemodified = date('Y-m-d H:i:s', time());
+        $record->timecreated  = time();
+        $record->timemodified = time();
         return $record;
     }
 
@@ -328,7 +284,8 @@ class Experiences
      * 
      * @param  object $experience The experience object to check.
      */
-    private static function validate_metadata(object $experience) {
+    private static function validate_metadata(object $experience)
+    {
         $keys = ['title', 'lang'];
         $missing_keys = [];
         foreach ($keys as $key) {
@@ -344,12 +301,13 @@ class Experiences
     /**
      * Delete an experience
      *
-     * @param  object $experience The experience to delete
-     * @return bool   True if the experience was deleted, false otherwise
+     * @param  mixed $experienceorid The experience to delete or its identifier
+     * @return bool  True if the experience was deleted, false otherwise
      */
-    public static function delete_experience($experience)
+    public static function delete_experience($experienceorid): bool
     {
         global $DB, $USER;
+        $experience = is_object($experienceorid) ? $experienceorid : self::get_experience($experienceorid);
         if (!$DB->record_exists(self::$table, ['id' => $experience->id])) {
             throw new Exception('Error experience not found');
         }
@@ -357,42 +315,43 @@ class Experiences
         if (!self::check_permissions($experience, $USER)) {
             throw new Exception('Error permissions');
         }
+        // Get the component type identifier
+        $componentid = Components::get_component_by_name('experience')->id;
         // Delete the sections
-        $sections = Sections::get_sections([
-            'component' => [Components::get_component_by_name('experience')->id],
-            'componentinstance' => [$experience->id]
-        ]);
-        foreach ($sections as $section) {
-            Sections::delete_section($section->id);
-        }
-        // Delete the contexts
-        $contexts = Context::get_contexts_by_component('experience', $experience->id);
-        foreach ($contexts as $context) {
-            Context::delete_context($context->id);
-        }
-        // Delete the reactions
-        Reactions::delete_all_reactions_for_component(
-            Components::get_component_by_name('experience')->id,
+        Sections::delete_all_sections_for_component(
+            $componentid,
             $experience->id
         );
-        // @RESOURCES TODO: Delete the resource assignations
+        // Delete the contexts
+        Context::delete_all_contexts_for_component(
+            $componentid,
+            $experience->id
+        );
+        // Delete the reactions
+        Reactions::delete_all_reactions_for_component(
+            $componentid,
+            $experience->id
+        );
+        // Delete the resource assignations
+        Resources::delete_all_assignments_for_component(
+            $componentid,
+            $experience->id
+        );
         // Delete the experience
         return $DB->delete_records(self::$table, ['id' => $experience->id]);
     }
 
     /**
-     * Change the status of an experience
+     * Toggles the status of an experience
      * 
      * @param int $experienceid
      */
-    public static function change_status_experience($experienceid)
+    public static function toggle_status($experienceid)
     {
         global $DB, $USER;
-
         if (!$experience = self::get_experience($experienceid, false)) {
             throw new Exception('Error experience not found');
         }
-
         if (!self::check_permissions($experience, $USER)) {
             throw new Exception('Error permissions');
         }
@@ -400,11 +359,10 @@ class Experiences
         $record = new stdClass();
         $record->id = $experience->id;
         $record->status = $status;
-
         if (!$DB->update_record(self::$table, $record)) {
             throw new Exception('Error updating experience');
         };
-        return new Experience($record);
+        return $status;
     }
 
     /**

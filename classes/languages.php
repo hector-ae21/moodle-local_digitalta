@@ -17,12 +17,12 @@
 /**
  * Languages class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -43,20 +43,39 @@ class Languages
     public static function get_all_languages(bool $prioritize_installed = false)
     {
         $languages = get_string_manager()->get_list_of_languages();
+        $languages['pluri'] = get_string('general:lang_pluri', 'local_digitalta');
         asort($languages);
         if ($prioritize_installed) {
             $prioritized_languages = [];
+            // Add the current language first
             $current_language = current_language();
             $prioritized_languages[$current_language] = $languages[$current_language];
+            // Add the plurilingual value
+            $prioritized_languages['pluri'] = $languages['pluri'];
+            // Add the installed languages
             $installed_languages = get_string_manager()->get_list_of_translations();
+            $installed_languages = array_intersect_key($languages, $installed_languages);
             $prioritized_languages = array_merge($prioritized_languages,
                 array_diff_key($installed_languages, $prioritized_languages));
+            // Add the rest of the languages
             $languages = array_merge($prioritized_languages,
                 array_diff_key($languages, $prioritized_languages));
         }
-        $languages = array_values(array_map(function ($name, $code) {
+        return array_values(array_map(function ($name, $code) {
             return (object) ['code' => $code, 'name' => $name];
         }, $languages, array_keys($languages)));
-        return $languages;
+    }
+
+    /**
+     * Get the language name by code
+     *
+     * @param  string $code The language code
+     * @return string The language name
+     */
+    public static function get_language_name_by_code(string $code)
+    {
+        return ($code === 'pluri')
+            ? get_string('general:lang_pluri', 'local_digitalta')
+            : get_string_manager()->get_list_of_languages()[$code] ?? '';
     }
 }

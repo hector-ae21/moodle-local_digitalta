@@ -17,16 +17,16 @@
 /**
  * WebService to edit cases
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/classes/cases.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/cases.php');
 
-use local_dta\Cases;
+use local_digitalta\Cases;
 
 /**
  * This class is used to edit cases
@@ -75,9 +75,10 @@ class external_cases_edit extends external_api
      */
     public static function cases_edit($id, $title, $description = "", $lang, $status = 0, $themes = [], $tags = [])
     {
-        if (!$case = Cases::get_case($id, false)) {
+        if (!Cases::get_case($id, false)) {
             return ['result' => false, 'error' => 'Case not found'];
         }
+
         $newcase = new stdClass();
         $newcase->id          = $id;
         $newcase->title       = $title;
@@ -86,10 +87,18 @@ class external_cases_edit extends external_api
         $newcase->status      = $status;
         $newcase->themes      = $themes;
         $newcase->tags        = $tags;
-        if (!Cases::update_case($newcase)) {
-            return ['result' => false, 'error' => 'Failed to update case'];
+
+        if (!$caseid = Cases::update_case($newcase)) {
+            return [
+                'result' => false,
+                'error' => 'Failed to update case'
+            ];
         }
-        return ['result' => true];
+
+        return [
+            'result' => true,
+            'caseid' => $caseid
+        ];
     }
 
     /**
@@ -102,6 +111,7 @@ class external_cases_edit extends external_api
         return new external_single_structure(
             array(
                 'result' => new external_value(PARAM_BOOL, 'True if success, false otherwise' , VALUE_OPTIONAL),
+                'caseid' => new external_value(PARAM_INT, 'Case ID' , VALUE_OPTIONAL),
                 'error' => new external_value(PARAM_TEXT, 'Error message if any' , VALUE_OPTIONAL)
             )
         );

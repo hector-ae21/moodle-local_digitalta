@@ -17,16 +17,16 @@
 /**
  * WebService to get themes
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/local/dta/classes/themes.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/themes.php');
 
-use local_dta\Themes;
+use local_digitalta\Themes;
 
 /**
  * This class is used to get themes
@@ -46,7 +46,7 @@ class external_themes_get extends external_api
     {
         return new external_function_parameters(
             [
-                'searchText' => new external_value(PARAM_TEXT, 'Search text', VALUE_DEFAULT, '%%')
+                'searchText' => new external_value(PARAM_TEXT, 'Search text', VALUE_DEFAULT, '')
             ]
         );
     }
@@ -57,12 +57,9 @@ class external_themes_get extends external_api
      * @param  string $searchText Search text
      * @return array  Array of themes
      */
-    public static function themes_get($searchText = '%%')
+    public static function themes_get($searchText = '')
     {
-        $searchText = '%' . $searchText . '%';
-        $themes = Themes::get_themes_by_text($searchText) ?? [];
-        $themes = array_values($themes);
-        return $themes;
+        return Themes::get_themes_by_text($searchText) ?? [];
     }
 
     /**
@@ -74,10 +71,10 @@ class external_themes_get extends external_api
     {
         return new external_multiple_structure(
             new external_single_structure(
-                array(
+                [
                     'id' => new external_value(PARAM_INT, 'Theme ID'),
                     'name' => new external_value(PARAM_TEXT, 'Theme name')
-                )
+                ]
             )
         );
     }

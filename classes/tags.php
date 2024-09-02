@@ -17,16 +17,16 @@
 /**
  * Tags class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
 
-require_once($CFG->dirroot . '/local/dta/classes/context.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/context.php');
 
-use local_dta\Context;
+use local_digitalta\Context;
 
 use Exception;
 use stdClass;
@@ -40,31 +40,46 @@ use stdClass;
 class Tags
 {
     /** @var string The name of the database table storing the tags. */
-    private static $table = 'digital_tags';
+    private static $table = 'digitalta_tags';
 
     /**
      * Get a tag by its ID.
      *
-     * @param  int         $tagid The ID of the tag.
-     * @return object|bool The retrieved tag object.
+     * @param  int         $id The ID of the tag.
+     * @return object|null The retrieved tag object.
      */
-    public static function get_tag(int $tagid)
+    public static function get_tag(int $id) : ?object
     {
-        global $DB;
-        $tag = $DB->get_record(self::$table, ['id' => $tagid]);
-        return $tag;
+        return self::get_tags(['id' => $id])[0] ?? null;
     }
 
     /**
      * Get all tags.
      *
+     * @param  array $filters The filters to apply
      * @return array An array containing all tags.
      */
-    public static function get_tags(): array
+    public static function get_tags(array $filters = []): array
     {
         global $DB;
-        $tags = $DB->get_records(self::$table);
-        return $tags;
+        return array_values($DB->get_records(self::$table, $filters));
+    }
+
+    /**
+     * Get all tags by text
+     *
+     * @param string $text
+     * @return array
+     */
+    public static function get_tags_by_text($text): array
+    {
+        $tags = self::get_tags();
+        if (empty($text)) {
+            return $tags;
+        }
+        return array_values(array_filter($tags, function ($tag) use ($text) {
+            return stripos($tag->name, $text) !== false;
+        }));
     }
 
     /**
@@ -130,21 +145,6 @@ class Tags
     }
 
     /**
-     * Get all tags by text
-     *
-     * @param string $text
-     * @return array
-     */
-    public static function get_tags_by_text($text) : array
-    {
-        global $DB;
-        $liketag = $DB->sql_like('name', ':name');
-        $tags = $DB->get_records_sql("SELECT * FROM {" . self::$table . "} WHERE {$liketag}",
-            ['name' => '%' . $text . '%']);
-        return $tags;
-    }
-
-    /**
      * Assign a tag to a component
      *
      * @param  string $component The component to assign the tag to.
@@ -168,12 +168,12 @@ class Tags
         if (!$contexts = Context::get_contexts_by_component($component, $instance, 'tag')) {
             return [];
         }
-        return array_values(array_map(function ($context) {
+        return array_map(function ($context) {
             if (!$tag = self::get_tag($context->modifierinstance)) {
                 throw new Exception('Invalid tag');
             }
             return $tag;
-        }, $contexts));
+        }, $contexts);
     }
 
     /**
@@ -199,9 +199,9 @@ class Tags
      */
     public static function update_tags(string $component, int $instance, array $tags) {
         $current_tags = self::get_tags_for_component($component, $instance);
-        $current_tags = array_values(array_map(function ($tag) {
+        $current_tags = array_map(function ($tag) {
             return $tag->id;
-        }, $current_tags));
+        }, $current_tags);
         foreach ($current_tags as $tagid) {
             if (!in_array($tagid, $tags)) {
                 self::remove_tag_from_component($component, $instance, $tagid);

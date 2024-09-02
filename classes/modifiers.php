@@ -17,14 +17,14 @@
 /**
  * Modifiers class
  *
- * @package   local_dta
+ * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_dta;
+namespace local_digitalta;
 
-require_once($CFG->dirroot . '/local/dta/locallib.php');
+require_once($CFG->dirroot . '/local/digitalta/locallib.php');
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -37,29 +37,17 @@ defined('MOODLE_INTERNAL') || die();
 class Modifiers
 {
     /** @var string The table name for the modifiers. */
-    private static $table = 'digital_modifiers';
+    private static $table = 'digitalta_modifiers';
 
     /**
-     * Get all the modifiers
-     *
-     * @return array
-     */
-    public static function get_all_modifiers()
-    {
-        global $DB;
-        return $DB->get_records(self::$table);
-    }
-
-    /**
-     * Get the modifier by id
+     * Get the modifier by its id
      *
      * @param  int         $id The modifier identifier
      * @return object|null The modifier
      */
-    public static function get_modifier_by_id(int $id)
+    public static function get_modifier(int $id): ?object
     {
-        global $DB;
-        return $DB->get_record(self::$table, ['id' => $id]);
+        return self::get_modifiers(['id' => $id])[0] ?? null;
     }
 
     /**
@@ -70,8 +58,19 @@ class Modifiers
      */
     public static function get_modifier_by_name(string $name)
     {
+        return self::get_modifiers(['name' => $name])[0] ?? null;
+    }
+
+    /**
+     * Get modifiers
+     *
+     * @param  array $filters The filters to apply
+     * @return array The modifiers
+     */
+    public static function get_modifiers(array $filters = [])
+    {
         global $DB;
-        return $DB->get_record(self::$table, ['name' => $name]);
+        return array_values($DB->get_records(self::$table, $filters));
     }
 
     /**
@@ -87,10 +86,10 @@ class Modifiers
 
         $dbman = $DB->get_manager();
 
-        if ($dbman->table_exists('digital_' . $modifier)) {
-            return $DB->get_record('digital_' . $modifier, ['id' => $instanceid]);
-        } elseif ($dbman->table_exists('digital_' . $modifier . 's')) {
-            return $DB->get_record('digital_' . $modifier . 's', ['id' => $instanceid]);
+        if ($dbman->table_exists('digitalta_' . $modifier)) {
+            return $DB->get_record('digitalta_' . $modifier, ['id' => $instanceid]);
+        } elseif ($dbman->table_exists('digitalta_' . $modifier . 's')) {
+            return $DB->get_record('digitalta_' . $modifier . 's', ['id' => $instanceid]);
         } elseif ($dbman->table_exists('mdl_' . $modifier)) {
             return $DB->get_record('mdl_' . $modifier, ['id' => $instanceid]);
         } else {

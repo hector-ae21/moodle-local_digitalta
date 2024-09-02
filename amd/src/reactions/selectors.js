@@ -7,19 +7,17 @@ export const SELECTORS = {
         addLike: '[data-action="like"]',
         addDislike: '[data-action="dislike"]',
         sendComment: '[data-action="send-comment"]',
-        viewComment: '[data-action="view-comment"]',
-        toggleComments: '[data-target="#commentsCollapse"]',
+        viewComments: '[data-action="view-comments"]',
         sendReport: '[data-action="flag"]',
     },
     COMMENTS: {
-        collapse: '#commentsCollapse',
         list: '#commentsList',
         input: '#commentInput',
     },
     BUTTONS: {
         likes: '#like-button',
         dislikes: '#dislike-button',
-        comment: '#comment-button',
+        comment: '#comment-button[data-toggle="collapse"]',
         report: "#flag-button"
     },
     COUNTS: {

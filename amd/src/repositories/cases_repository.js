@@ -1,6 +1,19 @@
 import Ajax from 'core/ajax';
 
 /**
+ * Get cases.
+ * @method casesGet
+ * @return {Promise} Resolve with warnings.
+ */
+export const casesGet = () => {
+    const request = {
+        methodname: 'local_digitalta_cases_get',
+        args: {}
+    };
+    return Ajax.call([request])[0];
+};
+
+/**
  * Edit a case.
  *
  * Valid args are:
@@ -11,27 +24,14 @@ import Ajax from 'core/ajax';
  * - status: The status of the case.
  * - themes: The themes of the case.
  * - tags: The tags of the case.
- * @method caseEdit
+ * @method casesEdit
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.
  */
-export const caseEdit = args => {
+export const casesEdit = args => {
     const request = {
-        methodname: 'local_dta_cases_edit',
+        methodname: 'local_digitalta_cases_edit',
         args: args
-    };
-    return Ajax.call([request])[0];
-};
-
-/**
- * Get cases.
- * @method getCases
- * @return {Promise} Resolve with warnings.
- */
-export const getCases = () => {
-    const request = {
-        methodname: 'local_dta_cases_get',
-        args: {}
     };
     return Ajax.call([request])[0];
 };

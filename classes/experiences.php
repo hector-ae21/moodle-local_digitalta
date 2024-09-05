@@ -372,11 +372,12 @@ class Experiences
      * @param  object $user The user object
      * @return bool   True if the user has permissions, false otherwise
      */
-    public static function check_permissions($experience, $user)
+    public static function check_permissions($experience, $user, $include_admin = true)
     {
-        if ($user->id == $experience->userid || is_siteadmin($user)) {
+        if ($include_admin && is_siteadmin($user)) {
             return true;
         }
-        return false;
+
+        return $user->id == $experience->userid;
     }
 }

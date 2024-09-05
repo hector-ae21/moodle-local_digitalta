@@ -115,7 +115,7 @@ class GoogleMeetClient
     return html_writer::div('
           <button class="btn btn-zoom-call" onClick="javascript:window.open(\'' . $client->get_login_url() . '\',
               \'Login\',\'height=600,width=599,top=0,left=0,menubar=0,location=0,directories=0,fullscreen=0\'
-          ); return false"><i class="fa fa-video-camera"></i> ' . get_string('tutoring:videocallbutton', 'local_digitalta') . '</button>', 'mt-2');
+          ); return false"><i class="fa fa-video-camera"></i> ' . get_string('tutoring:videocallbutton', 'local_digitalta') . '</button>', 'mt-2 start-call-button');
   }
 
   /**
@@ -160,7 +160,7 @@ class GoogleMeetClient
     $out .= html_writer::link(
       $logouturl,
       $OUTPUT->pix_icon('logout', '', 'googlemeet', ['class' => 'm-0']),
-      ['class' => 'btn btn-secondary btn-sm', 'title' => get_string('logout', 'googlemeet')]
+      ['class' => 'btn btn-secondary', 'title' => get_string('logout', 'googlemeet')]
     );
 
     $out .= html_writer::end_div();

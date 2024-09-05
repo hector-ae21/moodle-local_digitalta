@@ -10,6 +10,7 @@
 namespace local_digitalta;
 
 require_once($CFG->dirroot . '/local/digitalta/classes/chat.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
 
 use local_digitalta\Chat;
 
@@ -140,7 +141,9 @@ class Tutors
             $chat = new \stdClass();
             $chat->id = Chat::create_chat_room($request->experienceid);
         }
-        
+        $experience = Experiences::get_experience($request->experienceid);
+
+        Chat::chats_add_user_to_room($chat->id, $experience->userid);
         Chat::chats_add_user_to_room($chat->id, $request->tutorid);
 
         return self::change_tutor_request_status($requestid, 1);
@@ -167,10 +170,7 @@ class Tutors
     {
         global $DB;
         $data = $DB->get_record(self::$requests_table, ['tutorid' => $tutorid, 'experienceid' => $experienceid , 'status' => $status]);
-        if (!$data) {
-            return false;
-        }
-        return $data->status == 0;
+        return !!$data;
     }
 
     /**

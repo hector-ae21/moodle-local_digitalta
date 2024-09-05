@@ -56,7 +56,7 @@ class external_chats_get_messages extends external_api
         
         return [
             'result' => true,
-            'messages' => $messages
+            'messages' => array_values($messages)
         ];
     }
 
@@ -73,7 +73,7 @@ class external_chats_get_messages extends external_api
                             'chatid' => new external_value(PARAM_INT, 'Chat ID'),
                             'userid' => new external_value(PARAM_INT, 'User ID'),
                             'message' => new external_value(PARAM_TEXT, 'Message'),
-                            'timecreated' => new external_value(PARAM_INT, 'Time Created'),
+                            'timecreated' => new external_value(PARAM_TEXT, 'Time Created'),
                             'timemodified' => new external_value(PARAM_INT, 'Time Modified'),
                             'is_mine' => new external_value(PARAM_BOOL, 'Is Mine'),
                         ]

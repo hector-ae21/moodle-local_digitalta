@@ -27,4 +27,10 @@ export default function setEventListeners() {
     $(document).on("click", SELECTORS.BUTTONS.REPLY, function() {
         handleSendMessage();
     });
+
+    $(document).on("keydown", SELECTORS.INPUTS.CHAT_REPLY, function(e) {
+        if (e.key === "Enter" && this.value.trim() !== "") {
+            handleSendMessage();
+        }
+    });
 }

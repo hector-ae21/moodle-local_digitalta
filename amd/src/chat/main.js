@@ -28,7 +28,6 @@ const initComponent = (experienceid) => {
     setEventListeners();
     if (experienceid) {
         openChatFromExperience(experienceid);
-        return;
     } else {
         renderMenuChat();
     }

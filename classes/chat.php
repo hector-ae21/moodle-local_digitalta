@@ -33,7 +33,7 @@ class Chat
     {
         global $DB;
         $chat_room = new stdClass();
-        $chat_room->experience = $experience;
+        $chat_room->experienceid = $experience;
         $chat_room->timecreated = time();
         $chat_room->timemodified = time();
         $chat_room->id = $DB->insert_record(self::$table_chat_room, $chat_room);
@@ -76,8 +76,8 @@ class Chat
     {
         global $DB;
         $chat_user = new stdClass();
-        $chat_user->chat_room_id = $chat_room_id;
-        $chat_user->user_id = $user_id;
+        $chat_user->chatid = $chat_room_id;
+        $chat_user->userid = $user_id;
         $chat_user->timecreated = time();
         $chat_user->timemodified = time();
         if(!$chat_user->id = $DB->insert_record(self::$table_chat_users, $chat_user)){

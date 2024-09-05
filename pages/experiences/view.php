@@ -47,23 +47,6 @@ require_login();
 
 $id = required_param('id', PARAM_INT);
 
-function get_googlemeet_call_button($chatid)
-{
-    $client = new GoogleMeetClient($chatid);
-    if (!$client->enabled) {
-        return;
-    }
-    if ($client->check_login()) {
-        $client->logout();
-    }
-    $meetingrecord = GoogleMeetHelper::get_googlemeet_record(1);
-    if ($meetingrecord) {
-        return '<button class="btn btn-zoom-call btn-sm mt-2  mr-2" onclick="window.open(\'https://meet.google.com/' . $meetingrecord->meetingcode . '\', \'_blank\');"> <i class="fa fa-video-camera"></i> ' . get_string('tutoring:joinvideocall', 'local_digitalta') . '</button>';
-    } else {
-        return $client->print_login_popup($chatid);
-    }
-}
-
 // Seting the page url and context
 $PAGE->set_url(new moodle_url('/local/digitalta/pages/experiences/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
@@ -117,7 +100,8 @@ $tutors = array_map(function ($tutor) use ($DB, $PAGE) {
         'id' => $tutor_info->id,
         'firstname' => $tutor_info->firstname,
         'lastname' => $tutor_info->lastname,
-        'profileimageurl' => $tutor_picture->get_url($PAGE)->__toString()
+        'profileimageurl' => $tutor_picture->get_url($PAGE)->__toString(),
+        'university' => $tutor_info->institution ? $tutor_info->institution : null,
     ];
 }, $tutors);
 
@@ -142,8 +126,9 @@ $template_context = [
     ],
     'resources' => $resources,
     'canedit' => Experiences::check_permissions($experience, $USER),
+    'istutor' => Tutors::is_enrolled_tutor_in_course($USER->id, $experience->id) || Experiences::check_permissions($experience, $USER, false),
     'tutorrepourl' => $CFG->wwwroot . '/local/digitalta/pages/tutors/index.php?id=' . $experience->id,
-    'tutorslist' => $tutors,
+    'tutorslist' => array_values($tutors),
     'viewtagurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=tag&id=',
     'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id='
 ];
@@ -151,10 +136,11 @@ $template_context = [
 
 $experience_chat = Chat::get_chat_room_by_experience($id);
 if ($experience_chat) {
-    $experience_chatid = $experience_chat->id;
-    $template_context['googlemeetcall']['button'] = get_googlemeet_call_button($experience_chatid);
+    $experience_chatid =  $experience_chat->id;
+    $template_context['chatid'] = $experience_chatid;
+    $template_context['videocall']['button'] = GoogleMeetHelper::get_googlemeet_call_button($experience_chatid);
     $meeting_record = GoogleMeetHelper::get_googlemeet_record($experience_chatid);
-    $template_context['googlemeetcall']['closecall']  = $meeting_record ? $meeting_record->chatid : null;
+    $template_context['videocall']['closebutton']  = $meeting_record ? $meeting_record->chatid : null;
 }
 
 echo $OUTPUT->render_from_template('local_digitalta/experiences/view/view', $template_context);

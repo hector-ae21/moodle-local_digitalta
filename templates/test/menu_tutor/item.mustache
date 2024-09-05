@@ -8,7 +8,9 @@
     </div>
     <div class="ml-3">
       <h6 class="mb-0">{{firstname}} {{lastname}}</h6>
-      <small>{{#str}}tutoring:at_university, local_digitalta{{/str}} {{university}}</small>
+      {{#university}}
+        <small>{{#str}}tutoring:at_university, local_digitalta{{/str}} {{university}}</small>
+      {{/university}}
     </div>
   </div>
 </div>

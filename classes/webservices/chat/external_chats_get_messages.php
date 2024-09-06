@@ -76,6 +76,8 @@ class external_chats_get_messages extends external_api
                             'timecreated' => new external_value(PARAM_TEXT, 'Time Created'),
                             'timemodified' => new external_value(PARAM_INT, 'Time Modified'),
                             'is_mine' => new external_value(PARAM_BOOL, 'Is Mine'),
+                            'userfullname' => new external_value(PARAM_TEXT, 'User Full Name'),
+                            'userpicture' => new external_value(PARAM_TEXT, 'User Picture URL'),
                         ]
                     )
                 ),

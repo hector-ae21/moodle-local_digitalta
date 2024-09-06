@@ -78,8 +78,8 @@ export async function renderChat(id, hideBack = false) {
 export async function handlerMessages(messages) {
     let html = '';
     const promises = messages.map((msg) => {
-        const { message, timecreated, is_mine } = msg;
-        return renderMessage(message, timecreated, is_mine);
+        const { message, timecreated, is_mine, userfullname, userpicture} = msg;
+        return renderMessage(message, timecreated, is_mine, userfullname, userpicture);
     });
     try {
         html = (await Promise.all(promises)).join('');
@@ -145,11 +145,13 @@ function areEqualsByid(objeto1, objeto2) {
  * @param {string} text
  * @param {string} time
  * @param {boolean} mine
+ * @param {string} userfullname
+ * @param {string} userpicture
  * @returns {Promise}
  */
-export async function renderMessage(text, time, mine) {
+export async function renderMessage(text, time, mine, userfullname = '', userpicture = '') {
     const TEMPLATE = mine ? SELECTORS.TEMPLATES.MY_MESSAGE : SELECTORS.TEMPLATES.OTHER_MESSAGE;
-    return Template.render(TEMPLATE, { text, time });
+    return Template.render(TEMPLATE, { text, time, userfullname, userpicture});
 }
 
 /**

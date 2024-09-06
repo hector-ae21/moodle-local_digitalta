@@ -136,7 +136,7 @@ class Chat
      */
     public static function get_chat_messages(int $chat_room_id, int $userid = 0, ?int $limit = null, int $offset = 0): array
     {
-        global $DB, $USER;
+        global $DB, $USER, $PAGE;
 
         if($userid == 0){
             $userid = $USER->id;
@@ -150,7 +150,16 @@ class Chat
         if (!is_null($limit)) {
             $sql .= " LIMIT $limit OFFSET $offset";
         }
+
         $messages = array_values($DB->get_records_sql($sql, array($chat_room_id)));
+        $messages = array_map(function ($message) use ($DB, $PAGE) {
+            $userinfo = $DB->get_record('user', array('id' => $message->userid));
+            $message->userfullname = $userinfo->firstname . ' ' . $userinfo->lastname;
+            $userpicture = new \user_picture($userinfo);
+            $userpicture->size = 100;  // Tamaño de la imagen en píxeles (puedes cambiar esto)
+            $message->userpicture = $userpicture->get_url($PAGE)->__toString();
+            return (object) $message;
+        }, $messages);
 
         return self::prepare_messages_output($messages);
     }
@@ -173,7 +182,9 @@ class Chat
                 'message' => $message->message,
                 'timecreated' => date("H:i", strtotime($message->timecreated)),
                 'timemodified' => $message->timemodified,
-                'is_mine' => $is_mine
+                'is_mine' => $is_mine,
+                'userfullname' => $message->userfullname,
+                'userpicture' => $message->userpicture
             ];
         }
         return $output;

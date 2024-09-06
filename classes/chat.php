@@ -180,7 +180,7 @@ class Chat
                 'chatid' => $message->chatid,
                 'userid' => $message->userid,
                 'message' => $message->message,
-                'timecreated' => date("H:i", strtotime($message->timecreated)),
+                'timecreated' => $message->timecreated,
                 'timemodified' => $message->timemodified,
                 'is_mine' => $is_mine,
                 'userfullname' => $message->userfullname,

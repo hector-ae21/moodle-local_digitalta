@@ -106,9 +106,9 @@ export async function reloaderMessages() {
 export async function handlerNewOtherMessage(messages) {
     const newMessages = findDefferencies(messages, status.activeMessages);
     const promises = newMessages.map((msg) => {
-        const { message, timecreated, is_mine } = msg;
+        const { message, timecreated, is_mine, userfullname, userpicture } = msg;
         status.activeMessages.push(msg);
-        return renderMessage(message, timecreated, is_mine);
+        return renderMessage(message, timecreated, is_mine, userfullname, userpicture);
     });
     try {
         const html = (await Promise.all(promises)).join('');
@@ -137,7 +137,7 @@ function findDefferencies(arr1, arr2) {
  * @returns {boolean}
  */
 function areEqualsByid(objeto1, objeto2) {
-    return objeto1.message === objeto2.message;
+    return objeto1.message === objeto2.message && objeto1.timecreated === objeto2.timecreated;
 }
 
 /**
@@ -151,7 +151,14 @@ function areEqualsByid(objeto1, objeto2) {
  */
 export async function renderMessage(text, time, mine, userfullname = '', userpicture = '') {
     const TEMPLATE = mine ? SELECTORS.TEMPLATES.MY_MESSAGE : SELECTORS.TEMPLATES.OTHER_MESSAGE;
-    return Template.render(TEMPLATE, { text, time, userfullname, userpicture});
+    const timeInMilliseconds = time * 1000;
+    let dateString = '';
+    if (timeInMilliseconds < (Date.now() - (86400000))) {
+        dateString = new Date(timeInMilliseconds).toLocaleDateString();
+    }
+    const timeString =  new Date(time*1000).toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit' });
+    const dateTimeString = dateString ? `${dateString} ${timeString}` : timeString;
+    return Template.render(TEMPLATE, {text, time: dateTimeString, userfullname, userpicture});
 }
 
 /**
@@ -176,9 +183,13 @@ export async function handleSendMessage() {
  * @param {string} message
  */
 async function addNewMessage(message) {
-    const date = new Date().toLocaleTimeString('es-ES', { hour12: false, hour: '2-digit', minute: '2-digit' });
+    const date = Math.floor(Date.now() / 1000);
     const html = await renderMessage(message, date, true);
-    status.activeMessages.push({ message, timecreated: date, is_mine: true });
+    status.activeMessages.push({
+        message,
+        timecreated: date,
+        is_mine: true
+    });
 
     $(SELECTORS.CONTAINERS.MESSAGES).append(html);
 }

@@ -1,3 +1,10 @@
+/**
+ * Main module for tutors experience view
+ *
+ * @module     local_digitalta/tutors/experience_view/main
+ * @copyright  2024 ADSDR-FUNIBER Scepter Team
+ */
+
 import $ from "jquery";
 import {SELECTORS} from "local_digitalta/tutors/experience_view/selectors";
 import Template from "core/templates";

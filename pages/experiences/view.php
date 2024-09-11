@@ -35,7 +35,6 @@ require_once($CFG->dirroot . '/local/digitalta/locallib.php');
 
 use local_digitalta\Chat;
 use local_digitalta\Experiences;
-use local_digitalta\GoogleMeetClient;
 use local_digitalta\GoogleMeetHelper;
 use local_digitalta\Tutors;
 use local_digitalta\Resources;
@@ -125,7 +124,7 @@ $template_context = [
         'profileurl' => $CFG->wwwroot . '/local/digitalta/pages/profile/index.php?id=' . $user->id,
     ],
     'resources' => $resources,
-    'canedit' => Experiences::check_permissions($experience, $USER),
+    'canedit' => Experiences::check_permissions($experience, $USER, false),
     'istutor' => Tutors::is_enrolled_tutor_in_course($USER->id, $experience->id) || Experiences::check_permissions($experience, $USER, false),
     'tutorrepourl' => $CFG->wwwroot . '/local/digitalta/pages/tutors/index.php?id=' . $experience->id,
     'tutorslist' => array_values($tutors),

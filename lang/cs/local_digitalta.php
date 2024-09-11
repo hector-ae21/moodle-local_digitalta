@@ -332,6 +332,7 @@ $string['tutoring:request'] = 'Žádost o doučování';
 $string['tutoring:title'] = 'MOJE UČITELSTVÍ';
 $string['tutoring:back_to_chat'] = 'Zpět na chat';
 $string['tutoring:tutor_comments'] = 'Komentáře školitele';
+$string['tutoring:chat_title'] = 'Chat zkušeností';
 $string['tutoring:open_chats'] = 'Otevřené chaty';
 $string['tutoring:open_chat'] = 'Otevřít chat';
 $string['tutoring:close_chat'] = 'Zavřít chat';
@@ -340,3 +341,5 @@ $string['tutoring:videocallbutton'] = 'Zahájení hovoru Google Meet';
 $string['tutoring:joinvideocall'] = 'Připojte se k hovoru Google Meet';
 $string['tutoring:closevideocall'] = 'Těsný souboj';
 $string['tutoring:at_university'] = 'Učitel na';
+$string['tutoring:mentor_request'] = 'Nabídka mentorování';
+

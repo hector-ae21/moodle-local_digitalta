@@ -1,3 +1,10 @@
+/**
+ * Main module for tutors experience view
+ *
+ * @module     local_digitalta/chat/main
+ * @copyright  2024 ADSDR-FUNIBER Scepter Team
+ */
+
 import $ from 'jquery';
 import Template from 'core/templates';
 import Notification from 'core/notification';
@@ -5,7 +12,6 @@ import SELECTORS from 'local_digitalta/chat/selectors';
 import { chatsGetRooms, chatsSendMessage, chatsGetMessage } from 'local_digitalta/repositories/chat_repository';
 import setEventListeners from 'local_digitalta/chat/listeners';
 import Status from 'local_digitalta/chat/status';
-import tutorHandler from 'local_digitalta/tutors/experience_view/main';
 
 const status = new Status();
 
@@ -13,26 +19,28 @@ const status = new Status();
  * Create a chat in the target
  * @param {string} target
  * @param {int} experienceid
+ * @param {boolean} single
  */
-export default function createChatInTarget(target, experienceid = null) {
+export default function createChatInTarget(target, experienceid = null, single = false) {
     SELECTORS.TARGET = target;
-    initComponent(experienceid);
+    initComponent(experienceid, single);
     return;
 }
 
 /**
  * Initialize chat component
  * @param {*} experienceid
+ * @param {*} single
  */
-const initComponent = (experienceid) => {
+const initComponent = (experienceid, single) => {
     setEventListeners();
     if (experienceid) {
-        openChatFromExperience(experienceid);
-    } else {
+        openChatFromExperience(experienceid, single);
+    }
+    else {
         renderMenuChat();
     }
     setInterval(reloaderMessages, 1000);
-    tutorHandler();
 };
 
 /**
@@ -46,7 +54,25 @@ export async function renderMenuChat() {
         $(SELECTORS.TARGET).html(html);
         status.emptyActiveMessages();
         SELECTORS.OPEN_CHAT_ID = 0;
-        tutorHandler();
+        return;
+    }).fail(Notification.exception);
+}
+
+/**
+ * Open chat
+ * @param {number} id
+ * @param {boolean} hideBack
+ * Render chat
+ */
+export async function renderSingleChat(id, hideBack = false) {
+    const { messages } = await chatsGetMessage({ chatid: id });
+    SELECTORS.OPEN_CHAT_ID = id;
+    Template.render(SELECTORS.TEMPLATES.SINGLE_CHAT, {
+        hideBack
+    }).then((html) => {
+        $(SELECTORS.TARGET).html(html);
+        handlerMessages(messages);
+        status.activeMessages = messages;
         return;
     }).fail(Notification.exception);
 }
@@ -58,10 +84,10 @@ export async function renderMenuChat() {
  * Render chat
  */
 export async function renderChat(id, hideBack = false) {
-    const { messages } = await chatsGetMessage({ chatid: id });
+    const { messages, chatroom } = await chatsGetMessage({ chatid: id });
     SELECTORS.OPEN_CHAT_ID = id;
     Template.render(SELECTORS.TEMPLATES.CHAT, {
-        hideBack
+        hideBack, chatroom
     }).then((html) => {
         $(SELECTORS.TARGET).html(html);
         handlerMessages(messages);
@@ -197,10 +223,12 @@ async function addNewMessage(message) {
 /**
  * Open chat from experience
  * @param {int} experienceid
+ * @param {boolean} single
  */
-export async function openChatFromExperience(experienceid) {
+export async function openChatFromExperience(experienceid, single=true) {
     const {chatrooms} = await chatsGetRooms({experienceid});
-    renderChat(chatrooms[0].id, true);
+    // eslint-disable-next-line @babel/no-unused-expressions
+    single ? renderSingleChat(chatrooms[0].id, true) : renderChat(experienceid);
 }
 
 /**

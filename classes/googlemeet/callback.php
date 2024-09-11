@@ -54,7 +54,9 @@ $js = <<<EOD
 <html>
 <head>
     <script type="text/javascript">
-        window.opener.location.reload();
+        const urlParams = new URLSearchParams(window.opener.location.search);
+        urlParams.set('chatid', $chatid);
+        window.opener.location.search = urlParams.toString();
         $openMeetingHTML
         window.close();
     </script>

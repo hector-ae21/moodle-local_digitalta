@@ -1,11 +1,6 @@
 <div class="mb-3 h-100">
     <div class="flex d-flex mb-4 align-items-center" style="gap: .5em;">
         <h2 class="text-secondary my-0 digitalta-title">{{#str}} experience:tutoring:title, local_digitalta {{/str}}</h2>
-        {{^experience.data.status}} 
-            {{#canedit}}
-                <span id="tutoring-requested" class="badge badge-pill badge-danger" data-action="see-requests"></span>
-            {{/canedit}}
-        {{/experience.data.status}}
     </div>
     {{#canedit}}
         <div class="text-justify mb-4">
@@ -21,8 +16,6 @@
                     <a href="{{tutorrepourl}}" class="d-flex justify-content-end mb-1">{{#str}}experience:tutoring:see_all, local_digitalta{{/str}}</a>
                     <div id="search-tutors-result">
                     </div>
-
-                    <!-- TODO: Chat buttons and tutor comments -->
             {{/canedit}}
             <div class="list-group mb-2">
                 {{#tutorslist}}
@@ -59,13 +52,22 @@
                     </div>
                 {{/tutorslist}}
             </div>
+            
+            {{^canedit}}
+                {{^istutor}}
+                    <button class="btn btn-primary" id="send-tutoring-request">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        {{#str}}tutoring:mentor_request, local_digitalta{{/str}}
+                    </button>
+                {{/istutor}}
+            {{/canedit}}
         </div>
     {{/experience.data.status}}
 </div>
 {{#chatid}}
 {{#js}}
 require(['local_digitalta/chat/main'], function(Chat) {
-    Chat("#chat", {{experience.data.id}});
+    Chat("#chat", {{experience.data.id}}, true);
     });
 
     document.getElementById('start-chat').addEventListener('click', function() {

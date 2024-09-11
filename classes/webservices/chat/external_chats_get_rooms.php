@@ -41,7 +41,7 @@ class external_chats_get_rooms extends external_api
     {
         return new external_function_parameters(
             array(
-                'experienceid' => new external_value(PARAM_INT, 'experience ID' , VALUE_OPTIONAL, null),
+                'experienceid' => new external_value(PARAM_INT, 'experience ID' , VALUE_OPTIONAL),
             )
         );
     }
@@ -69,6 +69,15 @@ class external_chats_get_rooms extends external_api
                             'userid' => new external_value(PARAM_INT, 'User ID'),
                             'experienceid' => new external_value(PARAM_INT, 'Experience ID'),
                             'name' => new external_value(PARAM_TEXT, 'Name'),
+                            'users' => new external_multiple_structure(
+                                new external_single_structure(
+                                    [
+                                        'userid' => new external_value(PARAM_INT, 'User ID'),
+                                        'firstname' => new external_value(PARAM_TEXT, 'First Name'),
+                                        'lastname' => new external_value(PARAM_TEXT, 'Last Name'),
+                                    ]
+                                )
+                            ),
                             'timecreated' => new external_value(PARAM_INT, 'Time Created'),
                             'timemodified' => new external_value(PARAM_INT, 'Time Modified'),
                         ]

@@ -48,8 +48,8 @@ class external_cases_edit extends external_api
             array(
                 'id' => new external_value(PARAM_INT, 'Case ID'),
                 'title' => new external_value(PARAM_TEXT, 'Title'),
-                'description' => new external_value(PARAM_RAW, 'Description'),
                 'lang' => new external_value(PARAM_TEXT, 'Language'),
+                'description' => new external_value(PARAM_RAW, 'Description', VALUE_DEFAULT, ""),
                 'status' => new external_value(PARAM_INT, 'Status', VALUE_DEFAULT, 0),
                 'themes' => new external_multiple_structure(
                     new external_value(PARAM_INT, 'ID del elemento'), 'Themes' , VALUE_DEFAULT, []
@@ -73,7 +73,7 @@ class external_cases_edit extends external_api
      * @param  array  $tags The case tags
      * @return array  The result of the operation
      */
-    public static function cases_edit($id, $title, $description = "", $lang, $status = 0, $themes = [], $tags = [])
+    public static function cases_edit($id, $title, $lang, $description = "", $status = 0, $themes = [], $tags = [])
     {
         if (!Cases::get_case($id, false)) {
             return ['result' => false, 'error' => 'Case not found'];

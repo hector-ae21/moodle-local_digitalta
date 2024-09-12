@@ -35,6 +35,7 @@ $PAGE->set_url(new moodle_url('/local/digitalta/pages/tutors/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($pagetitle);
 $PAGE->requires->js_call_amd('local_digitalta/tutors/main', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/tutors/experience_view/main', 'init');
 
 echo $OUTPUT->header();
 

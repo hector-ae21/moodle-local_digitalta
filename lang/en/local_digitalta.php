@@ -349,3 +349,5 @@ $string['tutoring:joinvideocall'] = 'Join Google Meet call';
 $string['tutoring:closevideocall'] = 'Close call';
 $string['tutoring:at_university'] = 'Teacher at';
 $string['tutoring:mentor_request'] = 'Offer mentoring';
+$string['tutoring:cancel_mentor_request'] = 'Cancel mentoring request';
+$string['experience:tutoring:mentor_request_title'] = 'Mentoring Requests';

@@ -342,4 +342,5 @@ $string['tutoring:joinvideocall'] = 'Připojte se k hovoru Google Meet';
 $string['tutoring:closevideocall'] = 'Těsný souboj';
 $string['tutoring:at_university'] = 'Učitel na';
 $string['tutoring:mentor_request'] = 'Nabídka mentorování';
-
+$string['tutoring:cancel_mentor_request'] = 'Zrušit žádost o mentorství';
+$string['experience:tutoring:mentor_request_title'] = 'Žádosti o mentorství';

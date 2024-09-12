@@ -52,6 +52,7 @@ $PAGE->set_context(context_system::instance());
 $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
 $PAGE->requires->js_call_amd('local_digitalta/experiences/main', 'init');
 $PAGE->requires->js_call_amd('local_digitalta/tutoring/google-meet', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/tutors/main', 'init');
 
 // Get the experience
 if (!$experience = Experiences::get_experience($id)) {
@@ -74,6 +75,8 @@ $PAGE->set_title($experience->title);
 $user = get_complete_user_data('id', $experience->userid);
 $user_picture = new user_picture($user);
 $user_picture->size = 101;
+
+$isownexperience = Experiences::check_permissions($experience, $USER, include_admin: false);
 
 // Get the resources
 $resources = [];
@@ -104,6 +107,34 @@ $tutors = array_map(function ($tutor) use ($DB, $PAGE) {
     ];
 }, $tutors);
 
+$mentoring_tutor_request = null;
+$mentors_from_requests = null;
+
+if($isownexperience){
+    $mentors_requests = Tutors::requests_get_by_experience($experience->id, 2);
+    $mentors_from_requests = [];
+    foreach($mentors_requests as $mentor_request){
+        $mentorinfo = Tutors::get_tutor($mentor_request->tutorid);
+        $mentor = new stdClass();
+        $mentor->id = $mentorinfo->id;
+        $mentor->name = $mentorinfo->firstname . " " . $mentorinfo->lastname;
+        $mentor->profileimage = new user_picture($mentorinfo);
+        $mentor->profileimage->size = 101;
+        $mentor->profileimage = $mentor->profileimage->get_url($PAGE)->__toString();
+        $mentor->university = $mentorinfo->institution ?? $mentorinfo->institution;
+        $mentors_from_requests[] = $mentor;
+    }
+}
+else {
+    if (!in_array($USER->id, array_column($tutors, 'id'))) {
+        $mentoring_tutor_request = Tutors::requests_get_by_tutor_experience($USER->id, $experience->id);
+        if ($mentoring_tutor_request) {
+            $mentoring_tutor_request = $mentoring_tutor_request[0];
+        }
+    }
+}
+
+
 echo $OUTPUT->header();
 
 (new TinyEditorHandler)->get_config_editor(['maxfiles' => 1]);
@@ -124,12 +155,14 @@ $template_context = [
         'profileurl' => $CFG->wwwroot . '/local/digitalta/pages/profile/index.php?id=' . $user->id,
     ],
     'resources' => $resources,
-    'canedit' => Experiences::check_permissions($experience, $USER, false),
+    'canedit' => $isownexperience,
     'istutor' => Tutors::is_enrolled_tutor_in_course($USER->id, $experience->id) || Experiences::check_permissions($experience, $USER, false),
     'tutorrepourl' => $CFG->wwwroot . '/local/digitalta/pages/tutors/index.php?id=' . $experience->id,
     'tutorslist' => array_values($tutors),
     'viewtagurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=tag&id=',
-    'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id='
+    'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id=',
+    'mentoringrequest' => $mentoring_tutor_request,
+    'mentors_from_requests' => $mentors_from_requests,
 ];
 //$template_context = FilterUtils::apply_filters($template_context);
 

@@ -11,8 +11,11 @@ namespace local_digitalta;
 
 require_once($CFG->dirroot . '/local/digitalta/classes/chat.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/tutoring_status.php');
 
 use local_digitalta\Chat;
+use local_digitalta\Experiences;
+use local_digitalta\TutoringStatus;
 
 class Tutors
 {
@@ -64,13 +67,13 @@ class Tutors
      * 
      * @return bool|object The tutor request object.
      */
-    public static function send_tutor_request(int $tutorid, int $experienceid): bool|object
+    public static function send_tutor_request(int $tutorid, int $experienceid, bool $experienceRequest): bool|object
     {
         global $DB;
         $data = new \stdClass();
         $data->tutorid = $tutorid;
         $data->experienceid = $experienceid;
-        $data->status = 0;
+        $data->status = $experienceRequest ? TutoringStatus::PENDING_EXPERIENCE_REQUEST : TutoringStatus::PENDING_TUTOR_REQUEST;
         $data->timecreated = time();
         $data->timemodefied = time();
         if (!$data->id = $DB->insert_record(self::$requests_table, $data)) {
@@ -104,6 +107,12 @@ class Tutors
     {
         global $DB;
         return array_values($DB->get_records(self::$requests_table, ['experienceid' => $experienceid, 'status' => $status]));
+    }
+
+    public static function requests_get_by_tutor_experience(int $tutorid, int $experienceid, int $status = 2): array
+    {
+        global $DB;
+        return array_values($DB->get_records(self::$requests_table, ['tutorid' => $tutorid, 'experienceid' => $experienceid, 'status' => $status]));
     }
 
     /**
@@ -146,7 +155,7 @@ class Tutors
         Chat::chats_add_user_to_room($chat->id, $experience->userid);
         Chat::chats_add_user_to_room($chat->id, $request->tutorid);
 
-        return self::change_tutor_request_status($requestid, 1);
+        return self::change_tutor_request_status($requestid, TutoringStatus::ACCEPTED);
     }
 
     /**

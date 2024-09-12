@@ -16,6 +16,16 @@
                     <a href="{{tutorrepourl}}" class="d-flex justify-content-end mb-1">{{#str}}experience:tutoring:see_all, local_digitalta{{/str}}</a>
                     <div id="search-tutors-result">
                     </div>
+                    {{#mentors_from_requests.0}}
+                    <div class="flex d-flex mb-4 align-items-center" style="gap: .5em;"></div>
+                        <h2 class="text-secondary my-0 digitalta-title">{{#str}} experience:tutoring:mentor_request_title, local_digitalta {{/str}}</h2>
+                    </div>
+                    {{/mentors_from_requests.0}}
+                    <div class="text-justify mb-4">
+                        {{#mentors_from_requests}}
+                            {{>local_digitalta/test/menu_tutor/item-mentor-request}}
+                        {{/mentors_from_requests}}
+                    </div>
             {{/canedit}}
             <div class="list-group mb-2">
                 {{#tutorslist}}
@@ -55,10 +65,18 @@
             
             {{^canedit}}
                 {{^istutor}}
-                    <button class="btn btn-primary" id="send-tutoring-request">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                        {{#str}}tutoring:mentor_request, local_digitalta{{/str}}
-                    </button>
+                    {{#mentoringrequest}}
+                        <button class="btn btn-danger" id="cancel-tutoring-request" data-experienceid="{{experience.data.id}}">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            {{#str}}tutoring:cancel_mentor_request, local_digitalta{{/str}}
+                        </button>
+                    {{/mentoringrequest}}
+                    {{^mentoringrequest}}
+                        <button class="btn btn-primary" id="send-tutoring-request" data-experienceid="{{experience.data.id}}">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            {{#str}}tutoring:mentor_request, local_digitalta{{/str}}
+                        </button>
+                    {{/mentoringrequest}}
                 {{/istutor}}
             {{/canedit}}
         </div>

@@ -40,10 +40,10 @@ export const tutoringTutorsGet = async (args) => {
  * @param {Object} args Arguments send to the webservice.
  * @return {Promise} Resolve with warnings.
  */
-export const tutoringRequestsGet = args => {
+export const tutoringRequestsGet = (args) => {
   const request = {
-      methodname: 'local_digitalta_tutoring_requests_get',
-      args: args,
+    methodname: "local_digitalta_tutoring_requests_get",
+    args: args,
   };
   return Ajax.call([request])[0];
 };
@@ -57,7 +57,7 @@ export const tutoringRequestsGet = args => {
  * @param {object} args Arguments send to the webservice.
  * @return {Promise} Resolve with tutors.
  */
-export const tutoringRequestsAdd = async(args) => {
+export const tutoringRequestsAdd = async (args) => {
   const request = {
     methodname: "local_digitalta_tutoring_requests_add",
     args: args,
@@ -74,7 +74,7 @@ export const tutoringRequestsAdd = async(args) => {
  * @param {object} args Arguments send to the webservice.
  * @return {Promise} Resolve with tutors.
  */
-export const tutoringRequestsRemove = async(args) => {
+export const tutoringRequestsRemove = async (args) => {
   const request = {
     methodname: "local_digitalta_tutoring_requests_remove",
     args: args,
@@ -91,7 +91,7 @@ export const tutoringRequestsRemove = async(args) => {
  * @param {object} args Arguments send to the webservice.
  * @return {Promise} Resolve with tutors.
  */
-export const tutoringRequestsAccept = async(args) => {
+export const tutoringRequestsAccept = async (args) => {
   const request = {
     methodname: "local_digitalta_tutoring_requests_accept",
     args: args,

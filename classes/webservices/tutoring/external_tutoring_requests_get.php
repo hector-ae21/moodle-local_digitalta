@@ -43,11 +43,12 @@ class external_tutoring_requests_get extends external_api
         return new external_function_parameters(
             [
                 'experienceid' => new external_value(PARAM_INT, 'Experience id', VALUE_DEFAULT, 0),
+                'tutorid' => new external_value(PARAM_INT, 'Tutor id', VALUE_DEFAULT, null)
             ]
         );
     }
 
-    public static function requests_get($experienceid = 0)
+    public static function requests_get($experienceid = 0, $tutorid = null)
     {
         global $DB, $PAGE, $USER;
         $PAGE->set_context(context_system::instance());

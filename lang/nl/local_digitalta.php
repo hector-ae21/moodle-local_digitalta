@@ -342,3 +342,5 @@ $string['tutoring:joinvideocall'] = 'Neem deel aan Google Ontmoet gesprek';
 $string['tutoring:closevideocall'] = 'Bijna raak';
 $string['tutoring:at_university'] = 'Leraar bij';
 $string['tutoring:mentor_request'] = 'Mentorschap aanbieden';
+$string['tutoring:cancel_mentor_request'] = 'Mentorschapsverzoek annuleren';
+$string['experience:tutoring:mentor_request_title'] = 'Mentorschapsverzoeken';

@@ -10,8 +10,13 @@
 namespace local_digitalta;
 
 require_once($CFG->dirroot . '/local/digitalta/classes/chat.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/tutoring_status.php');
 
 use local_digitalta\Chat;
+use local_digitalta\Experiences;
+use local_digitalta\TutoringStatus;
+use stdClass;
 
 class Tutors
 {
@@ -63,18 +68,33 @@ class Tutors
      * 
      * @return bool|object The tutor request object.
      */
-    public static function send_tutor_request(int $tutorid, int $experienceid): bool|object
+    public static function send_tutor_request(int $tutorid, int $experienceid, bool $experienceRequest): bool|object
     {
-        global $DB;
+        global $DB, $USER;
         $data = new \stdClass();
         $data->tutorid = $tutorid;
         $data->experienceid = $experienceid;
-        $data->status = 0;
+        $data->status = $experienceRequest ? TutoringStatus::PENDING_EXPERIENCE_REQUEST : TutoringStatus::PENDING_TUTOR_REQUEST;
         $data->timecreated = time();
         $data->timemodefied = time();
         if (!$data->id = $DB->insert_record(self::$requests_table, $data)) {
             return false;
         }
+
+    $tutor = $DB->get_record('user', array('id' => $tutorid), '*', MUST_EXIST);
+    $subject = get_string('newtutorrequestsubject', 'local_yourpluginname');
+    $messagehtml = get_string('tutorrequestbody', 'local_yourpluginname', (object)[
+        'experienceid' => $experienceid
+    ]);
+    $messagehtml .= '<br>' . get_string('tutorrequestrsender', 'local_yourpluginname', (object)[
+        'username' => $USER->username
+    ]);
+    $messagehtml .= '<br>' . get_string('tutorrequesttime', 'local_yourpluginname', (object)[
+        'requesttime' => userdate(time())
+    ]);
+
+    email_to_user($tutor, $USER, $subject, strip_tags($messagehtml), $messagehtml);
+
         return $data;
     }
 
@@ -103,6 +123,12 @@ class Tutors
     {
         global $DB;
         return array_values($DB->get_records(self::$requests_table, ['experienceid' => $experienceid, 'status' => $status]));
+    }
+
+    public static function request_get_by_tutor_experience(int $tutorid, int $experienceid, int $status = 2): stdClass | bool
+    {
+        global $DB;
+        return $DB->get_record(self::$requests_table, ['tutorid' => $tutorid, 'experienceid' => $experienceid, 'status' => $status]);
     }
 
     /**
@@ -140,10 +166,12 @@ class Tutors
             $chat = new \stdClass();
             $chat->id = Chat::create_chat_room($request->experienceid);
         }
-        
+        $experience = Experiences::get_experience($request->experienceid);
+
+        Chat::chats_add_user_to_room($chat->id, $experience->userid);
         Chat::chats_add_user_to_room($chat->id, $request->tutorid);
 
-        return self::change_tutor_request_status($requestid, 1);
+        return self::change_tutor_request_status($requestid, TutoringStatus::ACCEPTED);
     }
 
     /**
@@ -167,10 +195,7 @@ class Tutors
     {
         global $DB;
         $data = $DB->get_record(self::$requests_table, ['tutorid' => $tutorid, 'experienceid' => $experienceid , 'status' => $status]);
-        if (!$data) {
-            return false;
-        }
-        return $data->status == 0;
+        return !!$data;
     }
 
     /**

@@ -245,6 +245,7 @@ $string['tutors:description'] = '<p>Kom in contact met ervaren <span class="digi
 // Profile
 $string['profile:title']  = 'Profiel';
 $string['profile:header'] = 'Profiel';
+$string['profile:editschedule']   = 'Bewerk beschikbaarheid';
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];
@@ -332,9 +333,25 @@ $string['tutoring:request'] = 'Aanvraag bijles';
 $string['tutoring:title'] = 'MIJN BIJLESSEN';
 $string['tutoring:back_to_chat'] = 'Terug naar chat';
 $string['tutoring:tutor_comments'] = 'Opmerkingen mentor';
+$string['tutoring:chat_title'] = 'Ervaringen chat';
 $string['tutoring:open_chats'] = 'Open chats';
+$string['tutoring:open_chat'] = 'Open chat';
+$string['tutoring:close_chat'] = 'Sluit chat';
 $string['tutoring:view_tooltip'] = 'Bekijk tooltip';
 $string['tutoring:videocallbutton'] = 'Google Ontmoet gesprek starten';
 $string['tutoring:joinvideocall'] = 'Neem deel aan Google Ontmoet gesprek';
 $string['tutoring:closevideocall'] = 'Bijna raak';
 $string['tutoring:at_university'] = 'Leraar bij';
+$string['tutoring:mentor_request'] = 'Mentorschap aanbieden';
+$string['tutoring:cancel_mentor_request'] = 'Mentorschapsverzoek annuleren';
+$string['experience:tutoring:mentor_request_title'] = 'Mentorschapsverzoeken';
+$string['experience:tutoring:mentor_request_info'] = 'Je bent gevraagd om deze ervaring te begeleiden.';
+$string['tutoring:accept_mentor_request'] = 'Mentorschapsverzoek accepteren';
+$string['tutoring:reject_mentor_request'] = 'Mentorschapsverzoek afwijzen';
+$string['tutoring:experience_mentoring_request_title'] = 'Ervaringen Mentorschapsverzoeken';
+
+// Dutch translations for tutoring emails
+$string['tutoring:newtutorrequestsubject'] = 'Nieuw verzoek om bijles';
+$string['tutoring:tutorrequestbody'] = 'Je hebt een nieuw verzoek om bijles ontvangen voor de ervaring met ID: {$a->experienceid}.';
+$string['tutoring:tutorrequestrsender'] = 'Aangevraagd door: {$a->username}';
+$string['tutoring:tutorrequesttime'] = 'Datum van aanvraag: {$a->requesttime}';

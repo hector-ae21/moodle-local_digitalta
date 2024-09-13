@@ -1,4 +1,3 @@
-{{#tutors}}
 <div class="list-tutoring-group-item d-flex justify-content-between align-items-center mb-2">
   <div class="d-flex align-items-center">
     <div class="position-relative">
@@ -7,22 +6,19 @@
     <div class="ml-3">
       <h6 class="mb-0">{{name}}</h6>
       {{#university}}
-        <small>{{#str}}tutoring:at_university, local_digitalta{{/str}} {{university}}</small>
+      <small>{{#str}}tutoring:at_university, local_digitalta{{/str}} {{university}}</small>
       {{/university}}
     </div>
   </div>
   <div>
-  {{^isEnrolled}}
-    <button class="btn btn-outline-primary mb-1 send-tutor-request" data-tutorid="{{id}}" title="Send request" id="send-tutor-request">
+    <button class="btn btn-outline-primary mb-1 send-tutor-request" data-requestid="{{requestid}}"
+      title="{{#str}}tutoring:accept_mentor_request, local_digitalta{{/str}}" id="accept-tutor-request">
       <i class="fa fa-user-plus"></i>
     </button>
-   {{/isEnrolled}}
-  
-  {{#isEnrolled}}
-    <button class="btn btn-outline-danger mb-1 remove-tutor-request" data-tutorid="{{id}}" title="Cancel sent request">
+
+    <button class="btn btn-outline-danger mb-1 remove-tutor-request" data-requestid="{{requestid}}"
+      title="{{#str}}tutoring:reject_mentor_request, local_digitalta{{/str}}" id="reject-tutor-request">
       <i class="fa fa-user-times"></i>
     </button>
-  {{/isEnrolled}}
   </div>
 </div>
-{{/tutors}}

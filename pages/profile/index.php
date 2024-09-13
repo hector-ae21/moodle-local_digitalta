@@ -89,7 +89,8 @@ $templatecontext = [
         'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/view.php?id=',
     ],
     'viewtagurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=tag&id=',
-    'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id='
+    'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id=',
+    'modschedulerurl' => $CFG->wwwroot . '/mod/scheduler/view.php?id=' . get_config('local_digitalta', 'mod_scheduler_id')
 ];
 
 $templatecontext = FilterUtils::apply_filters($templatecontext);

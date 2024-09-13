@@ -1,6 +1,7 @@
 import $ from "jquery";
 import SELECTORS from "local_digitalta/chat/selectors";
-import {renderChat, renderMenuChat, handleSendMessage, renderMenuTutor} from "local_digitalta/chat/main";
+import {renderMenuChat, handleSendMessage, renderMenuTutor} from "local_digitalta/chat/main";
+import { renderChat } from "./main";
 
 /**
  * Set event listeners for the module.
@@ -15,6 +16,11 @@ export default function setEventListeners() {
 
     // Back to menu
     $(document).on("click", SELECTORS.BUTTONS.BACK_MENU, function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('chatid')) {
+            urlParams.delete('chatid');
+            window.location.search = urlParams;
+        }
         renderMenuChat();
     });
 
@@ -26,5 +32,11 @@ export default function setEventListeners() {
     // Reply message
     $(document).on("click", SELECTORS.BUTTONS.REPLY, function() {
         handleSendMessage();
+    });
+
+    $(document).on("keydown", SELECTORS.INPUTS.CHAT_REPLY, function(e) {
+        if (e.key === "Enter" && this.value.trim() !== "") {
+            handleSendMessage();
+        }
     });
 }

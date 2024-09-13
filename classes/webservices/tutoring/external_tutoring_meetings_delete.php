@@ -13,7 +13,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/local/digitalta/classes/googlemeet/helper.php');
 
-use local_digitalta\helper;
+use local_digitalta\GoogleMeetHelper;
 
 class external_tutoring_meetings_delete extends external_api
 {
@@ -30,7 +30,7 @@ class external_tutoring_meetings_delete extends external_api
     public static function meetings_delete($chatid)
     {
         try {
-            $deleted_meeting = helper::delete_googlemeet_record($chatid);
+            $deleted_meeting = GoogleMeetHelper::delete_googlemeet_record($chatid);
             return $deleted_meeting;
         } catch (\Exception $e) {
             throw new moodle_exception('error_deleting_meeting', 'local_digitalta', null, $e->getMessage());

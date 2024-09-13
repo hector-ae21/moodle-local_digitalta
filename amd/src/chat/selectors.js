@@ -7,7 +7,8 @@ const SELECTORS = {
     OPEN_CHAT_ID: 0,
     TEMPLATES: {
         "MENU_CHAT": "local_digitalta/test/menu_chat/index",
-        "CHAT": "local_digitalta/test/chat/index",
+        "SINGLE_CHAT": "local_digitalta/test/chat/single-chat",
+        "CHAT": "local_digitalta/test/chat/chat",
         "MY_MESSAGE": "local_digitalta/test/chat/message_my",
         "OTHER_MESSAGE": "local_digitalta/test/chat/message_other",
         "MENU_MENTOR": "local_digitalta/test/menu_tutor/index",

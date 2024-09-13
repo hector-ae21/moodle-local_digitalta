@@ -1,13 +1,20 @@
+/**
+ * Main module for tutors experience view
+ *
+ * @module     local_digitalta/tutors/experience_view/main
+ * @copyright  2024 ADSDR-FUNIBER Scepter Team
+ */
+
 import $ from "jquery";
-import {SELECTORS} from "local_digitalta/tutors/experience_view/selectors";
+import { SELECTORS } from "local_digitalta/tutors/experience_view/selectors";
 import Template from "core/templates";
 import Notification from "core/notification";
-import {tutoringRequestsGet} from "local_digitalta/repositories/tutoring_repository";
-import {get_string} from "core/str";
-import {setEventListeners} from "local_digitalta/tutors/experience_view/listeners";
+import { tutoringRequestsGet } from "local_digitalta/repositories/tutoring_repository";
+import { get_string } from "core/str";
+import { setEventListeners } from "local_digitalta/tutors/experience_view/listeners";
 
 const renderRequestsButton = async () => {
-  const experienceid = $(SELECTORS.INPUT.EXPERIENCE_ID).val();
+  const experienceid = 0;
   const data = await tutoringRequestsGet({
     experienceid: experienceid,
   });
@@ -27,8 +34,8 @@ const renderRequestsButton = async () => {
  * @param {boolean} hideBack
  * @returns
  */
-export const openTutorsRequests = async(hideBack = false) => {
-  const experienceid = $(SELECTORS.INPUT.EXPERIENCE_ID).val() || 0;
+export const openTutorsRequests = async (hideBack = false) => {
+  const experienceid = 0;
   const data = await tutoringRequestsGet({
     experienceid: experienceid,
   });
@@ -42,12 +49,10 @@ export const openTutorsRequests = async(hideBack = false) => {
   return;
 };
 
-
-
 /**
  * @module tutors/experience_view/main
  */
-export default function init() {
+export const init = () => {
   setEventListeners();
   renderRequestsButton();
-}
+};

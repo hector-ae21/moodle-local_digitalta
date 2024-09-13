@@ -1,7 +1,6 @@
 <div id="chat"><div>
-
 {{#js}}
    require(['local_digitalta/chat/main'], function(Chat) {
-       Chat("#chat")
+       Chat("#chat", {{chatid}});
     });
 {{/js}}

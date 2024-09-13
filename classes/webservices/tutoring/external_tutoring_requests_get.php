@@ -43,18 +43,19 @@ class external_tutoring_requests_get extends external_api
         return new external_function_parameters(
             [
                 'experienceid' => new external_value(PARAM_INT, 'Experience id', VALUE_DEFAULT, 0),
+                'tutorid' => new external_value(PARAM_INT, 'Tutor id', VALUE_DEFAULT, null)
             ]
         );
     }
 
-    public static function requests_get($experienceid = 0)
+    public static function requests_get($experienceid = 0, $tutorid = null, $status = 0)
     {
         global $DB, $PAGE, $USER;
-        $PAGE->set_context(context_system::instance());
-        if($experienceid == 0) {
+        $PAGE->context ?? $PAGE->set_context(context_system::instance());
+        if ($experienceid == 0) {
             $tutors = Tutors::requests_get_by_tutor($USER->id);
-        }else{
-            $tutors = Tutors::requests_get_by_experience($experienceid);
+        } else {
+            $tutors = Tutors::requests_get_by_experience($experienceid, $status);
         }
 
         if (count($tutors) == 0) {
@@ -73,7 +74,8 @@ class external_tutoring_requests_get extends external_api
                 'userid' => $tutor_info->id,
                 'firstname' => $tutor_info->firstname,
                 'lastname' => $tutor_info->lastname,
-                'profileimageurl' => $tutor_picture->get_url($PAGE)->__toString()
+                'profileimageurl' => $tutor_picture->get_url($PAGE)->__toString(),
+                'institution' => $tutor_info->institution ?? '',
             ];
         }, $tutors);
         return [

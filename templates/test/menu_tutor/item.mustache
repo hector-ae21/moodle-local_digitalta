@@ -2,13 +2,15 @@
   <div class="d-flex align-items-center">
     <div class="position-relative">
       <img src="{{profileimageurl}}" class="tutoring_profile_image rounded-circle" />
-      <button class="btn btn-tutoring-tutor-calendar position-absolute" >
+      <a class="btn btn-tutoring-tutor-calendar position-absolute" href="{{modschedulerurl}}&experienceid={{experience.data.id}}">
         <i class="fa fa-calendar"></i>
-      </button>
+      </a>
     </div>
     <div class="ml-3">
       <h6 class="mb-0">{{firstname}} {{lastname}}</h6>
-      <small>{{#str}}tutoring:at_university, local_digitalta{{/str}} {{university}}</small>
+      {{#university}}
+        <small>{{#str}}tutoring:at_university, local_digitalta{{/str}} {{university}}</small>
+      {{/university}}
     </div>
   </div>
 </div>

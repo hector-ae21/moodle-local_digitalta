@@ -1,38 +1,117 @@
 <div class="mb-3 h-100">
     <div class="flex d-flex mb-4 align-items-center" style="gap: .5em;">
         <h2 class="text-secondary my-0 digitalta-title">{{#str}} experience:tutoring:title, local_digitalta {{/str}}</h2>
-        {{^experience.data.status}} 
-            {{#canedit}}
-                <span id="tutoring-requested" class="badge badge-pill badge-danger" data-action="see-requests"></span>
-            {{/canedit}}
-        {{/experience.data.status}}
     </div>
     {{#canedit}}
         <div class="text-justify mb-4">
             <p>{{#str}} experience:tutoring:description, local_digitalta {{/str}}</p>
         </div>
     {{/canedit}}
-    {{^experience.data.status}} 
-        {{#canedit}}
-            <div class="text-justify mb-4">
-                <div class="input-group mb-1">
-                    <input type="text" class="search-field__input" id="search-tutors-input" placeholder="{{#str}}experience:tutoring:placeholder, local_digitalta{{/str}}" aria-label="Search user" />
+    {{^experience.data.status}}
+        <div class="text-justify mb-4">
+            {{#canedit}}
+                    <div class="input-group mb-1">
+                        <input type="text" class="search-field__input" id="search-tutors-input" placeholder="{{#str}}experience:tutoring:placeholder, local_digitalta{{/str}}" aria-label="Search user" />
+                    </div>
+                    <a href="{{tutorrepourl}}" class="d-flex justify-content-end mb-1">{{#str}}experience:tutoring:see_all, local_digitalta{{/str}}</a>
+                    <div id="search-tutors-result"></div>
+            {{/canedit}}
+            <div class="list-group mb-2">
+                {{#tutorslist}}
+                    {{> local_digitalta/test/menu_tutor/item}}
+                {{/tutorslist}}
+
+                {{#istutor}}
+                <div id="socialize-container">
+                    <div class="socialize-button">
+                        {{#chatid}}
+                            <button class="btn btn-chat" id="start-chat">
+                                <i class="fa fa-paper-plane open-icon"></i>
+                                <i class="fa fa-times-circle close-icon"></i>
+                                <span class="open-text">{{#str}} tutoring:open_chat, local_digitalta {{/str}}</span>
+                                <span class="close-text">{{#str}} tutoring:close_chat, local_digitalta {{/str}}</span>
+                            </button>
+                        {{/chatid}}
+                        {{#videocall}}
+                            <div class="d-inline-block">
+                                {{{button}}}
+                                {{#closebutton}}
+                                    <button class="btn btn-danger" id="close-video-meeting" data-chatid="{{.}}">Close Call</button>
+                                {{/closebutton}}
+                            </div>
+                        {{/videocall}}
+                    </div>
+                    <div id="chat" class="d-none"><div>
                 </div>
-                <a href="{{tutorrepourl}}" class="d-flex justify-content-end mb-1">{{#str}}experience:tutoring:see_all, local_digitalta{{/str}}</a>
-                <div id="search-tutors-result">
-                </div>
-                <div class="list-group mb-2">
-                    {{#tutorslist}}
-                        <!-- TODO: Tutor list -->
-                    {{/tutorslist}}
-                    {{^tutorslist}}
-                        <div class="text-center">
-                            <h6>{{#str}}experience:tutoring:notutors, local_digitalta{{/str}}</h6>
-                        </div>
-                    {{/tutorslist}}
-                </div>
-                <!-- TODO: Chat buttons and tutor comments -->
+                {{/istutor}}
+
+                {{^tutorslist}}
+                    <div class="text-center">
+                        <h6>{{#str}}experience:tutoring:notutors, local_digitalta{{/str}}</h6>
+                    </div>
+                {{/tutorslist}}
             </div>
-        {{/canedit}}
+
+            {{#canedit}}
+                {{#mentors_from_requests.0}}
+                <div class="flex d-flex my-4 align-items-center" style="gap: .5em;">
+                    <h2 class="text-secondary my-0 digitalta-title">{{#str}} experience:tutoring:mentor_request_title, local_digitalta {{/str}}</h2>
+                </div>
+                {{/mentors_from_requests.0}}
+                <div class="text-justify mb-4">
+                    {{#mentors_from_requests}}
+                        {{>local_digitalta/test/menu_tutor/item-mentor-request}}
+                    {{/mentors_from_requests}}
+                </div>
+            {{/canedit}}
+            
+            {{^canedit}}
+                {{^istutor}}
+                    {{#mentoringrequest}}
+                        {{#isMentorRequest}}
+                            <button class="btn btn-danger" id="cancel-tutoring-request">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                {{#str}}tutoring:cancel_mentor_request, local_digitalta{{/str}}
+                            </button>
+                        {{/isMentorRequest}}
+                        {{^isMentorRequest}}
+                            <div class="flex d-flex mb-4 align-items-center" style="gap: .5em;">
+                                <h2 class="text-secondary my-0 digitalta-title">{{#str}} experience:tutoring:mentor_request_title, local_digitalta {{/str}}</h2>
+                            </div>
+                            <div class="text-justify mb-4">
+                                <p>{{#str}}experience:tutoring:mentor_request_info, local_digitalta{{/str}}</p>
+                            </div>
+                            <button class="btn btn-primary" id="accept-tutor-request" data-requestid="{{request.id}}">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                                {{#str}}tutoring:accept_mentor_request, local_digitalta{{/str}}
+                            </button>
+                            <button class="btn btn-danger" id="reject-tutor-request" data-requestid="{{request.id}}">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                {{#str}}tutoring:reject_mentor_request, local_digitalta{{/str}}
+                            </button>
+                        {{/isMentorRequest}}
+                        
+                    {{/mentoringrequest}}
+                    {{^mentoringrequest}}
+                        <button class="btn btn-primary" id="send-tutoring-request">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            {{#str}}tutoring:mentor_request, local_digitalta{{/str}}
+                        </button>
+                    {{/mentoringrequest}}
+                {{/istutor}}
+            {{/canedit}}
+        </div>
     {{/experience.data.status}}
 </div>
+{{#chatid}}
+{{#js}}
+require(['local_digitalta/chat/main'], function(Chat) {
+    Chat("#chat", {{experience.data.id}}, true);
+    });
+
+    document.getElementById('start-chat').addEventListener('click', function() {
+        document.getElementById('chat').classList.toggle('d-none');
+        document.getElementById('start-chat').classList.toggle('opened');
+    })
+{{/js}}
+{{/chatid}}

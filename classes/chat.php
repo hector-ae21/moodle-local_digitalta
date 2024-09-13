@@ -33,7 +33,7 @@ class Chat
     {
         global $DB;
         $chat_room = new stdClass();
-        $chat_room->experience = $experience;
+        $chat_room->experienceid = $experience;
         $chat_room->timecreated = time();
         $chat_room->timemodified = time();
         $chat_room->id = $DB->insert_record(self::$table_chat_room, $chat_room);
@@ -49,7 +49,9 @@ class Chat
     public static function get_chat_room($id): ?stdClass
     {
         global $DB;
-        return $DB->get_record(self::$table_chat_room, array('id' => $id));
+        $chatroom = $DB->get_record(self::$table_chat_room, array('id' => $id));
+        $chatroom = $chatroom ? self::set_chat_names([$chatroom])[0] : null;
+        return $chatroom;
     }
 
     /**
@@ -76,11 +78,11 @@ class Chat
     {
         global $DB;
         $chat_user = new stdClass();
-        $chat_user->chat_room_id = $chat_room_id;
-        $chat_user->user_id = $user_id;
+        $chat_user->chatid = $chat_room_id;
+        $chat_user->userid = $user_id;
         $chat_user->timecreated = time();
         $chat_user->timemodified = time();
-        if(!$chat_user->id = $DB->insert_record(self::$table_chat_users, $chat_user)){
+        if (!$DB->insert_record(self::$table_chat_users, $chat_user)) {
             return false;
         }
         return true;
@@ -109,7 +111,7 @@ class Chat
     public static function chats_add_message_to_chat_room($chat_room_id, $user_id, $message): bool
     {
         global $DB;
-        if(!self::is_user_in_chat_room($chat_room_id, $user_id)){ // Check if user is in chat room (throws exception if not
+        if (!self::is_user_in_chat_room($chat_room_id, $user_id)) { // Check if user is in chat room (throws exception if not
             throw new Exception('User is not in chat room');
         }
 
@@ -120,7 +122,7 @@ class Chat
         $chat_message->timecreated = time();
         $chat_message->timemodified = time();
         $chat_message->id = $DB->insert_record(self::$table_chat_messages, $chat_message);
-        if(!$chat_message->id){
+        if (!$chat_message->id) {
             throw new Exception('Error inserting chat message');
         }
         return true;
@@ -136,9 +138,11 @@ class Chat
      */
     public static function get_chat_messages(int $chat_room_id, int $userid = 0, ?int $limit = null, int $offset = 0): array
     {
-        global $DB, $USER;
+        global $DB, $USER, $PAGE;
 
-        if($userid == 0){
+        $PAGE->set_context(\context_system::instance());
+
+        if ($userid == 0) {
             $userid = $USER->id;
         }
 
@@ -150,7 +154,16 @@ class Chat
         if (!is_null($limit)) {
             $sql .= " LIMIT $limit OFFSET $offset";
         }
+
         $messages = array_values($DB->get_records_sql($sql, array($chat_room_id)));
+        $messages = array_map(function ($message) use ($DB, $PAGE) {
+            $userinfo = $DB->get_record('user', array('id' => $message->userid));
+            $message->userfullname = $userinfo->firstname . ' ' . $userinfo->lastname;
+            $userpicture = new \user_picture($userinfo);
+            $userpicture->size = 100;  // Tamaño de la imagen en píxeles (puedes cambiar esto)
+            $message->userpicture = $userpicture->get_url($PAGE)->__toString();
+            return (object) $message;
+        }, $messages);
 
         return self::prepare_messages_output($messages);
     }
@@ -171,9 +184,11 @@ class Chat
                 'chatid' => $message->chatid,
                 'userid' => $message->userid,
                 'message' => $message->message,
-                'timecreated' => date("H:i", strtotime($message->timecreated)),
+                'timecreated' => $message->timecreated,
                 'timemodified' => $message->timemodified,
-                'is_mine' => $is_mine
+                'is_mine' => $is_mine,
+                'userfullname' => $message->userfullname,
+                'userpicture' => $message->userpicture
             ];
         }
         return $output;
@@ -213,11 +228,11 @@ class Chat
      * @param int $experienceid Experience ID
      * @return array
      */
-    public static function chats_get_rooms($userid = null , $experienceid = null): array
+    public static function chats_get_rooms($userid = null, $experienceid = null): array
     {
         global $DB, $USER;
 
-        if(is_null($userid)){
+        if (is_null($userid)) {
             $userid = $USER->id;
         }
 
@@ -231,14 +246,14 @@ class Chat
         WHERE
             cu.userid = ?";
 
-        if($experienceid){
+        if ($experienceid) {
             $sql .= " AND cr.experienceid = ? LIMIT 1";
         }
 
 
         $chat_rooms = array_values($DB->get_records_sql($sql, array($userid, $experienceid)));
         $chat_rooms = self::set_chat_names($chat_rooms);
-        
+
         return $chat_rooms;
     }
 
@@ -250,22 +265,39 @@ class Chat
         global $DB;
         $chat_rooms_with_names = [];
         foreach ($chat_rooms as $chat_room) {
+
+            $chat_users = $DB->get_records(self::$table_chat_users, array('chatid' => $chat_room->id));
+            $chat_room->users = [];
+            foreach ($chat_users as $chat_user) {
+                $userdb = $DB->get_record('user', array('id' => $chat_user->userid));
+                $userinfo = new stdClass();
+                $userinfo->firstname = $userdb->firstname;
+                $userinfo->lastname = $userdb->lastname;
+                $userinfo->userid = $userdb->id;
+                array_push($chat_room->users, $userinfo);
+            }
+
             $chat_room->name = '';
-            if($chat_room->experienceid){
-                $experience = $DB->get_record('digitalta_experiences', array('id' => $chat_room->experienceid));   
+            if ($chat_room->experienceid) {
+                $experience = $DB->get_record('digitalta_experiences', array('id' => $chat_room->experienceid));
                 $chat_room->name = $experience->title;
-            }else{
-                $chat_users = $DB->get_records(self::$table_chat_users, array('chatid' => $chat_room->id));
-                $text = 'Chat with';
-                foreach ($chat_users as $chat_user) {
-                    $user = $DB->get_record('user', array('id' => $chat_user->userid));
-                    $text .= ' ' . $user->firstname . ' ' . $user->lastname. ',';
-                }
-                $chat_room->name = $text;
             }
             $chat_rooms_with_names[] = $chat_room;
         }
         return $chat_rooms_with_names;
     }
 
+    /**
+     * Set chat names
+     */
+    public static function delete_chat_with_experience($experienceid): void
+    {
+        global $DB;
+        $chat = $DB->get_record(self::$table_chat_room, array('experienceid' => $experienceid));
+        if ($chat) {
+            $DB->delete_records(self::$table_chat_users, array('chatid' => $chat->id));
+            $DB->delete_records(self::$table_chat_messages, array('chatid' => $chat->id));
+            $DB->delete_records(self::$table_chat_room, array('experienceid' => $experienceid));
+        }
+    }
 }

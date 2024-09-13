@@ -15,16 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version metadata for the local_digitalta plugin.
+ * Experiences class
  *
  * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace local_digitalta;
 
-$plugin->version = 2024091200;
-$plugin->requires = 2022112800;
-$plugin->component = 'local_digitalta';
-$plugin->maturity = MATURITY_ALPHA;
+class TutoringStatus
+{
+  const PENDING_TUTOR_REQUEST = 0;
+  const ACCEPTED = 1;
+
+  const PENDING_EXPERIENCE_REQUEST = 2;
+}

@@ -34,7 +34,9 @@ require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tags.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/themes.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/utils/dateutils.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/chat.php');
 
+use local_digitalta\Chat;
 use local_digitalta\Components;
 use local_digitalta\Context;
 use local_digitalta\Experience;
@@ -116,6 +118,7 @@ class Experiences
     public static function get_extra_fields(Experience $experience)
     {
         global $PAGE;
+        $PAGE->set_context(\context_system::instance());
         // Get the user data 
         $user = get_complete_user_data('id', $experience->userid);
         $user_picture = new \user_picture($user);
@@ -337,6 +340,9 @@ class Experiences
             $componentid,
             $experience->id
         );
+
+        // Delete the chat messages
+        Chat::delete_chat_with_experience($experience->id);
         // Delete the experience
         return $DB->delete_records(self::$table, ['id' => $experience->id]);
     }
@@ -372,11 +378,12 @@ class Experiences
      * @param  object $user The user object
      * @return bool   True if the user has permissions, false otherwise
      */
-    public static function check_permissions($experience, $user)
+    public static function check_permissions($experience, $user, $include_admin = true)
     {
-        if ($user->id == $experience->userid || is_siteadmin($user)) {
+        if ($include_admin && is_siteadmin($user)) {
             return true;
         }
-        return false;
+
+        return $user->id == $experience->userid;
     }
 }

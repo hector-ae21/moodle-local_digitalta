@@ -26,4 +26,15 @@
             {{> local_digitalta/tutors/dashboard/tutor-list}}
         </div>
     </section>
+    {{#mentoring_requests.0}}
+    <section>
+        <div class="flex d-flex mb-4 align-items-center" style="gap: .5em;">
+            <h2 class="text-secondary my-0 digitalta-title">{{#str}} tutoring:experience_mentoring_request_title,
+                local_digitalta {{/str}}</h2>
+        </div>
+        {{#mentoring_requests}}
+        {{> local_digitalta/tutors/dashboard/mentor-experience-request}}
+        {{/mentoring_requests}}
+    </section>
+    {{/mentoring_requests.0}}
 </div>

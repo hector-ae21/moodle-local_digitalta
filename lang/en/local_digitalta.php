@@ -252,6 +252,8 @@ $string['tutors:description'] = '<p>Connect with experienced <span class="digita
 // Profile
 $string['profile:title']  = 'Profile';
 $string['profile:header'] = 'Profile';
+$string['profile:editschedule']   = 'Edit availability';
+
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];
@@ -339,9 +341,25 @@ $string['tutoring:request'] = 'Tutoring Request';
 $string['tutoring:title'] = 'MY TUTORING';
 $string['tutoring:back_to_chat'] = 'Back to chat';
 $string['tutoring:tutor_comments'] = 'Tutor comments';
+$string['tutoring:chat_title'] = 'Experience chats';
 $string['tutoring:open_chats'] = 'Open chats';
+$string['tutoring:open_chat'] = 'Open chat';
+$string['tutoring:close_chat'] = 'Close chat';
 $string['tutoring:view_tooltip'] = 'View tooltip';
 $string['tutoring:videocallbutton'] = 'Start Google Meet call';
 $string['tutoring:joinvideocall'] = 'Join Google Meet call';
 $string['tutoring:closevideocall'] = 'Close call';
 $string['tutoring:at_university'] = 'Teacher at';
+$string['tutoring:mentor_request'] = 'Offer mentoring';
+$string['tutoring:cancel_mentor_request'] = 'Cancel mentoring request';
+$string['experience:tutoring:mentor_request_title'] = 'Mentoring Requests';
+$string['experience:tutoring:mentor_request_info'] = 'You have been asked to mentor this experience.';
+$string['tutoring:accept_mentor_request'] = 'Accept mentoring request';
+$string['tutoring:reject_mentor_request'] = 'Reject mentoring request';
+$string['tutoring:experience_mentoring_request_title'] = 'Experiences Mentoring Requests';
+
+// English translations for tutoring emails
+$string['tutoring:newtutorrequestsubject'] = 'New tutoring request';
+$string['tutoring:tutorrequestbody'] = 'You have received a new tutoring request for the experience with ID: {$a->experienceid}.';
+$string['tutoring:tutorrequestrsender'] = 'Requested by: {$a->username}';
+$string['tutoring:tutorrequesttime'] = 'Request date: {$a->requesttime}';

@@ -26,13 +26,20 @@ require_once(__DIR__ . '/../../../../config.php');
 
 require_login();
 
+$chatid = optional_param('chatid', null, PARAM_INT);
+
+global $PAGE, $OUTPUT;
+
+
 $PAGE->set_url(new moodle_url('/local/digitalta/pages/chat/index.php'));
-$PAGE->set_context(context_system::instance()) ;
-$PAGE->set_title("Tutors");
+$PAGE->set_context(\context_system::instance());
+$PAGE->set_title(get_string('tutoring:chat_title', 'local_digitalta'));
+$PAGE->requires->js_call_amd('local_digitalta/tutoring/google-meet', 'init');
 
 echo $OUTPUT->header();
 
-echo $OUTPUT->render_from_template('local_digitalta/chat/index', []);
+
+echo $OUTPUT->render_from_template('local_digitalta/chat/index', ['chatid'=>$chatid]);
 
 echo $OUTPUT->footer();
 

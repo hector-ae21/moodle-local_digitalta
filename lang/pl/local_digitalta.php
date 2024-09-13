@@ -245,6 +245,7 @@ $string['tutors:description'] = '<p>Połącz się z doświadczonymi <span class=
 // Profile
 $string['profile:title']  = 'Profil';
 $string['profile:header'] = 'Profil';
+$string['profile:editschedule']   = 'Edytuj dostępność';
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];
@@ -332,9 +333,25 @@ $string['tutoring:request'] = 'Wniosek o korepetycje';
 $string['tutoring:title'] = 'MOJE KOREPETYCJE';
 $string['tutoring:back_to_chat'] = 'Powrót do czatu';
 $string['tutoring:tutor_comments'] = 'Komentarz prowadzącego';
+$string['tutoring:chat_title'] = 'Czat doświadczeń';
 $string['tutoring:open_chats'] = 'Otwarte czaty';
+$string['tutoring:open_chat'] = 'Otwórz czat';
+$string['tutoring:close_chat'] = 'Zamknij czat';
 $string['tutoring:view_tooltip'] = 'Wyświetl etykietę narzędzia';
 $string['tutoring:videocallbutton'] = 'Rozpocznij połączenie Google Meet';
 $string['tutoring:joinvideocall'] = 'Dołącz do rozmowy Google Meet';
 $string['tutoring:closevideocall'] = 'Niewiele brakowało';
 $string['tutoring:at_university'] = 'Nauczyciel w';
+$string['tutoring:mentor_request'] = 'Zaoferuj mentorowanie';
+$string['tutoring:cancel_mentor_request'] = 'Anuluj prośbę o mentorowanie';
+$string['experience:tutoring:mentor_request_title'] = 'Prośby o mentorowanie';
+$string['experience:tutoring:mentor_request_info'] = 'Poproszono Cię o mentorowanie tego doświadczenia.';
+$string['tutoring:accept_mentor_request'] = 'Akceptuj prośbę o mentorowanie';
+$string['tutoring:reject_mentor_request'] = 'Odrzuć prośbę o mentorowanie';
+$string['tutoring:experience_mentoring_request_title'] = 'Prośby o mentorowanie doświadczeń';
+
+// Polish translations for tutoring emails
+$string['tutoring:newtutorrequestsubject'] = 'Nowa prośba o korepetycje';
+$string['tutoring:tutorrequestbody'] = 'Otrzymałeś nowe zgłoszenie na korepetycje dotyczące doświadczenia o ID: {$a->experienceid}.';
+$string['tutoring:tutorrequestrsender'] = 'Zgłoszone przez: {$a->username}';
+$string['tutoring:tutorrequesttime'] = 'Data zgłoszenia: {$a->requesttime}';

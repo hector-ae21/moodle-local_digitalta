@@ -34,7 +34,9 @@ require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tags.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/themes.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/utils/dateutils.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/chat.php');
 
+use local_digitalta\Chat;
 use local_digitalta\Components;
 use local_digitalta\Context;
 use local_digitalta\Experience;
@@ -338,6 +340,9 @@ class Experiences
             $componentid,
             $experience->id
         );
+
+        // Delete the chat messages
+        Chat::delete_chat_with_experience($experience->id);
         // Delete the experience
         return $DB->delete_records(self::$table, ['id' => $experience->id]);
     }

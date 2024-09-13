@@ -349,3 +349,9 @@ $string['experience:tutoring:mentor_request_info'] = 'Byli jste požádáni, aby
 $string['tutoring:accept_mentor_request'] = 'Přijmout žádost o mentorství';
 $string['tutoring:reject_mentor_request'] = 'Odmítnout žádost o mentorství';
 $string['tutoring:experience_mentoring_request_title'] = 'Žádosti o mentorství zkušeností';
+
+// Czech translations for tutoring emails
+$string['tutoring:newtutorrequestsubject'] = 'Nová žádost o doučování';
+$string['tutoring:tutorrequestbody'] = 'Obdrželi jste novou žádost o doučování pro zkušenost s ID: {$a->experienceid}.';
+$string['tutoring:tutorrequestrsender'] = 'Žádáno uživatelem: {$a->username}';
+$string['tutoring:tutorrequesttime'] = 'Datum žádosti: {$a->requesttime}';

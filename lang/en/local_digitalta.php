@@ -357,3 +357,9 @@ $string['experience:tutoring:mentor_request_info'] = 'You have been asked to men
 $string['tutoring:accept_mentor_request'] = 'Accept mentoring request';
 $string['tutoring:reject_mentor_request'] = 'Reject mentoring request';
 $string['tutoring:experience_mentoring_request_title'] = 'Experiences Mentoring Requests';
+
+// English translations for tutoring emails
+$string['tutoring:newtutorrequestsubject'] = 'New tutoring request';
+$string['tutoring:tutorrequestbody'] = 'You have received a new tutoring request for the experience with ID: {$a->experienceid}.';
+$string['tutoring:tutorrequestrsender'] = 'Requested by: {$a->username}';
+$string['tutoring:tutorrequesttime'] = 'Request date: {$a->requesttime}';

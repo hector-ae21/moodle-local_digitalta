@@ -346,3 +346,4 @@ $string['tutoring:cancel_mentor_request'] = 'Zrušit žádost o mentorství';
 $string['experience:tutoring:mentor_request_title'] = 'Žádosti o mentorství';
 $string['tutoring:accept_mentor_request'] = 'Přijmout žádost o mentorství';
 $string['tutoring:reject_mentor_request'] = 'Odmítnout žádost o mentorství';
+$string['tutoring:experience_mentoring_request_title'] = 'Žádosti o mentorství zkušeností';

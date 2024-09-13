@@ -1,6 +1,4 @@
 <div class="container-fluid col-12 col-sm-10 digitalta-tutors">
-                    <span id="tutoring-requested" class="badge badge-pill badge-danger" data-action="see-requests"></span>
-                    <div id="chat"></div>
     <!--Section: Title-->
     <section data-section-name="digitalta-tutors-title" class="mb-4">
         <div class="container-fluid d-flex">
@@ -28,4 +26,15 @@
             {{> local_digitalta/tutors/dashboard/tutor-list}}
         </div>
     </section>
+    {{#mentoring_requests.0}}
+    <section>
+        <div class="flex d-flex mb-4 align-items-center" style="gap: .5em;">
+            <h2 class="text-secondary my-0 digitalta-title">{{#str}} tutoring:experience_mentoring_request_title,
+                local_digitalta {{/str}}</h2>
+        </div>
+        {{#mentoring_requests}}
+        {{> local_digitalta/tutors/dashboard/mentor-experience-request}}
+        {{/mentoring_requests}}
+    </section>
+    {{/mentoring_requests.0}}
 </div>

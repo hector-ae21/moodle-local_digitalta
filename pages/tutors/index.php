@@ -24,10 +24,15 @@
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tutors.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
+
 
 require_login();
 
+use local_digitalta\Experiences;
 use local_digitalta\Tutors;
+
+global $USER;
 
 $pagetitle = get_string('tutors:title', 'local_digitalta');
 
@@ -35,7 +40,8 @@ $PAGE->set_url(new moodle_url('/local/digitalta/pages/tutors/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($pagetitle);
 $PAGE->requires->js_call_amd('local_digitalta/tutors/main', 'init');
-$PAGE->requires->js_call_amd('local_digitalta/tutors/experience_view/main', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/tutors/main', 'init');
+
 
 echo $OUTPUT->header();
 
@@ -63,10 +69,19 @@ foreach ($tutors as $tutor) {
     $formattedTutors['data'][] = ['user' => $newTutor];
 }
 
+$mentoring_requests = Tutors::requests_get_by_tutor($USER->id);
+
+$mentoring_requests = array_map(function ($request) {
+    $request->experience = Experiences::get_experience($request->experienceid);
+    return $request;
+}, $mentoring_requests);
+
+
 $templatecontext = [
     "component" => "user",
     "title" => $pagetitle,
     "tutors"=> $formattedTutors,
+    "mentoring_requests" => $mentoring_requests
 ];
 
 // $templatecontext = filter_utils::apply_filters($templatecontext);

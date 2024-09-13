@@ -346,3 +346,4 @@ $string['tutoring:cancel_mentor_request'] = 'Mentorschapsverzoek annuleren';
 $string['experience:tutoring:mentor_request_title'] = 'Mentorschapsverzoeken';
 $string['tutoring:accept_mentor_request'] = 'Mentorschapsverzoek accepteren';
 $string['tutoring:reject_mentor_request'] = 'Mentorschapsverzoek afwijzen';
+$string['tutoring:experience_mentoring_request_title'] = 'Ervaringen Mentorschapsverzoeken';

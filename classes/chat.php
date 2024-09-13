@@ -82,7 +82,7 @@ class Chat
         $chat_user->userid = $user_id;
         $chat_user->timecreated = time();
         $chat_user->timemodified = time();
-        if (!$chat_user->id = $DB->insert_record(self::$table_chat_users, $chat_user)) {
+        if (!$DB->insert_record(self::$table_chat_users, $chat_user)) {
             return false;
         }
         return true;

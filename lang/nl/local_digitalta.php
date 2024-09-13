@@ -245,6 +245,7 @@ $string['tutors:description'] = '<p>Kom in contact met ervaren <span class="digi
 // Profile
 $string['profile:title']  = 'Profiel';
 $string['profile:header'] = 'Profiel';
+$string['profile:editschedule']   = 'Bewerk beschikbaarheid';
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];
@@ -344,6 +345,7 @@ $string['tutoring:at_university'] = 'Leraar bij';
 $string['tutoring:mentor_request'] = 'Mentorschap aanbieden';
 $string['tutoring:cancel_mentor_request'] = 'Mentorschapsverzoek annuleren';
 $string['experience:tutoring:mentor_request_title'] = 'Mentorschapsverzoeken';
+$string['experience:tutoring:mentor_request_info'] = 'Je bent gevraagd om deze ervaring te begeleiden.';
 $string['tutoring:accept_mentor_request'] = 'Mentorschapsverzoek accepteren';
 $string['tutoring:reject_mentor_request'] = 'Mentorschapsverzoek afwijzen';
 $string['tutoring:experience_mentoring_request_title'] = 'Ervaringen Mentorschapsverzoeken';

@@ -245,6 +245,7 @@ $string['tutors:description'] = '<p>Połącz się z doświadczonymi <span class=
 // Profile
 $string['profile:title']  = 'Profil';
 $string['profile:header'] = 'Profil';
+$string['profile:editschedule']   = 'Edytuj dostępność';
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];
@@ -344,6 +345,7 @@ $string['tutoring:at_university'] = 'Nauczyciel w';
 $string['tutoring:mentor_request'] = 'Zaoferuj mentorowanie';
 $string['tutoring:cancel_mentor_request'] = 'Anuluj prośbę o mentorowanie';
 $string['experience:tutoring:mentor_request_title'] = 'Prośby o mentorowanie';
+$string['experience:tutoring:mentor_request_info'] = 'Poproszono Cię o mentorowanie tego doświadczenia.';
 $string['tutoring:accept_mentor_request'] = 'Akceptuj prośbę o mentorowanie';
 $string['tutoring:reject_mentor_request'] = 'Odrzuć prośbę o mentorowanie';
 $string['tutoring:experience_mentoring_request_title'] = 'Prośby o mentorowanie doświadczeń';

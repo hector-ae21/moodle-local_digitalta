@@ -251,6 +251,8 @@ $string['tutors:description'] = '<p>Conecta con <span class="digitalta-highlight
 // Profile
 $string['profile:title']  = 'Perfil';
 $string['profile:header'] = 'Perfil';
+$string['profile:editschedule']   = 'Editar disponibilidad';
+
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];
@@ -350,6 +352,7 @@ $string['tutoring:at_university'] = 'Profesor en';
 $string['tutoring:mentor_request'] = 'Ofrecer mentoría';
 $string['tutoring:cancel_mentor_request'] = 'Cancelar solicitud de mentoría';
 $string['experience:tutoring:mentor_request_title'] = 'Solicitudes de mentoría';
+$string['experience:tutoring:mentor_request_info'] = 'Se te ha solicitado que tutorices esta experiencia.';
 $string['tutoring:accept_mentor_request'] = 'Aceptar solicitud de mentoría';
 $string['tutoring:reject_mentor_request'] = 'Rechazar solicitud de mentoría';
 $string['tutoring:experience_mentoring_request_title'] = 'Solicitudes de mentoría de experiencias';

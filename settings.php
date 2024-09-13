@@ -44,4 +44,11 @@ if ($ADMIN->fulltree) {
     0,
     $options
   ));
+
+  $settings->add(new admin_setting_configtext(
+    'local_digitalta/mod_scheduler_id',
+    'Mod Scheduler id',
+    '',
+    0
+  ));
 }

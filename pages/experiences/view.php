@@ -171,6 +171,7 @@ $template_context = [
     'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id=',
     'mentoringrequest' => $mentoring_tutor_request,
     'mentors_from_requests' => $mentors_from_requests,
+    'mod_scheduler_id' => get_config('local_digitalta', 'mod_scheduler_id')
 ];
 //$template_context = FilterUtils::apply_filters($template_context);
 

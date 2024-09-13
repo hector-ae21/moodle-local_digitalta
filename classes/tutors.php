@@ -16,6 +16,7 @@ require_once($CFG->dirroot . '/local/digitalta/classes/tutoring_status.php');
 use local_digitalta\Chat;
 use local_digitalta\Experiences;
 use local_digitalta\TutoringStatus;
+use stdClass;
 
 class Tutors
 {
@@ -109,10 +110,10 @@ class Tutors
         return array_values($DB->get_records(self::$requests_table, ['experienceid' => $experienceid, 'status' => $status]));
     }
 
-    public static function requests_get_by_tutor_experience(int $tutorid, int $experienceid, int $status = 2): array
+    public static function request_get_by_tutor_experience(int $tutorid, int $experienceid, int $status = 2): stdClass | bool
     {
         global $DB;
-        return array_values($DB->get_records(self::$requests_table, ['tutorid' => $tutorid, 'experienceid' => $experienceid, 'status' => $status]));
+        return $DB->get_record(self::$requests_table, ['tutorid' => $tutorid, 'experienceid' => $experienceid, 'status' => $status]);
     }
 
     /**

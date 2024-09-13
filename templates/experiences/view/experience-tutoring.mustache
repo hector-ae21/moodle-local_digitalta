@@ -66,13 +66,32 @@
             {{^canedit}}
                 {{^istutor}}
                     {{#mentoringrequest}}
-                        <button class="btn btn-danger" id="cancel-tutoring-request" data-experienceid="{{experience.data.id}}">
-                            <i class="fa fa-times" aria-hidden="true"></i>
-                            {{#str}}tutoring:cancel_mentor_request, local_digitalta{{/str}}
-                        </button>
+                        {{#isMentorRequest}}
+                            <button class="btn btn-danger" id="cancel-tutoring-request">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                {{#str}}tutoring:cancel_mentor_request, local_digitalta{{/str}}
+                            </button>
+                        {{/isMentorRequest}}
+                        {{^isMentorRequest}}
+                            <div class="flex d-flex mb-4 align-items-center" style="gap: .5em;">
+                                <h2 class="text-secondary my-0 digitalta-title">{{#str}} experience:tutoring:mentor_request_title, local_digitalta {{/str}}</h2>
+                            </div>
+                            <div class="text-justify mb-4">
+                                <p>You have been ask to tutor this experience</p>
+                            </div>
+                            <button class="btn btn-primary" id="accept-tutor-request" data-requestid="{{request.id}}">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                                {{#str}}tutoring:accept_mentor_request, local_digitalta{{/str}}
+                            </button>
+                            <button class="btn btn-danger" id="reject-tutor-request" data-requestid="{{request.id}}">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                {{#str}}tutoring:reject_mentor_request, local_digitalta{{/str}}
+                            </button>
+                        {{/isMentorRequest}}
+                        
                     {{/mentoringrequest}}
                     {{^mentoringrequest}}
-                        <button class="btn btn-primary" id="send-tutoring-request" data-experienceid="{{experience.data.id}}">
+                        <button class="btn btn-primary" id="send-tutoring-request">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             {{#str}}tutoring:mentor_request, local_digitalta{{/str}}
                         </button>

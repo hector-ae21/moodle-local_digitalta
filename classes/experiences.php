@@ -116,6 +116,7 @@ class Experiences
     public static function get_extra_fields(Experience $experience)
     {
         global $PAGE;
+        $PAGE->set_context(\context_system::instance());
         // Get the user data 
         $user = get_complete_user_data('id', $experience->userid);
         $user_picture = new \user_picture($user);

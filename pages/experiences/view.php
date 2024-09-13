@@ -32,6 +32,8 @@ require_once($CFG->dirroot . '/local/digitalta/classes/tutors.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/googlemeet/client.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/local/digitalta/locallib.php');
+require_once($CFG->libdir . '/externallib.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/webservices/tutoring/external_tutoring_requests_get.php');
 
 use local_digitalta\Chat;
 use local_digitalta\Experiences;
@@ -110,26 +112,32 @@ $tutors = array_map(function ($tutor) use ($DB, $PAGE) {
 $mentoring_tutor_request = null;
 $mentors_from_requests = null;
 
-if($isownexperience){
-    $mentors_requests = Tutors::requests_get_by_experience($experience->id, 2);
+if ($isownexperience) {
     $mentors_from_requests = [];
-    foreach($mentors_requests as $mentor_request){
-        $mentorinfo = Tutors::get_tutor($mentor_request->tutorid);
+    $mentors_requests = external_tutoring_requests_get::requests_get($experience->id, null, 2);
+    $mentors_requests = count($mentors_requests['requests']) ? $mentors_requests['requests'] : [];
+    foreach ($mentors_requests as $mentor_request) {
         $mentor = new stdClass();
-        $mentor->id = $mentorinfo->id;
-        $mentor->name = $mentorinfo->firstname . " " . $mentorinfo->lastname;
-        $mentor->profileimage = new user_picture($mentorinfo);
-        $mentor->profileimage->size = 101;
-        $mentor->profileimage = $mentor->profileimage->get_url($PAGE)->__toString();
-        $mentor->university = $mentorinfo->institution ?? $mentorinfo->institution;
+        $mentor->requestid = $mentor_request['requestid'];
+        $mentor->name = $mentor_request['firstname'] . " " . $mentor_request['lastname'];
+        $mentor->profileimage = $mentor_request['profileimageurl'];
+        $mentor->university = $mentor_request['institution'];
         $mentors_from_requests[] = $mentor;
     }
-}
-else {
+} else {
     if (!in_array($USER->id, array_column($tutors, 'id'))) {
-        $mentoring_tutor_request = Tutors::requests_get_by_tutor_experience($USER->id, $experience->id);
-        if ($mentoring_tutor_request) {
-            $mentoring_tutor_request = $mentoring_tutor_request[0];
+        $request = Tutors::request_get_by_tutor_experience($USER->id, $experience->id);
+        if ($request) {
+            $mentoring_tutor_request = new stdClass();
+            $mentoring_tutor_request->isMentorRequest = true;
+            $mentoring_tutor_request->request = $request;
+        } else {
+            $experience_request = Tutors::request_get_by_tutor_experience($USER->id, $experience->id, 0);
+            if ($experience_request) {
+                $mentoring_tutor_request = new stdClass();
+                $mentoring_tutor_request->isMentorRequest = false;
+                $mentoring_tutor_request->request = $experience_request;
+            }
         }
     }
 }

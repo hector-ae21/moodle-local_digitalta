@@ -344,3 +344,5 @@ $string['tutoring:at_university'] = 'Nauczyciel w';
 $string['tutoring:mentor_request'] = 'Zaoferuj mentorowanie';
 $string['tutoring:cancel_mentor_request'] = 'Anuluj prośbę o mentorowanie';
 $string['experience:tutoring:mentor_request_title'] = 'Prośby o mentorowanie';
+$string['tutoring:accept_mentor_request'] = 'Akceptuj prośbę o mentorowanie';
+$string['tutoring:reject_mentor_request'] = 'Odrzuć prośbę o mentorowanie';

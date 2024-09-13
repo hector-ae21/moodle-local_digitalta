@@ -344,3 +344,5 @@ $string['tutoring:at_university'] = 'Leraar bij';
 $string['tutoring:mentor_request'] = 'Mentorschap aanbieden';
 $string['tutoring:cancel_mentor_request'] = 'Mentorschapsverzoek annuleren';
 $string['experience:tutoring:mentor_request_title'] = 'Mentorschapsverzoeken';
+$string['tutoring:accept_mentor_request'] = 'Mentorschapsverzoek accepteren';
+$string['tutoring:reject_mentor_request'] = 'Mentorschapsverzoek afwijzen';

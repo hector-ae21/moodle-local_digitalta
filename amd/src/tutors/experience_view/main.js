@@ -19,8 +19,6 @@ const renderRequestsButton = async () => {
     experienceid: experienceid,
   });
   if (data) {
-    //eslint-disable-next-line no-console
-    console.log(data);
     get_string("tutoring:request", "local_digitalta")
       .then((string) => {
         $(SELECTORS.BUTTON_REQUEST).append(data.total + " " + string);
@@ -55,8 +53,6 @@ export const openTutorsRequests = async (hideBack = false) => {
  * @module tutors/experience_view/main
  */
 export const init = () => {
-  //eslint-disable-next-line no-console
-  console.log("Tutor experience view init");
   setEventListeners();
   renderRequestsButton();
 };

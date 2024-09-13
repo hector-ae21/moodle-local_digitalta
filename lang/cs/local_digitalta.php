@@ -245,6 +245,7 @@ $string['tutors:description'] = '<p>Spojte se se zkušenými <span class="digita
 // Profile
 $string['profile:title']  = 'Profil';
 $string['profile:header'] = 'Profil';
+$string['profile:editschedule']   = 'Upravit dostupnost';
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];
@@ -344,6 +345,7 @@ $string['tutoring:at_university'] = 'Učitel na';
 $string['tutoring:mentor_request'] = 'Nabídka mentorování';
 $string['tutoring:cancel_mentor_request'] = 'Zrušit žádost o mentorství';
 $string['experience:tutoring:mentor_request_title'] = 'Žádosti o mentorství';
+$string['experience:tutoring:mentor_request_info'] = 'Byli jste požádáni, abyste tuto zkušenost mentorovali.';
 $string['tutoring:accept_mentor_request'] = 'Přijmout žádost o mentorství';
 $string['tutoring:reject_mentor_request'] = 'Odmítnout žádost o mentorství';
 $string['tutoring:experience_mentoring_request_title'] = 'Žádosti o mentorství zkušeností';

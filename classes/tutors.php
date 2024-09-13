@@ -70,7 +70,7 @@ class Tutors
      */
     public static function send_tutor_request(int $tutorid, int $experienceid, bool $experienceRequest): bool|object
     {
-        global $DB;
+        global $DB, $USER;
         $data = new \stdClass();
         $data->tutorid = $tutorid;
         $data->experienceid = $experienceid;
@@ -80,6 +80,21 @@ class Tutors
         if (!$data->id = $DB->insert_record(self::$requests_table, $data)) {
             return false;
         }
+
+    $tutor = $DB->get_record('user', array('id' => $tutorid), '*', MUST_EXIST);
+    $subject = get_string('newtutorrequestsubject', 'local_yourpluginname');
+    $messagehtml = get_string('tutorrequestbody', 'local_yourpluginname', (object)[
+        'experienceid' => $experienceid
+    ]);
+    $messagehtml .= '<br>' . get_string('tutorrequestrsender', 'local_yourpluginname', (object)[
+        'username' => $USER->username
+    ]);
+    $messagehtml .= '<br>' . get_string('tutorrequesttime', 'local_yourpluginname', (object)[
+        'requesttime' => userdate(time())
+    ]);
+
+    email_to_user($tutor, $USER, $subject, strip_tags($messagehtml), $messagehtml);
+
         return $data;
     }
 

@@ -349,3 +349,9 @@ $string['experience:tutoring:mentor_request_info'] = 'Je bent gevraagd om deze e
 $string['tutoring:accept_mentor_request'] = 'Mentorschapsverzoek accepteren';
 $string['tutoring:reject_mentor_request'] = 'Mentorschapsverzoek afwijzen';
 $string['tutoring:experience_mentoring_request_title'] = 'Ervaringen Mentorschapsverzoeken';
+
+// Dutch translations for tutoring emails
+$string['tutoring:newtutorrequestsubject'] = 'Nieuw verzoek om bijles';
+$string['tutoring:tutorrequestbody'] = 'Je hebt een nieuw verzoek om bijles ontvangen voor de ervaring met ID: {$a->experienceid}.';
+$string['tutoring:tutorrequestrsender'] = 'Aangevraagd door: {$a->username}';
+$string['tutoring:tutorrequesttime'] = 'Datum van aanvraag: {$a->requesttime}';

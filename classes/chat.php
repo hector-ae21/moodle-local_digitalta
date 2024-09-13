@@ -286,4 +286,18 @@ class Chat
         }
         return $chat_rooms_with_names;
     }
+
+    /**
+     * Set chat names
+     */
+    public static function delete_chat_with_experience($experienceid): void
+    {
+        global $DB;
+        $chat = $DB->get_record(self::$table_chat_room, array('experienceid' => $experienceid));
+        if ($chat) {
+            $DB->delete_records(self::$table_chat_users, array('chatid' => $chat->id));
+            $DB->delete_records(self::$table_chat_messages, array('chatid' => $chat->id));
+            $DB->delete_records(self::$table_chat_room, array('experienceid' => $experienceid));
+        }
+    }
 }

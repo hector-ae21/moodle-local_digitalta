@@ -59,22 +59,29 @@ class external_tutoring_tutors_get extends external_api
         }
 
         $likeFullname = $DB->sql_like($fullname, ':fullname', false);
-        $sql = "SELECT * FROM {user} WHERE {$likeFullname}";
+        $sql = "SELECT * FROM {user} WHERE {$likeFullname} AND id !=1";
         $tutors = $DB->get_records_sql($sql, ['fullname' => $searchText]);
-        
+
         $tutors = array_filter($tutors, function ($tutor) use ($USER) {
             return $tutor->id != $USER->id;
         });
 
-        $tutors = array_filter($tutors, function ($tutor) use ($experienceid){
+        $tutors = array_filter($tutors, function ($tutor) use ($experienceid) {
             return !Tutors::is_enrolled_tutor_in_course($tutor->id, $experienceid, 1);
+        });
+
+
+
+        $tutors = array_filter($tutors, function ($tutor) use ($experienceid) {
+            return !Tutors::request_get_by_tutor_experience($tutor->id, $experienceid);
         });
 
         foreach ($tutors as $tutor) {
             $tutor->isEnrolled = Tutors::is_enrolled_tutor_in_course($tutor->id, $experienceid, 0);
         }
 
-        $tutors = array_map(function ($tutor) use ($PAGE) {
+        $tutors = array_map(function ($tutor) use ($PAGE, $DB) {
+            $tutor_info = $DB->get_record('user', ['id' => $tutor->id]);
             $tutor_picture = new user_picture($tutor);
             $tutor_picture->size = 101;
             return [
@@ -82,7 +89,7 @@ class external_tutoring_tutors_get extends external_api
                 'name' => $tutor->firstname . ' ' . $tutor->lastname,
                 'isEnrolled' => $tutor->isEnrolled,
                 'profileimage' => $tutor_picture->get_url($PAGE)->__toString(),
-                'university' => "Universidad de la vida",
+                'university' => $tutor_info->institution ? $tutor_info->institution : null
             ];
         }, $tutors);
 

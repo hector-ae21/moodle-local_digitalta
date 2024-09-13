@@ -122,7 +122,7 @@ class external_resources_get_assignments_for_component extends external_api
      *
      * @return external_single_structure The external function return value
      */
-    public static function resources_get_returns()
+    public static function resources_get_assignments_for_component_returns()
     {
         return new external_single_structure(
             [

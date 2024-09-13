@@ -42,17 +42,29 @@ class external_tutoring_requests_add extends external_api
     {
         return new external_function_parameters(
             [
-                'tutorid' => new external_value(PARAM_INT, 'Tutor id'),
                 'experienceid' => new external_value(PARAM_INT, 'Experience id'),
+                'tutorid' => new external_value(PARAM_INT, 'Tutor id', VALUE_DEFAULT, null),
+                'experienceRequest' => new external_value(PARAM_BOOL, 'Experience request', VALUE_DEFAULT, false)
             ]
         );
     }
 
-    public static function requests_add($tutorid, $experienceid)
+    public static function requests_add($experienceid, $tutorid = null, $experienceRequest = false)
     {
-        Tutors::send_tutor_request($tutorid, $experienceid);
+        global $USER;
+        if ($tutorid == null) {
+            if (!$USER->id) {
+                throw new moodle_exception('invaliduser', 'local_digitalta');
+            }
+            $tutorid = $USER->id;
+        }
+        if (Tutors::send_tutor_request($tutorid, $experienceid, $experienceRequest)) {
+            return [
+                'success' => true
+            ];
+        }
         return [
-            'success' => true
+            'success' => false
         ];
     }
 

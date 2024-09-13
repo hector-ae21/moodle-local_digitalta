@@ -245,6 +245,7 @@ $string['tutors:description'] = '<p>Spojte se se zkušenými <span class="digita
 // Profile
 $string['profile:title']  = 'Profil';
 $string['profile:header'] = 'Profil';
+$string['profile:editschedule']   = 'Upravit dostupnost';
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];
@@ -332,9 +333,25 @@ $string['tutoring:request'] = 'Žádost o doučování';
 $string['tutoring:title'] = 'MOJE UČITELSTVÍ';
 $string['tutoring:back_to_chat'] = 'Zpět na chat';
 $string['tutoring:tutor_comments'] = 'Komentáře školitele';
+$string['tutoring:chat_title'] = 'Chat zkušeností';
 $string['tutoring:open_chats'] = 'Otevřené chaty';
+$string['tutoring:open_chat'] = 'Otevřít chat';
+$string['tutoring:close_chat'] = 'Zavřít chat';
 $string['tutoring:view_tooltip'] = 'Zobrazit nápovědu k nástroji';
 $string['tutoring:videocallbutton'] = 'Zahájení hovoru Google Meet';
 $string['tutoring:joinvideocall'] = 'Připojte se k hovoru Google Meet';
 $string['tutoring:closevideocall'] = 'Těsný souboj';
 $string['tutoring:at_university'] = 'Učitel na';
+$string['tutoring:mentor_request'] = 'Nabídka mentorování';
+$string['tutoring:cancel_mentor_request'] = 'Zrušit žádost o mentorství';
+$string['experience:tutoring:mentor_request_title'] = 'Žádosti o mentorství';
+$string['experience:tutoring:mentor_request_info'] = 'Byli jste požádáni, abyste tuto zkušenost mentorovali.';
+$string['tutoring:accept_mentor_request'] = 'Přijmout žádost o mentorství';
+$string['tutoring:reject_mentor_request'] = 'Odmítnout žádost o mentorství';
+$string['tutoring:experience_mentoring_request_title'] = 'Žádosti o mentorství zkušeností';
+
+// Czech translations for tutoring emails
+$string['tutoring:newtutorrequestsubject'] = 'Nová žádost o doučování';
+$string['tutoring:tutorrequestbody'] = 'Obdrželi jste novou žádost o doučování pro zkušenost s ID: {$a->experienceid}.';
+$string['tutoring:tutorrequestrsender'] = 'Žádáno uživatelem: {$a->username}';
+$string['tutoring:tutorrequesttime'] = 'Datum žádosti: {$a->requesttime}';

@@ -41,13 +41,13 @@ class external_chats_add_message extends external_api
         return new external_function_parameters(
             array(
                 'chatid' => new external_value(PARAM_INT, 'ID'),
+                'message' => new external_value(PARAM_TEXT, 'Message'),
                 'userid' => new external_value(PARAM_INT, 'User ID' , VALUE_DEFAULT, null),
-                'message' => new external_value(PARAM_TEXT, 'Message')
             )
         );
     }
 
-    public static function chats_add_message($chatid, $userid = null, $message)
+    public static function chats_add_message($chatid, $message, $userid = null)
     {
         if (is_null($userid)) {
             global $USER;

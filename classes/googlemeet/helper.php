@@ -16,6 +16,9 @@
 
 namespace local_digitalta;
 
+require_once($CFG->dirroot . '/local/digitalta/classes/googlemeet/helper.php');
+
+
 use moodle_exception;
 use stdClass;
 
@@ -54,6 +57,23 @@ class GoogleMeetHelper
     }
 
     return $response;
+  }
+
+  public static function get_googlemeet_call_button($chatid, $small=false)
+  {
+      $client = new GoogleMeetClient($chatid);
+      if (!$client->enabled) {
+          return;
+      }
+      if ($client->check_login()) {
+          $client->logout();
+      }
+      $meetingrecord = self::get_googlemeet_record($chatid);
+      if ($meetingrecord) {
+          return '<button class="btn btn-zoom-call'. ($small ? ' btn-sm' : '') . '" onclick="window.open(\'https://meet.google.com/' . $meetingrecord->meetingcode . '\', \'_blank\');"> <i class="fa fa-video-camera"></i> ' . get_string('tutoring:joinvideocall', 'local_digitalta') . '</button>';
+      } else {
+          return $client->print_login_popup($chatid, $small);
+      }
   }
 
   public static function get_googlemeet_record($chatid){

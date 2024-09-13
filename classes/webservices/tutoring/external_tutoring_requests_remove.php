@@ -42,14 +42,21 @@ class external_tutoring_requests_remove extends external_api
     {
         return new external_function_parameters(
             [
-                'tutorid' => new external_value(PARAM_INT, 'Tutor id'),
                 'experienceid' => new external_value(PARAM_INT, 'Experience id'),
+                'tutorid' => new external_value(PARAM_INT, 'Tutor id', VALUE_DEFAULT, null)
             ]
         );
     }
 
-    public static function requests_remove($tutorid, $experienceid)
+    public static function requests_remove($experienceid, $tutorid=null)
     {
+        if ($tutorid === null) {
+            global $USER;
+            if(!$USER->id) {
+                throw new moodle_exception('invaliduser', 'local_digitalta');
+            }
+            $tutorid = $USER->id;
+        }
         Tutors::requests_remove($tutorid, $experienceid);
         return [
             'success' => true

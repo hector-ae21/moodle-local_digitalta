@@ -25,8 +25,12 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/local/digitalta/classes/chat.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/googlemeet/helper.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/googlemeet/client.php');
+
 
 use local_digitalta\Chat;
+use local_digitalta\GoogleMeetHelper;
 
 /**
  * This class is used to delete a context
@@ -41,22 +45,29 @@ class external_chats_get_messages extends external_api
         return new external_function_parameters(
             array(
                 'chatid' => new external_value(PARAM_INT, 'ID'),
-                'userid' => new external_value(PARAM_INT, 'User ID' , VALUE_DEFAULT, null),
+                'userid' => new external_value(PARAM_INT, 'User ID', VALUE_DEFAULT, null),
             )
         );
     }
 
-    public static function chats_get_messages($chatid, $userid = null)
+    public static function chats_get_messages($chatid, $userid=null)
     {
         if (is_null($userid)) {
             global $USER;
             $userid = $USER->id;
         }
         $messages = Chat::get_chat_messages($chatid, $userid);
-        
+        $chatroom = Chat::get_chat_room($chatid);
+
+        $chatroom->videocall = new stdClass();
+        $chatroom->videocall->button = GoogleMeetHelper::get_googlemeet_call_button($chatid, true);
+        $meeting_record = GoogleMeetHelper::get_googlemeet_record($chatid);
+        $chatroom->videocall->closebutton  = $meeting_record ? $meeting_record->chatid : null;
+
         return [
             'result' => true,
-            'messages' => $messages
+            'messages' => array_values($messages),
+            'chatroom' => $chatroom,
         ];
     }
 
@@ -66,6 +77,30 @@ class external_chats_get_messages extends external_api
             [
                 'result' => new external_value(PARAM_BOOL, 'Result'),
                 'error' => new external_value(PARAM_RAW, 'Error message', VALUE_OPTIONAL),
+                'chatroom' => new external_single_structure(
+                    [
+                        'id' => new external_value(PARAM_INT, 'ID'),
+                        'experienceid' => new external_value(PARAM_INT, 'Experience ID'),
+                        'name' => new external_value(PARAM_TEXT, 'Name'),
+                        'users' => new external_multiple_structure(
+                            new external_single_structure(
+                                [
+                                    'userid' => new external_value(PARAM_INT, 'User ID'),
+                                    'firstname' => new external_value(PARAM_TEXT, 'First Name'),
+                                    'lastname' => new external_value(PARAM_TEXT, 'Last Name'),
+                                ]
+                            )
+                        ),
+                        'videocall' => new external_single_structure(
+                            [
+                                'button' => new external_value(PARAM_RAW, 'Button'),
+                                'closebutton' => new external_value(PARAM_INT, 'Close Button', VALUE_OPTIONAL)
+                            ]
+                        ),
+                        'timecreated' => new external_value(PARAM_INT, 'Time Created'),
+                        'timemodified' => new external_value(PARAM_INT, 'Time Modified'),
+                    ]
+                ),
                 'messages' => new external_multiple_structure(
                     new external_single_structure(
                         [
@@ -76,6 +111,8 @@ class external_chats_get_messages extends external_api
                             'timecreated' => new external_value(PARAM_INT, 'Time Created'),
                             'timemodified' => new external_value(PARAM_INT, 'Time Modified'),
                             'is_mine' => new external_value(PARAM_BOOL, 'Is Mine'),
+                            'userfullname' => new external_value(PARAM_TEXT, 'User Full Name'),
+                            'userpicture' => new external_value(PARAM_TEXT, 'User Picture URL'),
                         ]
                     )
                 ),

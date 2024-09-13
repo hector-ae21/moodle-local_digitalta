@@ -251,6 +251,8 @@ $string['tutors:description'] = '<p>Conecta con <span class="digitalta-highlight
 // Profile
 $string['profile:title']  = 'Perfil';
 $string['profile:header'] = 'Perfil';
+$string['profile:editschedule']   = 'Editar disponibilidad';
+
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];
@@ -338,9 +340,25 @@ $string['tutoring:request'] = 'Solicitud de tutoría';
 $string['tutoring:title'] = 'MI TUTORÍA';
 $string['tutoring:back_to_chat'] = 'Volver al chat';
 $string['tutoring:tutor_comments'] = 'Comentarios del tutor';
+$string['tutoring:chat_title'] = 'Chats de experiencias';
 $string['tutoring:open_chats'] = 'Chats abiertos';
+$string['tutoring:open_chat'] = 'Abrir chat';
+$string['tutoring:close_chat'] = 'Cerrar chat';
 $string['tutoring:view_tooltip'] = 'Ver información sobre herramientas';
 $string['tutoring:videocallbutton'] = 'Iniciar llamada de Google Meet';
 $string['tutoring:joinvideocall'] = 'Únete a la convocatoria Google Meet';
 $string['tutoring:closevideocall'] = 'Terminar llamada';
 $string['tutoring:at_university'] = 'Profesor en';
+$string['tutoring:mentor_request'] = 'Ofrecer mentoría';
+$string['tutoring:cancel_mentor_request'] = 'Cancelar solicitud de mentoría';
+$string['experience:tutoring:mentor_request_title'] = 'Solicitudes de mentoría';
+$string['experience:tutoring:mentor_request_info'] = 'Se te ha solicitado que tutorices esta experiencia.';
+$string['tutoring:accept_mentor_request'] = 'Aceptar solicitud de mentoría';
+$string['tutoring:reject_mentor_request'] = 'Rechazar solicitud de mentoría';
+$string['tutoring:experience_mentoring_request_title'] = 'Solicitudes de mentoría de experiencias';
+
+//Emails
+$string['tutoring:newtutorrequestsubject'] = 'Nueva solicitud de tutoría';
+$string['tutoring:tutorrequestbody'] = 'Has recibido una nueva solicitud de tutoría para la experiencia con ID: {$a->experienceid}.';
+$string['tutoring:tutorrequestrsender'] = 'Solicitado por: {$a->username}';
+$string['tutoring:tutorrequesttime'] = 'Fecha de solicitud: {$a->requesttime}';

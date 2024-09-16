@@ -26,7 +26,10 @@
 $string['pluginname'] = 'DigitalTA';
 
 // Settings
-$string['config:issuerid'] = 'Servicio OAuth para la integración de Google Meet';
+$string['config:issuerid']              = 'Servicio OAuth para integración de Google Meet';
+$string['config:issuerid_desc']         = 'Seleccione el servicio OAuth a utilizar para la integración de Google Meet';
+$string['config:mod_scheduler_id']      = 'ID de instancia de mod_scheduler';
+$string['config:mod_scheduler_id_desc'] = 'Introduzca el ID de instancia de la actividad mod_scheduler';
 
 // General
 $string['general:platform_name']       = 'Academia de Profesores';
@@ -249,9 +252,9 @@ $string['tutors:header']      = $string['concept:tutorsmentors'];
 $string['tutors:description'] = '<p>Conecta con <span class="digitalta-highlighted">tutores</span> y <span class="digitalta-highlighted">mentores</span> experimentados que pueden ayudarte a reflexionar sobre tu práctica docente, proporcionarte comentarios y ofrecerte valiosas perspectivas. Puedes solicitar sesiones de tutoría, hacer preguntas y obtener apoyo personalizado para mejorar tus habilidades docentes y capacitar a tus alumnos.</p>';
 
 // Profile
-$string['profile:title']  = 'Perfil';
-$string['profile:header'] = 'Perfil';
-$string['profile:editschedule']   = 'Editar disponibilidad';
+$string['profile:title']            = 'Perfil';
+$string['profile:header']           = 'Perfil';
+$string['profile:editavailability'] = 'Editar disponibilidad';
 
 
 // Elements - Components

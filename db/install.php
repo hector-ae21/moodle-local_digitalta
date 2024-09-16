@@ -30,7 +30,7 @@ require_once($CFG->dirroot . '/local/digitalta/locallib.php');
  * Install the local_digitalta plugin.
  */
 function xmldb_local_digitalta_install() {
-    global $DB;
+    global $DB, $OUTPUT;
 
     // Insert the components
     foreach (LOCAL_DIGITALTA_COMPONENTS as $value) {
@@ -93,5 +93,48 @@ function xmldb_local_digitalta_install() {
         $section->timecreated = time();
         $section->timemodified = time();
         $DB->insert_record('digitalta_sections_groups', $section);
+    }
+
+    // Create the new system roles
+    $newroles = [
+        [
+            'name' => 'DigitalTA Tutor / Mentor',
+            'shortname' => 'digitaltatutor',
+            'description' => 'DigitalTA custom role for tutors and mentors',
+            'archetype' => 'teacher'
+        ],
+        [
+            'name' => 'DigitalTA Student',
+            'shortname' => 'digitaltastudent',
+            'description' => 'DigitalTA custom role for students',
+            'archetype' => 'student'
+        ]
+    ];
+    foreach ($newroles as $newrole) {
+        $newrole = (object) $newrole;
+        // Check if the role already exists
+        if ($DB->record_exists('role', ['shortname' => $newrole->shortname])) {
+            continue;
+        }
+        // Check if the archetype role exists
+        if (!$archetyperoleid = $DB->get_field('role', 'id', ['shortname' => $newrole->archetype])) {
+            continue;
+        }
+        // Create the new role
+        $newroleid = create_role($newrole->name, $newrole->shortname, $newrole->description, $newrole->archetype);
+        // Set the context levels where the role is allowed
+        set_role_contextlevels($newroleid, [CONTEXT_SYSTEM]);
+        // Copy the default permissions from the archetype role
+        $types = array('assign', 'override', 'switch', 'view');
+        foreach ($types as $type) {
+            $rolestocopy = get_default_role_archetype_allows($type, $newrole->archetype);
+            foreach ($rolestocopy as $tocopy) {
+                $functionname = "core_role_set_{$type}_allowed";
+                $functionname($newroleid, $tocopy);
+            }
+        }
+        // Copy the default capabilities from the archetype role
+        $sourcerole = $DB->get_record('role', array('id' => $archetyperoleid));
+        role_cap_duplicate($sourcerole, $newroleid);
     }
 }

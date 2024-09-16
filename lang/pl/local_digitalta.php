@@ -26,7 +26,10 @@
 $string['pluginname'] = 'DigitalTA';
 
 // Settings
-$string['config:issuerid'] = 'Usługa OAuth dla integracji z Google Meet';
+$string['config:issuerid']              = 'Usługa OAuth dla integracji z Google Meet';
+$string['config:issuerid_desc']         = 'Wybierz usługę OAuth do użycia dla integracji z Google Meet';
+$string['config:mod_scheduler_id']      = 'ID instancji mod_scheduler';
+$string['config:mod_scheduler_id_desc'] = 'Wprowadź ID instancji aktywności mod_scheduler';
 
 // General
 $string['general:platform_name']       = 'Akademia nauczyciela';

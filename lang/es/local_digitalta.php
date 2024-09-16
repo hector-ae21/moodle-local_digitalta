@@ -252,9 +252,9 @@ $string['tutors:header']      = $string['concept:tutorsmentors'];
 $string['tutors:description'] = '<p>Conecta con <span class="digitalta-highlighted">tutores</span> y <span class="digitalta-highlighted">mentores</span> experimentados que pueden ayudarte a reflexionar sobre tu práctica docente, proporcionarte comentarios y ofrecerte valiosas perspectivas. Puedes solicitar sesiones de tutoría, hacer preguntas y obtener apoyo personalizado para mejorar tus habilidades docentes y capacitar a tus alumnos.</p>';
 
 // Profile
-$string['profile:title']  = 'Perfil';
-$string['profile:header'] = 'Perfil';
-$string['profile:editschedule']   = 'Editar disponibilidad';
+$string['profile:title']            = 'Perfil';
+$string['profile:header']           = 'Perfil';
+$string['profile:editavailability'] = 'Editar disponibilidad';
 
 
 // Elements - Components

@@ -43,8 +43,26 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_digitalta_cases_get_paginated' => [
+        'classname'   => 'external_cases_get_by_pagination',
+        'methodname'  => 'cases_get_by_pagination',
+        'classpath'   => 'local/digitalta/classes/webservices/cases/external_cases_get_by_pagination.php',
+        'description' => 'Get cases by pagination',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
+    'local_digitalta_cases_get_langs' => [
+        'classname'  => 'external_cases_get_used_langs',
+        'methodname' => 'cases_get_used_langs',
+        'classpath'  => 'local/digitalta/classes/webservices/cases/external_cases_get_used_langs.php',
+        'description' => 'Get all languages used in cases',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true
+    ],
 
-    // Context 
+    // Context
     'local_digitalta_context_upsert' => [
         'classname'   => 'external_context_upsert',
         'methodname'  => 'context_upsert',
@@ -65,6 +83,15 @@ $functions = [
     ],
 
     // Experiences
+    'local_digitalta_experiences_get_by_pagination' => [
+        'classname'   => 'external_experiences_get_by_pagination',
+        'methodname'  => 'experiences_get_by_pagination',
+        'classpath'   => 'local/digitalta/classes/webservices/experiences/external_experiences_get_by_pagination.php',
+        'description' => '',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     'local_digitalta_experiences_get' => [
         'classname'   => 'external_experiences_get',
         'methodname'  => 'experiences_get',
@@ -91,6 +118,15 @@ $functions = [
         'type'        => 'write',
         'requirelogin' => true,
         'ajax'        => true,
+    ],
+    'local_digitalta_experiences_get_used_langs' => [
+        'classname' => 'external_experiences_get_used_langs',
+        'methodname'  => 'experiences_get_used_langs',
+        'classpath'   => 'local/digitalta/classes/webservices/experiences/external_experiences_get_used_langs.php',
+        'description' => 'Get all languages used in experiences',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true
     ],
 
     // Files
@@ -181,6 +217,15 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_digitalta_resources_get_by_pagination' => [
+        'classname'   => 'external_resources_get_by_pagination',
+        'methodname'  => 'resources_get_by_pagination',
+        'classpath'   => 'local/digitalta/classes/webservices/resources/external_resources_get_by_pagination.php',
+        'description' => 'get resources',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
     'local_digitalta_resources_types_get' => [
         'classname'   => 'external_resources_types_get',
         'methodname'  => 'resources_types_get',
@@ -216,6 +261,15 @@ $functions = [
         'type'        => 'read',
         'requirelogin' => true,
         'ajax'        => true,
+    ],
+    'local_digitalta_resources_get_used_langs' => [
+        'classname' => 'external_resources_get_used_langs',
+        'methodname'  => 'resources_get_used_langs',
+        'classpath'   => 'local/digitalta/classes/webservices/resources/external_resources_get_used_langs.php',
+        'description' => 'Get all languages used in resources',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true
     ],
 
     // Sections

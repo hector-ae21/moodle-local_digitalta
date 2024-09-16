@@ -47,6 +47,6 @@ if ($ADMIN->fulltree) {
         get_string('config:mod_scheduler_id', 'local_digitalta'),
         get_string('config:mod_scheduler_id_desc', 'local_digitalta'),
         '',
-        0
+        PARAM_INT
     ));
 }

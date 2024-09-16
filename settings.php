@@ -26,29 +26,27 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($ADMIN->fulltree) {
-  $settings = new admin_settingpage('local_digitalta', 'Local DIGITALTA settings');
+    $settings = new admin_settingpage('local_digitalta', 'Local DIGITALTA settings');
+    $ADMIN->add('localplugins', $settings);
 
-  $ADMIN->add('localplugins', $settings);
+    $options = [''];
+    $issuers = \core\oauth2\api::get_all_issuers();
+    foreach ($issuers as $issuer) {
+        $options[$issuer->get('id')] = s($issuer->get('name'));
+    }
+    $settings->add(new admin_setting_configselect(
+        'local_digitalta/issuerid',
+        get_string('config:issuerid', 'local_digitalta'),
+        get_string('config:issuerid_desc', 'local_digitalta'),
+        0,
+        $options
+    ));
 
-  $options = [''];
-  $issuers = \core\oauth2\api::get_all_issuers();
-
-  foreach ($issuers as $issuer) {
-    $options[$issuer->get('id')] = s($issuer->get('name'));
-  }
-
-  $settings->add(new admin_setting_configselect(
-    'local_digitalta/issuerid',
-    get_string('config:issuerid', 'local_digitalta'),
-    '',
-    0,
-    $options
-  ));
-
-  $settings->add(new admin_setting_configtext(
-    'local_digitalta/mod_scheduler_id',
-    'Mod Scheduler id',
-    '',
-    0
-  ));
+    $settings->add(new admin_setting_configtext(
+        'local_digitalta/mod_scheduler_id',
+        get_string('config:mod_scheduler_id', 'local_digitalta'),
+        get_string('config:mod_scheduler_id_desc', 'local_digitalta'),
+        '',
+        0
+    ));
 }

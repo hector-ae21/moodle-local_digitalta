@@ -65,7 +65,7 @@ class FileManagerHandler
      * @param array $attributes  Attributes
      * @param array $options     Options
      */
-    public function __construct($draftitemid = null, $attributes = null, $options = null,)
+    public function __construct($draftitemid = null, $attributes = null, $options = null)
     {
         $this->draftitemid = $draftitemid ?? rand(1, 999999999);
         if ($options) {

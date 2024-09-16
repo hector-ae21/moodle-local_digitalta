@@ -246,9 +246,9 @@ $string['tutors:header']      = $string['concept:tutorsmentors'];
 $string['tutors:description'] = '<p>Połącz się z doświadczonymi <span class="digitalta-highlighted">nauczycielami</span> i <span class="digitalta-highlighted">mentorami</span>, którzy mogą pomóc ci zastanowić się nad twoją praktyką nauczania, przekazać informacje zwrotne i zaoferować cenne spostrzeżenia. Możesz poprosić o sesje korepetycji, zadawać pytania i uzyskać spersonalizowane wsparcie, aby poprawić swoje umiejętności nauczania i wzmocnić pozycję swoich uczniów.';
 
 // Profile
-$string['profile:title']  = 'Profil';
-$string['profile:header'] = 'Profil';
-$string['profile:editschedule']   = 'Edytuj dostępność';
+$string['profile:title']            = 'Profil';
+$string['profile:header']           = 'Profil';
+$string['profile:editavailability'] = 'Edytuj dostępność';
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];

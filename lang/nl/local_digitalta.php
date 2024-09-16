@@ -246,9 +246,9 @@ $string['tutors:header']      = $string['concept:tutorsmentors'];
 $string['tutors:description'] = '<p>Kom in contact met ervaren <span class="digitalta-highlighted">docenten</span> en <span class="digitalta-highlighted">mentoren</span> die je kunnen helpen om na te denken over je onderwijspraktijk, feedback kunnen geven en waardevolle inzichten kunnen bieden. Je kunt bijles aanvragen, vragen stellen en persoonlijke ondersteuning krijgen om je onderwijsvaardigheden te verbeteren en je leerlingen meer mogelijkheden te geven.</p>';
 
 // Profile
-$string['profile:title']  = 'Profiel';
-$string['profile:header'] = 'Profiel';
-$string['profile:editschedule']   = 'Bewerk beschikbaarheid';
+$string['profile:title']            = 'Profiel';
+$string['profile:header']           = 'Profiel';
+$string['profile:editavailability'] = 'Beschikbaarheid bewerken';
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];

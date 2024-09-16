@@ -246,9 +246,9 @@ $string['tutors:header']      = $string['concept:tutorsmentors'];
 $string['tutors:description'] = '<p>Spojte se se zkušenými <span class="digitalta-highlighted">učiteli</span> a <span class="digitalta-highlighted">mentory</span>, kteří vám pomohou zamyslet se nad vaší výukovou praxí, poskytnou zpětnou vazbu a nabídnou cenné postřehy. Můžete si vyžádat doučování, klást otázky a získat individuální podporu, abyste zlepšili své učitelské dovednosti a posílili své studenty.</p>';
 
 // Profile
-$string['profile:title']  = 'Profil';
-$string['profile:header'] = 'Profil';
-$string['profile:editschedule']   = 'Upravit dostupnost';
+$string['profile:title']            = 'Profil';
+$string['profile:header']           = 'Profil';
+$string['profile:editavailability'] = 'Upravit dostupnost';
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];

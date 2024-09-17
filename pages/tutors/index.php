@@ -51,21 +51,16 @@ $formattedTutors = [];
 foreach ($tutors as $tutor) {
     $newTutor = new stdClass();
     $newTutor->name = $tutor->firstname . " " . $tutor->lastname;
-    $newTutor->position = "Tutor";
+    $newTutor->position = $tutor->profile_field_digitalta_role;
     if ($tutor->institution) {
-        $newTutor->position .= " at " . $tutor->institution;
+        $newTutor->position .= " at " . $tutor->profile_field_digitalta_institution;
     }
-    // TODO: Role + Institution
-
     $tutor_picture = new user_picture($tutor);
     $tutor_picture->size = 101;
     $newTutor->imageurl = $tutor_picture->get_url($PAGE)->__toString();
-
     $newTutor->profileurl = $CFG->wwwroot . "/local/digitalta/pages/profile/index.php?id=" . $tutor->id;
-
     $newTutor->tags = [];
     $newTutor->themes = [];
-
     $formattedTutors['data'][] = ['user' => $newTutor];
 }
 

@@ -88,6 +88,114 @@ const LOCAL_DIGITALTA_SECTION_TYPES = [
     "text"
 ];
 
+const LOCAL_DIGITALTA_USER_AGEGROUPS = [
+    "Preschool (0-6)",
+    "Primary (6-12)",
+    "Lower secondary (12-16)",
+    "Upper secondary (16-18)",
+    "Higher education (18+)"
+];
+
+const LOCAL_DIGITALTA_USER_ROLES = [
+    "Student",
+    "Newly Qualified Teacher",
+    "Tutor",
+    "Mentor",
+    "Partner"
+];
+
+const LOCAL_DIGITALTA_ROLES = [
+    [
+        'name' => 'DigitalTA Tutor / Mentor',
+        'shortname' => 'digitaltatutor',
+        'description' => 'DigitalTA custom role for tutors and mentors',
+        'archetype' => 'teacher'
+    ],
+    [
+        'name' => 'DigitalTA Student / NQT',
+        'shortname' => 'digitaltastudent',
+        'description' => 'DigitalTA custom role for students',
+        'archetype' => 'student'
+    ]
+];
+
+const LOCAL_DIGITALTA_PROFILE_FIELDS = [
+    [
+        'name' => 'Role',
+        'shortname' => 'role',
+        'description' => 'The role you will be playing in the platform',
+        'categoryid' => 1,
+        'datatype' => 'menu',
+        'param1' => "Student\nNewly Qualified Teacher\nTutor\nMentor\nPartner",
+        'required' => 1,
+        'locked' => 0,
+        'visible' => 2,
+        'forceunique' => 0,
+        'signup' => 1
+    ],
+    [
+        'name' => 'Institution',
+        'shortname' => 'institution',
+        'description' => 'The institution you are affiliated with',
+        'categoryid' => 1,
+        'datatype' => 'text',
+        'required' => 1,
+        'locked' => 0,
+        'visible' => 2,
+        'forceunique' => 0,
+        'signup' => 1
+    ],
+    [
+        'name' => 'Position',
+        'shortname' => 'position',
+        'description' => 'The position you hold in the institution',
+        'categoryid' => 1,
+        'datatype' => 'text',
+        'required' => 1,
+        'locked' => 0,
+        'visible' => 2,
+        'forceunique' => 0,
+        'signup' => 1
+    ],
+    [
+        'name' => 'Age Group',
+        'shortname' => 'agegroup',
+        'description' => 'The age group in which you work or study',
+        'datatype' => 'menu',
+        'categoryid' => 1,
+        'param1' => "Preeschool (0-6)\nPrimary (6-12)\nLower secondary (12-16)\nUpper secondary (16-18)\nHigher education (18+)",
+        'required' => 1,
+        'locked' => 0,
+        'visible' => 2,
+        'forceunique' => 0,
+        'signup' => 1
+    ],
+    [
+        'name' => 'Years of Experience',
+        'shortname' => 'yearsofexperience',
+        'description' => 'The number of years you have been working in the education sector',
+        'categoryid' => 1,
+        'datatype' => 'text',
+        'required' => 1,
+        'locked' => 0,
+        'visible' => 2,
+        'forceunique' => 0,
+        'signup' => 1
+    ],
+    [
+        'name' => 'Subjects',
+        'shortname' => 'subjects',
+        'description' => 'The subjects you teach or are interested in',
+        'categoryid' => 1,
+        'datatype' => 'text',
+        'required' => 1,
+        'locked' => 0,
+        'visible' => 2,
+        'forceunique' => 0,
+        'signup' => 1
+    ]
+];
+
 /**
  * Get the translation of an element.
  *
@@ -121,6 +229,12 @@ function local_digitalta_get_element_translation(string $element, string $string
         case "section_type":
             $elements = LOCAL_DIGITALTA_SECTION_TYPES;
             break;
+        case "user_agegroup":
+            $elements = LOCAL_DIGITALTA_USER_AGEGROUPS;
+            break;
+        case "user_role":
+            $elements = LOCAL_DIGITALTA_USER_ROLES;
+            break;
         default:
             return $string;
     }
@@ -145,5 +259,5 @@ function local_digitalta_get_element_translation(string $element, string $string
  * @todo This function should use the values from the database.
  */
 function local_digitalta_get_simplified_string(string $string) {
-    return strtolower(str_replace("?", "", str_replace(" ", "_", $string)));
+    return strtolower(preg_replace('/\s/', '_', preg_replace('/[^a-zA-Z\s]/', '', $string)));
 }

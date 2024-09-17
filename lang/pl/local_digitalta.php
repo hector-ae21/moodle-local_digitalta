@@ -28,8 +28,8 @@ $string['pluginname'] = 'DigitalTA';
 // Settings
 $string['config:issuerid']              = 'Usługa OAuth dla integracji z Google Meet';
 $string['config:issuerid_desc']         = 'Wybierz usługę OAuth do użycia dla integracji z Google Meet';
-$string['config:mod_scheduler_id']      = 'ID instancji mod_scheduler';
-$string['config:mod_scheduler_id_desc'] = 'Wprowadź ID instancji aktywności mod_scheduler';
+$string['config:schedulerinstance']      = 'ID instancji mod_scheduler';
+$string['config:schedulerinstance_desc'] = 'Wprowadź ID instancji aktywności mod_scheduler';
 
 // General
 $string['general:platform_name']       = 'Akademia nauczyciela';
@@ -65,7 +65,6 @@ $string['concept:mentor']        = 'Mentor';
 $string['concept:mentors']       = 'Mentorzy';
 $string['concept:tutorsmentors'] = 'Nauczyciele i mentorzy';
 $string['concept:introduction']  = 'Wprowadzenie';
-
 
 // Concepts / terms - Definitions
 $string['concept:experience:definition'] = 'Doświadczenie to rzeczywista praktyka nauczania, którą dzieli się nauczyciel. Może to być plan lekcji, aktywność w klasie, refleksja lub dowolna inna treść związana z nauczaniem.';

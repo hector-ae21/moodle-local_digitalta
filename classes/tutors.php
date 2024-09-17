@@ -28,9 +28,9 @@ class Tutors
 
     /**
      * Get a tutor by its ID.
-     * 
+     *
      * @param $id int The ID of the tutor.
-     * 
+     *
      * @return object The tutor object.
      */
     public static function get_tutor(int $id): object
@@ -41,7 +41,7 @@ class Tutors
 
     /**
      * Get a tutor by its ID.
-     * 
+     *
      * @param $id int The ID of the tutor.
      */
     public static function get_request(int $id): object | bool
@@ -52,7 +52,7 @@ class Tutors
 
     /**
      * Get all tutors.
-     * 
+     *
      * @return array The tutors.
      */
     public static function get_all_tutors(): array
@@ -74,11 +74,11 @@ class Tutors
     }
     /**
      * Send a tutor request.
-     * 
+     *
      * @param $tutorid int The ID of the tutor.
      * @param $userid int The ID of the user.
      * @param $experienceid int The ID of the experience.
-     * 
+     *
      * @return bool|object The tutor request object.
      */
     public static function send_tutor_request(int $tutorid, int $experienceid, bool $experienceRequest): bool|object
@@ -113,10 +113,10 @@ class Tutors
 
     /**
      * Get tutor requests by tutor ID.
-     * 
+     *
      * @param $tutorid int The ID of the tutor.
      * @param $status int The status of the tutor request.
-     * 
+     *
      * @return array The tutor requests.
      */
     public static function requests_get_by_tutor(int $tutorid, $status = 0): array
@@ -127,9 +127,9 @@ class Tutors
 
     /**
      * Get tutor requests by experience ID.
-     * 
+     *
      * @param $experienceid int The ID of the experience.
-     * 
+     *
      * @return array The tutor requests.
      */
     public static function requests_get_by_experience(int $experienceid, int $status = 1): array
@@ -146,10 +146,10 @@ class Tutors
 
     /**
      * Change the status of a tutor request.
-     * 
+     *
      * @param $id int The ID of the tutor request.
      * @param $status int The status of the tutor request.
-     * 
+     *
      * @return bool True if the status was changed, false otherwise.
      */
     public static function change_tutor_request_status(int $id, int $status): bool
@@ -163,7 +163,7 @@ class Tutors
 
     /**
      * Accept a tutor request.
-     * 
+     *
      * @param $requestid int The ID of the tutor request.
      */
     public static function requests_accept(int $requestid): bool
@@ -189,7 +189,7 @@ class Tutors
 
     /**
      * Reject a tutor request.
-     * 
+     *
      * @param $requestid int The ID of the tutor request.
      */
     public static function reject_tutor_request(int $requestid): bool
@@ -199,7 +199,7 @@ class Tutors
 
     /**
      * Verify if a tutor request exists.
-     * 
+     *
      * @param $tutorid int The ID of the tutor.
      * @param $experienceid int The ID of the experience.
      * @param $status int The status of the tutor request.
@@ -213,7 +213,7 @@ class Tutors
 
     /**
      * Remove a tutor request.
-     * 
+     *
      * @param $tutorid int The ID of the tutor.
      * @param $experienceid int The ID of the experience.
      */
@@ -225,7 +225,7 @@ class Tutors
 
     /**
      * Remove a tutor request.
-     * 
+     *
      * @param $requestid int The ID of the tutor request.
      */
     public static function requests_remove_by_id(int $requestid): bool
@@ -233,7 +233,7 @@ class Tutors
         global $DB;
         return $DB->delete_records(self::$requests_table, ['id' => $requestid]);
     }
-    
+
     public static function availability_create($userid, $day, $timefrom, $timeto)
     {
         global $DB;

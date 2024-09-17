@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version metadata for the local_digitalta plugin.
+ * Events
  *
  * @package   local_digitalta
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
@@ -24,7 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2024091701;
-$plugin->requires  = 2022112800;
-$plugin->component = 'local_digitalta';
-$plugin->maturity  = MATURITY_STABLE;
+$observers = [
+    [
+        'eventname' => '\core\event\user_created',
+        'callback'  => 'local_digitalta_observer::user_created',
+    ],
+];

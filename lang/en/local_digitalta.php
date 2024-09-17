@@ -28,8 +28,8 @@ $string['pluginname'] = 'DigitalTA';
 // Settings
 $string['config:issuerid']              = 'OAuth service for Google Meet integration';
 $string['config:issuerid_desc']         = 'Select the OAuth service to use for Google Meet integration';
-$string['config:mod_scheduler_id']      = 'Instance ID of mod_scheduler';
-$string['config:mod_scheduler_id_desc'] = 'Enter the instance ID of the mod_scheduler activity';
+$string['config:schedulerinstance']      = 'Instance ID of mod_scheduler';
+$string['config:schedulerinstance_desc'] = 'Enter the instance ID of the mod_scheduler activity';
 
 // General
 $string['general:platform_name']       = 'Teacher Academy';
@@ -68,7 +68,6 @@ $string['concept:tutorsmentors'] = 'Tutors & Mentors';
 $string['concept:introduction']  = 'Introduction';
 $string['concept:conclusion']    = 'Conclusion';
 $string['concept:summary']       = 'Summary';
-
 
 // Concepts / terms - Definitions
 $string['concept:experience:definition'] = 'An experience is a real-world teaching practice shared by a teacher. It can be a lesson plan, a classroom activity, a reflection, or any other teaching-related content.';
@@ -256,7 +255,6 @@ $string['tutors:description'] = '<p>Connect with experienced <span class="digita
 $string['profile:title']            = 'Profile';
 $string['profile:header']           = 'Profile';
 $string['profile:editavailability'] = 'Edit availability';
-
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];

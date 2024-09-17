@@ -94,4 +94,51 @@ function xmldb_local_digitalta_install() {
         $section->timemodified = time();
         $DB->insert_record('digitalta_sections_groups', $section);
     }
+
+    // Create the new system roles
+    foreach (LOCAL_DIGITALTA_ROLES as $role) {
+        $role = (object) $role;
+        // Check if the role already exists
+        if ($DB->record_exists('role', ['shortname' => $role->shortname])) {
+            continue;
+        }
+        // Check if the archetype role exists
+        if (!$archetyperoleid = $DB->get_field('role', 'id', ['shortname' => $role->archetype])) {
+            continue;
+        }
+        // Create the new role
+        $roleid = create_role($role->name, $role->shortname, $role->description, $role->archetype);
+        // Set the context levels where the role is allowed
+        set_role_contextlevels($roleid, [CONTEXT_SYSTEM]);
+        // Copy the default permissions from the archetype role
+        $types = array('assign', 'override', 'switch', 'view');
+        foreach ($types as $type) {
+            $rolestocopy = get_default_role_archetype_allows($type, $role->archetype);
+            foreach ($rolestocopy as $tocopy) {
+                $functionname = "core_role_set_{$type}_allowed";
+                $functionname($roleid, $tocopy);
+            }
+        }
+        // Copy the default capabilities from the archetype role
+        $sourcerole = $DB->get_record('role', array('id' => $archetyperoleid));
+        role_cap_duplicate($sourcerole, $roleid);
+    }
+
+    // Create user profile fields category
+    if (!$profile_field_category_id = $DB->get_field('user_info_category', 'id', ['name' => 'DigitalTA'])) {
+        $profile_field_category            = new stdClass();
+        $profile_field_category->name      = 'DigitalTA';
+        $profile_field_category->sortorder = 1;
+        $profile_field_category_id         = $DB->insert_record('user_info_category', $profile_field_category);
+    }
+
+    // Create user profile fields
+    foreach (LOCAL_DIGITALTA_PROFILE_FIELDS as $profile_field) {
+        $profile_field['shortname']  = 'digitalta_' . $profile_field['shortname'];
+        $profile_field['categoryid'] = $profile_field_category_id;
+        if ($DB->record_exists('user_info_field', ['shortname' => $profile_field['shortname']])) {
+            continue;
+        }
+        $DB->insert_record('user_info_field', (object) $profile_field);
+    }
 }

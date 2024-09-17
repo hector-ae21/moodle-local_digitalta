@@ -28,8 +28,8 @@ $string['pluginname'] = 'DigitalTA';
 // Settings
 $string['config:issuerid']              = 'Servicio OAuth para integración de Google Meet';
 $string['config:issuerid_desc']         = 'Seleccione el servicio OAuth a utilizar para la integración de Google Meet';
-$string['config:mod_scheduler_id']      = 'ID de instancia de mod_scheduler';
-$string['config:mod_scheduler_id_desc'] = 'Introduzca el ID de instancia de la actividad mod_scheduler';
+$string['config:schedulerinstance']      = 'ID de instancia de mod_scheduler';
+$string['config:schedulerinstance_desc'] = 'Introduzca el ID de instancia de la actividad mod_scheduler';
 
 // General
 $string['general:platform_name']       = 'Academia de Profesores';
@@ -67,7 +67,6 @@ $string['concept:mentors']       = 'Mentores';
 $string['concept:tutorsmentors'] = 'Tutores y mentores';
 $string['concept:introduction']  = 'Introducción';
 $string['concept:conclusion']    = 'Conclusión';
-
 
 // Concepts / terms - Definitions
 $string['concept:experience:definition'] = 'Una experiencia es una práctica docente real compartida por un profesor. Puede ser la planificación de una clase, una actividad, una reflexión o cualquier otro contenido relacionado con la enseñanza.';
@@ -255,7 +254,6 @@ $string['tutors:description'] = '<p>Conecta con <span class="digitalta-highlight
 $string['profile:title']            = 'Perfil';
 $string['profile:header']           = 'Perfil';
 $string['profile:editavailability'] = 'Editar disponibilidad';
-
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];

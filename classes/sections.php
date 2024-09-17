@@ -25,7 +25,6 @@
 namespace local_digitalta;
 
 use Exception;
-use quizaccess_seb\property_list;
 use stdClass;
 
 /**

@@ -24,12 +24,14 @@
 
 require_once (__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/resources.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/tinyeditorhandler.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/local/digitalta/locallib.php');
 
 require_login();
 
 use local_digitalta\Resources;
+use local_digitalta\TinyEditorHandler;
 use local_digitalta\utils\FilterUtils;
 
 $pagetitle = get_string('resources:title', 'local_digitalta');
@@ -38,6 +40,7 @@ $PAGE->set_url(new moodle_url('/local/digitalta/pages/resources/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($pagetitle);
 $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/resources/main', 'init');
 
 // Get the resources
 $resources = Resources::get_resources();
@@ -51,6 +54,8 @@ $resources = array_map(function ($resource) {
 
 echo $OUTPUT->header();
 
+(new TinyEditorHandler)->get_config_editor(['maxfiles' => 1]);
+
 $template_context = [
     'title' => $pagetitle,
     'component' => 'resource',
@@ -59,7 +64,7 @@ $template_context = [
     ]
 ];
 
-$template_context = FilterUtils::apply_filters($template_context);
+//$template_context = FilterUtils::apply_filters($template_context);
 
 echo $OUTPUT->render_from_template('local_digitalta/resources/dashboard/dashboard', $template_context);
 

@@ -37,6 +37,7 @@ import ModalEvents from "core/modal_events";
 import ModalFactory from "core/modal_factory";
 import ModalRegistry from "core/modal_registry";
 import Notification from "core/notification";
+import { processFiles } from "../tiny/manage";
 
 const manageModal = class extends Modal {
     static TYPE = 'local_digitalta/manageModal';
@@ -516,6 +517,8 @@ const handleManageReflectionModalSubmission = async (event, modal) => {
     try {
         let promises = [];
         for (const section of formData.sections) {
+            section.content = await processFiles(section.content);
+
             promises.push(sectionsUpsert({
                 'id': section.id,
                 'component': 'experience',

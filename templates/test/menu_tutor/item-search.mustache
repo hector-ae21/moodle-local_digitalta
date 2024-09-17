@@ -12,17 +12,17 @@
     </div>
   </div>
   <div>
-  {{^isEnrolled}}
+  {{^is_enrolled}}
     <button class="btn btn-outline-primary mb-1 send-tutor-request" data-tutorid="{{id}}" title="Send request" id="send-tutor-request">
       <i class="fa fa-user-plus"></i>
     </button>
-   {{/isEnrolled}}
+   {{/is_enrolled}}
   
-  {{#isEnrolled}}
+  {{#is_enrolled}}
     <button class="btn btn-outline-danger mb-1 remove-tutor-request" data-tutorid="{{id}}" title="Cancel sent request">
       <i class="fa fa-user-times"></i>
     </button>
-  {{/isEnrolled}}
+  {{/is_enrolled}}
   </div>
 </div>
 {{/tutors}}

@@ -46,50 +46,49 @@ class external_tutoring_tutors_get extends external_api
         );
     }
 
-    public static function tutors_get($searchText = '%%', $experienceid  = 0)
+    public static function tutors_get($search_text = '', $experienceid  = 0)
     {
-        global $DB, $PAGE, $USER;
+        global $PAGE, $USER;
         $PAGE->set_context(context_system::instance());
-        $searchText = '%' . trim($searchText) . '%';
 
-        if ($DB->sql_regex_supported()) {
-            $fullname = $DB->sql_concat('firstname', "' '", 'lastname');
-        } else {
-            $fullname = "CONCAT(firstname, ' ', lastname)";
-        }
+        $tutors = Tutors::get_all_tutors();
 
-        $likeFullname = $DB->sql_like($fullname, ':fullname', false);
-        $sql = "SELECT * FROM {user} WHERE {$likeFullname} AND id !=1";
-        $tutors = $DB->get_records_sql($sql, ['fullname' => $searchText]);
-
+        // Remove current user from tutors list
         $tutors = array_filter($tutors, function ($tutor) use ($USER) {
             return $tutor->id != $USER->id;
         });
 
+        // Filter by search text
+        $search_text = trim($search_text);
+        if ($search_text) {
+            $tutors = array_filter($tutors, function ($tutor) use ($search_text) {
+                return strpos(strtolower($tutor->firstname . ' ' . $tutor->lastname), strtolower($search_text)) !== false;
+            });
+        }
+
+        // Remove tutors that are already enrolled in the experience
         $tutors = array_filter($tutors, function ($tutor) use ($experienceid) {
             return !Tutors::is_enrolled_tutor_in_course($tutor->id, $experienceid, 1);
         });
 
-
-
+        // Remove tutors that have already received a request for the experience
         $tutors = array_filter($tutors, function ($tutor) use ($experienceid) {
             return !Tutors::request_get_by_tutor_experience($tutor->id, $experienceid);
         });
 
         foreach ($tutors as $tutor) {
-            $tutor->isEnrolled = Tutors::is_enrolled_tutor_in_course($tutor->id, $experienceid, 0);
+            $tutor->is_enrolled = Tutors::is_enrolled_tutor_in_course($tutor->id, $experienceid, 0);
         }
 
-        $tutors = array_map(function ($tutor) use ($PAGE, $DB) {
-            $tutor_info = $DB->get_record('user', ['id' => $tutor->id]);
+        $tutors = array_map(function ($tutor) use ($PAGE) {
             $tutor_picture = new user_picture($tutor);
             $tutor_picture->size = 101;
             return [
                 'id' => $tutor->id,
                 'name' => $tutor->firstname . ' ' . $tutor->lastname,
-                'isEnrolled' => $tutor->isEnrolled,
+                'is_enrolled' => $tutor->is_enrolled,
                 'profileimage' => $tutor_picture->get_url($PAGE)->__toString(),
-                'university' => $tutor_info->institution ? $tutor_info->institution : null
+                'university' => $tutor->profile_field_digitalta_institution
             ];
         }, $tutors);
 
@@ -103,7 +102,7 @@ class external_tutoring_tutors_get extends external_api
                 array(
                     'id' => new external_value(PARAM_INT, 'Tutor id'),
                     'name' => new external_value(PARAM_TEXT, 'Tutor firstname'),
-                    'isEnrolled' => new external_value(PARAM_BOOL, 'Is enrolled in the experience'),
+                    'is_enrolled' => new external_value(PARAM_BOOL, 'Is enrolled in the experience'),
                     'profileimage' => new external_value(PARAM_TEXT, 'Profile image'),
                     'university' => new external_value(PARAM_TEXT, 'University'),
                 )

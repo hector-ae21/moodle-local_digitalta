@@ -12,6 +12,7 @@ namespace local_digitalta;
 require_once($CFG->dirroot . '/local/digitalta/classes/chat.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tutoring_status.php');
+require_once($CFG->dirroot . '/user/profile/lib.php');
 
 use local_digitalta\Chat;
 use local_digitalta\Experiences;
@@ -57,7 +58,19 @@ class Tutors
     public static function get_all_tutors(): array
     {
         global $DB;
-        return array_values($DB->get_records(self::$table));
+        $tutors = $DB->get_records_sql(
+            "SELECT mu.*
+            FROM {user} mu
+            INNER JOIN {user_info_data} muid
+                ON mu.id = muid.userid
+                AND muid.data IN ('Tutor', 'Mentor')
+            INNER JOIN {user_info_field} muif
+                ON muid.fieldid = muif.id
+                AND muif.shortname = 'digitalta_role';");
+        return array_values(array_map(function ($tutor) {
+            profile_load_data($tutor);
+            return $tutor;
+        }, $tutors));
     }
     /**
      * Send a tutor request.

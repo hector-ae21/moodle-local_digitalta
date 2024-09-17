@@ -28,8 +28,8 @@ $string['pluginname'] = 'DigitalTA';
 // Settings
 $string['config:issuerid']              = 'OAuth služba pro integraci Google Meet';
 $string['config:issuerid_desc']         = 'Vyberte OAuth službu, kterou chcete použít pro integraci Google Meet';
-$string['config:mod_scheduler_id']      = 'Instance ID mod_scheduler';
-$string['config:mod_scheduler_id_desc'] = 'Zadejte ID instance aktivity mod_scheduler';
+$string['config:schedulerinstance']      = 'Instance ID mod_scheduler';
+$string['config:schedulerinstance_desc'] = 'Zadejte ID instance aktivity mod_scheduler';
 
 // General
 $string['general:platform_name']       = 'Učitelská akademie';
@@ -65,7 +65,6 @@ $string['concept:mentor']        = 'Mentor';
 $string['concept:mentors']       = 'Mentoři';
 $string['concept:tutorsmentors'] = 'Lektoři a mentoři';
 $string['concept:introduction']  = 'Úvod';
-
 
 // Concepts / terms - Definitions
 $string['concept:experience:definition'] = 'Zážitek je reálná výuková praxe, kterou učitel sdílí. Může se jednat o plán hodiny, aktivitu ve třídě, reflexi nebo jakýkoli jiný obsah související s výukou.';

@@ -43,9 +43,9 @@ if ($ADMIN->fulltree) {
     ));
 
     $settings->add(new admin_setting_configtext(
-        'local_digitalta/mod_scheduler_id',
-        get_string('config:mod_scheduler_id', 'local_digitalta'),
-        get_string('config:mod_scheduler_id_desc', 'local_digitalta'),
+        'local_digitalta/schedulerinstance',
+        get_string('config:schedulerinstance', 'local_digitalta'),
+        get_string('config:schedulerinstance_desc', 'local_digitalta'),
         '',
         PARAM_INT
     ));

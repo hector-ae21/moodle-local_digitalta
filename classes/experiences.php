@@ -71,8 +71,7 @@ class Experiences
      */
     public static function get_experience(int $id, bool $extra_fields = true): ?Experience
     {
-        $experience = self::get_experiences(['id' => $id], $extra_fields)[0] ?? null;
-        return $experience;
+        return self::get_experiences(['id' => $id], $extra_fields)[0] ?? null;
     }
 
     /**

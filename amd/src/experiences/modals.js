@@ -328,6 +328,7 @@ const handleManageModalSubmission = async (event, modal) => {
             option => option.value)
     };
     try {
+        formData.sections[0].content = await processFiles(formData.sections[0].content);
         const response = await experiencesUpsert(formData);
         Notification.addNotification({
             message: "Experience saved successfully.",
@@ -618,6 +619,7 @@ const handleLinkResourceModalSubmission = async (event, modal) => {
         description: getTinyMCEContent('experience-link-resource-description')
     };
     try {
+        formData.description = await processFiles(formData.description);
         await resourcesAssign(formData);
         Notification.addNotification({
             message: "Resource linked successfully.",

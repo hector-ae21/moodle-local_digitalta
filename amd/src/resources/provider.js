@@ -35,7 +35,7 @@ const getAndRenderFilters = async() => {
     const templateFilterTypes = await Templates.renderForPromise('local_digitalta/_common/filterResourceTypes', {"types": resourcesTypeResponse.types});
 
     Templates.replaceNodeContents("#filterThemeSelect", templateFilterThemes.html, templateFilterThemes.js);
-    Templates.replaceNodeContents("#filterLanguajeSelect", templateFilterLanguajes.html, templateFilterLanguajes.js);
+    Templates.replaceNodeContents("#filterLanguageSelect", templateFilterLanguajes.html, templateFilterLanguajes.js);
     Templates.replaceNodeContents("#filterResourceSelect", templateFilterTypes.html, templateFilterTypes.js);
 
     const availableTags = tagsResponse.map(function(tag) {
@@ -133,7 +133,7 @@ const setActionsFilters = () => {
         $("#autorFilters").val("");
     });
 
-    $(document).on("change", ".filterLanguajeSelect", function() {
+    $(document).on("change", ".filterLanguageSelect", function() {
         const selectedText = $("option:selected.enable", this).text();
         if (selectedText.length > 0) {
             const element = $("option:selected.enable", this);
@@ -141,7 +141,7 @@ const setActionsFilters = () => {
             element.removeClass('enable');
             const filterObject = {"type": "languaje", "value": selectedText};
             setFilter(filterObject);
-            $(".filterLanguajeSelect option:first").prop("selected", true);
+            $(".filterLanguageSelect option:first").prop("selected", true);
             $(element).prop('disabled', true);
         }
     });
@@ -185,11 +185,11 @@ const removeFilter = (filterObject) => {
             $("#filterThemes option:first").prop("selected", true);
             $(option).prop('disabled', false);
         } else if (filterObject.type === 'languaje') {
-            let langSelect = $(".filterLanguajeSelect");
+            let langSelect = $(".filterLanguageSelect");
             let option = $('option[value="' + filterObject.value + '"].disabled', langSelect);
             option.removeClass('disabled');
             option.addClass('enable');
-            $(".filterLanguajeSelect option:first").prop("selected", true);
+            $(".filterLanguageSelect option:first").prop("selected", true);
             $(option).prop('disabled', false);
         } else if (filterObject.type === 'resource') {
             let resourceSelect = $("#filterResourceType");

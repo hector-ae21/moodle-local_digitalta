@@ -32,7 +32,7 @@ const getAndRenderFilters = async() => {
     // eslint-disable-next-line max-len
     const templateFilterLanguajes = await Templates.renderForPromise('local_digitalta/_common/filterLanguajes', {"languajes": languajesResponse});
     Templates.replaceNodeContents("#filterThemeSelect", templateFilterThemes.html, templateFilterThemes.js);
-    Templates.replaceNodeContents("#filterLanguajeSelect", templateFilterLanguajes.html, templateFilterLanguajes.js);
+    Templates.replaceNodeContents("#filterLanguageSelect", templateFilterLanguajes.html, templateFilterLanguajes.js);
 
     const availableTags = tagsResponse.map(function(tag) {
         return tag.name;
@@ -115,7 +115,7 @@ const setActionsFilters = () => {
         $("#autorFilters").val("");
     });
 
-    $(document).on("change", ".filterLanguajeSelect", function() {
+    $(document).on("change", ".filterLanguageSelect", function() {
         const selectedText = $("option:selected.enable", this).text();
         if (selectedText.length > 0) {
             const element = $("option:selected.enable", this);
@@ -123,7 +123,7 @@ const setActionsFilters = () => {
             element.removeClass('enable');
             const filterObject = {"type": "languaje", "value": selectedText};
             setFilter(filterObject);
-            $(".filterLanguajeSelect option:first").prop("selected", true);
+            $(".filterLanguageSelect option:first").prop("selected", true);
             $(element).prop('disabled', true);
         }
     });
@@ -168,11 +168,11 @@ const removeFilter = (filterObject) => {
             $("#filterThemes option:first").prop("selected", true);
             $(option).prop('disabled', false);
         } else if (filterObject.type === 'languaje') {
-            let langSelect = $(".filterLanguajeSelect");
+            let langSelect = $(".filterLanguageSelect");
             let option = $('option[value="' + filterObject.value + '"].disabled', langSelect);
             option.removeClass('disabled');
             option.addClass('enable');
-            $(".filterLanguajeSelect option:first").prop("selected", true);
+            $(".filterLanguageSelect option:first").prop("selected", true);
             $(option).prop('disabled', false);
         }
         filters.splice(index, 1);

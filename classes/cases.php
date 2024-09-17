@@ -67,8 +67,7 @@ class Cases
      */
     public static function get_case(int $id, bool $extra_fields = true): ?StudyCase
     {
-        $case = self::get_cases(['id' => $id], $extra_fields)[0] ?? null;
-        return $case;
+        return self::get_cases(['id' => $id], $extra_fields)[0] ?? null;
     }
 
     /**

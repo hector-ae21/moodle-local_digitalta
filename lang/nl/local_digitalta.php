@@ -28,8 +28,8 @@ $string['pluginname'] = 'DigitalTA';
 // Settings
 $string['config:issuerid']              = 'OAuth-service voor Google Meet-integratie';
 $string['config:issuerid_desc']         = 'Selecteer de OAuth-service die u wilt gebruiken voor Google Meet-integratie';
-$string['config:mod_scheduler_id']      = 'Instantie-ID van mod_scheduler';
-$string['config:mod_scheduler_id_desc'] = 'Voer de instantie-ID van de mod_scheduler-activiteit in';
+$string['config:schedulerinstance']      = 'Instantie-ID van mod_scheduler';
+$string['config:schedulerinstance_desc'] = 'Voer de instantie-ID van de mod_scheduler-activiteit in';
 
 // General
 $string['general:platform_name']       = 'Lerarenacademie';
@@ -65,7 +65,6 @@ $string['concept:mentor']        = 'Mentor';
 $string['concept:mentors']       = 'Mentoren';
 $string['concept:tutorsmentors'] = 'Docenten en mentoren';
 $string['concept:introduction']  = 'Inleiding';
-
 
 // Concepts / terms - Definitions
 $string['concept:experience:definition'] = 'Een ervaring is een echte onderwijspraktijk die gedeeld wordt door een leerkracht. Het kan een lesplan zijn, een klassikale activiteit, een reflectie of een andere lesgerelateerde inhoud.';

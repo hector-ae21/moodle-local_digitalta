@@ -30,7 +30,7 @@ require_once($CFG->dirroot . '/local/digitalta/locallib.php');
  * Install the local_digitalta plugin.
  */
 function xmldb_local_digitalta_install() {
-    global $DB, $OUTPUT;
+    global $DB;
 
     // Insert the components
     foreach (LOCAL_DIGITALTA_COMPONENTS as $value) {
@@ -96,45 +96,48 @@ function xmldb_local_digitalta_install() {
     }
 
     // Create the new system roles
-    $newroles = [
-        [
-            'name' => 'DigitalTA Tutor / Mentor',
-            'shortname' => 'digitaltatutor',
-            'description' => 'DigitalTA custom role for tutors and mentors',
-            'archetype' => 'teacher'
-        ],
-        [
-            'name' => 'DigitalTA Student',
-            'shortname' => 'digitaltastudent',
-            'description' => 'DigitalTA custom role for students',
-            'archetype' => 'student'
-        ]
-    ];
-    foreach ($newroles as $newrole) {
-        $newrole = (object) $newrole;
+    foreach (LOCAL_DIGITALTA_ROLES as $role) {
+        $role = (object) $role;
         // Check if the role already exists
-        if ($DB->record_exists('role', ['shortname' => $newrole->shortname])) {
+        if ($DB->record_exists('role', ['shortname' => $role->shortname])) {
             continue;
         }
         // Check if the archetype role exists
-        if (!$archetyperoleid = $DB->get_field('role', 'id', ['shortname' => $newrole->archetype])) {
+        if (!$archetyperoleid = $DB->get_field('role', 'id', ['shortname' => $role->archetype])) {
             continue;
         }
         // Create the new role
-        $newroleid = create_role($newrole->name, $newrole->shortname, $newrole->description, $newrole->archetype);
+        $roleid = create_role($role->name, $role->shortname, $role->description, $role->archetype);
         // Set the context levels where the role is allowed
-        set_role_contextlevels($newroleid, [CONTEXT_SYSTEM]);
+        set_role_contextlevels($roleid, [CONTEXT_SYSTEM]);
         // Copy the default permissions from the archetype role
         $types = array('assign', 'override', 'switch', 'view');
         foreach ($types as $type) {
-            $rolestocopy = get_default_role_archetype_allows($type, $newrole->archetype);
+            $rolestocopy = get_default_role_archetype_allows($type, $role->archetype);
             foreach ($rolestocopy as $tocopy) {
                 $functionname = "core_role_set_{$type}_allowed";
-                $functionname($newroleid, $tocopy);
+                $functionname($roleid, $tocopy);
             }
         }
         // Copy the default capabilities from the archetype role
         $sourcerole = $DB->get_record('role', array('id' => $archetyperoleid));
-        role_cap_duplicate($sourcerole, $newroleid);
+        role_cap_duplicate($sourcerole, $roleid);
+    }
+
+    // Create user profile fields category
+    if (!$DB->record_exists('user_info_category', ['name' => 'DigitalTA'])) {
+        $profile_field_category            = new stdClass();
+        $profile_field_category->name      = 'DigitalTA';
+        $profile_field_category->sortorder = 1;
+        $profile_field_category->id        = $DB->insert_record('user_info_category', $profile_field_category);
+    }
+
+    // Create user profile fields
+    foreach (LOCAL_DIGITALTA_PROFILE_FIELDS as $profile_field) {
+        if ($DB->record_exists('user_info_field', ['shortname' => $profile_field['shortname']])) {
+            continue;
+        }
+        $profile_field['categoryid'] = $profile_field_category->id;
+        $DB->insert_record('user_info_field', (object) $profile_field);
     }
 }

@@ -31,6 +31,7 @@ import ModalEvents from "core/modal_events";
 import ModalFactory from "core/modal_factory";
 import ModalRegistry from 'core/modal_registry';
 import Notification from "core/notification";
+import { processFiles } from "../tiny/manage";
 
 const manageResourcesModal = class extends Modal {
     static TYPE = 'local_digitalta/manageResourcesModal';
@@ -181,6 +182,7 @@ const handleManageResourcesModalSubmission = async (event, modal) => {
             option => option.value)
     };
     try {
+        formData.description = await processFiles(formData.description);
         const resourceid = await resourcesUpsert(formData).then((response) => { return response.resourceid; });
         Notification.addNotification({
             message: "Resource saved successfully.",

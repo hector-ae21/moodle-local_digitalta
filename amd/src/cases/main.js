@@ -21,6 +21,7 @@ import {
     autocompleteThemes
 } from "local_digitalta/themes/autocomplete";
 import SELECTORS from "local_digitalta/cases/selectors";
+import { processFiles } from '../tiny/manage';
 
 let urlView = null;
 
@@ -92,7 +93,7 @@ export const switchSectionEdition = (sectionid, toEdit = false, title = null, co
  * @param {number} caseid The id to which the section belongs
  * @param {number} sectionid The id of the section to save
  */
-export const saveSection = (caseid, sectionid) => {
+export const saveSection = async (caseid, sectionid) => {
     const formData = {
         id: sectionid,
         component: 'case',
@@ -105,6 +106,7 @@ export const saveSection = (caseid, sectionid) => {
         title: $(`#title_${sectionid}`).val(),
         content: getTinyMCEContent(`content_${sectionid}`)
     };
+    formData.content = await processFiles(formData.content);
     sectionsUpsert(formData).then((data) => {
         switchSectionEdition(data.sectionid, false, formData.title, formData.content);
     }).fail(Notification.exception);
@@ -143,6 +145,7 @@ export const changeStatusToComplete = async () => {
             option => option.value)
     };
     try {
+        formData.description = await processFiles(formData.description);
         const response = await casesEdit(formData);
         Notification.addNotification({
             message: 'Case updated successfully',

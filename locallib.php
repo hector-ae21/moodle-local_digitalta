@@ -121,6 +121,43 @@ const LOCAL_DIGITALTA_ROLES = [
 
 const LOCAL_DIGITALTA_PROFILE_FIELDS = [
     [
+        'name' => 'Role',
+        'shortname' => 'role',
+        'description' => 'The role you will be playing in the platform',
+        'categoryid' => 1,
+        'datatype' => 'menu',
+        'param1' => "Student\nNewly Qualified Teacher\nTutor\nMentor\nPartner",
+        'required' => 1,
+        'locked' => 0,
+        'visible' => 2,
+        'forceunique' => 0,
+        'signup' => 1
+    ],
+    [
+        'name' => 'Institution',
+        'shortname' => 'institution',
+        'description' => 'The institution you are affiliated with',
+        'categoryid' => 1,
+        'datatype' => 'text',
+        'required' => 1,
+        'locked' => 0,
+        'visible' => 2,
+        'forceunique' => 0,
+        'signup' => 1
+    ],
+    [
+        'name' => 'Position',
+        'shortname' => 'position',
+        'description' => 'The position you hold in the institution',
+        'categoryid' => 1,
+        'datatype' => 'text',
+        'required' => 1,
+        'locked' => 0,
+        'visible' => 2,
+        'forceunique' => 0,
+        'signup' => 1
+    ],
+    [
         'name' => 'Age Group',
         'shortname' => 'agegroup',
         'description' => 'The age group in which you work or study',
@@ -134,12 +171,11 @@ const LOCAL_DIGITALTA_PROFILE_FIELDS = [
         'signup' => 1
     ],
     [
-        'name' => 'Role',
-        'shortname' => 'role',
-        'description' => 'Your role in the education sector',
+        'name' => 'Years of Experience',
+        'shortname' => 'yearsofexperience',
+        'description' => 'The number of years you have been working in the education sector',
         'categoryid' => 1,
-        'datatype' => 'menu',
-        'param1' => "Student\nNewly Qualified Teacher\nTutor\nMentor\nPartner",
+        'datatype' => 'text',
         'required' => 1,
         'locked' => 0,
         'visible' => 2,
@@ -147,9 +183,9 @@ const LOCAL_DIGITALTA_PROFILE_FIELDS = [
         'signup' => 1
     ],
     [
-        'name' => 'Years of Experience',
-        'shortname' => 'yearsofexperience',
-        'description' => 'The number of years you have been working in the education sector',
+        'name' => 'Subjects',
+        'shortname' => 'subjects',
+        'description' => 'The subjects you teach or are interested in',
         'categoryid' => 1,
         'datatype' => 'text',
         'required' => 1,

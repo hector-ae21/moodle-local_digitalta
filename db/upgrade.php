@@ -180,19 +180,20 @@ function xmldb_local_digitalta_upgrade($oldversion)
     }
 
     // Create user profile fields category
-    if (!$DB->record_exists('user_info_category', ['name' => 'DigitalTA'])) {
+    if (!$profile_field_category_id = $DB->get_field('user_info_category', 'id', ['name' => 'DigitalTA'])) {
         $profile_field_category            = new stdClass();
         $profile_field_category->name      = 'DigitalTA';
         $profile_field_category->sortorder = 1;
-        $profile_field_category->id        = $DB->insert_record('user_info_category', $profile_field_category);
+        $profile_field_category_id         = $DB->insert_record('user_info_category', $profile_field_category);
     }
 
     // Create user profile fields
     foreach (LOCAL_DIGITALTA_PROFILE_FIELDS as $profile_field) {
+        $profile_field['shortname']  = 'digitalta_' . $profile_field['shortname'];
+        $profile_field['categoryid'] = $profile_field_category_id;
         if ($DB->record_exists('user_info_field', ['shortname' => $profile_field['shortname']])) {
             continue;
         }
-        $profile_field['categoryid'] = $profile_field_category->id;
         $DB->insert_record('user_info_field', (object) $profile_field);
     }
 

@@ -134,11 +134,11 @@ function xmldb_local_digitalta_install() {
 
     // Create user profile fields
     foreach (LOCAL_DIGITALTA_PROFILE_FIELDS as $profile_field) {
+        $profile_field['shortname']  = 'digitalta_' . $profile_field['shortname'];
+        $profile_field['categoryid'] = $profile_field_category_id;
         if ($DB->record_exists('user_info_field', ['shortname' => $profile_field['shortname']])) {
             continue;
         }
-        $profile_field['shortname']  = 'digitalta_' . $profile_field['shortname'];
-        $profile_field['categoryid'] = $profile_field_category_id;
         $DB->insert_record('user_info_field', (object) $profile_field);
     }
 }

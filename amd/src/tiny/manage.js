@@ -28,7 +28,8 @@ export const processFiles = async (content) => {
   const baseUrl = M.cfg.wwwroot.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
 
   const draftFilePattern = new RegExp(
-    `(${baseUrl}\\/draftfile\\.php\\/5\\/user\\/draft\\/(\\d+)\\/[^"?]+)`,
+    `(${baseUrl}\\/draftfile\\.php\\/\\d+\\/user\\/draft\\/(\\d+)\\/[^"?]+)
+`,
     "g"
   );
 
@@ -47,10 +48,10 @@ export const processFiles = async (content) => {
     });
 
     if (response.result) {
-        content = content.replace(new RegExp(fullUrl, "g"), response.url);
-      } else {
-        throw new Error(response.error || "Error uploading file");
-      }
+      content = content.replace(new RegExp(fullUrl, "g"), response.url);
+    } else {
+      throw new Error(response.error || "Error uploading file");
+    }
   }
 
   return content;

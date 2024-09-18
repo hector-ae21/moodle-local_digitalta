@@ -28,8 +28,7 @@ export const processFiles = async (content) => {
   const baseUrl = M.cfg.wwwroot.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
 
   const draftFilePattern = new RegExp(
-    `(${baseUrl}\\/draftfile\\.php\\/\\d+\\/user\\/draft\\/(\\d+)\\/[^"?]+)
-`,
+    `(${baseUrl}\\/draftfile\\.php\\/\\d+\\/user\\/draft\\/(\\d+)\\/[^"?]+)`,
     "g"
   );
 

@@ -162,6 +162,7 @@ class external_resources_get_by_pagination extends external_api
         }
 
         return array(
+            'component' => 'resource',
             'data' => $resources,
             'pages' => $totalPages,
             'pagenumber' => $pagenumber
@@ -191,6 +192,7 @@ class external_resources_get_by_pagination extends external_api
     public static function resources_get_by_pagination_returns()
     {
         return new external_single_structure([
+            'component' => new external_value(PARAM_TEXT, 'component'),
             'data' => new external_multiple_structure(
                 new external_single_structure([
                     "id" => new external_value(PARAM_INT, "id"),

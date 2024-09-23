@@ -148,6 +148,7 @@ class external_cases_get_by_pagination extends external_api
         }
 
         return array(
+            'component' => 'case',
             'data' => $cases,
             'pages' => $totalPages,
             'pagenumber' => $pagenumber,
@@ -183,6 +184,7 @@ class external_cases_get_by_pagination extends external_api
     public static function cases_get_by_pagination_returns()
     {
         return new external_single_structure([
+            'component' => new external_value(PARAM_TEXT, 'component'),
             'pagenumber' => new external_value(PARAM_INT, 'page number'),
             'data' => new external_multiple_structure(
                 new external_single_structure([

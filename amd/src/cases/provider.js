@@ -30,9 +30,9 @@ const getAndRenderFilters = async() => {
     // eslint-disable-next-line max-len
     const templateFilterThemes = await Templates.renderForPromise('local_digitalta/_common/filterTheme', {"themes": themesResponse});
     // eslint-disable-next-line max-len
-    const templateFilterLanguajes = await Templates.renderForPromise('local_digitalta/_common/filterLanguajes', {"languages": languagesResponse});
+    const templateFilterLanguages = await Templates.renderForPromise('local_digitalta/_common/filterLanguages', {"languages": languagesResponse});
     Templates.replaceNodeContents("#filterThemeSelect", templateFilterThemes.html, templateFilterThemes.js);
-    Templates.replaceNodeContents("#filterLanguageSelect", templateFilterLanguajes.html, templateFilterLanguajes.js);
+    Templates.replaceNodeContents("#filterLanguageSelect", templateFilterLanguages.html, templateFilterLanguages.js);
 
     const availableTags = tagsResponse.map(function(tag) {
         return tag.name;

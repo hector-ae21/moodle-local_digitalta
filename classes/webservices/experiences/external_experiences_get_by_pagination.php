@@ -17,142 +17,141 @@ class external_experiences_get_by_pagination extends external_api
         );
     }
 
-    public static function experiences_get_by_pagination($pagenumber, $filters) {
+    public static function experiences_get_by_pagination($pagenumber, $filters)
+    {
         global $DB, $CFG;
-        $limit = 20;
 
+        $limit = 20;
         $totalPages = 0;
+
         $filters = json_decode($filters, true);
+
         $experiences = array();
+
         if (count($filters) > 0) {
-            $tags = [];
             $themes = [];
+            $tags = [];
             $authors = [];
             $langs = [];
-            $authorsToSearch = null;
 
-            for ($i = 0; $i < count($filters); $i++) {
-                $filter = $filters[$i];
-                if ($filter["type"] == "tag"){
-                    $tags[] = '"'.$filter["value"].'"';
-                }else if ($filter["type"] == "theme"){
+            foreach ($filters as $filter) {
+                if ($filter["type"] == "tag") {
+                    $tags[] = '"' . $filter["value"] . '"';
+                } else if ($filter["type"] == "theme") {
                     $themes[] = $filter["value"];
-                }else if ($filter["type"] == "author"){
-                    $authors[] = '"'.$filter["value"].'"';
-                }else if ($filter["type"] == "languaje"){
-                    $langs[] = '"'.$filter["value"].'"';
+                } else if ($filter["type"] == "author") {
+                    $authors[] = '"' . $filter["value"] . '"';
+                } else if ($filter["type"] == "language") {
+                    $langs[] = '"' . $filter["value"] . '"';
                 }
             }
 
             $havingSum = "";
 
-            if (count($themes) > 0){
-                for ($i = 0; $i < count($themes); $i++) {
-                    if (strlen($havingSum) == 0){
-                        $havingSum .= "HAVING SUM(CASE WHEN modifier = 1 AND modifierinstance = ".$themes[$i]." THEN 1 ELSE 0 END) > 0 AND ";
-                    }else{
-                        $havingSum .= "SUM(CASE WHEN modifier = 1 AND modifierinstance = ".$themes[$i]." THEN 1 ELSE 0 END) > 0 AND ";
-                    }
+            foreach ($themes as $theme) {
+                if (strlen($havingSum) == 0){
+                    $havingSum .= "HAVING";
                 }
+                $havingSum .= " (SUM(CASE WHEN modifier = 1 AND modifierinstance = " . $theme . " THEN 1 ELSE 0 END) > 0) OR ";
             }
 
-            if (count($tags) > 0){
+            if (count($tags) > 0) {
                 $tagsToSearch = '(' . implode(', ', $tags) . ')';
                 $tagsExperiences = $DB->get_records_sql(
                     "SELECT * FROM mdl_digitalta_tags where name IN ".$tagsToSearch
                 );
                 $tagsId = array_keys($tagsExperiences);
-                for ($i = 0; $i < count($tagsId); $i++) {
+                foreach ($tagsId as $tagId) {
                     if (strlen($havingSum) == 0){
-                        $havingSum .= "HAVING SUM(CASE WHEN modifier = 2 AND modifierinstance = ".$tagsId[$i]." THEN 1 ELSE 0 END) > 0 AND ";
-                    }else{
-                        $havingSum .= "SUM(CASE WHEN modifier = 2 AND modifierinstance = ".$tagsId[$i]." THEN 1 ELSE 0 END) > 0 AND ";
+                        $havingSum .= "HAVING";
                     }
+                    $havingSum .= "(SUM(CASE WHEN modifier = 2 AND modifierinstance = " . $tagId . " THEN 1 ELSE 0 END) > 0) OR ";
                 }
             }
 
-            if(count($authors) > 0){
-                $authorsToSearch = '(' . implode(', ', $authors) . ')';
-            }
+            $query = preg_replace('/\s+OR\s*$/', '', $havingSum);
 
-            if (count($langs) > 0){
-                $langsToSearch = '(' . implode(', ', $langs) . ')';
-            }
-
-            $query = preg_replace('/\s+AND\s*$/', '', $havingSum);
-
-            $contextDigitalTa = $DB->get_records_sql(
-                'WITH FilteredComponentInstances AS ( SELECT componentinstance FROM mdl_digitalta_context WHERE component = 1 GROUP BY componentinstance '.$query.' )
-                        SELECT componentinstance, GROUP_CONCAT(modifier) AS modifiers, GROUP_CONCAT(modifierinstance) AS modifierinstances FROM mdl_digitalta_context
-                            WHERE componentinstance IN (SELECT componentinstance FROM FilteredComponentInstances) GROUP BY componentinstance;'
-            );
-
-            $componentInstanceIds = array_keys($contextDigitalTa);
-
-
-            if (count($componentInstanceIds) > 0){
-                $componentsInstanceIdsToSearch = '(' . implode(', ', $componentInstanceIds) . ')';
-                $sqlComponent = 'SELECT * FROM mdl_digitalta_experiences 
-                            where id IN '.$componentsInstanceIdsToSearch.' 
-                            and visible = 1';
-
-                if (count($authors) > 0){
-                    for ($i = 0; $i < count($authors); $i++) {
-                        $sqlComponent .= ' and userid = '.$authors[$i];
-                    }
-                }
-
-                if (count($langs) > 0){
-                    for ($i = 0; $i < count($langs); $i++) {
-                        $sqlComponent .= ' and lang like '.$langs[$i];
-                    }
-                }
-
-                $sqlComponent .= ' limit '.$limit.' offset '.(($pagenumber-1) * $limit);
-
-                $components = array_values($DB->get_records_sql(
-                    $sqlComponent
+            $componentInstanceIds = ($havingSum == "")
+                ? []
+                : array_keys($DB->get_records_sql(
+                    'WITH FilteredComponentInstances AS (
+                        SELECT componentinstance
+                        FROM mdl_digitalta_context
+                        WHERE component = 1
+                        GROUP BY componentinstance ' . $query . '
+                    )
+                    SELECT componentinstance,
+                        GROUP_CONCAT(modifier) AS modifiers, 
+                        GROUP_CONCAT(modifierinstance) AS modifierinstances
+                    FROM mdl_digitalta_context
+                    WHERE componentinstance IN (
+                        SELECT componentinstance FROM FilteredComponentInstances
+                    )
+                    GROUP BY componentinstance;'
                 ));
 
-                //total rows
+            $components = [];
 
-                $sqlTotalRows = 'SELECT COUNT(*) AS total  FROM mdl_digitalta_experiences where id IN '.$componentsInstanceIdsToSearch;
-                if (count($authors) > 0){
-                    for ($i = 0; $i < count($authors); $i++) {
-                        $sqlTotalRows .= ' and userid = '.$authors[$i];
-                    }
+            if (count($componentInstanceIds) > 0 || count($authors) > 0 || count($langs) > 0) {
+
+                $sqlComponent = 'SELECT * FROM mdl_digitalta_experiences WHERE ';
+                $sqlTotalRows = 'SELECT COUNT(*) AS total  FROM mdl_digitalta_experiences WHERE ';
+
+                $sqlComponent .= '(';
+                $sqlTotalRows .= '(';
+
+                foreach ($componentInstanceIds as $componentInstanceId) {
+                    $sqlComponent .= ' or id = ' . $componentInstanceId;
+                    $sqlTotalRows .= ' or id = ' . $componentInstanceId;
                 }
 
-                if (count($langs) > 0){
-                    for ($i = 0; $i < count($langs); $i++) {
-                        $sqlTotalRows .= ' and lang like '.$langs[$i];
-                    }
+                foreach ($authors as $author) {
+                    $sqlComponent .= ' or userid = ' . $author;
+                    $sqlTotalRows .= ' or userid = ' . $author;
                 }
-                $totalRows = $DB->get_record_sql(
-                    $sqlTotalRows
-                )->total;
 
-                $totalPages = ceil($totalRows / $limit);
+                foreach ($langs as $lang) {
+                    $sqlComponent .= ' or lang like ' . $lang;
+                    $sqlTotalRows .= ' or lang like ' . $lang;
+                }
 
-                $experiences = self::getExperiences($components);
+                $sqlComponent .= ')';
+                $sqlTotalRows .= ')';
+
+                $sqlComponent = preg_replace('/\(\s*or/', '(', $sqlComponent);
+                $sqlTotalRows = preg_replace('/\(\s*or/', '(', $sqlTotalRows);
+
+                $sqlComponent = preg_replace('/\s*and\s*\(\)/', '', $sqlComponent);
+                $sqlTotalRows = preg_replace('/\s*and\s*\(\)/', '', $sqlTotalRows);
+
+                $sqlComponent .= ' ORDER BY timecreated DESC limit ' . $limit . ' offset ' . (($pagenumber - 1) * $limit);
+
+                $components = array_values($DB->get_records_sql($sqlComponent));
+
             }
-        }else{
-            $components = array_values($DB->get_records_sql(
-                'SELECT * FROM mdl_digitalta_experiences limit '.$limit.' offset '.(($pagenumber-1) * $limit)
-            ));
 
-            $totalRows = $DB->get_record_sql(
-                'SELECT COUNT(*) AS total  FROM mdl_digitalta_experiences'
-            )->total;
+            $totalRows = $DB->get_record_sql($sqlTotalRows)->total;
 
             $totalPages = ceil($totalRows / $limit);
 
             $experiences = self::getExperiences($components);
+        } else {
+            
+            $components = array_values(
+                $DB->get_records_sql(
+                    "SELECT * FROM mdl_digitalta_experiences ORDER BY timecreated DESC LIMIT " . $limit . " OFFSET " . (($pagenumber - 1) * $limit)
+                )
+            );
+
+            $totalRows = $DB->count_records('digitalta_experiences');
+            $totalPages = ceil($totalRows / $limit);
+            $experiences = self::getExperiences($components);
         }
+
         return array(
-            'pagenumber' => $pagenumber,
             'data' => $experiences,
             'pages' => $totalPages,
+            'pagenumber' => $pagenumber,
             'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/experiences/view.php?id='
         );
     }

@@ -16,8 +16,9 @@ class external_cases_get_by_pagination extends external_api
         );
     }
 
-    public static function cases_get_by_pagination($pagenumber, $filters){
-        global $DB, $USER, $CFG;
+    public static function cases_get_by_pagination($pagenumber, $filters)
+    {
+        global $DB, $CFG;
 
         $limit = 20;
         $totalPages = 0;
@@ -26,115 +27,130 @@ class external_cases_get_by_pagination extends external_api
 
         $cases = array();
 
-        if (count($filters) > 0){
-            $tags = [];
+        if (count($filters) > 0) {
             $themes = [];
+            $tags = [];
             $authors = [];
             $langs = [];
 
-            for ($i = 0; $i < count($filters); $i++) {
-                $filter = $filters[$i];
-                if ($filter["type"] == "tag"){
-                    $tags[] = '"'.$filter["value"].'"';
-                }else if ($filter["type"] == "theme"){
+            foreach ($filters as $filter) {
+                if ($filter["type"] == "tag") {
+                    $tags[] = '"' . $filter["value"] . '"';
+                } else if ($filter["type"] == "theme") {
                     $themes[] = $filter["value"];
-                }else if ($filter["type"] == "author"){
-                    $authors[] = '"'.$filter["value"].'"';
-                }else if ($filter["type"] == "language"){
-                    $langs[] = '"'.$filter["value"].'"';
+                } else if ($filter["type"] == "author") {
+                    $authors[] = '"' . $filter["value"] . '"';
+                } else if ($filter["type"] == "language") {
+                    $langs[] = '"' . $filter["value"] . '"';
                 }
             }
 
             $havingSum = "";
 
-            if (count($themes) > 0){
-                for ($i = 0; $i < count($themes); $i++) {
-                    if (strlen($havingSum) == 0){
-                        $havingSum .= "HAVING SUM(CASE WHEN modifier = 1 AND modifierinstance = ".$themes[$i]." THEN 1 ELSE 0 END) > 0 AND ";
-                    }else{
-                        $havingSum .= "SUM(CASE WHEN modifier = 1 AND modifierinstance = ".$themes[$i]." THEN 1 ELSE 0 END) > 0 AND ";
-                    }
+            foreach ($themes as $theme) {
+                if (strlen($havingSum) == 0){
+                    $havingSum .= "HAVING";
                 }
+                $havingSum .= " (SUM(CASE WHEN modifier = 1 AND modifierinstance = " . $theme . " THEN 1 ELSE 0 END) > 0) OR ";
             }
 
-            if (count($tags) > 0){
+            if (count($tags) > 0) {
                 $tagsToSearch = '(' . implode(', ', $tags) . ')';
                 $tagsExperiences = $DB->get_records_sql(
                     "SELECT * FROM mdl_digitalta_tags where name IN ".$tagsToSearch
                 );
                 $tagsId = array_keys($tagsExperiences);
-                for ($i = 0; $i < count($tagsId); $i++) {
+                foreach ($tagsId as $tagId) {
                     if (strlen($havingSum) == 0){
-                        $havingSum .= "HAVING SUM(CASE WHEN modifier = 2 AND modifierinstance = ".$tagsId[$i]." THEN 1 ELSE 0 END) > 0 AND ";
-                    }else{
-                        $havingSum .= "SUM(CASE WHEN modifier = 2 AND modifierinstance = ".$tagsId[$i]." THEN 1 ELSE 0 END) > 0 AND ";
+                        $havingSum .= "HAVING";
                     }
+                    $havingSum .= "(SUM(CASE WHEN modifier = 2 AND modifierinstance = " . $tagId . " THEN 1 ELSE 0 END) > 0) OR ";
                 }
             }
 
-            $query = preg_replace('/\s+AND\s*$/', '', $havingSum);
+            $query = preg_replace('/\s+OR\s*$/', '', $havingSum);
 
-            $contextDigitalTa = $DB->get_records_sql(
-                'WITH FilteredComponentInstances AS ( SELECT componentinstance FROM mdl_digitalta_context where component = 2 GROUP BY componentinstance '.$query.' )
-                        SELECT componentinstance, GROUP_CONCAT(modifier) AS modifiers, GROUP_CONCAT(modifierinstance) AS modifierinstances FROM mdl_digitalta_context
-                            WHERE componentinstance IN (SELECT componentinstance FROM FilteredComponentInstances) GROUP BY componentinstance;'
-            );
-
-            $componentInstanceIds = array_keys($contextDigitalTa);
-
-            if (count($componentInstanceIds) > 0) {
-                $componentsInstanceIdsToSearch = '(' . implode(', ', $componentInstanceIds) . ')';
-
-                $sqlComponent = 'SELECT * FROM mdl_digitalta_cases 
-                            where id IN '.$componentsInstanceIdsToSearch.' 
-                            and status = 1';
-
-                $sqlTotalRows = 'SELECT COUNT(*) AS total  FROM mdl_digitalta_cases where id IN '.$componentsInstanceIdsToSearch;
-
-                if (count($authors) > 0){
-                    for ($i = 0; $i < count($authors); $i++) {
-                        $sqlComponent .= ' and userid = '.$authors[$i];
-                        $sqlTotalRows .= ' and userid = '.$authors[$i];
-                    }
-                }
-
-                if (count($langs) > 0){
-                    for ($i = 0; $i < count($langs); $i++) {
-                        $sqlComponent .= ' and lang like '.$langs[$i];
-                        $sqlTotalRows .= ' and lang like '.$langs[$i];
-                    }
-                }
-
-                $sqlComponent .= ' ORDER BY timecreated DESC limit '.$limit.' offset '.(($pagenumber-1) * $limit);
-
-                $components = array_values($DB->get_records_sql(
-                    $sqlComponent
+            $componentInstanceIds = ($havingSum == "")
+                ? []
+                : array_keys($DB->get_records_sql(
+                    'WITH FilteredComponentInstances AS (
+                        SELECT componentinstance
+                        FROM mdl_digitalta_context
+                        WHERE component = 2
+                        GROUP BY componentinstance ' . $query . '
+                    )
+                    SELECT componentinstance,
+                        GROUP_CONCAT(modifier) AS modifiers, 
+                        GROUP_CONCAT(modifierinstance) AS modifierinstances
+                    FROM mdl_digitalta_context
+                    WHERE componentinstance IN (
+                        SELECT componentinstance FROM FilteredComponentInstances
+                    )
+                    GROUP BY componentinstance;'
                 ));
 
-                $totalRows = $DB->get_record_sql(
-                    $sqlTotalRows
-                )->total;
+            $components = [];
 
-                $totalPages = ceil($totalRows / $limit);
+            if (count($componentInstanceIds) > 0 || count($authors) > 0 || count($langs) > 0) {
 
-                $cases = self::get_cases($components);
+                $sqlComponent = 'SELECT * FROM mdl_digitalta_cases WHERE ';
+                $sqlTotalRows = 'SELECT COUNT(*) AS total  FROM mdl_digitalta_cases WHERE ';
+
+                $sqlComponent .= '(';
+                $sqlTotalRows .= '(';
+
+                foreach ($componentInstanceIds as $componentInstanceId) {
+                    $sqlComponent .= ' or id = ' . $componentInstanceId;
+                    $sqlTotalRows .= ' or id = ' . $componentInstanceId;
+                }
+
+                foreach ($authors as $author) {
+                    $sqlComponent .= ' or userid = ' . $author;
+                    $sqlTotalRows .= ' or userid = ' . $author;
+                }
+
+                foreach ($langs as $lang) {
+                    $sqlComponent .= ' or lang like ' . $lang;
+                    $sqlTotalRows .= ' or lang like ' . $lang;
+                }
+
+                $sqlComponent .= ')';
+                $sqlTotalRows .= ')';
+
+                $sqlComponent = preg_replace('/\(\s*or/', '(', $sqlComponent);
+                $sqlTotalRows = preg_replace('/\(\s*or/', '(', $sqlTotalRows);
+
+                $sqlComponent = preg_replace('/\s*and\s*\(\)/', '', $sqlComponent);
+                $sqlTotalRows = preg_replace('/\s*and\s*\(\)/', '', $sqlTotalRows);
+
+                $sqlComponent .= ' ORDER BY timecreated DESC limit ' . $limit . ' offset ' . (($pagenumber - 1) * $limit);
+
+                $components = array_values($DB->get_records_sql($sqlComponent));
+
             }
-        } else {
-            $components = array_values($DB->get_records_sql(
-                'SELECT * FROM mdl_digitalta_cases WHERE status = 1 ORDER BY timecreated DESC LIMIT '.$limit.' OFFSET '. (($pagenumber - 1) * $limit)
-            ));
 
-            $totalRows = $DB->count_records('digitalta_cases', ['status' => 1]);
+            $totalRows = $DB->get_record_sql($sqlTotalRows)->total;
 
             $totalPages = ceil($totalRows / $limit);
 
             $cases = self::get_cases($components);
+        } else {
+            
+            $components = array_values(
+                $DB->get_records_sql(
+                    "SELECT * FROM mdl_digitalta_cases ORDER BY timecreated DESC LIMIT " . $limit . " OFFSET " . (($pagenumber - 1) * $limit)
+                )
+            );
+
+            $totalRows = $DB->count_records('digitalta_cases');
+            $totalPages = ceil($totalRows / $limit);
+            $cases = self::get_cases($components);
         }
 
         return array(
-            'pagenumber' => $pagenumber,
             'data' => $cases,
             'pages' => $totalPages,
+            'pagenumber' => $pagenumber,
             'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/view.php?id=',
             'manageurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/manage.php?id='
         );

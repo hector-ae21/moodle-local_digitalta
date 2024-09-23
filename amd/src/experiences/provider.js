@@ -75,7 +75,7 @@ export const init = () => {
         }
     });
 
-    $(document).on("keydown", "#autorFilters", async function() {
+    $(document).on("keydown", "#authorFilters", async function() {
         const filterText = $(this).val(); // Obtenemos el valor del input
         const request = {
             methodname: 'core_enrol_get_potential_users',
@@ -84,10 +84,10 @@ export const init = () => {
         const response = await Ajax.call([request])[0];
 
         if (response.length === 0) {
-            $("#suggestionsAutors").empty();
+            $("#suggestionsAuthors").empty();
         } else {
-            const authorsSuggestions = await Templates.renderForPromise('local_digitalta/_common/listAutors', {users: response});
-            Templates.replaceNodeContents("#suggestionsAutors", authorsSuggestions.html, authorsSuggestions.js);
+            const authorsSuggestions = await Templates.renderForPromise('local_digitalta/_common/listAuthors', {users: response});
+            Templates.replaceNodeContents("#suggestionsAuthors", authorsSuggestions.html, authorsSuggestions.js);
         }
     });
 
@@ -97,23 +97,23 @@ export const init = () => {
         $("#inlineFormInputGroup").val("");
     });
 
-    $("#suggestionsAutors").on("click", ".autor-item", function() {
+    $("#suggestionsAuthors").on("click", ".author-item", function() {
         const filterText = {type: "author", value: {id: $(this).attr('attr-id-user'), name: $(this).attr('attr-name')}};
         setFilter(filterText);
-        $("#autorFilters").val("");
+        $("#authorFilters").val("");
     });
 
 
     $("#filters-menu").click(function() {
         if ($(".tagsInputFilter").is(":focus")) {
-            $("#suggestionsAutors").hide();
+            $("#suggestionsAuthors").hide();
             $("#suggestionsTags").show();
-        } else if ($("#autorFilters").is(":focus")) {
+        } else if ($("#authorFilters").is(":focus")) {
             $("#suggestionsTags").hide();
-            $("#suggestionsAutors").show();
+            $("#suggestionsAuthors").show();
         } else {
             $("#suggestionsTags").hide();
-            $("#suggestionsAutors").hide();
+            $("#suggestionsAuthors").hide();
         }
     });
 
@@ -126,7 +126,7 @@ export const init = () => {
 };
 
 const getExperiences = async() => {
-    // Remapeamos la data por el caso especial de autores
+    // Remapeamos la data por el caso especial de authores
     const mappedFilters = filters.map((filter) => {
         if (filter.type === 'author' || filter.type === 'theme') {
             return {type: filter.type, value: filter.value.id};

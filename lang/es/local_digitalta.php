@@ -67,6 +67,7 @@ $string['concept:mentors']       = 'Mentores';
 $string['concept:tutorsmentors'] = 'Tutores y mentores';
 $string['concept:introduction']  = 'Introducción';
 $string['concept:conclusion']    = 'Conclusión';
+$string['concept:type']          = 'Tipo';
 
 // Concepts / terms - Definitions
 $string['concept:experience:definition'] = 'Una experiencia es una práctica docente real compartida por un profesor. Puede ser la planificación de una clase, una actividad, una reflexión o cualquier otro contenido relacionado con la enseñanza.';
@@ -143,6 +144,14 @@ $string['themestags:header']           = $string['concept:themestags'];
 $string['themestags:description']      = '<p>Explora nuestros <span class="digitalta-highlighted">temas</span> y <span class="digitalta-highlighted">etiquetas</span> para encontrar las <span class="digitalta-highlighted">experiencias</span>, <span class="digitalta-highlighted">casos</span> y <span class="digitalta-highlighted">recursos</span> compartidos por nuestra comunidad.</p>';
 $string['themestags:view:description'] = '<p>Descubre las <span class="digitalta-highlighted">experiencias</span>, <span class="digitalta-highlighted">casos</span> más relevantes.y <span class="digitalta-highlighted">recursos</span> compartidos por nuestra comunidad sobre <span class="digitalta-highlighted-upper">{$a}</span>.</p>';
 $string['themestags:invalidthemetag']  = 'Etiqueta o tema no válido';
+
+// Filters
+$string['filters:title']        = 'Filtros';
+$string['filters:theme']        = $string['concept:theme'];
+$string['filters:tag']          = $string['concept:tag'];
+$string['filters:resourcetype'] = $string['concept:type'];
+$string['filters:lang']         = $string['concept:language'];
+$string['filters:author']       = 'Autor';
 
 // Experiences
 $string['experiences:title']       = $string['concept:experiences'];
@@ -237,7 +246,7 @@ $string['resources:manage:description']             = 'Descripción';
 $string['resources:manage:description:placeholder'] = 'Introduce una breve descripción del recurso...';
 $string['resources:manage:themes']                  = $string['concept:themes'];
 $string['resources:manage:tags']                    = $string['concept:tags'];
-$string['resources:manage:type']                    = 'Tipo';
+$string['resources:manage:type']                    = $string['concept:type'];
 $string['resources:manage:language']                = $string['concept:language'];
 
 // Resource - Actions

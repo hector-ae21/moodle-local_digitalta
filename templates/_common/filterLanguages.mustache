@@ -1,9 +1,9 @@
 <div class="input-group-prepend">
-    <label class="input-group-text" for="inputGroupSelect01">Lenguaje</label>
+    <label class="input-group-text" for="inputGroupSelect01">{{#str}} filters:lang, local_digitalta {{/str}}</label>
 </div>
 <select class="custom-select filterLanguageSelect" id="inputGroupSelect01">
-    <option selected>Choose...</option>
+    <option selected class="disabled"></option>
     {{#languages}}
-    <option value="{{.}}" class="enable">{{.}}</option>
+        <option value="{{.}}" class="enable">{{.}}</option>
     {{/languages}}
 </select>

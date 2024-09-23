@@ -7,6 +7,7 @@
  * @copyright 2024 ADSDR-FUNIBER Scepter Team
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_digitalta;
 
 require_once($CFG->dirroot . '/local/digitalta/classes/chat.php');
@@ -17,6 +18,7 @@ require_once($CFG->dirroot . '/user/profile/lib.php');
 use local_digitalta\Chat;
 use local_digitalta\Experiences;
 use local_digitalta\TutoringStatus;
+use local_digitalta\task\pending_emails;
 use stdClass;
 
 class Tutors
@@ -66,7 +68,8 @@ class Tutors
                 AND muid.data IN ('Tutor', 'Mentor')
             INNER JOIN {user_info_field} muif
                 ON muid.fieldid = muif.id
-                AND muif.shortname = 'digitalta_role';");
+                AND muif.shortname = 'digitalta_role';"
+        );
         return array_values(array_map(function ($tutor) {
             profile_load_data($tutor);
             return $tutor;
@@ -83,7 +86,11 @@ class Tutors
      */
     public static function send_tutor_request(int $tutorid, int $experienceid, bool $experienceRequest): bool|object
     {
-        global $DB, $USER;
+        global $DB, $USER, $PAGE;
+
+        $context = \context_system::instance();
+        $PAGE->set_context($context);
+
         $data = new \stdClass();
         $data->tutorid = $tutorid;
         $data->experienceid = $experienceid;
@@ -94,19 +101,23 @@ class Tutors
             return false;
         }
 
-    $tutor = $DB->get_record('user', array('id' => $tutorid), '*', MUST_EXIST);
-    $subject = get_string('newtutorrequestsubject', 'local_yourpluginname');
-    $messagehtml = get_string('tutorrequestbody', 'local_yourpluginname', (object)[
-        'experienceid' => $experienceid
-    ]);
-    $messagehtml .= '<br>' . get_string('tutorrequestrsender', 'local_yourpluginname', (object)[
-        'username' => $USER->username
-    ]);
-    $messagehtml .= '<br>' . get_string('tutorrequesttime', 'local_yourpluginname', (object)[
-        'requesttime' => userdate(time())
-    ]);
+        $tutor = $DB->get_record('user', array('id' => $tutorid), '*', MUST_EXIST);
 
-    email_to_user($tutor, $USER, $subject, strip_tags($messagehtml), $messagehtml);
+        $subject = get_string('tutoring:newtutorrequestsubject', 'local_digitalta');
+
+        $messagehtml = get_string('tutoring:tutorrequestbody', 'local_digitalta', (object)[
+            'experienceid' => $experienceid
+        ]);
+        $messagehtml .= '<br>' . get_string('tutoring:tutorrequestrsender', 'local_digitalta', (object)[
+            'username' => $USER->username
+        ]);
+        $messagehtml .= '<br>' . get_string('tutoring:tutorrequesttime', 'local_digitalta', (object)[
+            'requesttime' => userdate(time())
+        ]);
+
+        $task = pending_emails::instance($tutorid, $USER->id, $subject, $messagehtml);
+
+        \core\task\manager::queue_adhoc_task($task);
 
         return $data;
     }
@@ -122,7 +133,7 @@ class Tutors
     public static function requests_get_by_tutor(int $tutorid, $status = 0): array
     {
         global $DB;
-        return array_values($DB->get_records(self::$requests_table, ['tutorid' => $tutorid , 'status' => $status]));
+        return array_values($DB->get_records(self::$requests_table, ['tutorid' => $tutorid, 'status' => $status]));
     }
 
     /**
@@ -207,7 +218,7 @@ class Tutors
     public static function is_enrolled_tutor_in_course(int $tutorid, int $experienceid, int $status = 1): bool
     {
         global $DB;
-        $data = $DB->get_record(self::$requests_table, ['tutorid' => $tutorid, 'experienceid' => $experienceid , 'status' => $status]);
+        $data = $DB->get_record(self::$requests_table, ['tutorid' => $tutorid, 'experienceid' => $experienceid, 'status' => $status]);
         return !!$data;
     }
 
@@ -307,5 +318,4 @@ class Tutors
         $DB->delete_records('digitalta_tutor_availability', ['id' => $id]);
         return true;
     }
-
 }

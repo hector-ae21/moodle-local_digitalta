@@ -149,6 +149,7 @@ class external_experiences_get_by_pagination extends external_api
         }
 
         return array(
+            'component' => 'experience',
             'data' => $experiences,
             'pages' => $totalPages,
             'pagenumber' => $pagenumber,
@@ -191,6 +192,7 @@ class external_experiences_get_by_pagination extends external_api
 
     public static function experiences_get_by_pagination_returns() {
         return new external_single_structure([
+            'component' => new external_value(PARAM_TEXT, 'component', VALUE_REQUIRED),
             'pagenumber' => new external_value(PARAM_INT, 'page number', VALUE_REQUIRED),
             'data' => new external_multiple_structure(
                 new external_single_structure([

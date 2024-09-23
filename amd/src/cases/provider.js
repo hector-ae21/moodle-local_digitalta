@@ -224,10 +224,11 @@ const getCases = async() => {
         }).catch((error) => displayException(error));
         $(".digitalta.pagination").hide();
     } else {
-        pages = casesResponse.pages;
+        let obj = {"cases": casesResponse};
         let paginationArray = generatePagination(casesResponse.pages, selectedPage);
-        const casesList = await Templates.renderForPromise('local_digitalta/cases/dashboard/case-list', {cases: casesResponse});
-        const pagination = await Templates.renderForPromise('local_digitalta/_common/pagination', {pages: paginationArray});
+        const casesList = await Templates.renderForPromise('local_digitalta/cases/dashboard/case-list', obj);
+        pages = casesResponse.pages;
+        const pagination = await Templates.renderForPromise('local_digitalta/_common/pagination', {"pages": paginationArray});
         Templates.replaceNodeContents("#list-cases-body", casesList.html, casesList.js);
         Templates.replaceNodeContents("#digital-pagination", pagination.html, pagination.js);
         $(".digitalta.pagination").show();

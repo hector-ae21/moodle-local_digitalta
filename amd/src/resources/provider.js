@@ -245,11 +245,11 @@ const getResources = async() => {
         }).catch((error) => displayException(error));
         $(".digitalta.pagination").hide();
     } else {
-        pages = resourcesResponse.pages;
-        let pagination = generatePagination(resourcesResponse.pages, selectedPage);
+        let obj = {"resources": resourcesResponse};
+        let paginationArray = generatePagination(resourcesResponse.pages, selectedPage);
         // eslint-disable-next-line max-len
-        const resourcesList = await Templates.renderForPromise('local_digitalta/resources/dashboard/resource-list', {resources: resourcesResponse});
-        const paginationList = await Templates.renderForPromise('local_digitalta/_common/pagination', {pages: pagination});
+        const resourcesList = await Templates.renderForPromise('local_digitalta/resources/dashboard/resource-list', obj);
+        const paginationList = await Templates.renderForPromise('local_digitalta/_common/pagination', {"pages": paginationArray});
         Templates.replaceNodeContents("#list-resources-body", resourcesList.html, resourcesList.js);
         Templates.replaceNodeContents("#digital-pagination", paginationList.html, paginationList.js);
         $(".digitalta.pagination").show();

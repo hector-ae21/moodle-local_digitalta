@@ -20,7 +20,7 @@ class external_resources_get_by_pagination extends external_api
     {
         global $DB, $CFG;
 
-        $limit = 5;
+        $limit = 20;
         $totalPages = 0;
 
         $filters = json_decode($filters, true);
@@ -34,110 +34,125 @@ class external_resources_get_by_pagination extends external_api
             $authors = [];
             $langs = [];
 
-
-            for ($i = 0; $i < count($filters); $i++) {
-                $filter = $filters[$i];
+            foreach ($filters as $filter) {
                 if ($filter["type"] == "tag") {
                     $tags[] = '"' . $filter["value"] . '"';
                 } else if ($filter["type"] == "theme") {
                     $themes[] = $filter["value"];
                 } else if ($filter["type"] == "author") {
                     $authors[] = '"' . $filter["value"] . '"';
-                } else if ($filter["type"] == "languaje") {
+                } else if ($filter["type"] == "language") {
                     $langs[] = '"' . $filter["value"] . '"';
                 } else if ($filter["type"] == "resource") {
                     $resourceTypes[] = $filter["value"];
                 }
             }
+
             $havingSum = "";
 
-            if (count($themes) > 0) {
-                for ($i = 0; $i < count($themes); $i++) {
-                    if (strlen($havingSum) == 0){
-                        $havingSum .= "HAVING SUM(CASE WHEN modifier = 1 AND modifierinstance = ".$themes[$i]." THEN 1 ELSE 0 END) > 0 AND ";
-                    }else{
-                        $havingSum .= "SUM(CASE WHEN modifier = 1 AND modifierinstance = ".$themes[$i]." THEN 1 ELSE 0 END) > 0 AND ";
-                    }
+            foreach ($themes as $theme) {
+                if (strlen($havingSum) == 0){
+                    $havingSum .= "HAVING";
                 }
+                $havingSum .= " (SUM(CASE WHEN modifier = 1 AND modifierinstance = " . $theme . " THEN 1 ELSE 0 END) > 0) OR ";
             }
 
-            if (count($tags) > 0){
+            if (count($tags) > 0) {
                 $tagsToSearch = '(' . implode(', ', $tags) . ')';
                 $tagsExperiences = $DB->get_records_sql(
                     "SELECT * FROM mdl_digitalta_tags where name IN ".$tagsToSearch
                 );
                 $tagsId = array_keys($tagsExperiences);
-                for ($i = 0; $i < count($tagsId); $i++) {
+                foreach ($tagsId as $tagId) {
                     if (strlen($havingSum) == 0){
-                        $havingSum .= "HAVING SUM(CASE WHEN modifier = 2 AND modifierinstance = ".$tagsId[$i]." THEN 1 ELSE 0 END) > 0 AND ";
-                    }else{
-                        $havingSum .= "SUM(CASE WHEN modifier = 2 AND modifierinstance = ".$tagsId[$i]." THEN 1 ELSE 0 END) > 0 AND ";
+                        $havingSum .= "HAVING";
                     }
+                    $havingSum .= "(SUM(CASE WHEN modifier = 2 AND modifierinstance = " . $tagId . " THEN 1 ELSE 0 END) > 0) OR ";
                 }
             }
 
-            $query = preg_replace('/\s+AND\s*$/', '', $havingSum);
+            $query = preg_replace('/\s+OR\s*$/', '', $havingSum);
 
-            $contextDigitalTa = $DB->get_records_sql(
-                'WITH FilteredComponentInstances AS ( SELECT componentinstance FROM mdl_digitalta_context where component = 2 GROUP BY componentinstance '.$query.' )
-                        SELECT componentinstance, GROUP_CONCAT(modifier) AS modifiers, GROUP_CONCAT(modifierinstance) AS modifierinstances FROM mdl_digitalta_context
-                            WHERE componentinstance IN (SELECT componentinstance FROM FilteredComponentInstances) GROUP BY componentinstance;'
-            );
+            $componentInstanceIds = ($havingSum == "")
+                ? []
+                : array_keys($DB->get_records_sql(
+                    'WITH FilteredComponentInstances AS (
+                        SELECT componentinstance
+                        FROM mdl_digitalta_context
+                        WHERE component = 3
+                        GROUP BY componentinstance ' . $query . '
+                    )
+                    SELECT componentinstance,
+                        GROUP_CONCAT(modifier) AS modifiers, 
+                        GROUP_CONCAT(modifierinstance) AS modifierinstances
+                    FROM mdl_digitalta_context
+                    WHERE componentinstance IN (
+                        SELECT componentinstance FROM FilteredComponentInstances
+                    )
+                    GROUP BY componentinstance;'
+                ));
 
-            $componentInstanceIds = array_keys($contextDigitalTa);
+            $components = [];
 
-            if (count($componentInstanceIds) > 0) {
-                $sqlComponent = 'SELECT * FROM mdl_digitalta_resources where ';
-                $sqlTotalRows = 'SELECT COUNT(*) AS total  FROM mdl_digitalta_resources where ';
-                for ($i = 0; $i < count($componentInstanceIds); $i++) {
-                    if ($i === 0){
-                        $sqlComponent .= '( ';
-                        $sqlTotalRows .= '( ';
-                    }
-                    $sqlComponent .= 'path like "%id='.$componentInstanceIds[$i].'%" OR ';
-                    $sqlTotalRows .= 'path like "%id='.$componentInstanceIds[$i].'%" OR ';
-                    if($i+1 == count($componentInstanceIds)){
-                        $sqlComponent = preg_replace('/\s+OR\s*$/', '', $sqlComponent);
-                        $sqlTotalRows = preg_replace('/\s+OR\s*$/', '', $sqlTotalRows);
-                        $sqlComponent .= ' )';
-                        $sqlTotalRows .= ' )';
-                    }
+            if (count($componentInstanceIds) > 0 || count($authors) > 0 || count($langs) > 0 || count($resourceTypes) > 0) {
+
+                $sqlComponent = 'SELECT * FROM mdl_digitalta_resources WHERE ';
+                $sqlTotalRows = 'SELECT COUNT(*) AS total  FROM mdl_digitalta_resources WHERE ';
+
+                // Patch - Do not show resources of type Study Case
+                $studycase_type = \local_digitalta\Resources::get_type_by_name('Study Case')->id;
+                if (!in_array($studycase_type, $resourceTypes)) {
+                    $sqlComponent .= 'type != ' . $studycase_type . ' and ';
+                    $sqlTotalRows .= 'type != ' . $studycase_type . ' and ';
                 }
-                if (count($authors) > 0) {
-                    for ($i = 0; $i < count($authors); $i++) {
-                        $sqlComponent .= ' and userid = ' . $authors[$i];
-                        $sqlTotalRows .= ' and userid = ' . $authors[$i];
-                    }
+                $sqlComponent .= '(';
+                $sqlTotalRows .= '(';
+
+                foreach ($componentInstanceIds as $componentInstanceId) {
+                    $sqlComponent .= ' or id = ' . $componentInstanceId;
+                    $sqlTotalRows .= ' or id = ' . $componentInstanceId;
                 }
 
-                if (count($langs) > 0) {
-                    for ($i = 0; $i < count($langs); $i++) {
-                        $sqlComponent .= ' and lang like ' . $langs[$i];
-                        $sqlTotalRows .= ' and lang like ' . $langs[$i];
-                    }
+                foreach ($authors as $author) {
+                    $sqlComponent .= ' or userid = ' . $author;
+                    $sqlTotalRows .= ' or userid = ' . $author;
                 }
 
-                if (count($resourceTypes) > 0) {
-                    for ($i = 0; $i < count($resourceTypes); $i++) {
-                        $sqlComponent .= ' and type = ' . $resourceTypes[$i];
-                        $sqlTotalRows .= ' and type = ' . $resourceTypes[$i];
-                    }
+                foreach ($langs as $lang) {
+                    $sqlComponent .= ' or lang like ' . $lang;
+                    $sqlTotalRows .= ' or lang like ' . $lang;
                 }
+
+                foreach ($resourceTypes as $resourceType) {
+                    $sqlComponent .= ' or type = ' . $resourceType;
+                    $sqlTotalRows .= ' or type = ' . $resourceType;
+                }
+
+                $sqlComponent .= ')';
+                $sqlTotalRows .= ')';
+
+                $sqlComponent = preg_replace('/\(\s*or/', '(', $sqlComponent);
+                $sqlTotalRows = preg_replace('/\(\s*or/', '(', $sqlTotalRows);
+
+                $sqlComponent = preg_replace('/\s*and\s*\(\)/', '', $sqlComponent);
+                $sqlTotalRows = preg_replace('/\s*and\s*\(\)/', '', $sqlTotalRows);
 
                 $sqlComponent .= ' ORDER BY timecreated DESC limit ' . $limit . ' offset ' . (($pagenumber - 1) * $limit);
 
                 $components = array_values($DB->get_records_sql($sqlComponent));
 
-                $totalRows = $DB->get_record_sql($sqlTotalRows)->total;
-
-                $totalPages = ceil($totalRows / $limit);
-
-                $resources = self::get_resources($components);
             }
+
+            $totalRows = $DB->get_record_sql($sqlTotalRows)->total;
+
+            $totalPages = ceil($totalRows / $limit);
+
+            $resources = self::get_resources($components);
         } else {
+            $studycase_type = \local_digitalta\Resources::get_type_by_name('Study Case')->id;
             $components = array_values(
                 $DB->get_records_sql(
-                    "SELECT * FROM mdl_digitalta_resources ORDER BY timecreated DESC LIMIT " . $limit . " OFFSET " . (($pagenumber - 1) * $limit)
+                    "SELECT * FROM mdl_digitalta_resources WHERE type != " . $studycase_type . " ORDER BY timecreated DESC LIMIT " . $limit . " OFFSET " . (($pagenumber - 1) * $limit)
                 )
             );
 
@@ -147,6 +162,7 @@ class external_resources_get_by_pagination extends external_api
         }
 
         return array(
+            'component' => 'resource',
             'data' => $resources,
             'pages' => $totalPages,
             'pagenumber' => $pagenumber
@@ -176,11 +192,12 @@ class external_resources_get_by_pagination extends external_api
     public static function resources_get_by_pagination_returns()
     {
         return new external_single_structure([
+            'component' => new external_value(PARAM_TEXT, 'component'),
             'data' => new external_multiple_structure(
                 new external_single_structure([
                     "id" => new external_value(PARAM_INT, "id"),
                     "name" => new external_value(PARAM_TEXT, "name"),
-                    "description" => new external_value(PARAM_CLEANHTML, "description"),
+                    "description" => new external_value(PARAM_RAW, "description"),
                     "type" => new external_value(PARAM_TEXT, "type"),
                     "format" => new external_value(PARAM_TEXT, "format"),
                     "path" => new external_value(PARAM_TEXT, "path"),
@@ -189,12 +206,22 @@ class external_resources_get_by_pagination extends external_api
                     "timecreated" => new external_value(PARAM_INT, "timecreated"),
                     "timemodified" => new external_value(PARAM_INT, "timemodified"),
                     "comment" => new external_value(PARAM_TEXT, "comment"),
-                    "themes" => new external_multiple_structure(new external_single_structure([])),
-                    "tags" => new external_multiple_structure(new external_single_structure([])),
+                    "themes" => new external_multiple_structure(
+                        new external_single_structure([
+                            "name" => new external_value(PARAM_TEXT, "name"),
+                            "id" => new external_value(PARAM_TEXT),
+                        ])
+                    ),
+                    "tags" => new external_multiple_structure(
+                        new external_single_structure([
+                            "name" => new external_value(PARAM_TEXT, "name"),
+                            "id" => new external_value(PARAM_TEXT),
+                        ]), "tags", VALUE_OPTIONAL
+                    ),
                     "fixed_tags" => new external_multiple_structure(
                         new external_single_structure([
                             "name" => new external_value(PARAM_TEXT, "name")
-                        ])
+                        ]), "fixed_tags", VALUE_OPTIONAL
                     ),
                     "reactions" => new external_single_structure([
                         "likes" => new external_single_structure([

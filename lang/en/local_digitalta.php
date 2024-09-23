@@ -145,6 +145,14 @@ $string['themestags:description']      = '<p>Explore our <span class="digitalta-
 $string['themestags:view:description'] = '<p>Discover the most relevant <span class="digitalta-highlighted">experiences</span>, <span class="digitalta-highlighted">cases</span>, and <span class="digitalta-highlighted">resources</span> shared by our community about <span class="digitalta-highlighted-upper">{$a}</span></p>';
 $string['themestags:invalidthemetag']  = 'Invalid tag or theme';
 
+// Filters
+$string['filters:title']        = 'Filters';
+$string['filters:theme']        = $string['concept:theme'];
+$string['filters:tag']          = $string['concept:tag'];
+$string['filters:resourcetype'] = $string['concept:type'];
+$string['filters:lang']         = $string['concept:language'];
+$string['filters:author']       = 'Author';
+
 // Experiences
 $string['experiences:title']       = $string['concept:experiences'];
 $string['experiences:header']      = $string['concept:experiences'];

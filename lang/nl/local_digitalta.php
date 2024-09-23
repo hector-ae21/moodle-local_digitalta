@@ -142,6 +142,14 @@ $string['themestags:description']      = '<p>Verken onze <span class="digitalta-
 $string['themestags:view:description'] = '<p>Ontdek de meest relevante <span class="digitalta-highlighted">ervaringen</span>, <span class="digitalta-highlighted">cases</span>en <span class="digitalta-highlighted">bronnen</span> gedeeld door onze gemeenschap over <span class="digitalta-highlighted-upper">{$a}</span>.</p>';
 $string['themestags:invalidthemetag']  = 'Ongeldige tag of thema';
 
+// Filters
+$string['filters:title']        = 'Filters';
+$string['filters:theme']        = $string['concept:theme'];
+$string['filters:tag']          = $string['concept:tag'];
+$string['filters:resourcetype'] = $string['concept:type'];
+$string['filters:lang']         = $string['concept:language'];
+$string['filters:author']       = 'Auteur';
+
 // Experiences
 $string['experiences:title']       = $string['concept:experiences'];
 $string['experiences:header']      = $string['concept:experiences'];

@@ -19,7 +19,7 @@ class external_experiences_get_by_pagination extends external_api
 
     public static function experiences_get_by_pagination($pagenumber, $filters) {
         global $DB, $CFG;
-        $limit = 5;
+        $limit = 20;
 
         $totalPages = 0;
         $filters = json_decode($filters, true);

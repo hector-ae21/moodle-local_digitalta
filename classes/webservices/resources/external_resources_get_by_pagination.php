@@ -20,7 +20,7 @@ class external_resources_get_by_pagination extends external_api
     {
         global $DB, $CFG;
 
-        $limit = 5;
+        $limit = 20;
         $totalPages = 0;
 
         $filters = json_decode($filters, true);
@@ -43,7 +43,7 @@ class external_resources_get_by_pagination extends external_api
                     $themes[] = $filter["value"];
                 } else if ($filter["type"] == "author") {
                     $authors[] = '"' . $filter["value"] . '"';
-                } else if ($filter["type"] == "languaje") {
+                } else if ($filter["type"] == "language") {
                     $langs[] = '"' . $filter["value"] . '"';
                 } else if ($filter["type"] == "resource") {
                     $resourceTypes[] = $filter["value"];
@@ -180,7 +180,7 @@ class external_resources_get_by_pagination extends external_api
                 new external_single_structure([
                     "id" => new external_value(PARAM_INT, "id"),
                     "name" => new external_value(PARAM_TEXT, "name"),
-                    "description" => new external_value(PARAM_CLEANHTML, "description"),
+                    "description" => new external_value(PARAM_RAW, "description"),
                     "type" => new external_value(PARAM_TEXT, "type"),
                     "format" => new external_value(PARAM_TEXT, "format"),
                     "path" => new external_value(PARAM_TEXT, "path"),
@@ -189,12 +189,22 @@ class external_resources_get_by_pagination extends external_api
                     "timecreated" => new external_value(PARAM_INT, "timecreated"),
                     "timemodified" => new external_value(PARAM_INT, "timemodified"),
                     "comment" => new external_value(PARAM_TEXT, "comment"),
-                    "themes" => new external_multiple_structure(new external_single_structure([])),
-                    "tags" => new external_multiple_structure(new external_single_structure([])),
+                    "themes" => new external_multiple_structure(
+                        new external_single_structure([
+                            "name" => new external_value(PARAM_TEXT, "name"),
+                            "id" => new external_value(PARAM_TEXT),
+                        ])
+                    ),
+                    "tags" => new external_multiple_structure(
+                        new external_single_structure([
+                            "name" => new external_value(PARAM_TEXT, "name"),
+                            "id" => new external_value(PARAM_TEXT),
+                        ]), "tags", VALUE_OPTIONAL
+                    ),
                     "fixed_tags" => new external_multiple_structure(
                         new external_single_structure([
                             "name" => new external_value(PARAM_TEXT, "name")
-                        ])
+                        ]), "fixed_tags", VALUE_OPTIONAL
                     ),
                     "reactions" => new external_single_structure([
                         "likes" => new external_single_structure([

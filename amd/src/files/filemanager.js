@@ -64,7 +64,7 @@ export const generateFileHash = (filename) => {
 
     for (let i = 0; i < filename.length; i++) {
         const char = filename.charCodeAt(i);
-        hash = hash * 31 + char; 
+        hash = hash * 31 + char;
     }
 
     hash = Math.abs(hash) % 1000000;
@@ -72,7 +72,7 @@ export const generateFileHash = (filename) => {
     let hashString = hash.toString();
 
     while (hashString.length < 6) {
-        hashString = '0' + hashString; 
+        hashString = '0' + hashString;
     }
 
     return hashString;

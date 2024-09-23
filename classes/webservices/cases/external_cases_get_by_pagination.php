@@ -19,7 +19,7 @@ class external_cases_get_by_pagination extends external_api
     public static function cases_get_by_pagination($pagenumber, $filters){
         global $DB, $USER, $CFG;
 
-        $limit = 5;
+        $limit = 20;
         $totalPages = 0;
 
         $filters = json_decode($filters, true);
@@ -40,7 +40,7 @@ class external_cases_get_by_pagination extends external_api
                     $themes[] = $filter["value"];
                 }else if ($filter["type"] == "author"){
                     $authors[] = '"'.$filter["value"].'"';
-                }else if ($filter["type"] == "languaje"){
+                }else if ($filter["type"] == "language"){
                     $langs[] = '"'.$filter["value"].'"';
                 }
             }
@@ -171,11 +171,11 @@ class external_cases_get_by_pagination extends external_api
             'data' => new external_multiple_structure(
                 new external_single_structure([
                     'id' => new external_value(PARAM_INT, 'case id'),
-                    'experienceid' => new external_value(PARAM_INT, 'experience id'),
+                    'experienceid' => new external_value(PARAM_INT, 'experience id', VALUE_DEFAULT, 0),
                     'resourceid' => new external_value(PARAM_INT, 'resource id'),
                     'userid' => new external_value(PARAM_INT, 'user id'),
                     "title" => new external_value(PARAM_TEXT, 'title'),
-                    "description" => new external_value(PARAM_CLEANHTML, 'description'),
+                    "description" => new external_value(PARAM_RAW, 'description'),
                     "lang" => new external_value(PARAM_TEXT, 'language'),
                     "status" => new external_value(PARAM_INT, 'status'),
                     "timecreated" => new external_value(PARAM_INT, 'time created'),
@@ -191,6 +191,8 @@ class external_cases_get_by_pagination extends external_api
                             "type" => new external_value(PARAM_TEXT),
                             "title" => new external_value(PARAM_TEXT),
                             "content" => new external_value(PARAM_TEXT),
+                            "groupname" => new external_value(PARAM_TEXT),
+                            "groupname_simplified" => new external_value(PARAM_TEXT),
                         ])
                     ),
                     "themes" => new external_multiple_structure(
@@ -203,12 +205,12 @@ class external_cases_get_by_pagination extends external_api
                         new external_single_structure([
                             "name" => new external_value(PARAM_TEXT),
                             "id" => new external_value(PARAM_TEXT),
-                        ])
+                        ]), 'tags', VALUE_OPTIONAL
                     ),
                     "fixed_tags" => new external_multiple_structure(
                         new external_single_structure([
                             "name" => new external_value(PARAM_TEXT),
-                        ])
+                        ]), 'fixed tags', VALUE_OPTIONAL
                     ),
                     "reactions" => new external_single_structure([
                         "likes" => new external_single_structure([

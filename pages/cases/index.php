@@ -52,6 +52,11 @@ $picture = new user_picture($user);
 $picture->size = 101;
 $user->imageurl = $picture->get_url($PAGE)->__toString();
 
+global $DB, $USER;
+$tutor_role_id = $DB->get_field('role', 'id', ['shortname' => 'digitaltatutor']);
+$context = context_system::instance();
+
+
 $template_context = [
     'title' => $pagetitle,
     'component' => 'case',
@@ -62,6 +67,7 @@ $template_context = [
     ],
     'user' => $user,
     'createurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/manage.php',
+    'istutor' => $tutor_role_id && user_has_role_assignment($USER->id, $tutor_role_id, $context->id),
 ];
 
 $template_context = FilterUtils::apply_filters($template_context);

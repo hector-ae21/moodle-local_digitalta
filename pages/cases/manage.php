@@ -39,6 +39,14 @@ use local_digitalta\TinyEditorHandler;
 
 require_login();
 
+global $DB, $USER;
+$tutor_role_id = $DB->get_field('role', 'id', ['shortname' => 'digitaltatutor']);
+$context = context_system::instance();
+if ($tutor_role_id && !user_has_role_assignment($USER->id, $tutor_role_id, $context->id)) {
+    redirect();
+}
+
+
 $caseid       = optional_param('id', 0, PARAM_INT);
 $experienceid = optional_param('experienceid', 0, PARAM_INT);
 $casetitle    = optional_param('casetitle', null, PARAM_RAW);

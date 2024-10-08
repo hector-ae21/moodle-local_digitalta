@@ -39,12 +39,13 @@ class FilterUtils
      * @param int $contextid
      * @param string $format
      * @param array $options
-     * @return void
+     * @return mixed
      */
-    public static function apply_filters($filterable_target, $contextid = 1, $format = FORMAT_HTML, $options = []) {
+    public static function apply_filters($filterable_target, $contextid = 1, $format = \FORMAT_HTML, $options = [])
+    {
         // Ensure filters are always enabled
         $options['filter'] = true;
-    
+
         // Arrays
         if (is_array($filterable_target)) {
             foreach ($filterable_target as $key => &$value) {
@@ -53,7 +54,7 @@ class FilterUtils
                 }
             }
             return $filterable_target;
-        // Objects
+            // Objects
         } elseif (is_object($filterable_target)) {
             foreach ($filterable_target as $property => &$value) {
                 if (stripos($property, 'url') === false) {
@@ -61,11 +62,10 @@ class FilterUtils
                 }
             }
             return $filterable_target;
-        // Strings
+            // Strings
         } elseif (is_string($filterable_target)) {
-            // TODO: Deactivated temporarily due to unexpected behavior
-            //return format_text($filterable_target, $format, $options, $contextid);
-            return $filterable_target;
+            return \format_text($filterable_target, $format, $options, $contextid);
+            //return $filterable_target;
         // Other
         } else {
             return $filterable_target;

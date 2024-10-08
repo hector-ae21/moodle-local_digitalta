@@ -60,7 +60,7 @@ $template_context = [
     'title' => $pagetitle,
     'component' => 'resource',
     'resources' => [
-        'data' => $resources,
+        'data' => [],
     ]
 ];
 

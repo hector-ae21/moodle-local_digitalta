@@ -37,6 +37,7 @@ import ModalEvents from "core/modal_events";
 import ModalFactory from "core/modal_factory";
 import ModalRegistry from "core/modal_registry";
 import Notification from "core/notification";
+import { processFiles } from "../tiny/manage";
 
 const manageModal = class extends Modal {
     static TYPE = 'local_digitalta/manageModal';
@@ -327,6 +328,7 @@ const handleManageModalSubmission = async (event, modal) => {
             option => option.value)
     };
     try {
+        formData.sections[0].content = await processFiles(formData.sections[0].content);
         const response = await experiencesUpsert(formData);
         Notification.addNotification({
             message: "Experience saved successfully.",
@@ -516,6 +518,8 @@ const handleManageReflectionModalSubmission = async (event, modal) => {
     try {
         let promises = [];
         for (const section of formData.sections) {
+            section.content = await processFiles(section.content);
+
             promises.push(sectionsUpsert({
                 'id': section.id,
                 'component': 'experience',
@@ -615,6 +619,7 @@ const handleLinkResourceModalSubmission = async (event, modal) => {
         description: getTinyMCEContent('experience-link-resource-description')
     };
     try {
+        formData.description = await processFiles(formData.description);
         await resourcesAssign(formData);
         Notification.addNotification({
             message: "Resource linked successfully.",

@@ -142,6 +142,14 @@ $string['themestags:description']      = '<p>Prozkoumejte naše <span class="dig
 $string['themestags:view:description'] = '<p>Objevte nejdůležitější <span class="digitalta-highlighted">zkušenosti</span>, <span class="digitalta-highlighted">případy</span>.a <span class="digitalta-highlighted">zdroje</span> sdílené naší komunitou o <span class="digitalta-highlighted-upper">{$a}</span>.</p>';
 $string['themestags:invalidthemetag']  = 'Neplatná značka nebo téma';
 
+// Filters
+$string['filters:title']        = 'Filtry';
+$string['filters:theme']        = $string['concept:theme'];
+$string['filters:tag']          = $string['concept:tag'];
+$string['filters:resourcetype'] = $string['concept:type'];
+$string['filters:lang']         = $string['concept:language'];
+$string['filters:author']       = 'Autor';
+
 // Experiences
 $string['experiences:title']       = $string['concept:experiences'];
 $string['experiences:header']      = $string['concept:experiences'];

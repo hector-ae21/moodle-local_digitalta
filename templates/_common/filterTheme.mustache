@@ -1,8 +1,8 @@
 <div class="input-group-prepend">
-    <label class="input-group-text" for="inputGroupSelect01">Tema</label>
+    <label class="input-group-text" for="inputGroupSelect01">{{#str}} filters:theme, local_digitalta {{/str}}</label>
 </div>
 <select class="custom-select filterThemeSelect" id="filterThemes">
-    <option selected class="disabled">Choose...</option>
+    <option selected class="disabled"></option>
     {{#themes}}
         <option class="enable" value="{{id}}">{{name}}</option>
     {{/themes}}

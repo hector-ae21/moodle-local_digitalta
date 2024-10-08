@@ -21,18 +21,18 @@ export const init = () => {
 const getAndRenderFilters = async() => {
     const themesRequest = {methodname: 'local_digitalta_themes_get', args: {}};
     const tagsRequest = {methodname: 'local_digitalta_tags_get', args: {}};
-    const languajesRequest = {methodname: 'local_digitalta_cases_get_langs', args: {}};
+    const languagesRequest = {methodname: 'local_digitalta_cases_get_langs', args: {}};
 
     const themesResponse = await Ajax.call([themesRequest])[0];
     const tagsResponse = await Ajax.call([tagsRequest])[0];
-    const languajesResponse = await Ajax.call([languajesRequest])[0];
+    const languagesResponse = await Ajax.call([languagesRequest])[0];
 
     // eslint-disable-next-line max-len
     const templateFilterThemes = await Templates.renderForPromise('local_digitalta/_common/filterTheme', {"themes": themesResponse});
     // eslint-disable-next-line max-len
-    const templateFilterLanguajes = await Templates.renderForPromise('local_digitalta/_common/filterLanguajes', {"languajes": languajesResponse});
+    const templateFilterLanguages = await Templates.renderForPromise('local_digitalta/_common/filterLanguages', {"languages": languagesResponse});
     Templates.replaceNodeContents("#filterThemeSelect", templateFilterThemes.html, templateFilterThemes.js);
-    Templates.replaceNodeContents("#filterLanguageSelect", templateFilterLanguajes.html, templateFilterLanguajes.js);
+    Templates.replaceNodeContents("#filterLanguageSelect", templateFilterLanguages.html, templateFilterLanguages.js);
 
     const availableTags = tagsResponse.map(function(tag) {
         return tag.name;
@@ -93,7 +93,7 @@ const setActionsFilters = () => {
         $("#inlineFormInputGroup").val("");
     });
 
-    $(document).on("keydown", "#autorFilters", async function() {
+    $(document).on("keydown", "#authorFilters", async function() {
         const filterText = $(this).val(); // Obtenemos el valor del input
         const request = {
             methodname: 'core_enrol_get_potential_users',
@@ -102,17 +102,17 @@ const setActionsFilters = () => {
         const response = await Ajax.call([request])[0];
 
         if (response.length === 0) {
-            $("#suggestionsAutors").empty();
+            $("#suggestionsAuthors").empty();
         } else {
-            const authorsSuggestions = await Templates.renderForPromise('local_digitalta/_common/listAutors', {users: response});
-            Templates.replaceNodeContents("#suggestionsAutors", authorsSuggestions.html, authorsSuggestions.js);
+            const authorsSuggestions = await Templates.renderForPromise('local_digitalta/_common/listAuthors', {users: response});
+            Templates.replaceNodeContents("#suggestionsAuthors", authorsSuggestions.html, authorsSuggestions.js);
         }
     });
 
-    $("#suggestionsAutors").on("click", ".autor-item", function() {
+    $("#suggestionsAuthors").on("click", ".author-item", function() {
         const filterText = {type: "author", value: {id: $(this).attr('attr-id-user'), name: $(this).attr('attr-name')}};
         setFilter(filterText);
-        $("#autorFilters").val("");
+        $("#authorFilters").val("");
     });
 
     $(document).on("change", ".filterLanguageSelect", function() {
@@ -121,7 +121,7 @@ const setActionsFilters = () => {
             const element = $("option:selected.enable", this);
             element.addClass('disabled');
             element.removeClass('enable');
-            const filterObject = {"type": "languaje", "value": selectedText};
+            const filterObject = {"type": "language", "value": selectedText};
             setFilter(filterObject);
             $(".filterLanguageSelect option:first").prop("selected", true);
             $(element).prop('disabled', true);
@@ -130,14 +130,14 @@ const setActionsFilters = () => {
 
     $("#filters-menu").click(function() {
         if ($(".tagsInputFilter").is(":focus")) {
-            $("#suggestionsAutors").hide();
+            $("#suggestionsAuthors").hide();
             $("#suggestionsTags").show();
-        } else if ($("#autorFilters").is(":focus")) {
+        } else if ($("#authorFilters").is(":focus")) {
             $("#suggestionsTags").hide();
-            $("#suggestionsAutors").show();
+            $("#suggestionsAuthors").show();
         } else {
             $("#suggestionsTags").hide();
-            $("#suggestionsAutors").hide();
+            $("#suggestionsAuthors").hide();
         }
     });
 
@@ -167,7 +167,7 @@ const removeFilter = (filterObject) => {
             option.addClass('enable');
             $("#filterThemes option:first").prop("selected", true);
             $(option).prop('disabled', false);
-        } else if (filterObject.type === 'languaje') {
+        } else if (filterObject.type === 'language') {
             let langSelect = $(".filterLanguageSelect");
             let option = $('option[value="' + filterObject.value + '"].disabled', langSelect);
             option.removeClass('disabled');
@@ -224,10 +224,11 @@ const getCases = async() => {
         }).catch((error) => displayException(error));
         $(".digitalta.pagination").hide();
     } else {
-        pages = casesResponse.pages;
+        let obj = {"cases": casesResponse};
         let paginationArray = generatePagination(casesResponse.pages, selectedPage);
-        const casesList = await Templates.renderForPromise('local_digitalta/cases/dashboard/case-list', {cases: casesResponse});
-        const pagination = await Templates.renderForPromise('local_digitalta/_common/pagination', {pages: paginationArray});
+        const casesList = await Templates.renderForPromise('local_digitalta/cases/dashboard/case-list', obj);
+        pages = casesResponse.pages;
+        const pagination = await Templates.renderForPromise('local_digitalta/_common/pagination', {"pages": paginationArray});
         Templates.replaceNodeContents("#list-cases-body", casesList.html, casesList.js);
         Templates.replaceNodeContents("#digital-pagination", pagination.html, pagination.js);
         $(".digitalta.pagination").show();

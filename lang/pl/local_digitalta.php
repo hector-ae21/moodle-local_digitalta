@@ -142,6 +142,14 @@ $string['themestags:description']      = '<p>Zapoznaj się z naszymi <span class
 $string['themestags:view:description'] = '<p>Odkryj najbardziej istotne <span class="digitalta-highlighted">doświadczenia</span>, <span class="digitalta-highlighted">przypadki</span>i <span class="digitalta-highlighted">zasoby</span> udostępnione przez naszą społeczność na temat <span class="digitalta-highlighted-upper">{$a}</span>.</p>';
 $string['themestags:invalidthemetag']  = 'Nieprawidłowy tag lub motyw';
 
+// Filters
+$string['filters:title']        = 'Filtry';
+$string['filters:theme']        = $string['concept:theme'];
+$string['filters:tag']          = $string['concept:tag'];
+$string['filters:resourcetype'] = $string['concept:type'];
+$string['filters:lang']         = $string['concept:language'];
+$string['filters:author']       = 'Autor';
+
 // Experiences
 $string['experiences:title']       = $string['concept:experiences'];
 $string['experiences:header']      = $string['concept:experiences'];

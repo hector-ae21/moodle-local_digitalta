@@ -1,8 +1,8 @@
 <div class="input-group-prepend">
-    <label class="input-group-text" for="inputGroupSelect01">Tipos</label>
+    <label class="input-group-text" for="inputGroupSelect01">{{#str}} filters:resourcetype, local_digitalta {{/str}}</label>
 </div>
 <select class="custom-select filterResourceType" id="filterResourceType">
-    <option selected class="disabled">Choose...</option>
+    <option selected class="disabled"></option>
     {{#types}}
         <option class="enable" value="{{id}}">{{name}}</option>
     {{/types}}

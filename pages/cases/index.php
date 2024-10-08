@@ -61,7 +61,7 @@ $template_context = [
     'title' => $pagetitle,
     'component' => 'case',
     'cases' => [
-        'data' => $cases,
+        'data' => [],
         'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/view.php?id=',
         'manageurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/manage.php?id=',
     ],

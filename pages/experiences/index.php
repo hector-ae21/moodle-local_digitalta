@@ -32,9 +32,9 @@ use local_digitalta\Sections;
 use local_digitalta\utils\FilterUtils;
 
 $pagetitle = get_string('experiences:title', 'local_digitalta');
-$PAGE->set_url(new moodle_url('/local/digitalta/pages/experiences/dashboard.php'));
+$PAGE->set_url(new moodle_url('/local/digitalta/pages/experiences/index.php'));
 $PAGE->set_context(context_system::instance());
-//$PAGE->set_title($pagetitle);
+$PAGE->set_title($pagetitle);
 $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
 
 // Get the experiences

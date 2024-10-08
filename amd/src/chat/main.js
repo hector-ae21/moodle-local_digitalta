@@ -227,6 +227,9 @@ async function addNewMessage(message) {
  */
 export async function openChatFromExperience(experienceid, single=true) {
     const {chatrooms} = await chatsGetRooms({experienceid});
+    if (chatrooms.length === 0) {
+        return;
+    }
     // eslint-disable-next-line @babel/no-unused-expressions
     single ? renderSingleChat(chatrooms[0].id, true) : renderChat(experienceid);
 }

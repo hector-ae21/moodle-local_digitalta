@@ -108,10 +108,12 @@
 require(['local_digitalta/chat/main'], function(Chat) {
     Chat("#chat", {{experience.data.id}}, true);
     });
-
-    document.getElementById('start-chat').addEventListener('click', function() {
-        document.getElementById('chat').classList.toggle('d-none');
-        document.getElementById('start-chat').classList.toggle('opened');
-    })
+    const chat = document.getElementById('start-chat');
+    if(chat){
+        chat.addEventListener('click', function() {
+            document.getElementById('chat').classList.toggle('d-none');
+            document.getElementById('start-chat').classList.toggle('opened');
+        });
+    }
 {{/js}}
 {{/chatid}}

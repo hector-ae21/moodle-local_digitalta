@@ -22,7 +22,9 @@ class external_resources_get_by_pagination extends external_api
 
     public static function resources_get_by_pagination($pagenumber, $filters)
     {
-        global $DB, $CFG;
+        global $DB, $PAGE;
+
+        $PAGE->set_context(\context_system::instance());
 
         $limit = 20;
         $totalPages = 0;
@@ -180,15 +182,13 @@ class external_resources_get_by_pagination extends external_api
         for ($i = 0; $i < count($components); $i++) {
             $resource = $components[$i];
             $resource_model = new \local_digitalta\Resource($resource);
-            $resource_model->name = FilterUtils::apply_filters($resource_model->name);
-            $resource_model->description = FilterUtils::apply_filters($resource_model->description);
             $x = \local_digitalta\Resources::get_extra_fields($resource_model);
-
+            $x->name = FilterUtils::apply_filters($x->name);
+            $x->description = FilterUtils::apply_filters($x->description);
             [$x->type, $x->type_simplified] = local_digitalta_get_element_translation(
                 'resource_type',
                 \local_digitalta\Resources::get_type($x->type)->name
             );
-
             $resources[] = $x;
         }
 

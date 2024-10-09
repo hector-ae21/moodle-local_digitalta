@@ -85,6 +85,10 @@ $users = Context::get_contexts_by_modifier($tagtype, $tagid, 'user');
 
 echo $OUTPUT->header();
 
+FilterUtils::apply_filters($experiences);
+FilterUtils::apply_filters($cases);
+FilterUtils::apply_filters($resources);
+
 $template_context = [
     'title' => $pagetitle,
     'tag' => [
@@ -107,8 +111,6 @@ $template_context = [
         'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/profile/index.php?id='
     ]
 ];
-
-$template_context = FilterUtils::apply_filters($template_context);
 
 echo $OUTPUT->render_from_template('local_digitalta/tags/view/view', $template_context);
 

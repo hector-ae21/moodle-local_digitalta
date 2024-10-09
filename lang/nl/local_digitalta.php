@@ -138,7 +138,7 @@ $string['teacheracademy:actions:share:tags']              = 'Voeg <span class="d
 // Themes & Tags
 $string['themestags:title']            = $string['concept:themestags'];
 $string['themestags:header']           = $string['concept:themestags'];
-$string['themestags:description']      = '<p>Verken onze <span class="digitalta-highlighted">thema\'s</span> en <span class="digitalta-highlighted">tags</span> om de meest relevante <span class="digitalta-highlighted">ervaringen</span>, <span class="digitalta-highlighted">cases</span>, en <span class="digitalta-highlighted">bronnen</span> gedeeld door onze gemeenschap.</p>';
+$string['themestags:description']      = '<p>Verken onze <span class="digitalta-highlighted">thema\'s</span> en <span class="digitalta-highlighted">tags <i class="help-video-icon fa fa-question-circle-o text-muted" aria-hidden="true" data-video="themes-tag-video"></i></span> om de meest relevante <span class="digitalta-highlighted">ervaringen</span>, <span class="digitalta-highlighted">cases</span>, en <span class="digitalta-highlighted">bronnen</span> gedeeld door onze gemeenschap.</p>';
 $string['themestags:view:description'] = '<p>Ontdek de meest relevante <span class="digitalta-highlighted">ervaringen</span>, <span class="digitalta-highlighted">cases</span>en <span class="digitalta-highlighted">bronnen</span> gedeeld door onze gemeenschap over <span class="digitalta-highlighted-upper">{$a}</span>.</p>';
 $string['themestags:invalidthemetag']  = 'Ongeldige tag of thema';
 
@@ -153,7 +153,7 @@ $string['filters:author']       = 'Auteur';
 // Experiences
 $string['experiences:title']       = $string['concept:experiences'];
 $string['experiences:header']      = $string['concept:experiences'];
-$string['experiences:description'] = '<p>Ontdek een breed scala aan <span class="digitalta-highlighted">ervaringen</span> gedeeld door leerkrachten van over de hele wereld. Je kunt leren van hun inzichten, nadenken over hun praktijken en geïnspireerd raken door hun verhalen. Je kunt ook met hen in contact komen, vragen stellen en je eigen ervaringen delen om bij te dragen aan de community.</p>';
+$string['experiences:description'] = '<p>Ontdek een breed scala aan <span class="digitalta-highlighted">ervaringen <i class="help-video-icon fa fa-question-circle-o text-muted" aria-hidden="true" data-video="experience-video"></i></span> gedeeld door leerkrachten van over de hele wereld. Je kunt leren van hun inzichten, nadenken over hun praktijken en geïnspireerd raken door hun verhalen. Je kunt ook met hen in contact komen, vragen stellen en je eigen ervaringen delen om bij te dragen aan de community.</p>';
 
 // Experience - Actions
 $string['experience:featured']       = 'Aanbevolen';
@@ -198,7 +198,7 @@ $string['experience:resources:visit']            = 'Bezoek bron';
 // Cases
 $string['cases:title']       = $string['concept:cases'];
 $string['cases:header']      = $string['concept:cases'];
-$string['cases:description'] = '<p>Bekijk een verzameling <span class="digitalta-highlighted">cases</span> gedeeld door leerkrachten van over de hele wereld. Elke casus is een gedetailleerde beschrijving van een echte onderwijservaring, inclusief de context, het probleem, de ondernomen acties, de resultaten en de reflecties van de leraar.</p>';
+$string['cases:description'] = '<p>Bekijk een verzameling <span class="digitalta-highlighted">cases <i class="help-video-icon fa fa-question-circle-o text-muted" aria-hidden="true" data-video="cases-video"></i></span> gedeeld door leerkrachten van over de hele wereld. Elke casus is een gedetailleerde beschrijving van een echte onderwijservaring, inclusief de context, het probleem, de ondernomen acties, de resultaten en de reflecties van de leraar.</p>';
 
 // Cases - Management
 $string['cases:manage']                 = 'Casussen beheren';
@@ -226,7 +226,7 @@ $string['case:section:delete:confirm'] = 'Weet je zeker dat je deze sectie wilt 
 // Resources
 $string['resources:title']       = $string['concept:resources'];
 $string['resources:header']      = $string['concept:resources'];
-$string['resources:description'] = '<p>Ontdek een breed scala aan <span class="digitalta-highlighted">bronnen</span> gedeeld door leerkrachten van over de hele wereld. Je kunt boeken, video\'s, websites en ander lesmateriaal vinden die je kunnen helpen je lespraktijk te verbeteren, je leerlingen te betrekken en je lessen te inspireren. Je kunt ook je eigen bronnen delen om bij te dragen aan de community.</p>';
+$string['resources:description'] = '<p>Ontdek een breed scala aan <span class="digitalta-highlighted">bronnen <i class="help-video-icon fa fa-question-circle-o text-muted" aria-hidden="true" data-video="resources-video"></i></span> gedeeld door leerkrachten van over de hele wereld. Je kunt boeken, video\'s, websites en ander lesmateriaal vinden die je kunnen helpen je lespraktijk te verbeteren, je leerlingen te betrekken en je lessen te inspireren. Je kunt ook je eigen bronnen delen om bij te dragen aan de community.</p>';
 
 // Resources - Management
 $string['resources:manage:add']                     = 'Bron toevoegen';
@@ -250,7 +250,9 @@ $string['resource:delete:success'] = 'Bron succesvol verwijderd';
 // Tutors
 $string['tutors:title']       = $string['concept:tutorsmentors'];
 $string['tutors:header']      = $string['concept:tutorsmentors'];
-$string['tutors:description'] = '<p>Kom in contact met ervaren <span class="digitalta-highlighted">docenten</span> en <span class="digitalta-highlighted">mentoren</span> die je kunnen helpen om na te denken over je onderwijspraktijk, feedback kunnen geven en waardevolle inzichten kunnen bieden. Je kunt bijles aanvragen, vragen stellen en persoonlijke ondersteuning krijgen om je onderwijsvaardigheden te verbeteren en je leerlingen meer mogelijkheden te geven.</p>';
+$string['tutors:description'] = '<p>Kom in contact met ervaren <span class="digitalta-highlighted">docenten</span> en <span class="digitalta-highlighted">mentoren <i class="help-video-icon fa fa-question-circle-o text-muted" aria-hidden="true" data-video="tutor-teacher-video"></i></span> die je kunnen helpen om na te denken over je onderwijspraktijk, feedback kunnen geven en waardevolle inzichten kunnen bieden. Je kunt bijles aanvragen, vragen stellen en persoonlijke ondersteuning krijgen om je onderwijsvaardigheden te verbeteren en je leerlingen meer mogelijkheden te geven.</p>';
+
+$string['tutors:description_tutor'] = '<p>Kom in contact met ervaren <span class="digitalta-highlighted">docenten</span> en <span class="digitalta-highlighted">mentoren <i class="help-video-icon fa fa-question-circle-o text-muted" aria-hidden="true" data-video="tutor-mentor-video"></i></span> die je kunnen helpen om na te denken over je onderwijspraktijk, feedback kunnen geven en waardevolle inzichten kunnen bieden. Je kunt bijles aanvragen, vragen stellen en persoonlijke ondersteuning krijgen om je onderwijsvaardigheden te verbeteren en je leerlingen meer mogelijkheden te geven.</p>';
 
 // Profile
 $string['profile:title']            = 'Profiel';

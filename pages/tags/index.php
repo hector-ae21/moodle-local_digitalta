@@ -32,7 +32,8 @@ use local_digitalta\Tags;
 use local_digitalta\Themes;
 
 $pagetitle = get_string('themestags:title', 'local_digitalta');
-    
+
+$PAGE->requires->js_call_amd('local_digitalta/commun/main', 'init');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($pagetitle);
 $PAGE->set_url(new moodle_url('/local/digitalta/pages/tags/index.php'));

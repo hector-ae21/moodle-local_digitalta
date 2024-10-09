@@ -158,7 +158,8 @@ $templateContext = [
     ]
 ];
 
-$templateContext = FilterUtils::apply_filters($templateContext);
+ FilterUtils::apply_filters($experiences);
+ FilterUtils::apply_filters($cases);
 
 echo $OUTPUT->render_from_template('local_digitalta/teacheracademy/dashboard', $templateContext);
 

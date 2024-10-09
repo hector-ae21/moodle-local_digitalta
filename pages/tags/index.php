@@ -25,13 +25,11 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tags.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/themes.php');
-require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 
 require_login();
 
 use local_digitalta\Tags;
 use local_digitalta\Themes;
-use local_digitalta\utils\FilterUtils;
 
 $pagetitle = get_string('themestags:title', 'local_digitalta');
     
@@ -67,8 +65,6 @@ $template_context = [
         'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=tag&id='
     ],
 ];
-
-$template_context = FilterUtils::apply_filters($template_context);
 
 echo $OUTPUT->render_from_template('local_digitalta/tags/dashboard/dashboard', $template_context);
 

@@ -44,6 +44,8 @@ use local_digitalta\Sections;
 use local_digitalta\TinyEditorHandler;
 use local_digitalta\utils\FilterUtils;
 
+global $CFG, $PAGE, $USER, $DB;
+
 require_login();
 
 $id = required_param('id', PARAM_INT);
@@ -60,6 +62,8 @@ $PAGE->requires->js_call_amd('local_digitalta/tutors/main', 'init');
 if (!$experience = Experiences::get_experience($id)) {
     throw new moodle_exception('invalidexperience', 'local_digitalta');
 }
+$experience->title = FilterUtils::apply_filters($experience->title);
+$experience->sections = FilterUtils::apply_filters($experience->sections);
 $experience->sections = array_map(function ($section) {
     $groupname = Sections::get_group($section->groupid)->name;
     list($section->groupname, $section->groupname_simplified) =
@@ -67,7 +71,6 @@ $experience->sections = array_map(function ($section) {
     $section->active = false;
     return $section;
 }, $experience->sections);
-FilterUtils::apply_filters($experience->sections);
 $experience->sections[0]->active = true;
 
 // Set the page title
@@ -172,8 +175,7 @@ $template_context = [
     'mentoringrequest' => $mentoring_tutor_request,
     'mentors_from_requests' => $mentors_from_requests,
     'modschedulerurl' => $CFG->wwwroot . '/mod/scheduler/view.php?id=' . get_config('local_digitalta', 'schedulerinstance')
-];
-//$template_context = FilterUtils::apply_filters($template_context);
+];);
 
 $experience_chat = Chat::get_chat_room_by_experience($id);
 if ($experience_chat) {

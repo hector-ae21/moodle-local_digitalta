@@ -27,10 +27,12 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/local/digitalta/classes/components.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/reactions.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/utils/dateutils.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 
 use local_digitalta\Components;
 use local_digitalta\Reactions;
 use local_digitalta\utils\DateUtils;
+use local_digitalta\utils\FilterUtils;
 
 /**
  * This class is used to get comments
@@ -64,12 +66,13 @@ class external_reactions_get_comments extends external_api
      */
     public static function reactions_get_comments($component, $componentinstance)
     {
-        global $DB;
-
+        global $DB, $PAGE;
+        $PAGE->set_context(\context_system::instance());
         $component = Components::get_component_by_name($component);
         if (!$comments = Reactions::get_comments_for_component($component->id, $componentinstance)) {
             return ['result' => false, 'error' => 'Error getting comments'];
         }
+        $comments = FilterUtils::apply_filters($comments);
         $comments = array_map(function ($comment) use ($DB) {
             $return          = new \stdClass();
             $return->id      = $comment->id;

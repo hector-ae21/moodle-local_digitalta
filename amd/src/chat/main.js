@@ -32,7 +32,7 @@ export default function createChatInTarget(target, experienceid = null, single =
  * @param {*} experienceid
  * @param {*} single
  */
-const initComponent = (experienceid, single) => {
+const initComponent = async (experienceid, single) => {
     setEventListeners();
     if (experienceid) {
         openChatFromExperience(experienceid, single);

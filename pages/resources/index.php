@@ -40,6 +40,7 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_title($pagetitle);
 $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
 $PAGE->requires->js_call_amd('local_digitalta/resources/main', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/commun/main', 'init');
 
 // Get the resources
 $resources = Resources::get_resources();

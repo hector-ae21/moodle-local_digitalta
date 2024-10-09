@@ -15,7 +15,12 @@
         <div class="container-fluid d-flex text-center">
             <div class="row align-items-center">
                 <div class="col-12 text-justify" style="line-height: 2em;">
-                    {{#str}} tutors:description, local_digitalta {{/str}}
+                    {{#istutor}}
+                        {{#str}} tutors:description_tutor, local_digitalta {{/str}}
+                    {{/istutor}}
+                    {{^istutor}}
+                        {{#str}} tutors:description, local_digitalta {{/str}}
+                    {{/istutor}}
                 </div>
             </div>
         </div>

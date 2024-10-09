@@ -318,4 +318,12 @@ class Tutors
         $DB->delete_records('digitalta_tutor_availability', ['id' => $id]);
         return true;
     }
+
+    public static function is_tutor($userid)
+    {
+        global $DB;
+        $context = \context_system::instance();
+        $tutor_role_id = $DB->get_field('role', 'id', ['shortname' => 'digitaltatutor']);
+        return $tutor_role_id && user_has_role_assignment($userid, $tutor_role_id, $context->id);
+    }
 }

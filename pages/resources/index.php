@@ -32,7 +32,6 @@ require_login();
 
 use local_digitalta\Resources;
 use local_digitalta\TinyEditorHandler;
-use local_digitalta\utils\FilterUtils;
 
 $pagetitle = get_string('resources:title', 'local_digitalta');
 
@@ -63,8 +62,6 @@ $template_context = [
         'data' => [],
     ]
 ];
-
-//$template_context = FilterUtils::apply_filters($template_context);
 
 echo $OUTPUT->render_from_template('local_digitalta/resources/dashboard/dashboard', $template_context);
 

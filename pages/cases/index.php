@@ -29,7 +29,6 @@ require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 require_login();
 
 use local_digitalta\Cases;
-use local_digitalta\utils\FilterUtils;
 
 $pagetitle = get_string('cases:title', 'local_digitalta');
 
@@ -69,8 +68,6 @@ $template_context = [
     'createurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/manage.php',
     'istutor' => $tutor_role_id && user_has_role_assignment($USER->id, $tutor_role_id, $context->id),
 ];
-
-$template_context = FilterUtils::apply_filters($template_context);
 
 echo $OUTPUT->render_from_template('local_digitalta/cases/dashboard/dashboard', $template_context);
 

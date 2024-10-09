@@ -79,8 +79,6 @@ $templatecontext = [
     "mentoring_requests" => $mentoring_requests
 ];
 
-// $templatecontext = filter_utils::apply_filters($templatecontext);
-
 echo $OUTPUT->render_from_template('local_digitalta/tutors/dashboard/dashboard', $templatecontext);
 
 echo $OUTPUT->footer();

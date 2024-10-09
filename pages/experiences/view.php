@@ -175,8 +175,7 @@ $template_context = [
     'mentoringrequest' => $mentoring_tutor_request,
     'mentors_from_requests' => $mentors_from_requests,
     'modschedulerurl' => $CFG->wwwroot . '/mod/scheduler/view.php?id=' . get_config('local_digitalta', 'schedulerinstance')
-];
-//$template_context = FilterUtils::apply_filters($template_context);
+];);
 
 $experience_chat = Chat::get_chat_room_by_experience($id);
 if ($experience_chat) {

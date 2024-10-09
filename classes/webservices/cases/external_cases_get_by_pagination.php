@@ -167,9 +167,10 @@ class external_cases_get_by_pagination extends external_api
         for ($i = 0; $i < count($components); $i++) {
             $case = $components[$i];
             $case_model = new \local_digitalta\StudyCase($case);
-            $case_model->title = FilterUtils::apply_filters($case_model->title);
-            $case_model->description = FilterUtils::apply_filters($case_model->description);
             $x = \local_digitalta\Cases::get_extra_fields($case_model);
+            $x->title = FilterUtils::apply_filters($x->title);
+            $x->description = FilterUtils::apply_filters($x->description);
+
 
             $sections = [];
 

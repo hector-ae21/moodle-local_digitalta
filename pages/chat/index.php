@@ -35,6 +35,7 @@ $PAGE->set_url(new moodle_url('/local/digitalta/pages/chat/index.php'));
 $PAGE->set_context(\context_system::instance());
 $PAGE->set_title(get_string('tutoring:chat_title', 'local_digitalta'));
 $PAGE->requires->js_call_amd('local_digitalta/tutoring/google-meet', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/commun/main', 'init');
 
 echo $OUTPUT->header();
 

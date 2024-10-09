@@ -3,6 +3,10 @@
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/local/digitalta/classes/case.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/cases.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
+require_login();
+
+use local_digitalta\utils\FilterUtils;
 
 class external_cases_get_by_pagination extends external_api
 {
@@ -163,6 +167,8 @@ class external_cases_get_by_pagination extends external_api
         for ($i = 0; $i < count($components); $i++) {
             $case = $components[$i];
             $case_model = new \local_digitalta\StudyCase($case);
+            $case_model->title = FilterUtils::apply_filters($case_model->title);
+            $case_model->description = FilterUtils::apply_filters($case_model->description);
             $x = \local_digitalta\Cases::get_extra_fields($case_model);
 
             $sections = [];

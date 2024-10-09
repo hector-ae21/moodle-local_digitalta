@@ -80,7 +80,6 @@ $templateContext = [
     'viewtagurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=tag&id=',
     'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id='
 ];
-//$templateContext = FilterUtils::apply_filters($templateContext);
 
 echo $OUTPUT->render_from_template('local_digitalta/cases/view/view', $templateContext);
 

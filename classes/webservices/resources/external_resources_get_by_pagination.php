@@ -3,6 +3,10 @@
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/local/digitalta/classes/resources.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/resource.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
+require_login();
+
+use local_digitalta\utils\FilterUtils;
 
 class external_resources_get_by_pagination extends external_api
 {
@@ -176,6 +180,8 @@ class external_resources_get_by_pagination extends external_api
         for ($i = 0; $i < count($components); $i++) {
             $resource = $components[$i];
             $resource_model = new \local_digitalta\Resource($resource);
+            $resource_model->name = FilterUtils::apply_filters($resource_model->name);
+            $resource_model->description = FilterUtils::apply_filters($resource_model->description);
             $x = \local_digitalta\Resources::get_extra_fields($resource_model);
 
             [$x->type, $x->type_simplified] = local_digitalta_get_element_translation(

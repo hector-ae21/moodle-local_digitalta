@@ -27,34 +27,11 @@ require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 
-use local_digitalta\Experiences;
-use local_digitalta\Sections;
-use local_digitalta\utils\FilterUtils;
-
 $pagetitle = get_string('experiences:title', 'local_digitalta');
 $PAGE->set_url(new moodle_url('/local/digitalta/pages/experiences/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($pagetitle);
 $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
-
-// Get the experiences
-//$experiences = Experiences::get_experiences(['visible' => 1]);
-//$experiences = array_map(function ($experience) {
-//    $sections = [];
-//    foreach ($experience->sections as $section) {
-//        $groupname = Sections::get_group($section->groupid)->name;
-//        list($section->groupname, $section->groupname_simplified) =
-//            local_digitalta_get_element_translation('section_group', $groupname);
-//        $section->content = strip_tags($section->content);
-//        $sections[$section->groupname_simplified] = $section;
-//    }
-//    $experience->sections = $sections;
-//    return $experience;
-//}, $experiences);
-//array_multisort(
-//    array_column($experiences, 'timecreated'), SORT_DESC,
-//    $experiences
-//);
 
 echo $OUTPUT->header();
 
@@ -69,8 +46,6 @@ $template_context = [
     'viewtagurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=tag&id=',
     'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id='
 ];
-
-$template_context = FilterUtils::apply_filters($template_context);
 
 echo $OUTPUT->render_from_template('local_digitalta/experiences/dashboard/dashboard', $template_context);
 

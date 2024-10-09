@@ -3,8 +3,11 @@
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/config.php');
 require_login();
+
+use local_digitalta\utils\FilterUtils;
 
 class external_experiences_get_by_pagination extends external_api
 {
@@ -19,8 +22,10 @@ class external_experiences_get_by_pagination extends external_api
 
     public static function experiences_get_by_pagination($pagenumber, $filters)
     {
-        global $DB, $CFG;
+        global $DB, $CFG, $PAGE;
 
+        $PAGE->set_context(\context_system::instance());
+        
         $limit = 20;
         $totalPages = 0;
 
@@ -165,7 +170,7 @@ class external_experiences_get_by_pagination extends external_api
             $cleaned_experience = [
                 "id" => $experience->id,
                 "userid" => $experience->userid,
-                "title" => $experience->title,
+                "title" => FilterUtils::apply_filters($experience->title),
                 "lang" => $experience->lang,
                 "visible" => $experience->visible,
                 "status" => $experience->status,

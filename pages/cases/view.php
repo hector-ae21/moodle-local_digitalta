@@ -44,13 +44,13 @@ $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
 if (!$case = Cases::get_case($id)) {
     throw new moodle_exception('invalidcase', 'local_digitalta');
 }
+$case = FilterUtils::apply_filters($case);
 $case->sections = array_map(function ($section) {
     $groupname = Sections::get_group($section->groupid)->name;
     list($section->groupname, $section->groupname_simplified) =
         local_digitalta_get_element_translation('section_group', $groupname);
     return $section;
 }, $case->sections);
-//FilterUtils::apply_filters($case->sections);
 
 // Set the page title
 $PAGE->set_title($case->title);
@@ -80,7 +80,6 @@ $templateContext = [
     'viewtagurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=tag&id=',
     'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id='
 ];
-//$templateContext = FilterUtils::apply_filters($templateContext);
 
 echo $OUTPUT->render_from_template('local_digitalta/cases/view/view', $templateContext);
 

@@ -152,7 +152,13 @@ const getExperiences = async() => {
         let obj = {"experiences": response};
         let paginationArray = generatePagination(response.pages, selectedPage);
         const experienceList = await Templates.renderForPromise('local_digitalta/experiences/dashboard/experience-list', obj);
-        const pagination = await Templates.renderForPromise('local_digitalta/_common/pagination', {"pages": paginationArray});
+        const pagination = await Templates.renderForPromise("local_digitalta/_common/pagination", {
+            pages: paginationArray,
+            pagesCount: paginationArray.length,
+            currentPage: selectedPage,
+            disablePrevious: selectedPage <= 1,
+            disableNext: selectedPage >= pages,
+          });
         Templates.replaceNodeContents("#list-experience-body", experienceList.html, experienceList.js);
         Templates.replaceNodeContents("#digital-pagination", pagination.html, pagination.js);
         $(".digitalta.pagination").show();

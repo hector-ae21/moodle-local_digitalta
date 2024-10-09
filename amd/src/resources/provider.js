@@ -249,7 +249,13 @@ const getResources = async() => {
         let paginationArray = generatePagination(resourcesResponse.pages, selectedPage);
         // eslint-disable-next-line max-len
         const resourcesList = await Templates.renderForPromise('local_digitalta/resources/dashboard/resource-list', obj);
-        const paginationList = await Templates.renderForPromise('local_digitalta/_common/pagination', {"pages": paginationArray});
+        const paginationList = await Templates.renderForPromise("local_digitalta/_common/pagination", {
+            pages: paginationArray,
+            pagesCount: paginationArray.length,
+            currentPage: selectedPage,
+            disablePrevious: selectedPage <= 1,
+            disableNext: selectedPage >= pages,
+          });
         Templates.replaceNodeContents("#list-resources-body", resourcesList.html, resourcesList.js);
         Templates.replaceNodeContents("#digital-pagination", paginationList.html, paginationList.js);
         $(".digitalta.pagination").show();

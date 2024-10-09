@@ -141,6 +141,7 @@ $actions = [
 $templateContext = [
     'user' => $user,
     'actions' => $actions,
+    'mainvideourl' => $CFG->wwwroot . '/local/digitalta/statics/main-video.mp4',
     'experiences' => [
         'data' => $experiences,
         'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/experiences/view.php?id=',

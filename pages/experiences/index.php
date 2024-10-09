@@ -32,6 +32,7 @@ $PAGE->set_url(new moodle_url('/local/digitalta/pages/experiences/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($pagetitle);
 $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/commun/main', 'init');
 
 echo $OUTPUT->header();
 

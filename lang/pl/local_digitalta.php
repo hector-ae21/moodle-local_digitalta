@@ -138,7 +138,7 @@ $string['teacheracademy:actions:share:tags']              = 'Dodaj <span class="
 // Themes & Tags
 $string['themestags:title']            = $string['concept:themestags'];
 $string['themestags:header']           = $string['concept:themestags'];
-$string['themestags:description']      = '<p>Zapoznaj się z naszymi <span class="digitalta-highlighted">tematami</span> i <span class="digitalta-highlighted">tagami</span>, aby znaleźć najistotniejsze <span class="digitalta-highlighted">doświadczenia</span>, <span class="digitalta-highlighted">przypadki</span> i <span class="digitalta-highlighted">zasoby</span> udostępnione przez naszą społeczność.</p>';
+$string['themestags:description']      = '<p>Zapoznaj się z naszymi <span class="digitalta-highlighted">tematami</span> i <span class="digitalta-highlighted">tagami <i class="help-video-icon fa fa-question-circle-o text-muted" aria-hidden="true" data-video="themes-tag-video"></i></span>, aby znaleźć najistotniejsze <span class="digitalta-highlighted">doświadczenia</span>, <span class="digitalta-highlighted">przypadki</span> i <span class="digitalta-highlighted">zasoby</span> udostępnione przez naszą społeczność.</p>';
 $string['themestags:view:description'] = '<p>Odkryj najbardziej istotne <span class="digitalta-highlighted">doświadczenia</span>, <span class="digitalta-highlighted">przypadki</span>i <span class="digitalta-highlighted">zasoby</span> udostępnione przez naszą społeczność na temat <span class="digitalta-highlighted-upper">{$a}</span>.</p>';
 $string['themestags:invalidthemetag']  = 'Nieprawidłowy tag lub motyw';
 
@@ -153,7 +153,7 @@ $string['filters:author']       = 'Autor';
 // Experiences
 $string['experiences:title']       = $string['concept:experiences'];
 $string['experiences:header']      = $string['concept:experiences'];
-$string['experiences:description'] = '<p>Zapoznaj się z szeroką gamą <span class="digitalta-highlighted">doświadczeń</span> dzielonych przez nauczycieli z całego świata. Możesz uczyć się na podstawie ich spostrzeżeń, zastanawiać się nad ich praktykami i inspirować się ich historiami. Możesz również łączyć się z nimi, zadawać pytania i dzielić się własnymi doświadczeniami, aby wnieść swój wkład w społeczność.</p>';
+$string['experiences:description'] = '<p>Zapoznaj się z szeroką gamą <span class="digitalta-highlighted">doświadczeń <i class="help-video-icon fa fa-question-circle-o text-muted" aria-hidden="true" data-video="experience-video"></i></span> dzielonych przez nauczycieli z całego świata. Możesz uczyć się na podstawie ich spostrzeżeń, zastanawiać się nad ich praktykami i inspirować się ich historiami. Możesz również łączyć się z nimi, zadawać pytania i dzielić się własnymi doświadczeniami, aby wnieść swój wkład w społeczność.</p>';
 
 // Experience - Actions
 $string['experience:featured']       = 'Polecane';
@@ -198,7 +198,7 @@ $string['experience:resources:visit']            = 'Odwiedź zasoby';
 // Cases
 $string['cases:title']       = $string['concept:cases'];
 $string['cases:header']      = $string['concept:cases'];
-$string['cases:description'] = '<p>Zapoznaj się z kolekcją <span class="digitalta-highlighted">przypadków</span> udostępnionych przez nauczycieli z całego świata. Każdy przypadek jest szczegółowym opisem rzeczywistego doświadczenia w nauczaniu, w tym kontekstu, problemu, podjętych działań, wyników i refleksji nauczyciela.';
+$string['cases:description'] = '<p>Zapoznaj się z kolekcją <span class="digitalta-highlighted">przypadków <i class="help-video-icon fa fa-question-circle-o text-muted" aria-hidden="true" data-video="cases-video"></i></span> udostępnionych przez nauczycieli z całego świata. Każdy przypadek jest szczegółowym opisem rzeczywistego doświadczenia w nauczaniu, w tym kontekstu, problemu, podjętych działań, wyników i refleksji nauczyciela.';
 
 // Cases - Management
 $string['cases:manage']                 = 'Zarządzanie sprawami';
@@ -226,7 +226,7 @@ $string['case:section:delete:confirm'] = 'Czy na pewno chcesz usunąć tę sekcj
 // Resources
 $string['resources:title']       = $string['concept:resources'];
 $string['resources:header']      = $string['concept:resources'];
-$string['resources:description'] = '<p>Odkryj szeroką gamę <span class="digitalta-highlighted">zasobów</span> udostępnionych przez nauczycieli z całego świata. Możesz znaleźć książki, filmy, strony internetowe i inne materiały dydaktyczne, które pomogą Ci ulepszyć praktykę nauczania, zaangażować uczniów i zainspirować lekcje. Możesz także udostępniać własne zasoby, aby przyczynić się do rozwoju społeczności.</p>';
+$string['resources:description'] = '<p>Odkryj szeroką gamę <span class="digitalta-highlighted">zasobów <i class="help-video-icon fa fa-question-circle-o text-muted" aria-hidden="true" data-video="resources-video"></i></span> udostępnionych przez nauczycieli z całego świata. Możesz znaleźć książki, filmy, strony internetowe i inne materiały dydaktyczne, które pomogą Ci ulepszyć praktykę nauczania, zaangażować uczniów i zainspirować lekcje. Możesz także udostępniać własne zasoby, aby przyczynić się do rozwoju społeczności.</p>';
 
 // Resources - Management
 $string['resources:manage:add']                     = 'Dodaj zasób';
@@ -250,7 +250,9 @@ $string['resource:delete:success'] = 'Zasób został pomyślnie usunięty';
 // Tutors
 $string['tutors:title']       = $string['concept:tutorsmentors'];
 $string['tutors:header']      = $string['concept:tutorsmentors'];
-$string['tutors:description'] = '<p>Połącz się z doświadczonymi <span class="digitalta-highlighted">nauczycielami</span> i <span class="digitalta-highlighted">mentorami</span>, którzy mogą pomóc ci zastanowić się nad twoją praktyką nauczania, przekazać informacje zwrotne i zaoferować cenne spostrzeżenia. Możesz poprosić o sesje korepetycji, zadawać pytania i uzyskać spersonalizowane wsparcie, aby poprawić swoje umiejętności nauczania i wzmocnić pozycję swoich uczniów.';
+$string['tutors:description'] = '<p>Połącz się z doświadczonymi <span class="digitalta-highlighted">nauczycielami</span> i <span class="digitalta-highlighted">mentorami <i class="help-video-icon fa fa-question-circle-o text-muted" aria-hidden="true" data-video="tutor-teacher-video"></i></span>, którzy mogą pomóc ci zastanowić się nad twoją praktyką nauczania, przekazać informacje zwrotne i zaoferować cenne spostrzeżenia. Możesz poprosić o sesje korepetycji, zadawać pytania i uzyskać spersonalizowane wsparcie, aby poprawić swoje umiejętności nauczania i wzmocnić pozycję swoich uczniów.';
+
+$string['tutors:description_tutor'] = '<p>Połącz się z doświadczonymi <span class="digitalta-highlighted">nauczycielami</span> i <span class="digitalta-highlighted">mentorami <i class="help-video-icon fa fa-question-circle-o text-muted" aria-hidden="true" data-video="tutor-mentor-video"></i></span>, którzy mogą pomóc ci zastanowić się nad twoją praktyką nauczania, przekazać informacje zwrotne i zaoferować cenne spostrzeżenia. Możesz poprosić o sesje korepetycji, zadawać pytania i uzyskać spersonalizowane wsparcie, aby poprawić swoje umiejętności nauczania i wzmocnić pozycję swoich uczniów.';
 
 // Profile
 $string['profile:title']            = 'Profil';

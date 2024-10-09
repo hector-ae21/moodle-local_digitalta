@@ -40,7 +40,7 @@ $PAGE->set_url(new moodle_url('/local/digitalta/pages/tutors/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($pagetitle);
 $PAGE->requires->js_call_amd('local_digitalta/tutors/main', 'init');
-$PAGE->requires->js_call_amd('local_digitalta/tutors/main', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/commun/main', 'init');
 
 
 echo $OUTPUT->header();
@@ -76,7 +76,8 @@ $templatecontext = [
     "component" => "user",
     "title" => $pagetitle,
     "tutors"=> $formattedTutors,
-    "mentoring_requests" => $mentoring_requests
+    "mentoring_requests" => $mentoring_requests,
+    "istutor" => Tutors::is_tutor($USER->id)
 ];
 
 echo $OUTPUT->render_from_template('local_digitalta/tutors/dashboard/dashboard', $templatecontext);

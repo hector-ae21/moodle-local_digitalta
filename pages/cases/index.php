@@ -25,10 +25,12 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/cases.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/tutors.php');
 
 require_login();
 
 use local_digitalta\Cases;
+use local_digitalta\Tutors;
 
 $pagetitle = get_string('cases:title', 'local_digitalta');
 
@@ -37,6 +39,7 @@ $PAGE->set_url(new moodle_url('/local/digitalta/pages/cases/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title($pagetitle);
 $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/commun/main', 'init');
 
 echo $OUTPUT->header();
 
@@ -52,8 +55,6 @@ $picture->size = 101;
 $user->imageurl = $picture->get_url($PAGE)->__toString();
 
 global $DB, $USER;
-$tutor_role_id = $DB->get_field('role', 'id', ['shortname' => 'digitaltatutor']);
-$context = context_system::instance();
 
 
 $template_context = [
@@ -66,7 +67,7 @@ $template_context = [
     ],
     'user' => $user,
     'createurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/manage.php',
-    'istutor' => $tutor_role_id && user_has_role_assignment($USER->id, $tutor_role_id, $context->id),
+    'istutor' => Tutors::is_tutor($USER->id),
 ];
 
 echo $OUTPUT->render_from_template('local_digitalta/cases/dashboard/dashboard', $template_context);

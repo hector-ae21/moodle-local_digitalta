@@ -57,6 +57,7 @@ $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
 $PAGE->requires->js_call_amd('local_digitalta/experiences/main', 'init');
 $PAGE->requires->js_call_amd('local_digitalta/tutoring/google-meet', 'init');
 $PAGE->requires->js_call_amd('local_digitalta/tutors/main', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/commun/main', 'init');
 
 // Get the experience
 if (!$experience = Experiences::get_experience($id)) {

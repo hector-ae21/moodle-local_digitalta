@@ -64,7 +64,10 @@ array_multisort(
     array_column($cases, 'timecreated'), SORT_DESC,
     $cases);
 
+FilterUtils::apply_filters($cases);
+FilterUtils::apply_filters($experiences);
 $templatecontext = [
+    'ismy' => $USER->id == $user->id,
     'user' => [
         'id' => $user->id,
         'name' => $user->firstname . ' ' . $user->lastname,
@@ -93,7 +96,7 @@ $templatecontext = [
     'modschedulerurl' => $CFG->wwwroot . '/mod/scheduler/view.php?id=' . get_config('local_digitalta', 'schedulerinstance')
 ];
 
-$templatecontext = FilterUtils::apply_filters($templatecontext);
+
 
 echo $OUTPUT->render_from_template('local_digitalta/profile/profile', $templatecontext);
 

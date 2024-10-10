@@ -86,7 +86,7 @@ class Tutors
      */
     public static function send_tutor_request(int $tutorid, int $experienceid, bool $experienceRequest): bool|object
     {
-        global $DB, $USER, $PAGE;
+        global $DB, $USER, $PAGE, $CFG;
 
         $context = \context_system::instance();
         $PAGE->set_context($context);
@@ -102,20 +102,42 @@ class Tutors
         }
 
         $tutor = $DB->get_record('user', array('id' => $tutorid), '*', MUST_EXIST);
+        $experience= Experiences::get_experience($experienceid, false);
 
-        $subject = get_string('tutoring:newtutorrequestsubject', 'local_digitalta');
 
-        $messagehtml = get_string('tutoring:tutorrequestbody', 'local_digitalta', (object)[
-            'experienceid' => $experienceid
-        ]);
-        $messagehtml .= '<br>' . get_string('tutoring:tutorrequestrsender', 'local_digitalta', (object)[
-            'username' => $USER->username
-        ]);
-        $messagehtml .= '<br>' . get_string('tutoring:tutorrequesttime', 'local_digitalta', (object)[
-            'requesttime' => userdate(time())
-        ]);
+        if ($experienceRequest && $experience->userid) {
+            $subject = get_string('tutoring:experiencerequestsubject', 'local_digitalta');
+            $messagehtml = get_string('tutoring:experiencerequestbody', 'local_digitalta', (object)[
+                'experienceid' => $experienceid,
+                'experienceurl' => $CFG->wwwroot . '/local/digitalta/pages/experiences/view.php?id=' . $experienceid
+            ]);
 
-        $task = pending_emails::instance($tutorid, $USER->id, $subject, $messagehtml);
+            $messagehtml .= '<br>' . get_string('tutoring:experiencerequestsender', 'local_digitalta', (object)[
+                'username' =>  $tutor->firstname . ' ' . $tutor->lastname . ' ' . '(' . $tutor->username . ')'
+            ]);
+
+            $messagehtml .= '<br>' . get_string('tutoring:tutorrequesttime', 'local_digitalta', (object)[
+                'requesttime' => userdate(time())
+            ]);
+
+            $task = pending_emails::instance($experience->userid, $tutorid, $subject, $messagehtml);
+        } else {
+            $subject = get_string('tutoring:newtutorrequestsubject', 'local_digitalta');
+
+            $messagehtml = get_string('tutoring:tutorrequestbody', 'local_digitalta', (object)[
+                'experienceid' => $experienceid,
+                'experienceurl' => $CFG->wwwroot . '/local/digitalta/pages/experiences/view.php?id=' . $experienceid
+            ]);
+            $messagehtml .= '<br>' . get_string('tutoring:tutorrequestrsender', 'local_digitalta', (object)[
+                'username' =>  $USER->firstname . ' ' . $USER->lastname . ' ' . '(' . $USER->username . ')'
+            ]);
+
+            $messagehtml .= '<br>' . get_string('tutoring:tutorrequesttime', 'local_digitalta', (object)[
+                'requesttime' => userdate(time())
+            ]);
+
+            $task = pending_emails::instance($tutorid, $USER->id, $subject, $messagehtml);
+        }
 
         \core\task\manager::queue_adhoc_task($task);
 

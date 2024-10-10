@@ -373,6 +373,10 @@ $string['tutoring:experience_mentoring_request_title'] = 'Experiences Mentoring 
 
 // English translations for tutoring emails
 $string['tutoring:newtutorrequestsubject'] = 'New tutoring request';
-$string['tutoring:tutorrequestbody'] = 'You have received a new tutoring request for the experience with ID: {$a->experienceid}.';
+$string['tutoring:tutorrequestbody'] = 'You have received a new tutoring request for the experience with ID: {$a->experienceid}. You can access the experience at the following link: {$a->experienceurl}';
 $string['tutoring:tutorrequestrsender'] = 'Requested by: {$a->username}';
 $string['tutoring:tutorrequesttime'] = 'Request date: {$a->requesttime}';
+
+$string['tutoring:experiencerequestsubject'] = 'New experience mentoring proposal';
+$string['tutoring:experiencerequestbody'] = 'You have received a new mentoring proposal for the experience with ID: {$a->experienceid}. You can access the experience at the following link: {$a->experienceurl}';
+$string['tutoring:experiencerequestsender'] = 'Sent by: {$a->username}';

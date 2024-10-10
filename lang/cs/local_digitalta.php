@@ -258,6 +258,8 @@ $string['tutors:description_tutor'] = '<p>Spojte se se zkušenými <span class="
 $string['profile:title']            = 'Profil';
 $string['profile:header']           = 'Profil';
 $string['profile:editavailability'] = 'Upravit dostupnost';
+$string['profile:bookappointment']  = 'Rezervovat schůzku';
+
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];

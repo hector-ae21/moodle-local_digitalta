@@ -258,6 +258,7 @@ $string['tutors:description_tutor'] = '<p>Połącz się z doświadczonymi <span 
 $string['profile:title']            = 'Profil';
 $string['profile:header']           = 'Profil';
 $string['profile:editavailability'] = 'Edytuj dostępność';
+$string['profile:bookappointment']  = 'Zobacz dostępność';
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];

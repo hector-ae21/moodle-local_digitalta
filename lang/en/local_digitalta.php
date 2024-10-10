@@ -266,6 +266,7 @@ $string['tutors:description_tutor'] = '<p>Connect with experienced <span class="
 $string['profile:title']            = 'Profile';
 $string['profile:header']           = 'Profile';
 $string['profile:editavailability'] = 'Edit availability';
+$string['profile:bookappointment']  = 'Check availability';
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];

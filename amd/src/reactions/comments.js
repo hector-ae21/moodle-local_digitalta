@@ -44,7 +44,7 @@ export async function updateUI() {
                 comment: comment.comment,
                 created: comment.created_raw,
                 userfullname: comment.user.fullname,
-                userprofileurl: M.cfg.wwwroot + "/user/profile.php?id=" + comment.user.id,
+                userprofileurl: M.cfg.wwwroot + "/local/digitalta/pages/profile/index.php?id=" + comment.user.id,
             }));
         }
         const html = await Template.render("local_digitalta/reactions/comments", { comments });

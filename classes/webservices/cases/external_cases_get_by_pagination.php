@@ -263,7 +263,7 @@ class external_cases_get_by_pagination extends external_api
                         "name" => new external_value(PARAM_TEXT, 'user name'),
                         "email" => new external_value(PARAM_TEXT, 'user email'),
                         "imageurl" => new external_value(PARAM_TEXT, 'user image url'),
-                        "profileurl" => new external_single_structure([])
+                        "profileurl" => new external_value(PARAM_URL, 'user profile url'),
                     ])
                 ])
             ),

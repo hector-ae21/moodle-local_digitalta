@@ -129,7 +129,7 @@ class Experiences
             'name' => $user->firstname . " " . $user->lastname,
             'email' => $user->email,
             'imageurl' => $user_picture->get_url($PAGE)->__toString(),
-            'profileurl' => new \moodle_url('/user/profile.php', ['id' => $user->id])
+            'profileurl' => (new \moodle_url('/local/digitalta/pages/profile/index.php', ['id' => $user->id]))->out()
         ];
         // Get the sections for the experience
         $sections = Sections::get_sections([

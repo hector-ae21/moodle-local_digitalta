@@ -1,16 +1,15 @@
-import * as Cfg from "core/config";
+import { getVideoURL } from "local_digitalta/commun/video";
 
 export const setEventListeners = () => {
   // eslint-disable-next-line promise/always-return, promise/catch-or-return
   waitForElm(".help-video-icon").then(() => {
     const videohelpers = document.querySelectorAll(".help-video-icon");
     videohelpers.forEach((videohelper) => {
-      const staticLocation = Cfg.wwwroot + "/local/digitalta/statics/";
       const params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,
       width=600,height=300,left=100,top=100`;
       videohelper.addEventListener("click", () => {
         const videoName = videohelper.dataset.video;
-        open(staticLocation + videoName + ".mp4", "test", params);
+        open(getVideoURL(videoName), "video", params);
       });
     });
   });

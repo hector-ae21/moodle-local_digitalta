@@ -258,6 +258,8 @@ $string['tutors:description_tutor'] = '<p>Kom in contact met ervaren <span class
 $string['profile:title']            = 'Profiel';
 $string['profile:header']           = 'Profiel';
 $string['profile:editavailability'] = 'Beschikbaarheid bewerken';
+$string['profile:bookappointment']  = 'Boek een afspraak';
+
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];

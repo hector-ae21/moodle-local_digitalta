@@ -51,6 +51,7 @@ $formattedTutors = [];
 foreach ($tutors as $tutor) {
     $newTutor = new stdClass();
     $newTutor->name = $tutor->firstname . " " . $tutor->lastname;
+    $newTutor->id = $tutor->id;
     $newTutor->position = $tutor->profile_field_digitalta_role;
     if ($tutor->institution) {
         $newTutor->position .= " at " . $tutor->profile_field_digitalta_institution;
@@ -77,7 +78,8 @@ $templatecontext = [
     "title" => $pagetitle,
     "tutors"=> $formattedTutors,
     "mentoring_requests" => $mentoring_requests,
-    "istutor" => Tutors::is_tutor($USER->id)
+    "istutor" => Tutors::is_tutor($USER->id),
+    'modschedulerurl' => $CFG->wwwroot . '/mod/scheduler/view.php?id=' . get_config('local_digitalta', 'schedulerinstance')
 ];
 
 echo $OUTPUT->render_from_template('local_digitalta/tutors/dashboard/dashboard', $templatecontext);

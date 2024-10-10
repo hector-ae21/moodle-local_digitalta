@@ -266,6 +266,7 @@ $string['tutors:description_tutor'] = '<p>Conecta con <span class="digitalta-hig
 $string['profile:title']            = 'Perfil';
 $string['profile:header']           = 'Perfil';
 $string['profile:editavailability'] = 'Editar disponibilidad';
+$string['profile:bookappointment']  = 'Ver disponibilidad';
 
 // Elements - Components
 $string['component:experience'] = $string['concept:experience'];

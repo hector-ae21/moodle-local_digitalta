@@ -18,6 +18,11 @@
                             <a href="{{user.editurl}}" class="btn btn-outline-secondary m-1 d-md-block">{{#str}} editmyprofile, core {{/str}}</a>
                         </div>
                     {{/ismy}}
+                    {{^ismy}}
+                        <div class="d-flex align-items-center flex-wrap">
+                            <a href="{{modschedulerurl}}&tutorid={{user.id}}" class="btn btn-outline-secondary m-1 d-md-block">{{#str}} profile:bookappointment, local_digitalta {{/str}}</a>
+                        </div>
+                    {{/ismy}}
                 </div>
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">

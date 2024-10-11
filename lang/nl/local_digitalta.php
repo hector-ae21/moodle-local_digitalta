@@ -366,6 +366,10 @@ $string['tutoring:experience_mentoring_request_title'] = 'Ervaringen Mentorschap
 
 // Dutch translations for tutoring emails
 $string['tutoring:newtutorrequestsubject'] = 'Nieuw verzoek om bijles';
-$string['tutoring:tutorrequestbody'] = 'Je hebt een nieuw verzoek om bijles ontvangen voor de ervaring met ID: {$a->experienceid}.';
+$string['tutoring:tutorrequestbody'] = 'Je hebt een nieuw verzoek om bijles ontvangen voor de ervaring met ID: {$a->experienceid}. Je kunt de ervaring bekijken via de volgende link: {$a->experienceurl}';
 $string['tutoring:tutorrequestrsender'] = 'Aangevraagd door: {$a->username}';
 $string['tutoring:tutorrequesttime'] = 'Datum van aanvraag: {$a->requesttime}';
+
+$string['tutoring:experiencerequestsubject'] = 'Nieuw voorstel voor ervaringsmentorschap';
+$string['tutoring:experiencerequestbody'] = 'Je hebt een nieuw voorstel voor mentorschap ontvangen voor de ervaring met ID: {$a->experienceid}. Je kunt de ervaring bekijken via de volgende link: {$a->experienceurl}';
+$string['tutoring:experiencerequestsender'] = 'Verzonden door: {$a->username}';

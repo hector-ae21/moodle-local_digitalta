@@ -208,7 +208,7 @@ class external_experiences_get_by_pagination extends external_api
                         "name" => new external_value(PARAM_TEXT, 'name', VALUE_REQUIRED),
                         "email" => new external_value(PARAM_TEXT, 'email', VALUE_REQUIRED),
                         "imageurl" => new external_value(PARAM_URL, 'image url', VALUE_REQUIRED),
-                        "profileurl" => new external_single_structure([])
+                        "profileurl" => new external_value(PARAM_URL, 'profile url', VALUE_REQUIRED)
                     ]),
                     "title" => new external_value(PARAM_TEXT, 'title', VALUE_REQUIRED),
                     "lang" => new external_value(PARAM_TEXT, 'lang', VALUE_REQUIRED),

@@ -365,6 +365,10 @@ $string['tutoring:experience_mentoring_request_title'] = 'Prośby o mentorowanie
 
 // Polish translations for tutoring emails
 $string['tutoring:newtutorrequestsubject'] = 'Nowa prośba o korepetycje';
-$string['tutoring:tutorrequestbody'] = 'Otrzymałeś nowe zgłoszenie na korepetycje dotyczące doświadczenia o ID: {$a->experienceid}.';
+$string['tutoring:tutorrequestbody'] = 'Otrzymałeś nową prośbę o korepetycje dla doświadczenia o ID: {$a->experienceid}. Możesz uzyskać dostęp do doświadczenia pod następującym linkiem: {$a->experienceurl}';
 $string['tutoring:tutorrequestrsender'] = 'Zgłoszone przez: {$a->username}';
 $string['tutoring:tutorrequesttime'] = 'Data zgłoszenia: {$a->requesttime}';
+
+$string['tutoring:experiencerequestsubject'] = 'Nowa propozycja mentorowania doświadczenia';
+$string['tutoring:experiencerequestbody'] = 'Otrzymałeś nową propozycję mentorowania dla doświadczenia o ID: {$a->experienceid}. Możesz uzyskać dostęp do doświadczenia pod następującym linkiem: {$a->experienceurl}';
+$string['tutoring:experiencerequestsender'] = 'Wysłane przez: {$a->username}';

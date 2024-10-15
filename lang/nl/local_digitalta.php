@@ -373,3 +373,6 @@ $string['tutoring:tutorrequesttime'] = 'Datum van aanvraag: {$a->requesttime}';
 $string['tutoring:experiencerequestsubject'] = 'Nieuw voorstel voor ervaringsmentorschap';
 $string['tutoring:experiencerequestbody'] = 'Je hebt een nieuw voorstel voor mentorschap ontvangen voor de ervaring met ID: {$a->experienceid}. Je kunt de ervaring bekijken via de volgende link: {$a->experienceurl}';
 $string['tutoring:experiencerequestsender'] = 'Verzonden door: {$a->username}';
+
+$string['seetranslation'] = 'Bekijk vertaling';
+$string['seeoriginal'] = 'Bekijk origineel';

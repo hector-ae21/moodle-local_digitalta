@@ -42,7 +42,7 @@
                                 <div class="tab-pane text-justify mb-3 fade {{#active}}show active{{/active}}" id="reflection-{{groupname_simplified}}" role="tabpanel" aria-labelledby="reflection-{{groupname_simplified}}-tab">
                                     <h3 class="d-sm-none">{{groupname}}</h3>
                                     {{#content}}
-                                        {{{content}}}
+                                        <div class="translatable-content">{{{content}}}</div>
                                     {{/content}}
                                     {{^content}}
                                         {{#str}} experience:reflection:empty, local_digitalta {{/str}}

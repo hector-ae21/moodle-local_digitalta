@@ -443,4 +443,13 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_digitalta_translate_text' => [
+        'classname'   => 'external_translate_text',
+        'methodname'  => 'translate_text',
+        'classpath'   => 'local/digitalta/classes/webservices/languages/external_translate_text.php',
+        'description' => 'Translate text',
+        'type'        => 'read',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
 ];

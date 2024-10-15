@@ -1,5 +1,7 @@
 import { translateContent } from "local_digitalta/repositories/translation_repository";
 
+import * as Str from 'core/str';
+
 export const translateButton = () => {
   const translateButton = document.querySelector(".translate-action");
   if (!translateButton) {
@@ -20,7 +22,7 @@ export const translateButton = () => {
       });
 
       translateButton.dataset.translated = "false";
-      translateButton.innerHTML = "Translate";
+      translateButton.innerHTML = await Str.get_string('seetranslation', 'local_digitalta');
       translateButton.insertAdjacentElement("beforeend", translatedButtonIcon);
     } else {
       const promises = [];
@@ -31,7 +33,7 @@ export const translateButton = () => {
       }
       await Promise.all(promises);
       translateButton.dataset.translated = "true";
-      translateButton.innerHTML = "Show original";
+      translateButton.innerHTML = await Str.get_string('seeoriginal', 'local_digitalta');
       translateButton.insertAdjacentElement("beforeend", translatedButtonIcon);
     }
   });

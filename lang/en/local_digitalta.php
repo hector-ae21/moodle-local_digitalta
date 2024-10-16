@@ -380,3 +380,6 @@ $string['tutoring:tutorrequesttime'] = 'Request date: {$a->requesttime}';
 $string['tutoring:experiencerequestsubject'] = 'New experience mentoring proposal';
 $string['tutoring:experiencerequestbody'] = 'You have received a new mentoring proposal for the experience with ID: {$a->experienceid}. You can access the experience at the following link: {$a->experienceurl}';
 $string['tutoring:experiencerequestsender'] = 'Sent by: {$a->username}';
+
+$string['seetranslation'] = 'Translate to English';
+$string['seeoriginal'] = 'See original';

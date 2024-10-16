@@ -381,3 +381,5 @@ $string['tutoring:experiencerequestsubject'] = 'Nueva propuesta de mentoría de 
 $string['tutoring:experiencerequestbody'] = 'Has recibido una nueva propuesta de mentoría para la experiencia con ID: {$a->experienceid}. Puedes acceder a la experiencia en el siguiente enlace: $a->experienceurl';
 $string['tutoring:experiencerequestsender'] = 'Enviado por: {$a->username}';
 
+$string['seetranslation'] = 'Traducir al español';
+$string['seeoriginal'] = 'Ver original';

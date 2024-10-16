@@ -30,7 +30,6 @@ require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tinyeditorhandler.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tutors.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/googlemeet/client.php');
-require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/local/digitalta/locallib.php');
 require_once($CFG->libdir . '/externallib.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/webservices/tutoring/external_tutoring_requests_get.php');
@@ -42,9 +41,8 @@ use local_digitalta\Tutors;
 use local_digitalta\Resources;
 use local_digitalta\Sections;
 use local_digitalta\TinyEditorHandler;
-use local_digitalta\utils\FilterUtils;
 
-global $CFG, $PAGE, $USER, $DB;
+global $CFG, $PAGE, $USER, $DB, $SESSION;
 
 require_login();
 
@@ -58,13 +56,14 @@ $PAGE->requires->js_call_amd('local_digitalta/experiences/main', 'init');
 $PAGE->requires->js_call_amd('local_digitalta/tutoring/google-meet', 'init');
 $PAGE->requires->js_call_amd('local_digitalta/tutors/main', 'init');
 $PAGE->requires->js_call_amd('local_digitalta/commun/main', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/commun/translate', 'translateButton');
+
 
 // Get the experience
 if (!$experience = Experiences::get_experience($id)) {
     throw new moodle_exception('invalidexperience', 'local_digitalta');
 }
-$experience->title = FilterUtils::apply_filters($experience->title);
-$experience->sections = FilterUtils::apply_filters($experience->sections);
+
 $experience->sections = array_map(function ($section) {
     $groupname = Sections::get_group($section->groupid)->name;
     list($section->groupname, $section->groupname_simplified) =
@@ -175,7 +174,8 @@ $template_context = [
     'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id=',
     'mentoringrequest' => $mentoring_tutor_request,
     'mentors_from_requests' => $mentors_from_requests,
-    'modschedulerurl' => $CFG->wwwroot . '/mod/scheduler/view.php?id=' . get_config('local_digitalta', 'schedulerinstance')
+    'modschedulerurl' => $CFG->wwwroot . '/mod/scheduler/view.php?id=' . get_config('local_digitalta', 'schedulerinstance'),
+    'needstranslation' => strtolower(current_language()) != strtolower($experience->lang),
 ];
 
 $experience_chat = Chat::get_chat_room_by_experience($id);

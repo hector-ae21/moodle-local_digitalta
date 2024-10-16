@@ -25,11 +25,9 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/cases.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
-require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 
 use local_digitalta\Cases;
 use local_digitalta\Sections;
-use local_digitalta\utils\FilterUtils;
 
 require_login();
 
@@ -39,12 +37,12 @@ $id = required_param('id', PARAM_INT);
 $PAGE->set_url(new moodle_url('/local/digitalta/pages/cases/view.php', ['id' => $id]));
 $PAGE->set_context(context_system::instance());
 $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/commun/translate', 'translateButton');
 
 // Get the case
 if (!$case = Cases::get_case($id)) {
     throw new moodle_exception('invalidcase', 'local_digitalta');
 }
-$case = FilterUtils::apply_filters($case);
 $case->sections = array_map(function ($section) {
     $groupname = Sections::get_group($section->groupid)->name;
     list($section->groupname, $section->groupname_simplified) =
@@ -78,7 +76,8 @@ $templateContext = [
     ],
     'canedit' => Cases::check_permissions($case, $USER),
     'viewtagurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=tag&id=',
-    'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id='
+    'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id=',
+    'needstranslation' => strtolower(current_language()) != strtolower($case->lang),
 ];
 
 echo $OUTPUT->render_from_template('local_digitalta/cases/view/view', $templateContext);

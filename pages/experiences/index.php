@@ -25,7 +25,6 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
-require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 
 $pagetitle = get_string('experiences:title', 'local_digitalta');
 $PAGE->set_url(new moodle_url('/local/digitalta/pages/experiences/index.php'));
@@ -33,6 +32,8 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_title($pagetitle);
 $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
 $PAGE->requires->js_call_amd('local_digitalta/commun/main', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/commun/translate', 'translateButton');
+
 
 echo $OUTPUT->header();
 
@@ -45,7 +46,8 @@ $template_context = [
         'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/experiences/view.php?id='
     ],
     'viewtagurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=tag&id=',
-    'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id='
+    'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id=',
+    'needstranslation' => true
 ];
 
 echo $OUTPUT->render_from_template('local_digitalta/experiences/dashboard/dashboard', $template_context);

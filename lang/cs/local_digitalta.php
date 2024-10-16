@@ -374,3 +374,5 @@ $string['tutoring:experiencerequestsubject'] = 'Nový návrh na mentorování zk
 $string['tutoring:experiencerequestbody'] = 'Obdrželi jste nový návrh na mentorování zkušeností s ID: {$a->experienceid}. Ke zkušenosti můžete přistoupit na následujícím odkazu: {$a->experienceurl}';
 $string['tutoring:experiencerequestsender'] = 'Odesláno uživatelem: {$a->username}';
 
+$string['seetranslation'] = 'Přeložit do češtiny';
+$string['seeoriginal'] = 'Zobrazit originál';

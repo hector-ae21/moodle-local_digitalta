@@ -25,7 +25,6 @@
 require_once (__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/resources.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tinyeditorhandler.php');
-require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/local/digitalta/locallib.php');
 
 require_login();

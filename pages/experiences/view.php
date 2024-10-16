@@ -30,7 +30,6 @@ require_once($CFG->dirroot . '/local/digitalta/classes/sections.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tinyeditorhandler.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tutors.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/googlemeet/client.php');
-require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/local/digitalta/locallib.php');
 require_once($CFG->libdir . '/externallib.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/webservices/tutoring/external_tutoring_requests_get.php');
@@ -42,7 +41,6 @@ use local_digitalta\Tutors;
 use local_digitalta\Resources;
 use local_digitalta\Sections;
 use local_digitalta\TinyEditorHandler;
-use local_digitalta\utils\FilterUtils;
 
 global $CFG, $PAGE, $USER, $DB, $SESSION;
 
@@ -177,7 +175,7 @@ $template_context = [
     'mentoringrequest' => $mentoring_tutor_request,
     'mentors_from_requests' => $mentors_from_requests,
     'modschedulerurl' => $CFG->wwwroot . '/mod/scheduler/view.php?id=' . get_config('local_digitalta', 'schedulerinstance'),
-    'needstranslation' => strtolower(current_language()) != strtolower($USER->lang),
+    'needstranslation' => strtolower(current_language()) != strtolower($experience->lang),
 ];
 
 $experience_chat = Chat::get_chat_room_by_experience($id);

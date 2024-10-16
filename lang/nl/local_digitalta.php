@@ -374,5 +374,5 @@ $string['tutoring:experiencerequestsubject'] = 'Nieuw voorstel voor ervaringsmen
 $string['tutoring:experiencerequestbody'] = 'Je hebt een nieuw voorstel voor mentorschap ontvangen voor de ervaring met ID: {$a->experienceid}. Je kunt de ervaring bekijken via de volgende link: {$a->experienceurl}';
 $string['tutoring:experiencerequestsender'] = 'Verzonden door: {$a->username}';
 
-$string['seetranslation'] = 'Bekijk vertaling';
+$string['seetranslation'] = 'Vertalen in het Nederlands';
 $string['seeoriginal'] = 'Bekijk origineel';

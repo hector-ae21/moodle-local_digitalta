@@ -4,13 +4,13 @@ import * as Str from 'core/str';
 
 export const translateButton = () => {
   const translateButton = document.querySelector(".translate-action");
+  const translatedButtonIcon = translateButton.querySelector("i");
+
   if (!translateButton) {
     return;
   }
-  const translatableContent = document.querySelectorAll(".translatable-content");
-  const translatedButtonIcon = translateButton.querySelector("i");
-
   translateButton.addEventListener("click", async () => {
+    const translatableContent = document.querySelectorAll(".translatable-content");
     if (translateButton.dataset.translated === "true") {
       translatableContent.forEach((content) => {
         content.classList.remove("d-none");
@@ -25,6 +25,7 @@ export const translateButton = () => {
       translateButton.innerHTML = await Str.get_string('seetranslation', 'local_digitalta');
       translateButton.insertAdjacentElement("beforeend", translatedButtonIcon);
     } else {
+      translateButton.dataset.translated = "true";
       const promises = [];
 
       for (const content of translatableContent) {
@@ -32,7 +33,6 @@ export const translateButton = () => {
         promises.push(createElementPromise(content, response));
       }
       await Promise.all(promises);
-      translateButton.dataset.translated = "true";
       translateButton.innerHTML = await Str.get_string('seeoriginal', 'local_digitalta');
       translateButton.insertAdjacentElement("beforeend", translatedButtonIcon);
     }

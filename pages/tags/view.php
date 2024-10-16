@@ -29,7 +29,6 @@ require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/resources.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tags.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/themes.php');
-require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 
 require_login();
 
@@ -39,7 +38,6 @@ use local_digitalta\Experiences;
 use local_digitalta\Resources;
 use local_digitalta\Tags;
 use local_digitalta\Themes;
-use local_digitalta\utils\FilterUtils;
 
 $tagtype = required_param('type', PARAM_TEXT);
 $tagid = required_param('id', PARAM_INT);
@@ -84,10 +82,6 @@ $resources = array_map(function($key, $context) {
 $users = Context::get_contexts_by_modifier($tagtype, $tagid, 'user');
 
 echo $OUTPUT->header();
-
-FilterUtils::apply_filters($experiences);
-FilterUtils::apply_filters($cases);
-FilterUtils::apply_filters($resources);
 
 $template_context = [
     'title' => $pagetitle,

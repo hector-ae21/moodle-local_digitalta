@@ -43,7 +43,7 @@ global $DB, $USER;
 $tutor_role_id = $DB->get_field('role', 'id', ['shortname' => 'digitaltatutor']);
 $context = context_system::instance();
 if ($tutor_role_id && !user_has_role_assignment($USER->id, $tutor_role_id, $context->id)) {
-    redirect();
+    redirect($CFG->wwwroot . '/local/digitalta/pages/teacheracademy/index.php');
 }
 
 

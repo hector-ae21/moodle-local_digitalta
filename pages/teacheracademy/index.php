@@ -31,7 +31,6 @@ require_once($CFG->dirroot . '/local/digitalta/classes/tags.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/themes.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tinyeditorhandler.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/files/filemanagerhandler.php');
-require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 
 require_login();
 
@@ -42,13 +41,13 @@ use local_digitalta\Reactions;
 use local_digitalta\Tags;
 use local_digitalta\Themes;
 use local_digitalta\TinyEditorHandler;
-use local_digitalta\utils\FilterUtils;
 
 $PAGE->set_url(new moodle_url('/local/digitalta/pages/teacheracademy/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(get_string('teacheracademy:title', 'local_digitalta'));
 $PAGE->requires->js_call_amd('local_digitalta/teacheracademy/actions', 'init');
 $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/commun/translate', 'translateButton');
 
 echo $OUTPUT->header();
 
@@ -57,7 +56,7 @@ echo $OUTPUT->header();
 // Get themes
 $themes = Themes::get_themes();
 $themes = array_slice($themes, 0, 8, true);
-$themes = array_map(function($key, $theme) {
+$themes = array_map(function ($key, $theme) {
     global $OUTPUT;
     $theme->picture = $OUTPUT->image_url('digitalta-theme' . ($key + 1) . '-colored', 'local_digitalta');
     return $theme;
@@ -71,26 +70,35 @@ $featuredExperiences = Reactions::get_most_liked_component(
     Components::get_component_by_name('experience')->id,
     5
 );
-$featuredExperiences = array_map(function($experience) {
+$featuredExperiences = array_map(function ($experience) {
     return $experience->componentinstance;
 }, $featuredExperiences);
 $experiences = Experiences::get_experiences(['visible' => 1]);
 $experiences = array_slice($experiences, -9, 9);
-$experiences = array_map(function($experience) use ($featuredExperiences) {
+$experiences = array_map(function ($experience) use ($featuredExperiences) {
     $experience->featured = (in_array($experience->id, $featuredExperiences)) ? true : false;
     return $experience;
 }, $experiences);
 array_multisort(
-    array_column($experiences, 'featured'), SORT_DESC,
-    array_column($experiences, 'timecreated'), SORT_DESC,
-    $experiences);
+    array_column($experiences, 'featured'),
+    SORT_DESC,
+    array_column($experiences, 'timecreated'),
+    SORT_DESC,
+    $experiences
+);
 
 // Get cases
 $cases = Cases::get_cases(['status' => 1]);
 $cases = array_slice($cases, -4, 4);
 array_multisort(
-    array_column($cases, 'timecreated'), SORT_DESC,
-    $cases);
+    array_column($cases, 'timecreated'),
+    SORT_DESC,
+    $cases
+);
+
+$needstranslation = array_reduce(array_merge($experiences, $cases), function ($carry, $item) {
+    return $carry || strtolower(current_language()) != strtolower($item->lang);
+}, false);
 
 // Get user data
 $user = get_complete_user_data('id', $USER->id);
@@ -156,11 +164,9 @@ $templateContext = [
         'data' => array_slice($cases, 0, 4),
         'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/view.php?id=',
         'allurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/index.php'
-    ]
+    ],
+    'needstranslation' => $needstranslation
 ];
-
- FilterUtils::apply_filters($experiences);
- FilterUtils::apply_filters($cases);
 
 echo $OUTPUT->render_from_template('local_digitalta/teacheracademy/dashboard', $templateContext);
 

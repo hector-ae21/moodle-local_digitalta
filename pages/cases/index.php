@@ -24,7 +24,6 @@
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/cases.php');
-require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tutors.php');
 
 require_login();
@@ -40,6 +39,7 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_title($pagetitle);
 $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
 $PAGE->requires->js_call_amd('local_digitalta/commun/main', 'init');
+$PAGE->requires->js_call_amd('local_digitalta/commun/translate', 'translateButton');
 
 echo $OUTPUT->header();
 
@@ -68,6 +68,7 @@ $template_context = [
     'user' => $user,
     'createurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/manage.php',
     'istutor' => Tutors::is_tutor($USER->id),
+    'needstranslation' => true
 ];
 
 echo $OUTPUT->render_from_template('local_digitalta/cases/dashboard/dashboard', $template_context);

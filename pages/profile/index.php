@@ -25,7 +25,6 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/cases.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
-require_once($CFG->dirroot . '/local/digitalta/classes/utils/filterutils.php');
 
 $id = required_param('id', PARAM_INT);
 
@@ -33,7 +32,6 @@ require_login();
 
 use local_digitalta\Cases;
 use local_digitalta\Experiences;
-use local_digitalta\utils\FilterUtils;
 
 $pagetitle = get_string('profile:title', 'local_digitalta');
 
@@ -64,8 +62,6 @@ array_multisort(
     array_column($cases, 'timecreated'), SORT_DESC,
     $cases);
 
-FilterUtils::apply_filters($cases);
-FilterUtils::apply_filters($experiences);
 $templatecontext = [
     'ismy' => $USER->id == $user->id,
     'user' => [

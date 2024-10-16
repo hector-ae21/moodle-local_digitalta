@@ -373,5 +373,5 @@ $string['tutoring:experiencerequestsubject'] = 'Nowa propozycja mentorowania do�
 $string['tutoring:experiencerequestbody'] = 'Otrzymałeś nową propozycję mentorowania dla doświadczenia o ID: {$a->experienceid}. Możesz uzyskać dostęp do doświadczenia pod następującym linkiem: {$a->experienceurl}';
 $string['tutoring:experiencerequestsender'] = 'Wysłane przez: {$a->username}';
 
-$string['seetranslation'] = 'Zobacz tłumaczenie';
+$string['seetranslation'] = 'Przetłumacz na język polski';
 $string['seeoriginal'] = 'Zobacz oryginał';

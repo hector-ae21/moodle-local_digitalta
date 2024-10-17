@@ -4,11 +4,10 @@ import * as Str from 'core/str';
 
 export const translateButton = () => {
   const translateButton = document.querySelector(".translate-action");
-  const translatedButtonIcon = translateButton.querySelector("i");
-
   if (!translateButton) {
     return;
   }
+  const translatedButtonIcon = translateButton.querySelector("i");
   translateButton.addEventListener("click", async () => {
     const translatableContent = document.querySelectorAll(".translatable-content");
     if (translateButton.dataset.translated === "true") {

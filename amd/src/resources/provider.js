@@ -9,7 +9,7 @@ let filters = [];
 let selectedPage = 1;
 
 export const init = () => {
-    $('.dropdown-menu').on('click', function(e) {
+    $('[data-section-name="digitalta-experiences-list"]  .dropdown-menu').on('click', function(e) {
         e.stopPropagation();
     });
     getAndRenderFilters();

@@ -10,7 +10,7 @@ export const init = () => {
     getAndRenderFilters();
     getExperiences();
 
-    $('.dropdown-menu').on('click', function(e) {
+    $('[data-section-name="digitalta-experiences-list"] .dropdown-menu').on('click', function(e) {
         e.stopPropagation();
     });
 

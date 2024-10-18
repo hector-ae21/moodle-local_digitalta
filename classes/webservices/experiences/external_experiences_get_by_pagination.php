@@ -271,12 +271,14 @@ class external_experiences_get_by_pagination extends external_api
                     "reactions" => new external_single_structure([
                         "likes" => new external_single_structure([
                             "count" => new external_value(PARAM_TEXT, 'likes', VALUE_REQUIRED),
+                            "isactive" => new external_value(PARAM_RAW, ''),
                             "data" => new external_multiple_structure(
                                 new external_single_structure([])
                             )
                         ]),
                         "dislikes" => new external_single_structure([
                             "count" => new external_value(PARAM_TEXT, 'likes', VALUE_REQUIRED),
+                            "isactive" => new external_value(PARAM_RAW, ''),
                             "data" => new external_multiple_structure(
                                 new external_single_structure([])
                             )
@@ -289,6 +291,7 @@ class external_experiences_get_by_pagination extends external_api
                         ]),
                         "reports" => new external_single_structure([
                             "count" => new external_value(PARAM_TEXT, 'likes', VALUE_REQUIRED),
+                            "isactive" => new external_value(PARAM_RAW, ''),
                             "data" => new external_multiple_structure(
                                 new external_single_structure([])
                             )

@@ -53,6 +53,7 @@ foreach ($tutors as $tutor) {
     $newTutor->name = $tutor->firstname . " " . $tutor->lastname;
     $newTutor->id = $tutor->id;
     $newTutor->position = $tutor->profile_field_digitalta_role;
+    $newTutor->subjects = $tutor->profile_field_digitalta_subjects;
     if ($tutor->institution) {
         $newTutor->position .= " at " . $tutor->profile_field_digitalta_institution;
     }

@@ -13,14 +13,23 @@ export const setEventListeners = () => {
     cancelTutorRequest(experienceid);
   });
 
-
   $(SELECTORS.BUTTONS.ACCEPT_MENTOR_REQUEST).on("click", function () {
-    const requestid = ($(this).data("requestid"));
-    acceptTutorRequest(requestid, true);
+    const requestid = $(this).data("requestid");
+    acceptTutorRequest(requestid, 1);
+  });
+
+  $(SELECTORS.BUTTONS.ACCEPT_EXPERIENCE_REQUEST).on("click", function () {
+    const requestid = $(this).data("requestid");
+    acceptTutorRequest(requestid, 1);
   });
 
   $(SELECTORS.BUTTONS.REJECT_MENTOR_REQUEST).on("click", function () {
-    const requestid = ($(this).data("requestid"));
-    acceptTutorRequest(requestid, false);
+    const requestid = $(this).data("requestid");
+    acceptTutorRequest(requestid, 0);
+  });
+
+  $(SELECTORS.BUTTONS.REJECT_EXPERIENCE_REQUEST).on("click", function () {
+    const requestid = $(this).data("requestid");
+    acceptTutorRequest(requestid, 0);
   });
 };

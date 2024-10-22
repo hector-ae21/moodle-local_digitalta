@@ -25,12 +25,15 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/tutors.php');
 require_once($CFG->dirroot . '/local/digitalta/classes/experiences.php');
+require_once($CFG->dirroot . '/local/digitalta/classes/tutoring_status.php');
+
 
 
 require_login();
 
 use local_digitalta\Experiences;
 use local_digitalta\Tutors;
+use local_digitalta\TutoringStatus;
 
 global $USER;
 
@@ -66,7 +69,7 @@ foreach ($tutors as $tutor) {
     $formattedTutors['data'][] = ['user' => $newTutor];
 }
 
-$mentoring_requests = Tutors::requests_get_by_tutor($USER->id);
+$mentoring_requests = Tutors::requests_get_by_tutor($USER->id, TutoringStatus::PENDING_TUTOR_REQUEST);
 
 $mentoring_requests = array_map(function ($request) {
     $request->experience = Experiences::get_experience($request->experienceid);

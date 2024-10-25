@@ -36,7 +36,7 @@ use local_digitalta\Experiences;
 $pagetitle = get_string('profile:title', 'local_digitalta');
 
 $PAGE->set_url(new moodle_url('/local/digitalta/pages/profile/index.php', ['id' => $id]));
-$PAGE->set_context(context_system::instance()) ;
+$PAGE->set_context(context_system::instance());
 $PAGE->set_title($pagetitle);
 $PAGE->requires->js_call_amd('local_digitalta/reactions/main', 'init');
 
@@ -49,18 +49,23 @@ $picture->size = 101;
 
 // Get the user experiences
 $experiences = Experiences::get_experiences(['userid' => $user->id]);
-$experiences = array_map(function ($experience) {
-    return $experience;
-}, $experiences);
+$experiences = array_filter($experiences, function ($experience) use ($USER) {
+    return $experience->visible == 1 || ($experience->userid == $USER->id);
+});
+
 array_multisort(
-    array_column($experiences, 'timecreated'), SORT_DESC,
-    $experiences);
+    array_column($experiences, 'timecreated'),
+    SORT_DESC,
+    $experiences
+);
 
 // Get the user cases
 $cases = Cases::get_cases(['userid' => $user->id]);
 array_multisort(
-    array_column($cases, 'timecreated'), SORT_DESC,
-    $cases);
+    array_column($cases, 'timecreated'),
+    SORT_DESC,
+    $cases
+);
 
 $templatecontext = [
     'ismy' => $USER->id == $user->id,
@@ -78,7 +83,7 @@ $templatecontext = [
         'showcontrols' => true,
         'showcontrolsadmin' => is_siteadmin($USER),
         'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/experiences/view.php?id=',
-    ], 
+    ],
     'cases' => [
         'component' => 'case',
         'data' => $cases,

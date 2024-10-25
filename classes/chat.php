@@ -29,7 +29,7 @@ class Chat
      * @param int $experience Experience level
      * @return stdClass
      */
-    public static function create_chat_room($experience = 0): stdClass
+    public static function create_chat_room($experience = 0)
     {
         global $DB;
         $chat_room = new stdClass();
@@ -37,7 +37,7 @@ class Chat
         $chat_room->timecreated = time();
         $chat_room->timemodified = time();
         $chat_room->id = $DB->insert_record(self::$table_chat_room, $chat_room);
-        return $chat_room;
+        return $chat_room->id;
     }
 
     /**

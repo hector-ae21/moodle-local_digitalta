@@ -9,7 +9,8 @@ require_login();
 
 class external_experiences_get_by_pagination extends external_api
 {
-    public static function experiences_get_by_pagination_parameters() {
+    public static function experiences_get_by_pagination_parameters()
+    {
         return new external_function_parameters(
             [
                 'pagenumber' => new external_value(PARAM_INT, 'page number', VALUE_REQUIRED),
@@ -23,7 +24,7 @@ class external_experiences_get_by_pagination extends external_api
         global $DB, $CFG, $PAGE;
 
         $PAGE->set_context(\context_system::instance());
-        
+
         $limit = 20;
         $totalPages = 0;
 
@@ -52,7 +53,7 @@ class external_experiences_get_by_pagination extends external_api
             $havingSum = "";
 
             foreach ($themes as $theme) {
-                if (strlen($havingSum) == 0){
+                if (strlen($havingSum) == 0) {
                     $havingSum .= "HAVING";
                 }
                 $havingSum .= " (SUM(CASE WHEN modifier = 1 AND modifierinstance = " . $theme . " THEN 1 ELSE 0 END) > 0) OR ";
@@ -61,11 +62,11 @@ class external_experiences_get_by_pagination extends external_api
             if (count($tags) > 0) {
                 $tagsToSearch = '(' . implode(', ', $tags) . ')';
                 $tagsExperiences = $DB->get_records_sql(
-                    "SELECT * FROM mdl_digitalta_tags where name IN ".$tagsToSearch
+                    "SELECT * FROM mdl_digitalta_tags where name IN " . $tagsToSearch
                 );
                 $tagsId = array_keys($tagsExperiences);
                 foreach ($tagsId as $tagId) {
-                    if (strlen($havingSum) == 0){
+                    if (strlen($havingSum) == 0) {
                         $havingSum .= "HAVING";
                     }
                     $havingSum .= "(SUM(CASE WHEN modifier = 2 AND modifierinstance = " . $tagId . " THEN 1 ELSE 0 END) > 0) OR ";
@@ -130,7 +131,6 @@ class external_experiences_get_by_pagination extends external_api
                 $sqlComponent .= ' ORDER BY timecreated DESC limit ' . $limit . ' offset ' . (($pagenumber - 1) * $limit);
 
                 $components = array_values($DB->get_records_sql($sqlComponent));
-
             }
 
             $totalRows = $DB->get_record_sql($sqlTotalRows)->total;
@@ -139,7 +139,7 @@ class external_experiences_get_by_pagination extends external_api
 
             $experiences = self::getExperiences($components);
         } else {
-            
+
             $components = array_values(
                 $DB->get_records_sql(
                     "SELECT * FROM mdl_digitalta_experiences ORDER BY timecreated DESC LIMIT " . $limit . " OFFSET " . (($pagenumber - 1) * $limit)
@@ -162,6 +162,7 @@ class external_experiences_get_by_pagination extends external_api
 
     public static function getExperiences(array $components)
     {
+        global $USER;
         $experiences = array();
         for ($i = 0; $i < count($components); $i++) {
             $experience = $components[$i];
@@ -190,10 +191,14 @@ class external_experiences_get_by_pagination extends external_api
             $x->sections = $sections;
             $experiences[] = $x;
         }
+        $experiences = array_filter($experiences, function ($experience) use ($USER) {
+            return $experience->visible == 1 || ($experience->userid == $USER->id);
+        });
         return $experiences;
     }
 
-    public static function experiences_get_by_pagination_returns() {
+    public static function experiences_get_by_pagination_returns()
+    {
         return new external_single_structure([
             'component' => new external_value(PARAM_TEXT, 'component', VALUE_REQUIRED),
             'pagenumber' => new external_value(PARAM_INT, 'page number', VALUE_REQUIRED),

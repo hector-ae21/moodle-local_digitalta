@@ -5,8 +5,8 @@
     <div class="card-body pb-0">
     </div>
     <div class="card-action-btns px-3 mb-4">
-        <div class="d-flex flex-wrap justify-content-end w-100" style="gap: 1em;">
-            {{> local_digitalta/_common/themetag-list}}
+        <div class="">
+            {{#user.subjects}}<p class="user-subjects">{{.}}</p>{{/user.subjects}}
         </div>
     </div>
 </div>

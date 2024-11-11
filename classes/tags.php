@@ -170,7 +170,7 @@ class Tags
         }
         return array_map(function ($context) {
             if (!$tag = self::get_tag($context->modifierinstance)) {
-                throw new Exception('Invalid tag');
+                return null;
             }
             return $tag;
         }, $contexts);

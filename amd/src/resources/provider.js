@@ -9,7 +9,7 @@ let filters = [];
 let selectedPage = 1;
 
 export const init = () => {
-    $('[data-section-name="digitalta-experiences-list"]  .dropdown-menu').on('click', function(e) {
+    $('[data-section-name="digitalta-resources-list"]  .dropdown-menu').on('click', function(e) {
         e.stopPropagation();
     });
     getAndRenderFilters();
@@ -249,6 +249,7 @@ const getResources = async() => {
         let paginationArray = generatePagination(resourcesResponse.pages, selectedPage);
         // eslint-disable-next-line max-len
         const resourcesList = await Templates.renderForPromise('local_digitalta/resources/dashboard/resource-list', obj);
+        pages = resourcesResponse.pages;
         const paginationList = await Templates.renderForPromise("local_digitalta/_common/pagination", {
             pages: paginationArray,
             pagesCount: paginationArray.length,

@@ -104,7 +104,7 @@ export const init = () => {
     });
 
 
-    $("#filters-menu").click(function() {
+    $("#filters-menu").on("click", function() {
         if ($(".tagsInputFilter").is(":focus")) {
             $("#suggestionsAuthors").hide();
             $("#suggestionsTags").show();
@@ -151,6 +151,7 @@ const getExperiences = async() => {
     } else {
         let obj = {"experiences": response};
         let paginationArray = generatePagination(response.pages, selectedPage);
+        pages = response.pages;
         const experienceList = await Templates.renderForPromise('local_digitalta/experiences/dashboard/experience-list', obj);
         const pagination = await Templates.renderForPromise("local_digitalta/_common/pagination", {
             pages: paginationArray,

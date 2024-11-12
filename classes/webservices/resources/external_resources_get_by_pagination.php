@@ -24,7 +24,7 @@ class external_resources_get_by_pagination extends external_api
 
         $PAGE->set_context(\context_system::instance());
 
-        $limit = 20;
+        $limit = 21;
         $totalPages = 0;
 
         $filters = json_decode($filters, true);
@@ -55,7 +55,7 @@ class external_resources_get_by_pagination extends external_api
             $havingSum = "";
 
             foreach ($themes as $theme) {
-                if (strlen($havingSum) == 0){
+                if (strlen($havingSum) == 0) {
                     $havingSum .= "HAVING";
                 }
                 $havingSum .= " (SUM(CASE WHEN modifier = 1 AND modifierinstance = " . $theme . " THEN 1 ELSE 0 END) > 0) OR ";
@@ -64,11 +64,11 @@ class external_resources_get_by_pagination extends external_api
             if (count($tags) > 0) {
                 $tagsToSearch = '(' . implode(', ', $tags) . ')';
                 $tagsExperiences = $DB->get_records_sql(
-                    "SELECT * FROM mdl_digitalta_tags where name IN ".$tagsToSearch
+                    "SELECT * FROM mdl_digitalta_tags where name IN " . $tagsToSearch
                 );
                 $tagsId = array_keys($tagsExperiences);
                 foreach ($tagsId as $tagId) {
-                    if (strlen($havingSum) == 0){
+                    if (strlen($havingSum) == 0) {
                         $havingSum .= "HAVING";
                     }
                     $havingSum .= "(SUM(CASE WHEN modifier = 2 AND modifierinstance = " . $tagId . " THEN 1 ELSE 0 END) > 0) OR ";
@@ -144,7 +144,6 @@ class external_resources_get_by_pagination extends external_api
                 $sqlComponent .= ' ORDER BY timecreated DESC limit ' . $limit . ' offset ' . (($pagenumber - 1) * $limit);
 
                 $components = array_values($DB->get_records_sql($sqlComponent));
-
             }
 
             $totalRows = $DB->get_record_sql($sqlTotalRows)->total;
@@ -160,7 +159,9 @@ class external_resources_get_by_pagination extends external_api
                 )
             );
 
-            $totalRows = $DB->count_records('digitalta_resources');
+            $totalRows = $DB->get_record_sql(
+                "SELECT COUNT(*) AS total FROM mdl_digitalta_resources WHERE type != " . $studycase_type
+            )->total;
             $totalPages = ceil($totalRows / $limit);
             $resources = self::get_resources($components);
         }
@@ -218,12 +219,16 @@ class external_resources_get_by_pagination extends external_api
                         new external_single_structure([
                             "name" => new external_value(PARAM_TEXT, "name"),
                             "id" => new external_value(PARAM_TEXT),
-                        ]), "tags", VALUE_OPTIONAL
+                        ]),
+                        "tags",
+                        VALUE_OPTIONAL
                     ),
                     "fixed_tags" => new external_multiple_structure(
                         new external_single_structure([
                             "name" => new external_value(PARAM_TEXT, "name")
-                        ]), "fixed_tags", VALUE_OPTIONAL
+                        ]),
+                        "fixed_tags",
+                        VALUE_OPTIONAL
                     ),
                     "reactions" => new external_single_structure([
                         "likes" => new external_single_structure([

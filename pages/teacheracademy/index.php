@@ -165,7 +165,8 @@ $templateContext = [
         'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/view.php?id=',
         'allurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/index.php'
     ],
-    'needstranslation' => $needstranslation
+    'needstranslation' => $needstranslation,
+    'wwwroot' => $CFG->wwwroot,
 ];
 
 echo $OUTPUT->render_from_template('local_digitalta/teacheracademy/dashboard', $templateContext);

@@ -20,6 +20,22 @@
                 <div class="col-lg-4 col-12">
                     <video width="100%" autoplay controls controlslist="nodownload">
                         <source src="https://digitalta.eu/wp-content/uploads/2024/10/video_platform.mp4" />
+                        <track
+                            label="Español"
+                            kind="subtitles"
+                            srclang="es"
+                            src="{{wwwroot}}/theme/digitalta/statics/video-captions/es.vtt"
+                            default />
+                        <track
+                            label="Deutsch"
+                            kind="subtitles"
+                            srclang="de"
+                            src="{{wwwroot}}/theme/digitalta/statics/video-captions/de.vtt"/>
+                        <track
+                            label="Polski"
+                            kind="subtitles"
+                            srclang="pl"
+                            src="{{wwwroot}}/theme/digitalta/statics/video-captions/pl.vtt" />
                         {{#str}} general:video_not_supported, local_digitalta {{/str}}
                     </video>
                 </div>

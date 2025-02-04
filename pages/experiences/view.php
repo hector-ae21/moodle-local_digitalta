@@ -182,9 +182,9 @@ $experience_chat = Chat::get_chat_room_by_experience($id);
 if ($experience_chat) {
     $experience_chatid =  $experience_chat->id;
     $template_context['chatid'] = $experience_chatid;
-    $template_context['videocall']['button'] = GoogleMeetHelper::get_googlemeet_call_button($experience_chatid);
-    $meeting_record = GoogleMeetHelper::get_googlemeet_record($experience_chatid);
-    $template_context['videocall']['closebutton']  = $meeting_record ? $meeting_record->chatid : null;
+    //$template_context['videocall']['button'] = GoogleMeetHelper::get_googlemeet_call_button($experience_chatid);
+    //$meeting_record = GoogleMeetHelper::get_googlemeet_record($experience_chatid);
+    //$template_context['videocall']['closebutton']  = $meeting_record ? $meeting_record->chatid : null;
 }
 
 echo $OUTPUT->render_from_template('local_digitalta/experiences/view/view', $template_context);

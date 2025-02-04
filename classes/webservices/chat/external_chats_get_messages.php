@@ -59,10 +59,10 @@ class external_chats_get_messages extends external_api
         $messages = Chat::get_chat_messages($chatid, $userid);
         $chatroom = Chat::get_chat_room($chatid);
 
-        $chatroom->videocall = new stdClass();
-        $chatroom->videocall->button = GoogleMeetHelper::get_googlemeet_call_button($chatid, true);
-        $meeting_record = GoogleMeetHelper::get_googlemeet_record($chatid);
-        $chatroom->videocall->closebutton  = $meeting_record ? $meeting_record->chatid : null;
+        //$chatroom->videocall = new stdClass();
+        //$chatroom->videocall->button = GoogleMeetHelper::get_googlemeet_call_button($chatid, true);
+        //$meeting_record = GoogleMeetHelper::get_googlemeet_record($chatid);
+        //$chatroom->videocall->closebutton  = $meeting_record ? $meeting_record->chatid : null;
 
         return [
             'result' => true,
@@ -95,7 +95,9 @@ class external_chats_get_messages extends external_api
                             [
                                 'button' => new external_value(PARAM_RAW, 'Button'),
                                 'closebutton' => new external_value(PARAM_INT, 'Close Button', VALUE_OPTIONAL)
-                            ]
+                            ],
+                            'Video Call',
+                            VALUE_OPTIONAL
                         ),
                         'timecreated' => new external_value(PARAM_INT, 'Time Created'),
                         'timemodified' => new external_value(PARAM_INT, 'Time Modified'),

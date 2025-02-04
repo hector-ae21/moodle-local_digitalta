@@ -69,6 +69,7 @@ class external_chats_get_rooms extends external_api
                             'userid' => new external_value(PARAM_INT, 'User ID'),
                             'experienceid' => new external_value(PARAM_INT, 'Experience ID'),
                             'name' => new external_value(PARAM_TEXT, 'Name'),
+                            'ownexperience' => new external_value(PARAM_BOOL, 'Own Experience'),
                             'users' => new external_multiple_structure(
                                 new external_single_structure(
                                     [

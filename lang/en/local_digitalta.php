@@ -68,6 +68,7 @@ $string['concept:tutorsmentors'] = 'Tutors & Mentors';
 $string['concept:introduction']  = 'Introduction';
 $string['concept:conclusion']    = 'Conclusion';
 $string['concept:summary']       = 'Summary';
+$string['concept:type']          = 'Type';
 
 // Concepts / terms - Definitions
 $string['concept:experience:definition'] = 'An experience is a real-world teaching practice shared by a teacher. It can be a lesson plan, a classroom activity, a reflection, or any other teaching-related content.';
@@ -356,6 +357,9 @@ $string['tutoring:back_to_chat'] = 'Back to chat';
 $string['tutoring:tutor_comments'] = 'Tutor comments';
 $string['tutoring:chat_title'] = 'Experience chats';
 $string['tutoring:open_chats'] = 'Open chats';
+$string['tutoring:tutoring_chats'] = "Tutored experiences";
+$string['tutoring:myexperiences_chats'] = 'My experiences';
+$string['tutoring:no_chats'] = 'No chats found';
 $string['tutoring:open_chat'] = 'Open chat';
 $string['tutoring:close_chat'] = 'Close chat';
 $string['tutoring:view_tooltip'] = 'View tooltip';

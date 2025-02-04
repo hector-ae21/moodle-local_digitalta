@@ -65,6 +65,7 @@ $string['concept:mentor']        = 'Mentor';
 $string['concept:mentors']       = 'Mentorzy';
 $string['concept:tutorsmentors'] = 'Nauczyciele i mentorzy';
 $string['concept:introduction']  = 'Wprowadzenie';
+$string['concept:type']          = 'Typ';
 
 // Concepts / terms - Definitions
 $string['concept:experience:definition'] = 'Doświadczenie to rzeczywista praktyka nauczania, którą dzieli się nauczyciel. Może to być plan lekcji, aktywność w klasie, refleksja lub dowolna inna treść związana z nauczaniem.';
@@ -348,6 +349,9 @@ $string['tutoring:back_to_chat'] = 'Powrót do czatu';
 $string['tutoring:tutor_comments'] = 'Komentarz prowadzącego';
 $string['tutoring:chat_title'] = 'Czat doświadczeń';
 $string['tutoring:open_chats'] = 'Otwarte czaty';
+$string['tutoring:tutoring_chats'] = "Doświadczenia z korepetycji";
+$string['tutoring:myexperiences_chats'] = 'Moje doświadczenia';
+$string['tutoring:no_chats'] = 'Nie znaleziono czatów';
 $string['tutoring:open_chat'] = 'Otwórz czat';
 $string['tutoring:close_chat'] = 'Zamknij czat';
 $string['tutoring:view_tooltip'] = 'Wyświetl etykietę narzędzia';

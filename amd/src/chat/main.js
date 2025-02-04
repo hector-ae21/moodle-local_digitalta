@@ -48,8 +48,18 @@ const initComponent = async (experienceid, single) => {
  */
 export async function renderMenuChat() {
     const { chatrooms } = await chatsGetRooms({experienceid: 0});
+    const tutoringChats = chatrooms.filter((chat) => chat.ownexperience === true);
+    const chats = chatrooms.filter((chat) => chat.ownexperience === false);
     Template.render(SELECTORS.TEMPLATES.MENU_CHAT, {
-        chatrooms
+        tutoringChats : {
+            length: tutoringChats.length,
+            chats: tutoringChats
+        },
+        chats: {
+            length: chats.length,
+            chats: chats
+        },
+        isEmpty: tutoringChats.length === 0 && chats.length === 0
     }).then((html) => {
         $(SELECTORS.TARGET).html(html);
         status.emptyActiveMessages();

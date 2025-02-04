@@ -65,6 +65,7 @@ $string['concept:mentor']        = 'Mentor';
 $string['concept:mentors']       = 'Mentoři';
 $string['concept:tutorsmentors'] = 'Lektoři a mentoři';
 $string['concept:introduction']  = 'Úvod';
+$string['concept:type']          = 'Typ';
 
 // Concepts / terms - Definitions
 $string['concept:experience:definition'] = 'Zážitek je reálná výuková praxe, kterou učitel sdílí. Může se jednat o plán hodiny, aktivitu ve třídě, reflexi nebo jakýkoli jiný obsah související s výukou.';
@@ -349,6 +350,9 @@ $string['tutoring:back_to_chat'] = 'Zpět na chat';
 $string['tutoring:tutor_comments'] = 'Komentáře školitele';
 $string['tutoring:chat_title'] = 'Chat zkušeností';
 $string['tutoring:open_chats'] = 'Otevřené chaty';
+$string['tutoring:tutoring_chats'] = "Doučované zkušenosti";
+$string['tutoring:myexperiences_chats'] = 'Moje zkušenosti';
+$string['tutoring:no_chats'] = 'Žádné chaty nebyly nalezeny';
 $string['tutoring:open_chat'] = 'Otevřít chat';
 $string['tutoring:close_chat'] = 'Zavřít chat';
 $string['tutoring:view_tooltip'] = 'Zobrazit nápovědu k nástroji';

@@ -97,7 +97,7 @@ class Chat
     public static function get_chat_users($chat_room_id): array
     {
         global $DB;
-        return $DB->get_records(self::$table_chat_users, array('chat_room_id' => $chat_room_id));
+        return $DB->get_records(self::$table_chat_users, array('chatid' => $chat_room_id));
     }
 
     /**
@@ -252,7 +252,7 @@ class Chat
 
 
         $chat_rooms = array_values($DB->get_records_sql($sql, array($userid, $experienceid)));
-        $chat_rooms = self::set_chat_names($chat_rooms);
+        $chat_rooms = self::set_chat_names($chat_rooms, $userid);
 
         return $chat_rooms;
     }
@@ -260,9 +260,11 @@ class Chat
     /**
      * Set chat names
      */
-    public static function set_chat_names($chat_rooms): array
+    public static function set_chat_names($chat_rooms, $userid=null): array
     {
-        global $DB;
+        global $DB, $PAGE;
+
+        $PAGE->set_context(\context_system::instance());
         $chat_rooms_with_names = [];
         foreach ($chat_rooms as $chat_room) {
 
@@ -281,6 +283,7 @@ class Chat
             if ($chat_room->experienceid) {
                 $experience = $DB->get_record('digitalta_experiences', array('id' => $chat_room->experienceid));
                 $chat_room->name = $experience->title;
+                $chat_room->ownexperience = $experience->userid == $userid;
             }
             $chat_rooms_with_names[] = $chat_room;
         }

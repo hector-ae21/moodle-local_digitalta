@@ -65,6 +65,7 @@ $string['concept:mentor']        = 'Mentor';
 $string['concept:mentors']       = 'Mentoren';
 $string['concept:tutorsmentors'] = 'Docenten en mentoren';
 $string['concept:introduction']  = 'Inleiding';
+$string['concept:type'] = 'Type';
 
 // Concepts / terms - Definitions
 $string['concept:experience:definition'] = 'Een ervaring is een echte onderwijspraktijk die gedeeld wordt door een leerkracht. Het kan een lesplan zijn, een klassikale activiteit, een reflectie of een andere lesgerelateerde inhoud.';
@@ -349,6 +350,9 @@ $string['tutoring:back_to_chat'] = 'Terug naar chat';
 $string['tutoring:tutor_comments'] = 'Opmerkingen mentor';
 $string['tutoring:chat_title'] = 'Ervaringen chat';
 $string['tutoring:open_chats'] = 'Open chats';
+$string['tutoring:tutoring_chats'] = "Bijleservaringen";
+$string['tutoring:myexperiences_chats'] = 'Mijn ervaringen';
+$string['tutoring:no_chats'] = 'Geen chats gevonden';
 $string['tutoring:open_chat'] = 'Open chat';
 $string['tutoring:close_chat'] = 'Sluit chat';
 $string['tutoring:view_tooltip'] = 'Bekijk tooltip';

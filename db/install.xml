@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/digitalta/db" VERSION="20240602" COMMENT="XMLDB file for local_digitalta"
+<XMLDB PATH="local/digitalta/db" VERSION="20250204" COMMENT="XMLDB file for local_digitalta"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -314,6 +314,20 @@
       <KEYS>
         <KEY NAME="chatid" TYPE="foreign" FIELDS="chatid" REFTABLE="digitalta_chat" REFFIELDS="id"/>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="digitalta_chat_read_status" COMMENT="Table for storing read status of digitalta chat messages">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="messageid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="read_at" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="messageid" TYPE="foreign" FIELDS="messageid" REFTABLE="digitalta_chat_messages" REFFIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="messagecomponent" TYPE="unique" FIELDS="messageid, userid"/>
       </KEYS>
     </TABLE>
   </TABLES>

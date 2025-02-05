@@ -1,10 +1,13 @@
 <div class="list-tutoring-group-item d-flex justify-content-between align-items-center mb-2 flex-sm-row flex-column">
   <div class="">
-    <h6 class="mb-3 mb-sm-0 font-weight-600">{{name}}</h6>
+    <h6 class="mb-3 mb-sm-0 font-weight-600">
+      {{name}} 
+      {{#unread_messages}}<span class="badge badge-pill badge-danger">{{.}}</span>{{/unread_messages}}
+    </h6>
   </div>
   <div class="tutoring-chat-button d-flex align-items-center">
     <div>
-    {{#users}}<span class="badge badge-pill badge-light mr-1 font-weight-600">{{firstname}} {{lastname}}</span>{{/users}}
+      {{#users}}<span class="badge badge-pill badge-light mr-1 font-weight-600">{{firstname}} {{lastname}}</span>{{/users}}
     </div>
     <button class="btn btn-primary btn-sm mr-1 ml-3 open-chat m" data-id={{id}}>
       <i class="fa fa-comment mr-1"></i>

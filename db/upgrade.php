@@ -42,6 +42,33 @@ function xmldb_local_digitalta_upgrade($oldversion)
         throw new Exception('The version is too old. Continuing the upgrade process is not possible. Please, reinstall the plugin. Keep in mind that you will lose all the data.');
     }
 
+    if ($oldversion < 2025020401) {
+
+        // Define table digitalta_chat_read_status to be created.
+        $table = new xmldb_table('digitalta_chat_read_status');
+
+        // Adding fields to table digitalta_chat_read_status.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('messageid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('read_at', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+        // Adding keys to table digitalta_chat_read_status.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('messageid', XMLDB_KEY_FOREIGN, ['messageid'], 'digitalta_chat_messages', ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+        $table->add_key('messagecomponent', XMLDB_KEY_UNIQUE, ['messageid', 'userid']);
+
+        // Conditionally launch create table for digitalta_chat_read_status.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Digitalta savepoint reached.
+        upgrade_plugin_savepoint(true, 2025020401, 'local', 'digitalta');
+    }
+
+
     // Try all insertions regardless of the version
     // Insert the components
     $table = new xmldb_table('digitalta_components');

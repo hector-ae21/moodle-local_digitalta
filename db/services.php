@@ -452,4 +452,13 @@ $functions = [
         'requirelogin' => true,
         'ajax'        => true,
     ],
+    'local_digitalta_chats_mark_messages_as_read' => [
+        'classname'   => 'external_chats_mark_messages_as_read',
+        'methodname'  => 'chats_mark_messages_as_read',
+        'classpath'   => 'local/digitalta/classes/webservices/chat/external_chats_mark_messages_as_read.php',
+        'description' => 'Mark messages as read',
+        'type'        => 'write',
+        'requirelogin' => true,
+        'ajax'        => true,
+    ],
 ];

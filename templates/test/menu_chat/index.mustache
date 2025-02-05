@@ -21,6 +21,7 @@
           <div class="card-header border-0 p-0" id="myexperiences_chat_title">
             <a class="btn btn-header-link collapsed" data-toggle="collapse" href="#" role="button" aria-expanded="true" aria-controls="myexperiences_chat_collapse" data-target="#myexperiences_chat_collapse">
               {{#str}}tutoring:myexperiences_chats, local_digitalta{{/str}}
+              {{#chats.unread}}<span class="badge badge-pill badge-danger">{{.}}</span>{{/chats.unread}}
             </a>
           </div>
 
@@ -40,6 +41,7 @@
         <div class="card-header border-0 p-0" id="tutoring_chat_title">
           <a class="btn btn-header-link collapsed" data-toggle="collapse" href="#" role="button" aria-expanded="true" aria-controls="tutoring_chat_collapse" data-target="#tutoring_chat_collapse">
             {{#str}}tutoring:tutoring_chats, local_digitalta{{/str}}
+            {{#tutoringChats.unread}}<span class="badge badge-pill badge-danger">{{.}}</span>{{/tutoringChats.unread}}
           </a>
         </div>
         <div id="tutoring_chat_collapse" class="collapse" aria-labelledby="tutoring_chat_title" data-parent="#chats_accordion">

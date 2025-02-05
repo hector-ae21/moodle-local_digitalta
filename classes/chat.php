@@ -380,7 +380,6 @@ class Chat
                 }
             }
         } catch (Exception $e) {
-            print_r($e->getMessage());
             throw new Exception('Error marking messages as read');
         }
 

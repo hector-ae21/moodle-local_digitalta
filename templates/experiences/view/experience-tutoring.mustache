@@ -42,7 +42,7 @@
                             <i class="help-video-icon fa fa-question-circle fa-2x align-middle text-muted"  aria-hidden="true" data-video="chat-video"></i>
                         {{/videocall}}
                     </div>
-                    <div id="chat" class="d-none"><div>
+                    <div id="chat" class="d-none" data-chatid="{{chatid}}"><div>
                 </div>
                 {{/istutor}}
 
@@ -106,14 +106,22 @@
 </div>
 {{#chatid}}
 {{#js}}
+
+const chatButton = document.getElementById('start-chat');
+const chatContainer = document.getElementById('chat');
 require(['local_digitalta/chat/main'], function(Chat) {
     Chat("#chat", {{experience.data.id}}, true);
     });
-    const chat = document.getElementById('start-chat');
-    if(chat){
-        chat.addEventListener('click', function() {
-            document.getElementById('chat').classList.toggle('d-none');
-            document.getElementById('start-chat').classList.toggle('opened');
+    if(chatButton){
+        chatButton.addEventListener('click', function() {
+            if (chatContainer.classList.contains('d-none') && chatContainer.dataset.chatid) {
+                require(['local_digitalta/repositories/chat_repository'], function(ChatRepository) {
+                    ChatRepository.markMessagesAsRead({chatid: chatContainer.dataset.chatid});
+                });
+                
+            }
+            chatContainer.classList.toggle('d-none');
+            chatButton.classList.toggle('opened');
         });
     }
 {{/js}}

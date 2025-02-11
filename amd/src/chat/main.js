@@ -12,6 +12,7 @@ import SELECTORS from 'local_digitalta/chat/selectors';
 import { chatsGetRooms, chatsSendMessage, chatsGetMessage, markMessagesAsRead } from 'local_digitalta/repositories/chat_repository';
 import setEventListeners from 'local_digitalta/chat/listeners';
 import Status from 'local_digitalta/chat/status';
+import Config from 'core/config';
 
 const status = new Status();
 
@@ -61,7 +62,8 @@ export async function renderMenuChat() {
             chats: chats,
             unread: chats.filter((chat) => chat.unread_messages > 0).length
         },
-        isEmpty: tutoringChats.length === 0 && chats.length === 0
+        isEmpty: tutoringChats.length === 0 && chats.length === 0,
+        wwwroot: Config.wwwroot
     }).then((html) => {
         $(SELECTORS.TARGET).html(html);
         status.emptyActiveMessages();
@@ -226,14 +228,7 @@ export async function handleSendMessage() {
  */
 async function addNewMessage(message) {
     const date = Math.floor(Date.now() / 1000);
-    const html = await renderMessage(message, date, true);
-    status.activeMessages.push({
-        message,
-        timecreated: date,
-        is_mine: true
-    });
-
-    $(SELECTORS.CONTAINERS.MESSAGES).append(html);
+    handlerNewOtherMessage([{message, timecreated: date, is_mine: true}]);
 }
 
 /**

@@ -306,23 +306,38 @@ class Chat
     {
         global $DB;
         $time_limit = time() - (14 * 24 * 60 * 60); // 14 days ago
+
         foreach ($chat_rooms as $chat_room) {
             $chat_room->unread_messages = 0;
+
             $query = "SELECT COUNT(*) AS unread_count
-                    FROM {digitalta_chat_messages} m
-                    LEFT JOIN {digitalta_chat_read_status} r
+                FROM {digitalta_chat_messages} m
+                LEFT JOIN {digitalta_chat_read_status} r
                     ON m.id = r.messageid AND r.userid = :userid
-                    WHERE r.id IS NULL
+                INNER JOIN {digitalta_chat} c
+                    ON m.chatid = c.id
+                INNER JOIN {digitalta_experiences} e
+                    ON c.experienceid = e.id
+                WHERE r.id IS NULL
                     AND m.chatid = :chatid
                     AND m.userid != :userid1
                     AND m.timecreated >= :time_limit
-                    GROUP BY m.chatid";
-            $params = ['userid' => $userid, 'chatid' => $chat_room->id, 'userid1' => $userid, 'time_limit' => $time_limit];
+                GROUP BY m.chatid";
+
+            $params = [
+                'userid' => $userid,
+                'chatid' => $chat_room->id,
+                'userid1' => $userid,
+                'time_limit' => $time_limit
+            ];
+
             $unread_count = $DB->get_field_sql($query, $params);
             $chat_room->unread_messages = $unread_count ? $unread_count : 0;
         }
+
         return $chat_rooms;
     }
+
 
     /**
      * Set chat names
@@ -338,7 +353,8 @@ class Chat
         }
     }
 
-    public static function get_unread_chatrooms($userid = null) {
+    public static function get_unread_chatrooms($userid = null)
+    {
         global $DB, $USER;
 
         if (is_null($userid)) {
@@ -350,14 +366,26 @@ class Chat
         $sql = "SELECT COUNT(DISTINCT m.chatid) AS unread_chats
                 FROM {digitalta_chat_messages} m
                 LEFT JOIN {digitalta_chat_read_status} r
-                ON m.id = r.messageid AND r.userid = :userid
-                WHERE r.id IS NULL AND m.userid != :userid1 AND m.timecreated >= :time_limit";
+                    ON m.id = r.messageid AND r.userid = :userid
+                INNER JOIN {digitalta_chat} c
+                    ON m.chatid = c.id
+                INNER JOIN {digitalta_experiences} e
+                    ON c.experienceid = e.id
+                WHERE r.id IS NULL 
+                    AND m.userid != :userid1 
+                    AND m.timecreated >= :time_limit";
 
-        $params = ['userid' => $userid, 'userid1' => $userid, 'time_limit' => $time_limit];
+        $params = [
+            'userid' => $userid,
+            'userid1' => $userid,
+            'time_limit' => $time_limit
+        ];
+
         return $DB->get_field_sql($sql, $params) ?? 0;
     }
 
-    public static function mark_messages_as_read($chatid, $userid, $messageids = null) {
+    public static function mark_messages_as_read($chatid, $userid, $messageids = null)
+    {
         try {
             global $DB;
             if ($messageids === null || empty($messageids) || count($messageids) === 0) {

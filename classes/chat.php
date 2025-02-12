@@ -375,11 +375,13 @@ class Chat
                     ON c.id = u.chatid
                 WHERE r.id IS NULL 
                     AND u.userid = :userid1 
+                    AND m.userid != :userid2
                     AND m.timecreated >= :time_limit";
 
         $params = [
             'userid' => $userid,
             'userid1' => $userid,
+            'userid2' => $userid,
             'time_limit' => $time_limit
         ];
 

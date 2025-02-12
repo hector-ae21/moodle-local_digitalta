@@ -371,8 +371,10 @@ class Chat
                     ON m.chatid = c.id
                 INNER JOIN {digitalta_experiences} e
                     ON c.experienceid = e.id
+                INNER JOIN {digitalta_chat_users} u 
+                    ON c.id = u.chatid
                 WHERE r.id IS NULL 
-                    AND m.userid != :userid1 
+                    AND u.userid = :userid1 
                     AND m.timecreated >= :time_limit";
 
         $params = [

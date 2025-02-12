@@ -9,13 +9,53 @@
     </div>
   </div>
   <div class="card-body">
-    <div class="d-flex align-items-center mb-2">
-      <h5 class="mb-1">{{#str}}tutoring:open_chats, local_digitalta{{/str}}</h5>
+    {{#isEmpty}}
+      <div class="alert alert-info" role="alert">
+        {{#str}}tutoring:no_chats, local_digitalta{{/str}}
+      </div>
+    {{/isEmpty}}
+    {{^isEmpty}}
+    <div class="accordion" id="chats_accordion">
+      {{#chats.length}}
+        <div class="card">
+          <div class="card-header border-0 p-0" id="myexperiences_chat_title">
+            <a class="btn btn-header-link collapsed" data-toggle="collapse" href="#" role="button" aria-expanded="true" aria-controls="myexperiences_chat_collapse" data-target="#myexperiences_chat_collapse">
+              {{#str}}tutoring:myexperiences_chats, local_digitalta{{/str}}
+              {{#chats.unread}}<span class="badge badge-pill badge-danger">{{.}}</span>{{/chats.unread}}
+            </a>
+          </div>
+
+          <div id="myexperiences_chat_collapse" class="collapse" aria-labelledby="myexperiences_chat_title" data-parent="#chats_accordion">
+            <div class="card-body p-3">
+              <div class="list-group">
+                {{#chats.chats}}
+                  {{> local_digitalta/test/menu_chat/item}}
+                {{/chats.chats}}
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/chats.length}}
+      {{#tutoringChats.length}}
+      <div class="card">
+        <div class="card-header border-0 p-0" id="tutoring_chat_title">
+          <a class="btn btn-header-link collapsed" data-toggle="collapse" href="#" role="button" aria-expanded="true" aria-controls="tutoring_chat_collapse" data-target="#tutoring_chat_collapse">
+            {{#str}}tutoring:tutoring_chats, local_digitalta{{/str}}
+            {{#tutoringChats.unread}}<span class="badge badge-pill badge-danger">{{.}}</span>{{/tutoringChats.unread}}
+          </a>
+        </div>
+        <div id="tutoring_chat_collapse" class="collapse" aria-labelledby="tutoring_chat_title" data-parent="#chats_accordion">
+          <div class="card-body p-3">
+            <div class="list-group">
+              {{#tutoringChats.chats}}
+                {{> local_digitalta/test/menu_chat/item}}
+              {{/tutoringChats.chats}}
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/tutoringChats.length}}
     </div>
-    <div class="list-group">
-      {{#chatrooms}}
-      {{> local_digitalta/test/menu_chat/item}}
-      {{/chatrooms}}
-    </div>
+    {{/isEmpty}}
   </div>
 </div>

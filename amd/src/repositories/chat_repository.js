@@ -55,3 +55,21 @@ export const chatsGetMessage = args => {
     };
     return Ajax.call([request])[0];
 };
+
+/**
+ * Mark messages as read
+ *
+ * Valid args are:
+ * chatid (int) - The chat id
+ * userid (int) - The user id
+ * @method markMessagesAsRead
+ * @param {Object} args
+ * @return {Promise}
+ */
+export const markMessagesAsRead = args => {
+    const request = {
+        methodname: 'local_digitalta_chats_mark_messages_as_read',
+        args
+    };
+    return Ajax.call([request])[0];
+};

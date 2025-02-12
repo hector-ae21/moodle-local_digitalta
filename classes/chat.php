@@ -22,6 +22,8 @@ class Chat
     private static $table_chat_messages = 'digitalta_chat_messages';
     private static $table_chat_users = 'digitalta_chat_users';
 
+    private static $table_chat_read_status = 'digitalta_chat_read_status';
+
 
     /**
      * Create a chat room
@@ -97,7 +99,7 @@ class Chat
     public static function get_chat_users($chat_room_id): array
     {
         global $DB;
-        return $DB->get_records(self::$table_chat_users, array('chat_room_id' => $chat_room_id));
+        return $DB->get_records(self::$table_chat_users, array('chatid' => $chat_room_id));
     }
 
     /**
@@ -237,22 +239,32 @@ class Chat
         }
 
         $sql = "SELECT
-        *
+        cr.*, MAX(cm.timecreated) as last_message_time
         FROM
              {digitalta_chat_users}  cu
         INNER JOIN  {digitalta_chat}  cr
         ON
             cu.chatid = cr.id
+        LEFT JOIN {digitalta_chat_messages} cm
+        ON cr.id = cm.chatid
         WHERE
-            cu.userid = ?";
+            cu.userid = ?
+        ";
 
         if ($experienceid) {
-            $sql .= " AND cr.experienceid = ? LIMIT 1";
+            $sql .= " AND cr.experienceid = ? ";
         }
 
+        $sql .= "GROUP BY cr.id ORDER BY last_message_time DESC";
 
-        $chat_rooms = array_values($DB->get_records_sql($sql, array($userid, $experienceid)));
-        $chat_rooms = self::set_chat_names($chat_rooms);
+        $params = [$userid];
+        if ($experienceid) {
+            $params[] = $experienceid;
+        }
+
+        $chat_rooms = array_values($DB->get_records_sql($sql, $params));
+        $chat_rooms = self::set_chat_names($chat_rooms, $userid);
+        $chat_rooms = self::set_unread_messages($chat_rooms, $userid);
 
         return $chat_rooms;
     }
@@ -260,9 +272,11 @@ class Chat
     /**
      * Set chat names
      */
-    public static function set_chat_names($chat_rooms): array
+    public static function set_chat_names($chat_rooms, $userid = null): array
     {
-        global $DB;
+        global $DB, $PAGE;
+
+        $PAGE->set_context(\context_system::instance());
         $chat_rooms_with_names = [];
         foreach ($chat_rooms as $chat_room) {
 
@@ -281,11 +295,49 @@ class Chat
             if ($chat_room->experienceid) {
                 $experience = $DB->get_record('digitalta_experiences', array('id' => $chat_room->experienceid));
                 $chat_room->name = $experience->title;
+                $chat_room->ownexperience = $experience->userid == $userid;
             }
             $chat_rooms_with_names[] = $chat_room;
         }
         return $chat_rooms_with_names;
     }
+
+    public static function set_unread_messages($chat_rooms, $userid)
+    {
+        global $DB;
+        $time_limit = time() - (14 * 24 * 60 * 60); // 14 days ago
+
+        foreach ($chat_rooms as $chat_room) {
+            $chat_room->unread_messages = 0;
+
+            $query = "SELECT COUNT(*) AS unread_count
+                FROM {digitalta_chat_messages} m
+                LEFT JOIN {digitalta_chat_read_status} r
+                    ON m.id = r.messageid AND r.userid = :userid
+                INNER JOIN {digitalta_chat} c
+                    ON m.chatid = c.id
+                INNER JOIN {digitalta_experiences} e
+                    ON c.experienceid = e.id
+                WHERE r.id IS NULL
+                    AND m.chatid = :chatid
+                    AND m.userid != :userid1
+                    AND m.timecreated >= :time_limit
+                GROUP BY m.chatid";
+
+            $params = [
+                'userid' => $userid,
+                'chatid' => $chat_room->id,
+                'userid1' => $userid,
+                'time_limit' => $time_limit
+            ];
+
+            $unread_count = $DB->get_field_sql($query, $params);
+            $chat_room->unread_messages = $unread_count ? $unread_count : 0;
+        }
+
+        return $chat_rooms;
+    }
+
 
     /**
      * Set chat names
@@ -299,5 +351,66 @@ class Chat
             $DB->delete_records(self::$table_chat_messages, array('chatid' => $chat->id));
             $DB->delete_records(self::$table_chat_room, array('experienceid' => $experienceid));
         }
+    }
+
+    public static function get_unread_chatrooms($userid = null)
+    {
+        global $DB, $USER;
+
+        if (is_null($userid)) {
+            $userid = $USER->id;
+        }
+
+        $time_limit = time() - (14 * 24 * 60 * 60); // 14 days ago
+
+        $sql = "SELECT COUNT(DISTINCT m.chatid) AS unread_chats
+                FROM {digitalta_chat_messages} m
+                LEFT JOIN {digitalta_chat_read_status} r
+                    ON m.id = r.messageid AND r.userid = :userid
+                INNER JOIN {digitalta_chat} c
+                    ON m.chatid = c.id
+                INNER JOIN {digitalta_experiences} e
+                    ON c.experienceid = e.id
+                WHERE r.id IS NULL 
+                    AND m.userid != :userid1 
+                    AND m.timecreated >= :time_limit";
+
+        $params = [
+            'userid' => $userid,
+            'userid1' => $userid,
+            'time_limit' => $time_limit
+        ];
+
+        return $DB->get_field_sql($sql, $params) ?? 0;
+    }
+
+    public static function mark_messages_as_read($chatid, $userid, $messageids = null)
+    {
+        try {
+            global $DB;
+            if ($messageids === null || empty($messageids) || count($messageids) === 0) {
+                $messages = $DB->get_records(self::$table_chat_messages, ['chatid' => $chatid]);
+            } else {
+                list($in_sql, $params) = $DB->get_in_or_equal($messageids, \SQL_PARAMS_NAMED);
+                $params['chatid'] = $chatid;
+                $messages = $DB->get_records_select(self::$table_chat_messages, "chatid = :chatid AND id $in_sql", $params);
+            }
+            foreach ($messages as $message) {
+                if ($message->userid != $userid) {
+                    $exists = $DB->record_exists(self::$table_chat_read_status, ['messageid' => $message->id, 'userid' => $userid]);
+                    if (!$exists) {
+                        $read_status = new stdClass();
+                        $read_status->messageid = $message->id;
+                        $read_status->userid = $userid;
+                        $read_status->read_at = time();
+                        $DB->insert_record(self::$table_chat_read_status, $read_status);
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            throw new Exception('Error marking messages as read');
+        }
+
+        return true;
     }
 }

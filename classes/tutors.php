@@ -46,7 +46,7 @@ class Tutors
      *
      * @param $id int The ID of the tutor.
      */
-    public static function get_request(int $id): object | bool
+    public static function get_request(int $id): object|bool
     {
         global $DB;
         return $DB->get_record(self::$requests_table, ['id' => $id]);
@@ -102,21 +102,21 @@ class Tutors
         }
 
         $tutor = $DB->get_record('user', array('id' => $tutorid), '*', MUST_EXIST);
-        $experience= Experiences::get_experience($experienceid, false);
+        $experience = Experiences::get_experience($experienceid, false);
 
 
         if ($experienceRequest && $experience->userid) {
             $subject = get_string('tutoring:experiencerequestsubject', 'local_digitalta');
-            $messagehtml = get_string('tutoring:experiencerequestbody', 'local_digitalta', (object)[
+            $messagehtml = get_string('tutoring:experiencerequestbody', 'local_digitalta', (object) [
                 'experienceid' => $experienceid,
                 'experienceurl' => $CFG->wwwroot . '/local/digitalta/pages/experiences/view.php?id=' . $experienceid
             ]);
 
-            $messagehtml .= '<br>' . get_string('tutoring:experiencerequestsender', 'local_digitalta', (object)[
-                'username' =>  $tutor->firstname . ' ' . $tutor->lastname . ' ' . '(' . $tutor->username . ')'
+            $messagehtml .= '<br>' . get_string('tutoring:experiencerequestsender', 'local_digitalta', (object) [
+                'username' => $tutor->firstname . ' ' . $tutor->lastname . ' ' . '(' . $tutor->username . ')'
             ]);
 
-            $messagehtml .= '<br>' . get_string('tutoring:tutorrequesttime', 'local_digitalta', (object)[
+            $messagehtml .= '<br>' . get_string('tutoring:tutorrequesttime', 'local_digitalta', (object) [
                 'requesttime' => userdate(time())
             ]);
 
@@ -124,15 +124,15 @@ class Tutors
         } else {
             $subject = get_string('tutoring:newtutorrequestsubject', 'local_digitalta');
 
-            $messagehtml = get_string('tutoring:tutorrequestbody', 'local_digitalta', (object)[
+            $messagehtml = get_string('tutoring:tutorrequestbody', 'local_digitalta', (object) [
                 'experienceid' => $experienceid,
                 'experienceurl' => $CFG->wwwroot . '/local/digitalta/pages/experiences/view.php?id=' . $experienceid
             ]);
-            $messagehtml .= '<br>' . get_string('tutoring:tutorrequestrsender', 'local_digitalta', (object)[
-                'username' =>  $USER->firstname . ' ' . $USER->lastname . ' ' . '(' . $USER->username . ')'
+            $messagehtml .= '<br>' . get_string('tutoring:tutorrequestrsender', 'local_digitalta', (object) [
+                'username' => $USER->firstname . ' ' . $USER->lastname . ' ' . '(' . $USER->username . ')'
             ]);
 
-            $messagehtml .= '<br>' . get_string('tutoring:tutorrequesttime', 'local_digitalta', (object)[
+            $messagehtml .= '<br>' . get_string('tutoring:tutorrequesttime', 'local_digitalta', (object) [
                 'requesttime' => userdate(time())
             ]);
 
@@ -171,7 +171,7 @@ class Tutors
         return array_values($DB->get_records(self::$requests_table, ['experienceid' => $experienceid, 'status' => $status]));
     }
 
-    public static function request_get_by_tutor_experience(int $tutorid, int $experienceid, int $status = 2): stdClass | bool
+    public static function request_get_by_tutor_experience(int $tutorid, int $experienceid, int $status = 2): stdClass|bool
     {
         global $DB;
         return $DB->get_record(self::$requests_table, ['tutorid' => $tutorid, 'experienceid' => $experienceid, 'status' => $status]);
@@ -214,8 +214,23 @@ class Tutors
         }
         $experience = Experiences::get_experience($request->experienceid);
 
-        Chat::chats_add_user_to_room($chat->id, $experience->userid);
-        Chat::chats_add_user_to_room($chat->id, $request->tutorid);
+        $chat_users = Chat::get_chat_users($chat->id);
+
+        $owner_in_chat = array_filter($chat_users, function ($chat_user) use ($experience) {
+            return $chat_user->userid == $experience->userid;
+        });
+
+        if (empty($owner_in_chat)) {
+            Chat::chats_add_user_to_room($chat->id, $experience->userid);
+        }
+
+        $user_in_chat = array_filter($chat_users, function ($chat_user) use ($request) {
+            return $chat_user->userid == $request->tutorid;
+        });
+
+        if (empty($user_in_chat)) {
+            Chat::chats_add_user_to_room($chat->id, $request->tutorid);
+        }
 
         return self::change_tutor_request_status($requestid, TutoringStatus::ACCEPTED);
     }
@@ -286,7 +301,8 @@ class Tutors
         $tutor_availability_exist = $DB->get_records_sql($sql, [$userid, $day, $timefrom, $timefrom, $timeto, $timeto]);
         if ($tutor_availability_exist) {
             throw new \Exception('The tutor already has a availability in the same day and hours');
-        };
+        }
+        ;
         $tutor_availability->id = $DB->insert_record('digitalta_tutor_availability', $tutor_availability);
         return $tutor_availability;
     }
@@ -309,7 +325,8 @@ class Tutors
         $tutor_availability_exist = $DB->get_records_sql($sql, [$id, $userid, $day, $timefrom, $timefrom, $timeto, $timeto]);
         if ($tutor_availability_exist) {
             throw new \Exception('The tutor already has a availability in the same day and hours');
-        };
+        }
+        ;
         $DB->update_record('digitalta_tutor_availability', $tutor_availability);
         return $tutor_availability;
     }
@@ -325,7 +342,7 @@ class Tutors
         foreach ($tutor_availability as $availability) {
             if ($day != "ALL" && $availability->day != $day) {
                 continue;
-            };
+            }
             $hours[$availability->day] = [
                 "timefrom" => $availability->timefrom,
                 "timeto" => $availability->timeto

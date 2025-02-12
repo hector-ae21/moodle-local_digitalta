@@ -65,10 +65,9 @@ class external_chats_get_rooms extends external_api
                     new external_single_structure(
                         [
                             'id' => new external_value(PARAM_INT, 'ID'),
-                            'chatid' => new external_value(PARAM_INT, 'Chat ID'),
-                            'userid' => new external_value(PARAM_INT, 'User ID'),
                             'experienceid' => new external_value(PARAM_INT, 'Experience ID'),
                             'name' => new external_value(PARAM_TEXT, 'Name'),
+                            'ownexperience' => new external_value(PARAM_BOOL, 'Own Experience'),
                             'users' => new external_multiple_structure(
                                 new external_single_structure(
                                     [
@@ -78,6 +77,7 @@ class external_chats_get_rooms extends external_api
                                     ]
                                 )
                             ),
+                            'unread_messages' => new external_value(PARAM_INT, 'Unread Messages'),
                             'timecreated' => new external_value(PARAM_INT, 'Time Created'),
                             'timemodified' => new external_value(PARAM_INT, 'Time Modified'),
                         ]

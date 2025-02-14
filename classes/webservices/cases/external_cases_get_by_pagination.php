@@ -179,6 +179,7 @@ class external_cases_get_by_pagination extends external_api
             }
 
             $x->sections = $sections;
+            $x->excerpt = trim(mb_strimwidth(preg_replace('/\s+/', ' ', strip_tags($x->description)), 0, 250, '...')) ?? null;
             $cases[] = $x;
         }
         return $cases;
@@ -196,6 +197,7 @@ class external_cases_get_by_pagination extends external_api
                     'resourceid' => new external_value(PARAM_INT, 'resource id'),
                     'userid' => new external_value(PARAM_INT, 'user id'),
                     "title" => new external_value(PARAM_TEXT, 'title'),
+                    "excerpt" => new external_value(PARAM_TEXT, 'excerpt'),
                     "description" => new external_value(PARAM_RAW, 'description'),
                     "lang" => new external_value(PARAM_TEXT, 'language'),
                     "status" => new external_value(PARAM_INT, 'status'),

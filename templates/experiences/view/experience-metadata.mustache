@@ -38,11 +38,11 @@
     <div>
         {{#experience}}
             {{#data}}
-                <div class="d-flex flex-row-reverse flex-wrap justify-content-between" style="gap: 1em;">
-                    {{> local_digitalta/_common/themetag-list}}
+                <div class="d-flex flex-wrap justify-content-between" style="gap: 1em;">
                     {{#reactions}}
                         {{> local_digitalta/reactions/reactions-buttons}}
                     {{/reactions}}
+                    {{> local_digitalta/_common/themetag-list}}
                 </div>
                 {{> local_digitalta/reactions/comments-list}}
             {{/data}}

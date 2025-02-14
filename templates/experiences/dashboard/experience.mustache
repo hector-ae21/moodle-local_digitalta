@@ -7,7 +7,8 @@
         </div>
         {{> local_digitalta/_common/metadata-user}}
     </div>
-    <div class="card-body pb-0">
+    <div class="card-body{{^excerpt}} pb-0{{/excerpt}}">
+        <small class="text-muted">{{excerpt}}</small>
     </div>
     <div class="card-action-btns px-3 mb-4">
         <div class="d-flex flex-wrap justify-content-end w-100" style="gap: 1em;">

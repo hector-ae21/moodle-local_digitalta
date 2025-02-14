@@ -77,11 +77,11 @@ class Cases
      * @param  bool  $extra_fields If true, it will return the extra fields
      * @return array The cases
      */
-    public static function get_cases(array $filters = [], bool $extra_fields = true): array
+    public static function get_cases(array $filters = [], bool $extra_fields = true, $sort = '', $limit = 0): array
     {
         global $DB;
         $filters = self::prepare_filters($filters);
-        $cases = $DB->get_records(self::$table, $filters);
+        $cases = $DB->get_records(self::$table, $filters, $sort, '*', 0, $limit);
         return array_values(array_map(
             function ($case) use ($extra_fields) {
                 $case = new StudyCase($case);
@@ -90,7 +90,8 @@ class Cases
                 }
                 return $case;
             },
-        $cases));
+            $cases
+        ));
     }
 
     /**
@@ -145,7 +146,7 @@ class Cases
         }, $sections);
         // Get the themes for the case
         $themes = Themes::get_themes_for_component('case', $case->id);
-        $case->themes = array_map(function($theme) {
+        $case->themes = array_map(function ($theme) {
             return (object) [
                 'name' => $theme->name,
                 'id' => $theme->id
@@ -153,15 +154,19 @@ class Cases
         }, $themes);
         // Get the tags for the case
         $tags = Tags::get_tags_for_component('case', $case->id);
-        $case->tags = array_map(function($tag) {
+        $case->tags = array_map(function ($tag) {
             return (object) [
                 'name' => $tag->name,
                 'id' => $tag->id
             ];
         }, $tags);
-        $case->fixed_tags = [
-            ['name' => Languages::get_language_name_by_code($case->lang)]
-        ];
+        $case->fixed_tags = [];
+        $lang_tag = Languages::get_language_name_by_code($case->lang);
+        if ($lang_tag) {
+            $case->fixed_tags[] = [
+                'name' => $lang_tag,
+            ];
+        }
         // Get the case reactions
         $case->reactions = Reactions::get_reactions_for_render_component(
             Components::get_component_by_name('case')->id,
@@ -198,12 +203,12 @@ class Cases
         foreach ($sectiontitles as $sectiontitle) {
             unset($section);
             $section = new stdClass();
-            $section->component         = $componentid;
+            $section->component = $componentid;
             $section->componentinstance = $record->id;
-            $section->groupid           = $sectiongeneralgroupid;
-            $section->type              = $sectiontexttypeid;
-            $section->title             = $sectiontitle;
-            $section->content           = "";
+            $section->groupid = $sectiongeneralgroupid;
+            $section->type = $sectiontexttypeid;
+            $section->title = $sectiontitle;
+            $section->content = "";
             Sections::upsert_section($section);
         }
         // Update theme and tags
@@ -236,24 +241,24 @@ class Cases
         // If status is published, add or update the default resource
         if ($case->status == 1) {
             if ($resource = Resources::get_resource($record->resourceid)) {
-                $resource->name        = $record->title;
+                $resource->name = $record->title;
                 $resource->description = $record->description;
             } else {
-                $resource               = new stdClass();
-                $resource->userid       = $record->userid;
-                $resource->name         = $record->title;
-                $resource->description  = $record->description;
-                $resource->type         = Resources::get_type_by_name('Study Case')->id;
-                $resource->format       = Resources::get_format_by_name('Link')->id;
-                $resource->path         = $CFG->wwwroot . '/local/digitalta/pages/cases/view.php?id=' . $record->id;
-                $resource->lang         = $record->lang;
-                $resource->timecreated  = time();
+                $resource = new stdClass();
+                $resource->userid = $record->userid;
+                $resource->name = $record->title;
+                $resource->description = $record->description;
+                $resource->type = Resources::get_type_by_name('Study Case')->id;
+                $resource->format = Resources::get_format_by_name('Link')->id;
+                $resource->path = $CFG->wwwroot . '/local/digitalta/pages/cases/view.php?id=' . $record->id;
+                $resource->lang = $record->lang;
+                $resource->timecreated = time();
                 $resource->timemodified = time();
             }
             $record->resourceid = Resources::upsert_resource($resource);
         }
         // Update the case
-        if (!$DB->update_record(self::$table,  $record)) {
+        if (!$DB->update_record(self::$table, $record)) {
             throw new Exception('Error updating case');
             return false;
         }
@@ -269,41 +274,41 @@ class Cases
     }
 
     /**
-    * Prepare metadata record for database insertion.
-    *
-    * @param  object    $case The case object.
-    * @param  object    $current_case The current case object.
-    * @return object    The prepared metadata record.
-    * @throws Exception If the case type is invalid.
-    */
+     * Prepare metadata record for database insertion.
+     *
+     * @param  object    $case The case object.
+     * @param  object    $current_case The current case object.
+     * @return object    The prepared metadata record.
+     * @throws Exception If the case type is invalid.
+     */
     private static function prepare_metadata_record($case, $current_case = null)
     {
         global $USER;
         self::validate_metadata($case);
-        $record               = new stdClass();
-        $record->id           = $case->id
+        $record = new stdClass();
+        $record->id = $case->id
             ?? $current_case->id
             ?? null;
         $record->experienceid = $case->experienceid
             ?? $current_case->experienceid
             ?? null;
-        $record->resourceid   = $case->resourceid
+        $record->resourceid = $case->resourceid
             ?? $current_case->resourceid
             ?? 0;
-        $record->userid       = $case->userid
+        $record->userid = $case->userid
             ?? $current_case->userid
             ?? $USER->id;
-        $record->title        = $case->title;
-        $record->description  = $case->description
+        $record->title = $case->title;
+        $record->description = $case->description
             ?? $current_case->description
             ?? null;
-        $record->lang         = $case->lang
+        $record->lang = $case->lang
             ?? $current_case->lang
             ?? null;
-        $record->status       = $case->status
+        $record->status = $case->status
             ?? $current_case->status
             ?? 0;
-        $record->timecreated  = $case->timecreated
+        $record->timecreated = $case->timecreated
             ?? $current_case->timecreated
             ?? time();
         $record->timemodified = time();

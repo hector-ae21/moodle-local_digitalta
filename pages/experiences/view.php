@@ -81,7 +81,7 @@ $user = get_complete_user_data('id', $experience->userid);
 $user_picture = new user_picture($user);
 $user_picture->size = 101;
 
-$isownexperience = Experiences::check_permissions($experience, $USER, include_admin: false);
+$isownexperience = Experiences::check_permissions($experience, $USER);
 
 // Get the resources
 $resources = [];

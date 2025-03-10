@@ -1,4 +1,4 @@
-import {exception as displayException} from 'core/notification';
+import { exception as displayException } from 'core/notification';
 import Templates from 'core/templates';
 import $ from 'jquery';
 import Ajax from 'core/ajax';
@@ -10,18 +10,18 @@ export const init = () => {
     getAndRenderFilters();
     getExperiences();
 
-    $('[data-section-name="digitalta-experiences-list"] .dropdown-menu').on('click', function(e) {
+    $('[data-section-name="digitalta-experiences-list"] .dropdown-menu').on('click', function (e) {
         e.stopPropagation();
     });
 
-    $(document).on("click", "li.page-item.page-link.page", function() {
+    $(document).on("click", "li.page-item.page-link.page", function () {
         const clickedPage = $(this).attr('attr-page');
         if (selectedPage !== clickedPage) {
             selectedPage = parseInt(clickedPage);
             getExperiences();
         }
     });
-    $(document).on("click", "li.page-item.page-link.state", function() {
+    $(document).on("click", "li.page-item.page-link.state", function () {
         const state = $(this).attr('aria-label');
         if (state === 'Next') {
             const posibleNextPage = selectedPage + 1;
@@ -38,73 +38,73 @@ export const init = () => {
         }
     });
 
-    $(document).on("change", ".filterThemeSelect", function() {
+    $(document).on("change", ".filterThemeSelect", function () {
         const selectedValue = $("option:selected.enable", this).val();
         const selectedText = $("option:selected.enable", this).text();
         if (selectedText.length > 0) {
             const element = $("option:selected.enable", this);
             element.addClass('disabled');
             element.removeClass('enable');
-            const filterObject = {"type": "theme", "value": {id: selectedValue, name: selectedText}};
+            const filterObject = { "type": "theme", "value": { id: selectedValue, name: selectedText } };
             setFilter(filterObject);
             $(".filterThemeSelect option:first").prop("selected", true);
             $(element).prop('disabled', true);
         }
     });
 
-    $(document).on("change", ".filterLanguageSelect", function() {
+    $(document).on("change", ".filterLanguageSelect", function () {
         const selectedText = $("option:selected.enable", this).text();
         if (selectedText.length > 0) {
             const element = $("option:selected.enable", this);
             element.addClass('disabled');
             element.removeClass('enable');
-            const filterObject = {"type": "language", "value": selectedText};
+            const filterObject = { "type": "language", "value": selectedText };
             setFilter(filterObject);
             $(".filterLanguageSelect option:first").prop("selected", true);
             $(element).prop('disabled', true);
         }
     });
 
-    $(document).on("keydown", "#inlineFormInputGroup", function(event) {
+    $(document).on("keydown", "#inlineFormInputGroup", function (event) {
         // Verificamos si la tecla Enter fue presionada (keyCode 13 o event.which 13)
         if (event.key === "Enter" || event.keyCode === 13) {
             const filterText = $(this).val(); // Obtenemos el valor del input
-            const filterObject = {"type": "tag", "value": filterText};
+            const filterObject = { "type": "tag", "value": filterText };
             setFilter(filterObject);
             $(this).val(''); // Limpiamos el input
         }
     });
 
-    $(document).on("keydown", "#authorFilters", async function() {
+    $(document).on("keydown", "#authorFilters", async function () {
         const filterText = $(this).val(); // Obtenemos el valor del input
         const request = {
             methodname: 'core_enrol_get_potential_users',
-            args: {courseid: 1, enrolid: 1, page: 0, perpage: 10, search: filterText, searchanywhere: true}
+            args: { courseid: 1, enrolid: 1, page: 0, perpage: 10, search: filterText, searchanywhere: true }
         };
         const response = await Ajax.call([request])[0];
 
         if (response.length === 0) {
             $("#suggestionsAuthors").empty();
         } else {
-            const authorsSuggestions = await Templates.renderForPromise('local_digitalta/_common/listAuthors', {users: response});
+            const authorsSuggestions = await Templates.renderForPromise('local_digitalta/_common/listAuthors', { users: response });
             Templates.replaceNodeContents("#suggestionsAuthors", authorsSuggestions.html, authorsSuggestions.js);
         }
     });
 
-    $("#suggestionsTags").on("click", ".tag-item", function() {
-        const filterText = {type: "tag", value: $(this).attr('attr-name')};
+    $("#suggestionsTags").on("click", ".tag-item", function () {
+        const filterText = { type: "tag", value: $(this).attr('attr-name') };
         setFilter(filterText);
         $("#inlineFormInputGroup").val("");
     });
 
-    $("#suggestionsAuthors").on("click", ".author-item", function() {
-        const filterText = {type: "author", value: {id: $(this).attr('attr-id-user'), name: $(this).attr('attr-name')}};
+    $("#suggestionsAuthors").on("click", ".author-item", function () {
+        const filterText = { type: "author", value: { id: $(this).attr('attr-id-user'), name: $(this).attr('attr-name') } };
         setFilter(filterText);
         $("#authorFilters").val("");
     });
 
 
-    $("#filters-menu").on("click", function() {
+    $("#filters-menu").on("click", function () {
         if ($(".tagsInputFilter").is(":focus")) {
             $("#suggestionsAuthors").hide();
             $("#suggestionsTags").show();
@@ -117,19 +117,19 @@ export const init = () => {
         }
     });
 
-    $(document).on("click", "#removeFilter", function() {
+    $(document).on("click", "#removeFilter", function () {
         const filterText = $(this).attr('attr-filter');
         const filterType = $(this).attr('attr-type');
-        const filterObject = {"type": filterType, "value": filterText};
+        const filterObject = { "type": filterType, "value": filterText };
         removeFilter(filterObject);
     });
 };
 
-const getExperiences = async() => {
+const getExperiences = async () => {
     // Remapeamos la data por el caso especial de authores
     const mappedFilters = filters.map((filter) => {
         if (filter.type === 'author' || filter.type === 'theme') {
-            return {type: filter.type, value: filter.value.id};
+            return { type: filter.type, value: filter.value.id };
         }
         return filter;
     });
@@ -144,12 +144,16 @@ const getExperiences = async() => {
     const response = await Ajax.call([request])[0];
 
     if (response.data.length === 0) {
-        Templates.renderForPromise('local_digitalta/_common/empty-view', response).then(({html, js}) => {
+        Templates.renderForPromise('local_digitalta/_common/empty-view', response).then(({ html, js }) => {
             Templates.replaceNodeContents("#list-experience-body", html, js);
         }).catch((error) => displayException(error));
         $(".digitalta.pagination").hide();
     } else {
-        let obj = {"experiences": response};
+        let obj = {
+            "experiences": response,
+            "viewtagurl": M.cfg.wwwroot + "/local/digitalta/pages/tags/view.php?type=tag&id=",
+            "viewthemeurl": M.cfg.wwwroot + "/local/digitalta/pages/tags/view.php?type=theme&id=",
+        };
         let paginationArray = generatePagination(response.pages, selectedPage);
         pages = response.pages;
         const experienceList = await Templates.renderForPromise('local_digitalta/experiences/dashboard/experience-list', obj);
@@ -159,7 +163,7 @@ const getExperiences = async() => {
             currentPage: selectedPage,
             disablePrevious: selectedPage <= 1,
             disableNext: selectedPage >= pages,
-          });
+        });
         Templates.replaceNodeContents("#list-experience-body", experienceList.html, experienceList.js);
         Templates.replaceNodeContents("#digital-pagination", pagination.html, pagination.js);
         $(".digitalta.pagination").show();
@@ -178,36 +182,36 @@ const generatePagination = (totalPages, selectedPage) => {
     return pagination;
 };
 
-const getAndRenderFilters = async() => {
+const getAndRenderFilters = async () => {
     const themesRequest = {
         methodname: 'local_digitalta_themes_get',
         args: {}
     };
-    const tagsRequest = {methodname: 'local_digitalta_tags_get', args: {}};
-    const languagesRequest = {methodname: 'local_digitalta_experiences_get_used_langs', args: {}};
+    const tagsRequest = { methodname: 'local_digitalta_tags_get', args: {} };
+    const languagesRequest = { methodname: 'local_digitalta_experiences_get_used_langs', args: {} };
     const themesResponse = await Ajax.call([themesRequest])[0];
     const tagsResponse = await Ajax.call([tagsRequest])[0];
     const languagesResponse = await Ajax.call([languagesRequest])[0];
 
     // eslint-disable-next-line max-len
-    const templateFilterThemes = await Templates.renderForPromise('local_digitalta/_common/filterTheme', {"themes": themesResponse});
+    const templateFilterThemes = await Templates.renderForPromise('local_digitalta/_common/filterTheme', { "themes": themesResponse });
     // eslint-disable-next-line max-len
-    const templateFilterLanguages = await Templates.renderForPromise('local_digitalta/_common/filterLanguages', {"languages": languagesResponse});
+    const templateFilterLanguages = await Templates.renderForPromise('local_digitalta/_common/filterLanguages', { "languages": languagesResponse });
     Templates.replaceNodeContents("#filterThemeSelect", templateFilterThemes.html, templateFilterThemes.js);
     Templates.replaceNodeContents("#filterLanguageSelect", templateFilterLanguages.html, templateFilterLanguages.js);
 
-    const availableTags = tagsResponse.map(function(tag) {
+    const availableTags = tagsResponse.map(function (tag) {
         return tag.name;
     });
 
     // Evento de entrada en el campo de texto
-    $('#inlineFormInputGroup').on('input', async function() {
+    $('#inlineFormInputGroup').on('input', async function () {
         var input = $(this).val().toLowerCase();
-        var suggestions = availableTags.filter(function(tag) {
+        var suggestions = availableTags.filter(function (tag) {
             return tag.toLowerCase().startsWith(input);
         });
 
-        const templateFilterTags = await Templates.renderForPromise('local_digitalta/_common/listTags', {tags: suggestions});
+        const templateFilterTags = await Templates.renderForPromise('local_digitalta/_common/listTags', { tags: suggestions });
         Templates.replaceNodeContents("#suggestionsTags", templateFilterTags.html, templateFilterTags.js);
     });
 };
@@ -253,12 +257,12 @@ const renderFilters = () => {
     getExperiences();
     const filtersMap = filters.map((filter) => {
         if (filter.type === 'author' || filter.type === 'theme') {
-            return {type: filter.type, value: filter.value.name};
+            return { type: filter.type, value: filter.value.name };
         } else {
-            return {type: filter.type, value: filter.value};
+            return { type: filter.type, value: filter.value };
         }
     });
-    Templates.renderForPromise('local_digitalta/_common/filterList', {filters: filtersMap}).then(({html, js}) => {
+    Templates.renderForPromise('local_digitalta/_common/filterList', { filters: filtersMap }).then(({ html, js }) => {
         Templates.replaceNodeContents("#filtersList", html, js);
     }).catch((error) => displayException(error));
 };

@@ -81,11 +81,11 @@ class Experiences
      * @param  bool  $extra_fields If true, it will return the extra fields
      * @return array The experiences
      */
-    public static function get_experiences(array $filters = [], bool $extra_fields = true): array
+    public static function get_experiences(array $filters = [], bool $extra_fields = true, $sort = '', $limit = 0): array
     {
         global $DB;
         $filters = self::prepare_filters($filters);
-        $experiences = $DB->get_records(self::$table, $filters);
+        $experiences = $DB->get_records(self::$table, $filters, $sort, '*', 0, $limit);
         return array_values(array_map(
             function ($experience) use ($extra_fields) {
                 $experience = new Experience($experience);

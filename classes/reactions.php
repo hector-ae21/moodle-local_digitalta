@@ -206,7 +206,7 @@ class Reactions
             0,
             $limit);
         usort($most_liked, function($a, $b) {
-            return $a->likes < $b->likes;
+            return $b->likes - $a->likes;
         });
         return $most_liked;
     }

@@ -68,33 +68,50 @@ $tags = Tags::get_tags();
 // Get experiences
 $featuredExperiences = Reactions::get_most_liked_component(
     Components::get_component_by_name('experience')->id,
-    5
-);
-$featuredExperiences = array_map(function ($experience) {
-    return $experience->componentinstance;
-}, $featuredExperiences);
-$experiences = Experiences::get_experiences(['visible' => 1]);
-$experiences = array_slice($experiences, -9, 9);
-$experiences = array_map(function ($experience) use ($featuredExperiences) {
-    $experience->featured = (in_array($experience->id, $featuredExperiences)) ? true : false;
-    return $experience;
-}, $experiences);
-array_multisort(
-    array_column($experiences, 'featured'),
-    SORT_DESC,
-    array_column($experiences, 'timecreated'),
-    SORT_DESC,
-    $experiences
+    9
 );
 
-// Get cases
-$cases = Cases::get_cases(['status' => 1]);
-$cases = array_slice($cases, -4, 4);
-array_multisort(
-    array_column($cases, 'timecreated'),
-    SORT_DESC,
-    $cases
+$neededExperiences = 9 - count($featuredExperiences);
+
+$featuredExperiencesIds = array_map(function ($experience) {
+    return $experience->componentinstance;
+}, $featuredExperiences);
+
+$experiences = Experiences::get_experiences(['visible' => 1], true, 'timecreated DESC', 9);
+
+$experiences = array_filter($experiences, function ($experience) use ($featuredExperiencesIds) {
+    return !in_array($experience->id, $featuredExperiencesIds);
+});
+
+$featuredExperiencesData = array_map(function ($experienceId) {
+    return Experiences::get_experience($experienceId);
+}, $featuredExperiencesIds);
+
+$experiences = array_merge($featuredExperiencesData, array_slice($experiences, 0, $neededExperiences));
+
+
+
+$featuredCases = Reactions::get_most_liked_component(
+    Components::get_component_by_name('case')->id,
+    9
 );
+$neededCases = 4 - count($featuredCases);
+
+$featuredCasesIds = array_map(function ($case) {
+    return $case->componentinstance;
+}, $featuredCases);
+
+$cases = Cases::get_cases(['status' => 1], true, 'timecreated DESC', 4);
+
+$cases = array_filter($cases, function ($case) use ($featuredCasesIds) {
+    return !in_array($case->id, $featuredCasesIds);
+});
+
+$featuredCasesData = array_map(function ($caseId) {
+    return Cases::get_case($caseId);
+}, $featuredCasesIds);
+
+$cases = array_merge($featuredCasesData, array_slice($cases, 0, $neededCases));
 
 $needstranslation = array_reduce(array_merge($experiences, $cases), function ($carry, $item) {
     return $carry || strtolower(current_language()) != strtolower($item->lang);

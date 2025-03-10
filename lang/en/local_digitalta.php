@@ -47,10 +47,13 @@ $string['general:lang_pluri']          = 'Plurilingual';
 // Concepts / terms
 $string['concept:experience']    = 'Experience';
 $string['concept:experiences']   = 'Experiences';
+$string['concept:experiences:lowercase'] = strtolower($string['concept:experiences']);
 $string['concept:case']          = 'Case';
 $string['concept:cases']         = 'Cases';
+$string['concept:cases:lowercase'] = strtolower($string['concept:cases']);
 $string['concept:resource']      = 'Resource';
 $string['concept:resources']     = 'Resources';
+$string['concept:resources:lowercase'] = strtolower($string['concept:resources']);
 $string['concept:user']          = 'User';
 $string['concept:users']         = 'Users';
 $string['concept:theme']         = 'Theme';
@@ -58,6 +61,7 @@ $string['concept:themes']        = 'Themes';
 $string['concept:tag']           = 'Tag';
 $string['concept:tags']          = 'Tags';
 $string['concept:themestags']    = 'Themes & Tags';
+$string['concept:themestags:lowercase'] = strtolower(string: $string['concept:themestags']);
 $string['concept:language']      = 'Language';
 $string['concept:reflection']    = 'Reflection';
 $string['concept:tutor']         = 'Tutor';
@@ -65,6 +69,7 @@ $string['concept:tutors']        = 'Tutors';
 $string['concept:mentor']        = 'Mentor';
 $string['concept:mentors']       = 'Mentors';
 $string['concept:tutorsmentors'] = 'Tutors & Mentors';
+$string['concept:tutorsmentors:lowercase'] = strtolower($string['concept:tutorsmentors']);
 $string['concept:introduction']  = 'Introduction';
 $string['concept:conclusion']    = 'Conclusion';
 $string['concept:summary']       = 'Summary';
@@ -142,7 +147,7 @@ $string['teacheracademy:actions:share:tags']              = 'Add <span class="di
 // Themes & Tags
 $string['themestags:title']            = $string['concept:themestags'];
 $string['themestags:header']           = $string['concept:themestags'];
-$string['themestags:description']      = '<p>Explore our <span class="digitalta-highlighted">themes</span> and <span class="digitalta-highlighted">tags <i class="help-video-icon fa fa-question-circle" style="font-size: 18px" aria-hidden="true" data-video="themes-tag-video"></i></span> to find the most relevant <span class="digitalta-highlighted">experiences</span>, <span class="digitalta-highlighted">cases</span>, and <span class="digitalta-highlighted">resources</span> shared by our community.</p>';
+$string['themestags:description']      = '<p>Explore our <span class="digitalta-highlighted">themes</span> and <span class="digitalta-highlighted">tags</span> to find the most relevant <span class="digitalta-highlighted">experiences</span>, <span class="digitalta-highlighted">cases</span>, and <span class="digitalta-highlighted">resources</span> shared by our community.</p>';
 $string['themestags:view:description'] = '<p>Discover the most relevant <span class="digitalta-highlighted">experiences</span>, <span class="digitalta-highlighted">cases</span>, and <span class="digitalta-highlighted">resources</span> shared by our community about <span class="digitalta-highlighted-upper">{$a}</span></p>';
 $string['themestags:invalidthemetag']  = 'Invalid tag or theme';
 
@@ -157,7 +162,7 @@ $string['filters:author']       = 'Author';
 // Experiences
 $string['experiences:title']       = $string['concept:experiences'];
 $string['experiences:header']      = $string['concept:experiences'];
-$string['experiences:description'] = '<p>Explore a wide range of <span class="digitalta-highlighted">experiences  <i class="help-video-icon fa fa-question-circle" style="font-size: 18px" aria-hidden="true" data-video="experience-video"></i></span> shared by teachers from around the world. You can learn from their insights, reflect on their practices, and get inspired by their stories. You can also connect with them, ask questions, and share your own experiences to contribute to the community.</p>';
+$string['experiences:description'] = '<p>Explore a wide range of <span class="digitalta-highlighted">experiences</span> shared by teachers from around the world. You can learn from their insights, reflect on their practices, and get inspired by their stories. You can also connect with them, ask questions, and share your own experiences to contribute to the community.</p>';
 
 // Experience - Actions
 $string['experience:featured']       = 'Featured';
@@ -202,7 +207,7 @@ $string['experience:resources:visit']            = 'Visit resource';
 // Cases
 $string['cases:title']       = $string['concept:cases'];
 $string['cases:header']      = $string['concept:cases'];
-$string['cases:description'] = '<p>Explore a collection of <span class="digitalta-highlighted">cases <i class="help-video-icon fa fa-question-circle" style="font-size: 18px" aria-hidden="true" data-video="cases-video"></i></span> shared by teachers from around the world. Each case is a detailed description of a real-world teaching experience, including the context, the problem, the actions taken, the results, and the reflections of the teacher.</p>';
+$string['cases:description'] = '<p>Explore a collection of <span class="digitalta-highlighted">cases</span> shared by teachers from around the world. Each case is a detailed description of a real-world teaching experience, including the context, the problem, the actions taken, the results, and the reflections of the teacher.</p>';
 
 // Cases - Management
 $string['cases:manage']                 = 'Manage cases';
@@ -234,7 +239,7 @@ $string['case:section:content']        = 'Content';
 // Resources
 $string['resources:title']       = $string['concept:resources'];
 $string['resources:header']      = $string['concept:resources'];
-$string['resources:description'] = '<p>Discover a wide range of <span class="digitalta-highlighted">resources <i class="help-video-icon fa fa-question-circle" style="font-size: 18px" aria-hidden="true" data-video="resources-video"></i></span> shared by teachers from around the world. You can find books, videos, websites, and other teaching materials that can help you enhance your teaching practice, engage your students, and inspire your lessons. You can also share your own resources to contribute to the community.</p>';
+$string['resources:description'] = '<p>Discover a wide range of <span class="digitalta-highlighted">resources</span> shared by teachers from around the world. You can find books, videos, websites, and other teaching materials that can help you enhance your teaching practice, engage your students, and inspire your lessons. You can also share your own resources to contribute to the community.</p>';
 
 // Resources - Management
 $string['resources:manage:add']                     = 'Add resource';
@@ -258,9 +263,9 @@ $string['resource:delete:success'] = 'Resource deleted successfully';
 // Tutors
 $string['tutors:title']       = $string['concept:tutorsmentors'];
 $string['tutors:header']      = $string['concept:tutorsmentors'];
-$string['tutors:description'] = '<p>Connect with experienced <span class="digitalta-highlighted">tutors</span> and <span class="digitalta-highlighted">mentors <i class="help-video-icon fa fa-question-circle" style="font-size: 18px" aria-hidden="true" data-video="tutor-teacher-video"></i></span> who can help you reflect on your teaching practice, provide feedback, and offer valuable insights. You can request tutoring sessions, ask questions, and get personalized support to enhance your teaching skills and empower your students.</p>';
+$string['tutors:description'] = '<p>Connect with experienced <span class="digitalta-highlighted">tutors</span> and <span class="digitalta-highlighted">mentors</span> who can help you reflect on your teaching practice, provide feedback, and offer valuable insights. You can request tutoring sessions, ask questions, and get personalized support to enhance your teaching skills and empower your students.</p>';
 
-$string['tutors:description_tutor'] = '<p>Connect with experienced <span class="digitalta-highlighted">tutors</span> and <span class="digitalta-highlighted">mentors <i class="help-video-icon fa fa-question-circle" style="font-size: 18px" aria-hidden="true" data-video="tutor-mentor-video"></i></span> who can help you reflect on your teaching practice, provide feedback, and offer valuable insights. You can request tutoring sessions, ask questions, and get personalized support to enhance your teaching skills and empower your students.</p>';
+$string['tutors:description_tutor'] = '<p>Connect with experienced <span class="digitalta-highlighted">tutors</span> and <span class="digitalta-highlighted">mentors</span> who can help you reflect on your teaching practice, provide feedback, and offer valuable insights. You can request tutoring sessions, ask questions, and get personalized support to enhance your teaching skills and empower your students.</p>';
 
 
 // Profile
@@ -387,3 +392,5 @@ $string['tutoring:experiencerequestsender'] = 'Sent by: {$a->username}';
 
 $string['seetranslation'] = 'Translate to English';
 $string['seeoriginal'] = 'See original';
+
+$string['help:learn_more_about'] = 'Learn more about {$a}';

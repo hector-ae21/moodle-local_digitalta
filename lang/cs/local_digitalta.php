@@ -46,10 +46,13 @@ $string['general:lang_pluri']          = 'Vícejazyčné';
 // Concepts / terms
 $string['concept:experience']    = 'Zkušenosti';
 $string['concept:experiences']   = 'Zkušenosti';
+$string['concept:experiences:lowercase'] = strtolower($string['concept:experiences']);
 $string['concept:case']          = 'Případ';
 $string['concept:cases']         = 'Případy';
+$string['concept:cases:lowercase'] = strtolower($string['concept:cases']);
 $string['concept:resource']      = 'Zdroje';
 $string['concept:resources']     = 'Zdroje';
+$string['concept:resources:lowercase'] = strtolower($string['concept:resources']);
 $string['concept:user']          = 'Uživatel';
 $string['concept:users']         = 'Uživatelé';
 $string['concept:theme']         = 'Téma';
@@ -57,6 +60,7 @@ $string['concept:themes']        = 'Témata';
 $string['concept:tag']           = 'Štítek';
 $string['concept:tags']          = 'Štítky';
 $string['concept:themestags']    = 'Témata a značky';
+$string['concept:themestags:lowercase'] = strtolower(string: $string['concept:themestags']);
 $string['concept:language']      = 'Jazyk';
 $string['concept:reflection']    = 'Reflexe';
 $string['concept:tutor']         = 'Školitel';
@@ -64,6 +68,7 @@ $string['concept:tutors']        = 'Doučovatelé';
 $string['concept:mentor']        = 'Mentor';
 $string['concept:mentors']       = 'Mentoři';
 $string['concept:tutorsmentors'] = 'Lektoři a mentoři';
+$string['concept:tutorsmentors:lowercase'] = strtolower($string['concept:tutorsmentors']);
 $string['concept:introduction']  = 'Úvod';
 $string['concept:type']          = 'Typ';
 
@@ -139,7 +144,7 @@ $string['teacheracademy:actions:share:tags']              = 'Přidejte <span cla
 // Themes & Tags
 $string['themestags:title']            = $string['concept:themestags'];
 $string['themestags:header']           = $string['concept:themestags'];
-$string['themestags:description']      = '<p>Prozkoumejte naše <span class="digitalta-highlighted">témata</span> a <span class="digitalta-highlighted">značky <i class="help-video-icon fa fa-question-circle" style="font-size: 18px" aria-hidden="true" data-video="themes-tag-video"></i></span> a najděte nejvhodnější <span class="digitalta-highlighted">zkušenosti</span>, <span class="digitalta-highlighted">případy</span> a <span class="digitalta-highlighted">zdroje</span> sdílené naší komunitou.</p>';
+$string['themestags:description']      = '<p>Prozkoumejte naše <span class="digitalta-highlighted">témata</span> a <span class="digitalta-highlighted">značky</span> a najděte nejvhodnější <span class="digitalta-highlighted">zkušenosti</span>, <span class="digitalta-highlighted">případy</span> a <span class="digitalta-highlighted">zdroje</span> sdílené naší komunitou.</p>';
 $string['themestags:view:description'] = '<p>Objevte nejdůležitější <span class="digitalta-highlighted">zkušenosti</span>, <span class="digitalta-highlighted">případy</span>.a <span class="digitalta-highlighted">zdroje</span> sdílené naší komunitou o <span class="digitalta-highlighted-upper">{$a}</span>.</p>';
 $string['themestags:invalidthemetag']  = 'Neplatná značka nebo téma';
 
@@ -154,7 +159,7 @@ $string['filters:author']       = 'Autor';
 // Experiences
 $string['experiences:title']       = $string['concept:experiences'];
 $string['experiences:header']      = $string['concept:experiences'];
-$string['experiences:description'] = '<p>Prozkoumejte širokou škálu <span class="digitalta-highlighted">zkušeností <i class="help-video-icon fa fa-question-circle" style="font-size: 18px" aria-hidden="true" data-video="experience-video"></i></span>, o které se podělili učitelé z celého světa. Můžete se poučit z jejich postřehů, zamyslet se nad jejich postupy a inspirovat se jejich příběhy. Můžete se s nimi také spojit, klást otázky a sdílet své vlastní zkušenosti a přispět tak ke komunitě.</p>';
+$string['experiences:description'] = '<p>Prozkoumejte širokou škálu <span class="digitalta-highlighted">zkušeností</span>, o které se podělili učitelé z celého světa. Můžete se poučit z jejich postřehů, zamyslet se nad jejich postupy a inspirovat se jejich příběhy. Můžete se s nimi také spojit, klást otázky a sdílet své vlastní zkušenosti a přispět tak ke komunitě.</p>';
 
 // Experience - Actions
 $string['experience:featured']       = 'Doporučené stránky';
@@ -199,7 +204,7 @@ $string['experience:resources:visit']            = 'Navštivte zdroj';
 // Cases
 $string['cases:title']       = $string['concept:cases'];
 $string['cases:header']      = $string['concept:cases'];
-$string['cases:description'] = '<p>Prozkoumejte sbírku <span class="digitalta-highlighted">případů <i class="help-video-icon fa fa-question-circle" style="font-size: 18px" aria-hidden="true" data-video="cases-video"></i></span>, o které se podělili učitelé z celého světa. Každý případ je podrobným popisem reálné zkušenosti s výukou, včetně kontextu, problému, přijatých opatření, výsledků a úvah učitele.</p>';
+$string['cases:description'] = '<p>Prozkoumejte sbírku <span class="digitalta-highlighted">případů</span>, o které se podělili učitelé z celého světa. Každý případ je podrobným popisem reálné zkušenosti s výukou, včetně kontextu, problému, přijatých opatření, výsledků a úvah učitele.</p>';
 
 // Cases - Management
 $string['cases:manage']                 = 'Správa případů';
@@ -227,7 +232,7 @@ $string['case:section:delete:confirm'] = 'Opravdu chcete tuto část odstranit?'
 // Resources
 $string['resources:title']       = $string['concept:resources'];
 $string['resources:header']      = $string['concept:resources'];
-$string['resources:description'] = '<p>Objevte širokou škálu <span class="digitalta-highlighted">zdrojů <i class="help-video-icon fa fa-question-circle" style="font-size: 18px" aria-hidden="true" data-video="resources-video"></i></span>, které sdílejí učitelé z celého světa. Najdete zde knihy, videa, webové stránky a další výukové materiály, které vám pomohou zlepšit vaši pedagogickou praxi, zaujmout studenty a inspirovat vaše hodiny. Můžete také sdílet své vlastní zdroje a přispět tak ke komunitě.</p>';
+$string['resources:description'] = '<p>Objevte širokou škálu <span class="digitalta-highlighted">zdrojů</span>, které sdílejí učitelé z celého světa. Najdete zde knihy, videa, webové stránky a další výukové materiály, které vám pomohou zlepšit vaši pedagogickou praxi, zaujmout studenty a inspirovat vaše hodiny. Můžete také sdílet své vlastní zdroje a přispět tak ke komunitě.</p>';
 
 // Resources - Management
 $string['resources:manage:add']                     = 'Přidat zdroj';
@@ -251,9 +256,9 @@ $string['resource:delete:success'] = 'Prostředek úspěšně odstraněn';
 // Tutors
 $string['tutors:title']       = $string['concept:tutorsmentors'];
 $string['tutors:header']      = $string['concept:tutorsmentors'];
-$string['tutors:description'] = '<p>Spojte se se zkušenými <span class="digitalta-highlighted">učiteli</span> a <span class="digitalta-highlighted">mentory <i class="help-video-icon fa fa-question-circle" style="font-size: 18px" aria-hidden="true" data-video="tutor-teacher-video"></i></span>, kteří vám pomohou zamyslet se nad vaší výukovou praxí, poskytnou zpětnou vazbu a nabídnou cenné postřehy. Můžete si vyžádat doučování, klást otázky a získat individuální podporu, abyste zlepšili své učitelské dovednosti a posílili své studenty.</p>';
+$string['tutors:description'] = '<p>Spojte se se zkušenými <span class="digitalta-highlighted">učiteli</span> a <span class="digitalta-highlighted">mentory</span>, kteří vám pomohou zamyslet se nad vaší výukovou praxí, poskytnou zpětnou vazbu a nabídnou cenné postřehy. Můžete si vyžádat doučování, klást otázky a získat individuální podporu, abyste zlepšili své učitelské dovednosti a posílili své studenty.</p>';
 
-$string['tutors:description_tutor'] = '<p>Spojte se se zkušenými <span class="digitalta-highlighted">učiteli</span> a <span class="digitalta-highlighted">mentory <i class="help-video-icon fa fa-question-circle" style="font-size: 18px" aria-hidden="true" data-video="tutor-mentor-video"></i></span>, kteří vám pomohou zamyslet se nad vaší výukovou praxí, poskytnou zpětnou vazbu a nabídnou cenné postřehy. Můžete si vyžádat doučování, klást otázky a získat individuální podporu, abyste zlepšili své učitelské dovednosti a posílili své studenty.</p>';
+$string['tutors:description_tutor'] = '<p>Spojte se se zkušenými <span class="digitalta-highlighted">učiteli</span> a <span class="digitalta-highlighted">mentory</span>, kteří vám pomohou zamyslet se nad vaší výukovou praxí, poskytnou zpětnou vazbu a nabídnou cenné postřehy. Můžete si vyžádat doučování, klást otázky a získat individuální podporu, abyste zlepšili své učitelské dovednosti a posílili své studenty.</p>';
 
 // Profile
 $string['profile:title']            = 'Profil';
@@ -319,19 +324,6 @@ $string['section_group:now_what'] = 'Co teď?';
 // Elements - Section types
 $string['section_type:text'] = 'Text';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Tutor Repository - MyTutoring
 $string['tutor_searchbar_placeholder'] = 'Vyhledejte učitele...';
 
@@ -380,3 +372,5 @@ $string['tutoring:experiencerequestsender'] = 'Odesláno uživatelem: {$a->usern
 
 $string['seetranslation'] = 'Přeložit do češtiny';
 $string['seeoriginal'] = 'Zobrazit originál';
+
+$string['help:learn_more_about'] = 'Zjistěte více o {$a}';

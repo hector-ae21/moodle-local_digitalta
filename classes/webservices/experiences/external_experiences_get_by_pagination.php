@@ -189,6 +189,7 @@ class external_experiences_get_by_pagination extends external_api
             }
 
             $x->sections = $sections;
+            $x->excerpt = trim(mb_strimwidth(preg_replace('/\s+/', ' ', strip_tags($x->sections['what']->content)), 0, 250, '...')) ?? null;
             $experiences[] = $x;
         }
         $experiences = array_filter($experiences, function ($experience) use ($USER) {
@@ -216,6 +217,7 @@ class external_experiences_get_by_pagination extends external_api
                     "title" => new external_value(PARAM_TEXT, 'title', VALUE_REQUIRED),
                     "lang" => new external_value(PARAM_TEXT, 'lang', VALUE_REQUIRED),
                     "visible" => new external_value(PARAM_INT, 'visible', VALUE_REQUIRED),
+                    "excerpt" => new external_value(PARAM_TEXT, 'excerpt', VALUE_REQUIRED),
                     "status" => new external_value(PARAM_INT, 'status', VALUE_REQUIRED),
                     "timecreated" => new external_value(PARAM_TEXT, 'timecreated', VALUE_REQUIRED),
                     "timecreated_string" => new external_value(PARAM_TEXT, 'timecreated_string', VALUE_REQUIRED),

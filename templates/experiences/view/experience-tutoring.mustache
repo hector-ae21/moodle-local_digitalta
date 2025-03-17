@@ -9,13 +9,13 @@
     {{/canedit}}
     {{^experience.data.status}}
         <div class="text-justify mb-4">
-            {{#canedit}}
+            {{#isownexperience}}
                     <div class="input-group mb-1">
                         <input type="text" class="search-field__input" id="search-tutors-input" placeholder="{{#str}}experience:tutoring:placeholder, local_digitalta{{/str}}" aria-label="Search user" />
                     </div>
                     <a href="{{tutorrepourl}}" class="d-flex justify-content-end mb-1">{{#str}}experience:tutoring:see_all, local_digitalta{{/str}}</a>
                     <div id="search-tutors-result"></div>
-            {{/canedit}}
+            {{/isownexperience}}
             <div class="list-group mb-2">
                 {{#tutorslist}}
                     {{> local_digitalta/test/menu_tutor/item}}
@@ -53,7 +53,7 @@
                 {{/tutorslist}}
             </div>
 
-            {{#canedit}}
+            {{#isownexperience}}
                 {{#mentors_from_requests.0}}
                 <div class="flex d-flex my-4 align-items-center" style="gap: .5em;">
                     <h2 class="text-secondary my-0 digitalta-title">{{#str}} experience:tutoring:mentor_request_title, local_digitalta {{/str}}</h2>
@@ -64,9 +64,9 @@
                         {{>local_digitalta/test/menu_tutor/item-mentor-request}}
                     {{/mentors_from_requests}}
                 </div>
-            {{/canedit}}
+            {{/isownexperience}}
             
-            {{^canedit}}
+            {{^isownexperience}}
                 {{^istutor}}
                     {{#mentoringrequest}}
                         {{#isMentorRequest}}
@@ -100,7 +100,7 @@
                         </button>
                     {{/mentoringrequest}}
                 {{/istutor}}
-            {{/canedit}}
+            {{/isownexperience}}
         </div>
     {{/experience.data.status}}
 </div>

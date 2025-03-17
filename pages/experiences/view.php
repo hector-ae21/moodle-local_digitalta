@@ -81,7 +81,8 @@ $user = get_complete_user_data('id', $experience->userid);
 $user_picture = new user_picture($user);
 $user_picture->size = 101;
 
-$isownexperience = Experiences::check_permissions($experience, $USER);
+$isownexperience = Experiences::check_permissions($experience, $USER, false);
+$canedit = Experiences::check_permissions($experience, $USER, true);
 
 // Get the resources
 $resources = [];
@@ -166,7 +167,8 @@ $template_context = [
         'profileurl' => $CFG->wwwroot . '/local/digitalta/pages/profile/index.php?id=' . $user->id,
     ],
     'resources' => $resources,
-    'canedit' => $isownexperience,
+    'canedit' => $canedit,
+    'isownexperience' => $isownexperience,
     'istutor' => Tutors::is_enrolled_tutor_in_course($USER->id, $experience->id) || Experiences::check_permissions($experience, $USER, false),
     'tutorrepourl' => $CFG->wwwroot . '/local/digitalta/pages/tutors/index.php?id=' . $experience->id,
     'tutorslist' => array_values($tutors),

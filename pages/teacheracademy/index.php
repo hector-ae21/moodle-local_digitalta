@@ -68,7 +68,7 @@ $tags = Tags::get_tags();
 // Get experiences
 $featuredExperiences = Reactions::get_most_liked_component(
     Components::get_component_by_name('experience')->id,
-    9
+    3
 );
 
 $neededExperiences = 9 - count($featuredExperiences);
@@ -79,21 +79,15 @@ $featuredExperiencesIds = array_map(function ($experience) {
 
 $experiences = Experiences::get_experiences(['visible' => 1], true, 'timecreated DESC', 9);
 
-$experiences = array_filter($experiences, function ($experience) use ($featuredExperiencesIds) {
-    return !in_array($experience->id, $featuredExperiencesIds);
-});
-
 $featuredExperiencesData = array_map(function ($experienceId) {
     return Experiences::get_experience($experienceId);
 }, $featuredExperiencesIds);
-
-$experiences = array_merge($featuredExperiencesData, array_slice($experiences, 0, $neededExperiences));
 
 
 
 $featuredCases = Reactions::get_most_liked_component(
     Components::get_component_by_name('case')->id,
-    9
+    2
 );
 $neededCases = 4 - count($featuredCases);
 
@@ -103,17 +97,13 @@ $featuredCasesIds = array_map(function ($case) {
 
 $cases = Cases::get_cases(['status' => 1], true, 'timecreated DESC', 4);
 
-$cases = array_filter($cases, function ($case) use ($featuredCasesIds) {
-    return !in_array($case->id, $featuredCasesIds);
-});
 
 $featuredCasesData = array_map(function ($caseId) {
     return Cases::get_case($caseId);
 }, $featuredCasesIds);
 
-$cases = array_merge($featuredCasesData, array_slice($cases, 0, $neededCases));
 
-$needstranslation = array_reduce(array_merge($experiences, $cases), function ($carry, $item) {
+$needstranslation = array_reduce(array_merge($experiences, $cases, $featuredExperiencesData, $featuredCasesData), function ($carry, $item) {
     return $carry || strtolower(current_language()) != strtolower($item->lang);
 }, false);
 
@@ -162,6 +152,20 @@ $actions = [
     ]
 ];
 
+function get_is_muted_video()
+{
+    global $SESSION;
+    $pagevisitkey = 'visited_dashboard_after_login';
+
+    if (empty($SESSION->$pagevisitkey)) {
+        $mutedVideo = false;
+        $SESSION->$pagevisitkey = true;
+    } else {
+        $mutedVideo = true;
+    }
+    return $mutedVideo;
+}
+
 // Template context
 $templateContext = [
     'user' => $user,
@@ -169,6 +173,7 @@ $templateContext = [
     'mainvideourl' => $CFG->wwwroot . '/theme/digitalta/statics/main-video.mp4',
     'experiences' => [
         'data' => $experiences,
+        'featured' => $featuredExperiencesData,
         'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/experiences/view.php?id=',
         'allurl' => $CFG->wwwroot . '/local/digitalta/pages/experiences/index.php',
     ],
@@ -178,11 +183,13 @@ $templateContext = [
         'allurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/index.php'
     ],
     'cases' => [
-        'data' => array_slice($cases, 0, 4),
+        'data' => $cases,
+        'featured' => $featuredCasesData,
         'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/view.php?id=',
         'allurl' => $CFG->wwwroot . '/local/digitalta/pages/cases/index.php'
     ],
     'needstranslation' => $needstranslation,
+    'mutedVideo' => get_is_muted_video(),
     'wwwroot' => $CFG->wwwroot,
 ];
 

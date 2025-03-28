@@ -2,6 +2,7 @@ import Templates from "core/templates";
 import $ from "jquery";
 import Ajax from "core/ajax";
 import { exception as displayException } from "core/notification";
+import { generatePagination } from "../commun/utils";
 
 let pages = 0;
 let filters = [];
@@ -247,16 +248,4 @@ const getCases = async () => {
     Templates.replaceNodeContents("#digital-pagination", pagination.html, pagination.js);
     $(".digitalta.pagination").show();
   }
-};
-
-const generatePagination = (totalPages, selectedPage) => {
-  let pagination = [];
-  for (let i = 0; i < totalPages; i++) {
-    let page = {
-      page: i + 1,
-      selected: i + 1 === selectedPage,
-    };
-    pagination.push(page);
-  }
-  return pagination;
 };

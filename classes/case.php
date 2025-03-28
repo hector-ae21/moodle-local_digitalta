@@ -72,6 +72,8 @@ class StudyCase
     /** @var array The sections of the experience. */
     public $sections;
 
+    public $excerpt;
+
     /**
      * Constructor.
      * 

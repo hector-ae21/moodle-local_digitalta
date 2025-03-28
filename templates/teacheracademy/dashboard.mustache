@@ -18,28 +18,16 @@
                     {{#str}} teacheracademy:description, local_digitalta {{/str}}
                 </div>
                 <div class="col-lg-4 col-12">
-                    <video width="100%" autoplay controls controlslist="nodownload">
+                    <video width="100%" autoplay controls controlslist="nodownload"
+                        {{#mutedVideo}}muted{{/mutedVideo}}>">
                         <source src="https://storage.googleapis.com/digitalta-media/2024/10/video_platform.mp4" />
-                        <track
-                            label="Español"
-                            kind="subtitles"
-                            srclang="es"
-                            src="{{wwwroot}}/theme/digitalta/statics/video-captions/es.vtt"
-                            default />
-                        <track
-                            label="Deutsch"
-                            kind="subtitles"
-                            srclang="de"
-                            src="{{wwwroot}}/theme/digitalta/statics/video-captions/de.vtt"/>
-                        <track
-                            label="Polski"
-                            kind="subtitles"
-                            srclang="pl"
+                        <track label="Español" kind="subtitles" srclang="es"
+                            src="{{wwwroot}}/theme/digitalta/statics/video-captions/es.vtt" default />
+                        <track label="Deutsch" kind="subtitles" srclang="de"
+                            src="{{wwwroot}}/theme/digitalta/statics/video-captions/de.vtt" />
+                        <track label="Polski" kind="subtitles" srclang="pl"
                             src="{{wwwroot}}/theme/digitalta/statics/video-captions/pl.vtt" />
-                        <track
-                            label="CZech"
-                            kind="subtitles"
-                            srclang="cs"
+                        <track label="CZech" kind="subtitles" srclang="cs"
                             src="{{wwwroot}}/theme/digitalta/statics/video-captions/cs.vtt" />
                         {{#str}} general:video_not_supported, local_digitalta {{/str}}
                     </video>
@@ -63,12 +51,20 @@
     <section data-section-name="digitalta-teacheracademy-experiences-cases" class="mb-5">
         <div class="container-fluid d-flex">
             <div class="row w-100">
-                <!-- Experiences -->
+                <!-- Featured Experiences -->
                 <div class="col-md-8 col-sm-12">
+                    {{> local_digitalta/teacheracademy/featured-experience-list }}
+                </div>
+                <!-- Featured Cases -->
+                <div class="col-md-4 col-sm-12">
+                    {{> local_digitalta/teacheracademy/featured-case-list }}
+                </div>
+                <!-- Experiences -->
+                <div class="col-md-8 col-sm-12 mt-5">
                     {{> local_digitalta/teacheracademy/experience-list }}
                 </div>
                 <!-- Cases -->
-                <div class="col-md-4 col-sm-12">
+                <div class="col-md-4 col-sm-12 mt-5">
                     {{> local_digitalta/teacheracademy/case-list }}
                 </div>
             </div>

@@ -48,6 +48,9 @@ class Resource
     /** @var string The type of the resource. */
     public $type;
 
+    /** @var string The simplified type of the resource. */
+    public $type_simplified;
+
     /** @var string The format of the resource. */
     public $format;
     

@@ -4,7 +4,7 @@
     </div>
     <div class="experiences row p-0 mx-0 justify-content-start">
         {{#experiences.data}}
-            {{> local_digitalta/_common/experience-list-item}}
+            {{> local_digitalta/_common/experience-list-item-themetags}}
         {{/experiences.data}}
         {{^experiences.data}}
             <div class="col-12">
@@ -14,4 +14,9 @@
             </div>
         {{/experiences.data}}
     </div>
+    {{#experiences.data.0}}
+        <div class="d-flex justify-content-end mt-3">
+            <a href="{{experiences.allurl}}" class="btn btn-primary">{{#str}} general:see_more, local_digitalta {{/str}}</a>
+        </div>
+    {{/experiences.data.0}}
 </div>

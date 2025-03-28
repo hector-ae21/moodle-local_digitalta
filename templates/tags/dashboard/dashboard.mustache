@@ -34,3 +34,51 @@
         </div>
     </section>
 </div>
+
+<script>
+
+    function getDarkColor() {
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += Math.floor(Math.random() * 10);
+        }
+        return color;
+    }
+
+    function setRandomBackground() {
+        console.log('Setting random background');
+        document.getElementsByClassName('tag').forEach((tag) => {
+            if(tag.style.color === '')
+                tag.style.color = getDarkColor();
+        });
+    }
+
+    function setVars() {
+        document.getElementsByClassName('tag').forEach((tag) => {
+            tag.style.setProperty('--color', 'color');
+            tag.style.setProperty('--size', 'font-size');
+        });
+    }
+
+    function setSize() {
+        document.getElementsByClassName('tag').forEach((tag) => {
+            var tagWeight = tag.getAttribute('data-weight');
+            if (tagWeight >= 80) {
+                tag.style.setProperty('font-size', '3.0em');
+            } else if (tagWeight >= 60) {
+                tag.style.setProperty('font-size', '2.5em');
+            } else if (tagWeight >= 40) {
+                tag.style.setProperty('font-size', '2.0em');
+            } else if (tagWeight >= 20) {
+                tag.style.setProperty('font-size', '1.5em');
+            } else {
+                tag.style.setProperty('font-size', '1.0em');
+            }
+        });
+    }
+
+    setVars();
+    setSize();
+    setRandomBackground();
+
+</script>

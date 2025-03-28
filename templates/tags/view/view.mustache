@@ -6,6 +6,9 @@
                 <div class="col-12">
                     <div class="digitalta-subtitle">{{title}}</div>
                     <h1 class="digitalta-title display-3">{{{tag.name}}}</h1>
+                    {{#needstranslation}}
+                    {{> local_digitalta/_common/translate-button}}
+                    {{/needstranslation}}
                 </div>
             </div>
         </div>
@@ -23,26 +26,18 @@
     <!--Section: Content-->
     <section data-section-name="digitalta-themestags-view-content">
         <div class="container-fluid d-flex my-4">
-            <div class="row w-100">
-                <div class="col-sm-12 col-md-6">
-                    <!-- Experiences -->
-                    <div class="digitalta-themestags-view-experiences mb-3">
-                        {{> local_digitalta/tags/view/experience-list}}
-                    </div>
-                    <!-- Cases -->
-                    <div class="digitalta-themestags-view-cases">
-                        {{> local_digitalta/tags/view/case-list}}
-                    </div>
+            <div class="w-100">
+                <!-- Experiences -->
+                <div class="digitalta-themestags-view-experiences mb-3">
+                    {{> local_digitalta/tags/view/experience-list}}
                 </div>
-                <div class="col-sm-12 col-md-6">
-                    <!-- Resources -->
-                    <div class="digitalta-themetag-view-resources">
-                        {{> local_digitalta/tags/view/resource-list}}
-                    </div>
-                    <!-- Users -->
-                    <div class="digitalta-themetag-view-users">
-                        {{> local_digitalta/tags/view/user-list}}
-                    </div>
+                <!-- Cases -->
+                <div class="digitalta-themestags-view-cases">
+                    {{> local_digitalta/tags/view/case-list}}
+                </div>
+                <!-- Resources -->
+                <div class="digitalta-themetag-view-resources">
+                    {{> local_digitalta/tags/view/resource-list}}
                 </div>
             </div>
         </div>

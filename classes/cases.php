@@ -88,6 +88,7 @@ class Cases
                 if ($extra_fields) {
                     $case = self::get_extra_fields($case);
                 }
+                $case->excerpt = trim(mb_strimwidth(preg_replace('/\s+/', ' ', strip_tags($case->description)), 0, 250, '...')) ?? null;
                 return $case;
             },
             $cases

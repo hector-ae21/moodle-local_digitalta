@@ -88,11 +88,12 @@ class Context
         if (!$componentid || !$modifierid) {
             throw new Exception('Invalid component or modifier');
         }
-        return $DB->get_record(self::$table,[
+        return $DB->get_record(self::$table, [
             'component'         => $componentid,
             'componentinstance' => $componentinstance,
             'modifier'          => $modifierid,
-            'modifierinstance'  => $modifierinstance]);
+            'modifierinstance'  => $modifierinstance
+        ]);
     }
 
     /**
@@ -141,19 +142,38 @@ class Context
         if (!$modifierid) {
             throw new Exception('Invalid modifier');
         }
-        $conditions = ['modifier' => $modifierid];
-        if ($modifierinstance) {
-            $conditions['modifierinstance'] = $modifierinstance;
+
+        $where = ["ctx.modifier = ?"];
+        $params = [$modifierid];
+
+        if ($modifierinstance !== null) {
+            $where[] = "ctx.modifierinstance = ?";
+            $params[] = $modifierinstance;
         }
+
         if ($component) {
             $componentid = self::is_valid('component', $component);
             if (!$componentid) {
                 throw new Exception('Invalid component');
             }
-            $conditions['component'] = $componentid;
+
+            $where[] = "ctx.component = ?";
+            $params[] = $componentid;
+
+            // Build full SQL with WHERE clause
+            $sql = "SELECT ctx.* 
+                  FROM {" . self::$table . "} ctx
+                  JOIN {digitalta_" . $component . "s} comp ON ctx.componentinstance = comp.id
+                 WHERE " . implode(" AND ", $where) . "
+              ORDER BY comp.timecreated DESC";
         }
-        return array_values($DB->get_records(self::$table, $conditions));
+
+        if (!isset($sql)) {
+            $sql = "SELECT * FROM {" . self::$table . "} ctx WHERE " . implode(" AND ", $where);
+        }
+        return array_values($DB->get_records_sql($sql, $params));
     }
+
 
     /**
      * Add a new context.

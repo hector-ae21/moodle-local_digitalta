@@ -65,10 +65,8 @@ $template_context = [
         'data' => $tags,
         'viewurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=tag&id='
     ],
-    'needstranslation' => true,
 ];
 
-$PAGE->requires->js_call_amd('local_digitalta/commun/translate', 'translateButton');
 echo $OUTPUT->render_from_template('local_digitalta/tags/dashboard/dashboard', $template_context);
 
 echo $OUTPUT->footer();

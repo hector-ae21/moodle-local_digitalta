@@ -60,9 +60,11 @@ $template_context = [
     'component' => 'resource',
     'resources' => [
         'data' => [],
-    ]
+    ],
+    'needstranslation' => true,
 ];
 
+$PAGE->requires->js_call_amd('local_digitalta/commun/translate', 'translateButton');
 echo $OUTPUT->render_from_template('local_digitalta/resources/dashboard/dashboard', $template_context);
 
 echo $OUTPUT->footer();

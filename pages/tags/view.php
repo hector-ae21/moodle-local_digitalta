@@ -114,8 +114,10 @@ $template_context = [
     ],
     'resources' => [
         'data' => $resources,
-        'allurl' => $CFG->wwwroot . '/local/digitalta/pages/resources/index.php'
+        'allurl' => $CFG->wwwroot . '/local/digitalta/pages/resources/index.php',
     ],
+    'viewtagurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=tag&id=',
+    'viewthemeurl' => $CFG->wwwroot . '/local/digitalta/pages/tags/view.php?type=theme&id=',
     'needstranslation' => $needstranslation,
 ];
 
